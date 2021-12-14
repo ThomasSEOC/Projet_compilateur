@@ -1,3 +1,2 @@
-# gl54
-
-Projet GL équipe gl54
+# Projet Génie Logiciel, Ensimag.
+@AUTHOR@, @DATE@.
