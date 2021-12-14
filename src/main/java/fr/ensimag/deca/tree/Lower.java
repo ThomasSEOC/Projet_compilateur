@@ -3,8 +3,8 @@ package fr.ensimag.deca.tree;
 
 /**
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl54
+ * @date 01/01/2022
  */
 public class Lower extends AbstractOpIneq {
 

@@ -10,8 +10,8 @@ import java.io.PrintStream;
 
 /**
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl54
+ * @date 01/01/2022
  */
 public class ReadInt extends AbstractReadExpr {
 

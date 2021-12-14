@@ -14,8 +14,8 @@ import org.apache.commons.lang.Validate;
 /**
  * String literal
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl54
+ * @date 01/01/2022
  */
 public class StringLiteral extends AbstractStringLiteral {
 
