@@ -8,3 +8,5 @@
 .project
 .metadata
 .settings
+.idea/**
+/examples/tools/.idea
