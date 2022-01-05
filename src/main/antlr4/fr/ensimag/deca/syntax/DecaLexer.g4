@@ -65,14 +65,12 @@ TIMES:               '*'; // multiplie
 SLASH:               '/'; // divise
 PERCENT:             '%'; // modulo ou pourcent
 DOT:                 '.'; // point
-COL:                 ','; // virgule
 COMMA:               ','; // virgule aussi ?
 OPARENT:             '('; // parenthèse ouvrante
 CPARENT:             ')'; // parenthèse ouvrante
 OBRACE:              '{'; // crochet ouvrant
 CBRACE:              '}'; // crochet fermant
 EXCLAM:              '!'; // point d'exclamation
-SCOL:                ';'; // point virgule
 SEMI:                ';'; // point virgule aussi ?
 OR:                  '||'; // comparateur 'ou'
 AND:                 '&&'; // comparateur 'et'
@@ -117,4 +115,3 @@ INCLUDE:             '#include' (' ')* '"' FILENAME '"';
 
 UNKNOWN:            .;
 
-//SPECIAL_CAR:         '!' | ESPACE | SCOL | COL; //caractères spéciaux
