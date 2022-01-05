@@ -9,10 +9,6 @@ build:
   script:
     - source /home/gl/.bashrc
     - mvn compile
-    - <generate public/unit_tests.svg>
-  artifacts:
-    paths:
-      - public/build.svg
   only: 
     - dev
     - master
