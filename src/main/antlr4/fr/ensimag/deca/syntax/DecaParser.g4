@@ -149,7 +149,6 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
-            $tree = new Return($expr.tree);
         }
     ;
 
@@ -193,7 +192,7 @@ assign_expr returns[AbstractExpr tree]
         EQUALS e2=assign_expr {
             assert($e.tree != null);
             assert($e2.tree != null);
-            $tree = new Assign((AbstractValue)$e.tree,$e2.tree);
+            $tree = new Assign((AbstractLValue)$e.tree,$e2.tree);
             setLocation($tree,$e.start);
         }
       | /* epsilon */ {
@@ -232,7 +231,7 @@ and_expr returns[AbstractExpr tree]
 eq_neq_expr returns[AbstractExpr tree]
     : e=inequality_expr {
             assert($e.tree != null);
-            $tree = $e.tree
+            $tree = $e.tree;
         }
     | e1=eq_neq_expr EQEQ e2=inequality_expr {
             assert($e1.tree != null);
@@ -244,7 +243,7 @@ eq_neq_expr returns[AbstractExpr tree]
     | e1=eq_neq_expr NEQ e2=inequality_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
-            $tree = new NotEquals($e1.tree,$e2.tree)
+            $tree = new NotEquals($e1.tree,$e2.tree);
         }
     ;
 
@@ -330,6 +329,7 @@ unary_expr returns[AbstractExpr tree]
         }
     | select_expr {
             assert($select_expr.tree != null);
+            $tree = $select_expr.tree;
         }
     ;
 
@@ -345,6 +345,7 @@ select_expr returns[AbstractExpr tree]
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
+
         }
         | /* epsilon */ {
             // we matched "e.i"
@@ -355,6 +356,7 @@ select_expr returns[AbstractExpr tree]
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
@@ -362,10 +364,13 @@ primary_expr returns[AbstractExpr tree]
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
+            $tree = $expr.tree ;
         }
     | READINT OPARENT CPARENT {
+        $tree = new ReadInt();
         }
     | READFLOAT OPARENT CPARENT {
+        $tree = new ReadFloat();
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
@@ -376,25 +381,43 @@ primary_expr returns[AbstractExpr tree]
         }
     | literal {
             assert($literal.tree != null);
+            $tree = $literal.tree;
         }
     ;
 
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     ;
 
 literal returns[AbstractExpr tree]
     : INT {
+        try {
+            $tree = new IntLiteral(Integer.parseInt($INT.text));
+            } catch (NumberFormatException e) {
+                // The integer could not be parsed (probably it's too large).
+                // set $tree to null, and then fail with the semantic predicate
+                // {$tree != null}?. In decac, we'll have a more advanced error
+                // management.
+                $tree = null;
+            } {$tree != null}?
+            
         }
     | fd=FLOAT {
+            $tree = new FloatLiteral(Float.parseFloat($fd.text));
         }
     | STRING {
+            String string_content = new String();
+            string_content = $st.text.subString(1,$STRING.text.length()-1);
+            $tree = new StringLiteral(string_content);
         }
     | TRUE {
-        }
+        $tree = new BooleanLiteral(true);
+        }{$tree != null}?
     | FALSE {
+        $tree = new BooleanLiteral(false);
         }
     | THIS {
         }
@@ -404,12 +427,16 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
+        $tree = new Identifier();
         }
     ;
 
 /****     Class related rules     ****/
 
 list_classes returns[ListDeclClass tree]
+    @init   {
+            $tree = new ListDeclClass();
+        }
     :
       (c1=class_decl {
         }
