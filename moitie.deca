@@ -1,0 +1,10 @@
+// Description:
+//    tests de 'Hello world'
+//
+// Resultat :
+// Hello world
+
+{
+   println("Hello world");
+}
+
