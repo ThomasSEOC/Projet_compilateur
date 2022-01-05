@@ -12,6 +12,7 @@ cache:
 build:
   stage: build
   script:
+    - source /home/gl/.bashrc
     - mvn $MAVEN_CLI_OPTS compile
 
 test:
