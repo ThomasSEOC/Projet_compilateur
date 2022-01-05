@@ -13,3 +13,13 @@ build:
     - dev
     - master
     - gitlab-autotests
+
+test:
+  stage: test
+  script:
+    - source /home/gl/.bashrc
+    - mvn -Djacoco.skip=false clean verify
+  only: 
+    - dev
+    - master
+    - gitlab-autotests
