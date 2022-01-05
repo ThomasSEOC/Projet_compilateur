@@ -53,7 +53,7 @@ WS  :   ( ESPACE | FORMAT)
 //Identificateurs :
 fragment LETTER :    ('a'..'z' | 'A'..'Z'); // lettres
 fragment DIGIT:    '0' .. '9'; // chiffres
-IDENT:               (LETTER + '$' + '_')(LETTER + DIGIT + '$' + '_');
+IDENT:               (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_');
 
 //Symboles spéciaux :
 LT:                  '<'; // comparateur 'inférieur à'
