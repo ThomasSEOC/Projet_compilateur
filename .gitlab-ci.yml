@@ -10,8 +10,3 @@ build:
     - source /home/gl/.bashrc
     - mvn compile
 
-test:
-  stage: test
-  script:
-    - mvn verify
-
