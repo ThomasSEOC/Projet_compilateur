@@ -9,4 +9,8 @@ build:
   script:
     - source /home/gl/.bashrc
     - mvn compile
+  only: 
+    - dev
+    - master
+    - gitlab-autotests
 
