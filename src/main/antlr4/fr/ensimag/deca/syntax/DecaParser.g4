@@ -230,7 +230,7 @@ and_expr returns[AbstractExpr tree]
             assert($e1.tree != null);                         
             assert($e2.tree != null);
             $tree = new And($e1.tree,$e2.tree);
-            setlocation($tree,$AND);
+            setLocation($tree,$AND);
         }
     ;
 
