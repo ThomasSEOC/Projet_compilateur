@@ -17,14 +17,17 @@ cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
 
+RESULT=1
+
 for i in ./src/test/deca/syntax/valid/lexer/*.deca
 do
-echo "$i"
+echo "TEST: $i"
 LIS="${i%.*}.lis"
 RES=$(test_lex "$i" 2>&1 | diff - "$LIS")
 if [ "$RES" != "" ]
 then
   echo "-> ERROR"
+  RESULT=0
 else
   echo "-> OK"
 fi
@@ -32,48 +35,22 @@ done
 
 for i in ./src/test/deca/syntax/invalid/lexer/*.deca
 do
-echo "$i"
+echo "TEST: $i"
 LIS="${i%.*}.lis"
 RES=$(test_lex "$i" 2>&1 | diff - "$LIS")
 if [ "$RES" != "" ]
 then
   echo "-> ERROR : $RES"
+  RESULT=0
 else
   echo "-> OK"
 fi
 done
 
-## /!\ test valide lexicalement
-#if test_lex src/test/deca/syntax/valid/lexer/multi-hello.deca 2>&1 \
-#    |  grep -q 'INFO'
-#then
-#    echo "Echec inattendu de test_lex multi-hello"
-#    exit 1
-#else
-#    echo "OK pour test_lex multi-hello"
-#fi
-
-## /!\ test valide lexicalement
-#if test_lex src/test/deca/syntax/valid/lexer/concatenation.deca 2>&1 \
-#    |  grep -q 'INFO'
-#then
-#    echo "Echec inattendu de test_lex concatenation"
-#    exit 1
-#else
-#    echo "OK pour test_lex concatenation"
-#fi
-#
-#
-#
-## /!\ test invalide lexicalement
-#if test_lex src/test/deca/syntax/invalid/lexer/multi-string.deca 2>&1 \
-#    | grep -q ' no token, no LocationException'
-#then
-#    echo "Echec attendu de test_lex multi-string"
-#else
-#    echo "Réussite inattendue de test_lex multi-string"
-#    exit 1
-#fi
-
-exit 0
+if [ "$RESULT" = 0 ]
+then
+  exit 1
+else
+  exit 0
+fi
 
