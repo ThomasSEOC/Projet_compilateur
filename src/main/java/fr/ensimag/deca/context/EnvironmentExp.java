@@ -24,7 +24,7 @@ public class EnvironmentExp {
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
 
-    EnvironmentExp parentEnvironment;
+    EnvironmentExp parentEnvironment; //Superclass
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
@@ -39,6 +39,20 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
+        //renvoie Expdefinition à partir de Symbol key:
+        //key est un string
+        String name = key.getName();
+        //Pour println ("Hello world"), 2 choix possibles: println ou chaine de caract
+        //Expdefinition = expnature x Type Expdefinition(type, location)
+        //expnature = {param,var} pour hello world
+        //Un typedef est un type et un type-nature
+        //Localisation:
+        //Location location = new Location();
+
+
+
+
+
         throw new UnsupportedOperationException("not yet implemented");
     }
 
