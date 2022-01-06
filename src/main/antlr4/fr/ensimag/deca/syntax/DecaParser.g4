@@ -118,21 +118,23 @@ inst returns[AbstractInst tree]
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Print(false,$list_expr.tree);
+            setLocation($tree,$PRINT);
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(false,$list_expr.tree);
+            setLocation($tree,$PRINTLN);
 
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Print(true,$list_expr.tree);
-
+            setLocation($tree,$PRINTX);
         }
     | PRINTLNX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(true,$list_expr.tree);
-
+            setLocation($tree,$PRINTLNX);
         }
     | if_then_else {
             assert($if_then_else.tree != null);
@@ -141,6 +143,7 @@ inst returns[AbstractInst tree]
             assert($condition.tree != null);
             assert($body.tree != null);
             $tree = new While($condition.tree,$body.tree);
+            setLocation($tree,$WHILE);
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
@@ -390,16 +393,19 @@ type returns[AbstractIdentifier tree]
 literal returns[AbstractExpr tree]
     : INT {
         $tree = new IntLiteral(Integer.parseInt($INT.text));
+        setLocation($tree,$INT);
         }   //{ $tree = null; }?
 
     | fd=FLOAT {
         $tree = new FloatLiteral(Float.parseFloat($fd.text));
+        setLocation($tree,$fd);
         }   //{  $tree = null; }?
 
     | st=STRING {
         String string_content = new String();
         string_content = $st.text.substring(1,$st.text.length()-1);
         $tree = new StringLiteral(string_content);
+        setLocation($tree,$st);
         }   //{$tree != null}?
 
     | TRUE {
