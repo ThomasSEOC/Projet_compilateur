@@ -100,7 +100,7 @@ STRING:              '"' (STRING_CAR | '\\"' | '\\\\')* '"'; //chaine de caract√
 MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"'; //chaine de caract√®re sur plusieurs lignes
 
 //Commentaires :
-COMMENT:             '//' .*? EOL  
+COMMENT:             '//' .*? (EOL|EOF)
                      { skip();};
 
 MULTI_LINE_COMMENT:  '/*' .*? '*/'  
