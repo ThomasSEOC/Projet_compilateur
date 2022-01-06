@@ -41,10 +41,10 @@ THIS:                'this';
 WHILE:               'while';
 
 //Séparateurs : 
-ESPACE:              ' '; // espace
-EOL:                 '\n'; // fin de ligne
-TAB:                 '\t'; // tabulation
-CR:                  '\r'; // retour chariot
+ESPACE:              ' '{ skip(); }; // espace
+EOL:                 '\n'{ skip(); }; // fin de ligne
+TAB:                 '\t'{ skip(); }; // tabulation
+CR:                  '\r'{ skip(); }; // retour chariot
 
 FORMAT:              (EOL | TAB | CR);
 WS  :   ( ESPACE | FORMAT) 
@@ -65,14 +65,12 @@ TIMES:               '*'; // multiplie
 SLASH:               '/'; // divise
 PERCENT:             '%'; // modulo ou pourcent
 DOT:                 '.'; // point
-COL:                 ','; // virgule
 COMMA:               ','; // virgule aussi ?
 OPARENT:             '('; // parenthèse ouvrante
 CPARENT:             ')'; // parenthèse ouvrante
 OBRACE:              '{'; // crochet ouvrant
 CBRACE:              '}'; // crochet fermant
 EXCLAM:              '!'; // point d'exclamation
-SCOL:                ';'; // point virgule
 SEMI:                ';'; // point virgule aussi ?
 OR:                  '||'; // comparateur 'ou'
 AND:                 '&&'; // comparateur 'et'
@@ -115,6 +113,6 @@ fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_');
 INCLUDE:             '#include' (' ')* '"' FILENAME '"';
 
 
-UNKNOWN:            .;
+//UNKNOWN:            .;
 
-//SPECIAL_CAR:         '!' | ESPACE | SCOL | COL; //caractères spéciaux
+
