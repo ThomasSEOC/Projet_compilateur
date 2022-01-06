@@ -182,6 +182,7 @@ expr returns[AbstractExpr tree]
     : assign_expr {
             assert($assign_expr.tree != null);
             $tree = $assign_expr.tree ;
+
         }
     ;
 
@@ -196,6 +197,7 @@ assign_expr returns[AbstractExpr tree]
             assert($e.tree != null);
             assert($e2.tree != null);
             $tree = new Assign((AbstractLValue)($e.tree),$e2.tree);
+            setLocation($tree,$EQUALS);
         }
       | /* epsilon */ {
             assert($e.tree != null);
@@ -208,11 +210,13 @@ or_expr returns[AbstractExpr tree]
     : e=and_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree,$e.start);
         }
     | e1=or_expr OR e2=and_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Or($e1.tree,$e2.tree);
+            setLocation($tree,$OR);
        }
     ;
 
@@ -220,11 +224,13 @@ and_expr returns[AbstractExpr tree]
     : e=eq_neq_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree,$e.start);
         }
     |  e1=and_expr AND e2=eq_neq_expr {
             assert($e1.tree != null);                         
             assert($e2.tree != null);
             $tree = new And($e1.tree,$e2.tree);
+            setlocation($tree,$AND);
         }
     ;
 
@@ -232,6 +238,7 @@ eq_neq_expr returns[AbstractExpr tree]
     : e=inequality_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree,$e.start);
         }
     | e1=eq_neq_expr EQEQ e2=inequality_expr {
             assert($e1.tree != null);
