@@ -215,59 +215,84 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+<!--                    <execution>-->
+<!--                        &lt;!&ndash; run a unit test by defining our own class with a main-->
+<!--                        function &ndash;&gt;-->
+<!--                        &lt;!&ndash; warning: java assertions are not enabled &ndash;&gt;-->
+<!--                        <id>unit-test-symbol</id>-->
+<!--                        <configuration>-->
+<!--                            <mainClass>fr.ensimag.deca.tools.ManualTestSymbol</mainClass>-->
+<!--                            <classpathScope>test</classpathScope>-->
+<!--                        </configuration>-->
+<!--                        <phase>test</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>java</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>basic-context</id>-->
+<!--                        <configuration>-->
+<!--                            <executable>./src/test/script/basic-context.sh</executable>-->
+<!--                        </configuration>-->
+<!--                        <phase>test</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>basic-gencode</id>-->
+<!--                        <configuration>-->
+<!--                            <executable>./src/test/script/basic-gencode.sh</executable>-->
+<!--                        </configuration>-->
+<!--                        <phase>test</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>basic-decac</id>-->
+<!--                        <configuration>-->
+<!--                            <executable>./src/test/script/basic-decac.sh</executable>-->
+<!--                        </configuration>-->
+<!--                        <phase>test</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>common-tests</id>-->
+<!--                        <configuration>-->
+<!--                            <executable>./src/test/script/common-tests.sh</executable>-->
+<!--                        </configuration>-->
+<!--                        <phase>test</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    tests ajoutés-->
                     <execution>
-                        <!-- run a unit test by defining our own class with a main
-                        function -->
-                        <!-- warning: java assertions are not enabled -->
-                        <id>unit-test-symbol</id>
+                        <id>complete-lex</id>
                         <configuration>
-                            <mainClass>fr.ensimag.deca.tools.ManualTestSymbol</mainClass>
-                            <classpathScope>test</classpathScope>
+                            <executable>./src/test/script/complete-lex.sh</executable>
                         </configuration>
                         <phase>test</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
+                        <goals><goal>exec</goal></goals>
                     </execution>
                     <execution>
-                        <id>basic-context</id>
+                        <id>complete-synt</id>
                         <configuration>
-                            <executable>./src/test/script/basic-context.sh</executable>
+                            <executable>./src/test/script/complete-synt.sh</executable>
                         </configuration>
                         <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
+                        <goals><goal>exec</goal></goals>
                     </execution>
                     <execution>
-                        <id>basic-gencode</id>
+                        <id>complete-context</id>
                         <configuration>
-                            <executable>./src/test/script/basic-gencode.sh</executable>
+                            <executable>./src/test/script/complete-context.sh</executable>
                         </configuration>
                         <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>basic-decac</id>
-                        <configuration>
-                            <executable>./src/test/script/basic-decac.sh</executable>
-                        </configuration>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>common-tests</id>
-                        <configuration>
-                            <executable>./src/test/script/common-tests.sh</executable>
-                        </configuration>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
+                        <goals><goal>exec</goal></goals>
                     </execution>
                 </executions>
             </plugin>
