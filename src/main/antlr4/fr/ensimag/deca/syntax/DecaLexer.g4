@@ -99,6 +99,8 @@ fragment STRING_CAR: ~('"' | '\'' | '\n' ); //caractère d'une chaine de caract�
 STRING:              '"' (STRING_CAR | '\\"' | '\\\\')* '"'; //chaine de caractère
 MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"'; //chaine de caractère sur plusieurs lignes
 
+IDF:                 ('a' .. 'z' | 'A' .. 'Z')+; // identificateur
+
 //Commentaires :
 COMMENT:             '//' .*? (EOL|EOF)
                      { skip();};
