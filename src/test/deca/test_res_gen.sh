@@ -9,7 +9,7 @@ FILE=$(cd "$(dirname "$1")" || exit; pwd)/$(basename "$1")
 
 cd "$(dirname "$0")"/../../.. || exit 1
 
-PATH=./src/test/script/launchers:"$PATH"
+PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
 
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
@@ -111,6 +111,46 @@ case "$FILENAME" in
         else
           echo "-> Abandon"
         fi
+      ;;
+    *"gl54/src/test/deca/codegen/valid"*)
+       ASS="${FILENAME%.*}.ass"
+       rm "./src/test/deca/codegen/valid/$ASS" 2> /dev/null
+       RES=$(decac "./src/test/deca/codegen/valid/$FILENAME")
+       echo "le debug du test est : "
+       echo "$RES"
+       echo "le fichier assembleur généré est : "
+       cat "./src/test/deca/codegen/valid/$ASS"
+       echo -n "est-ce que cela vous convient ? y/n : "
+       read keep
+       if [ $keep = "y" ]
+       then
+         #decac "./src/test/deca/codegen/valid/$FILENAME" 1> "./src/test/deca/codegen/valid/$ASS" 2> "./src/test/deca/codegen/valid/$ASS"
+         mv "./src/test/deca/codegen/valid/$ASS" "./src/test/deca/codegen/valid/result/$ASS"
+         echo "-> Le fichier ass correctement généré"
+       else
+         echo "-> Abandon"
+       fi
+       rm "./src/test/deca/codegen/valid/$ASS" 2> /dev/null
+      ;;
+    *"gl54/src/test/deca/codegen/invalid"*)
+        ASS="${FILENAME%.*}.ass"
+        rm "./src/test/deca/codegen/invalid/$ASS" 2> /dev/null
+        RES=$(decac "./src/test/deca/codegen/invalid/$FILENAME")
+        echo "le debug du test est : "
+        echo "$RES"
+        echo "le fichier assembleur généré est : "
+        cat "./src/test/deca/codegen/invalid/$ASS"
+        echo -n "est-ce que cela vous convient ? y/n : "
+        read keep
+        if [ $keep = "y" ]
+        then
+          #decac "./src/test/deca/codegen/invalid/$FILENAME" 1> "./src/test/deca/codegen/invalid/$ASS" 2> "./src/test/deca/codegen/invalid/$ASS"
+          mv "./src/test/deca/codegen/invalid/$ASS" "./src/test/deca/codegen/invalid/result/$ASS"
+          echo "-> Le fichier ass correctement généré"
+        else
+          echo "-> Abandon"
+        fi
+        rm "./src/test/deca/codegen/invalid/$ASS" 2> /dev/null
       ;;
     **)
       echo "impossible"

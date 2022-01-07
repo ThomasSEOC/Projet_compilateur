@@ -19,43 +19,67 @@ PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
 
 RESULT=1
 
-for i in ./src/test/deca/syntax/valid/gencode/*.deca
-do
-echo "TEST: $i"
-REF_ASS="${i%.*}.ass"
-ASS="${i%.*}_generated.ass"
-rm -f "$ASS" 2>/dev/null
-decac "$i" || exit 1
-if [ ! -f "$ASS" ]
+echo "TESTS DE CODEGEN VALIDES :"
+if [ "$(ls -p ./src/test/deca/codegen/valid/ | grep -v /)" != "" ]
 then
-  echo "Fichier cond0.ass non généré."
-  exit 1
-else
-  RES=$(diff "$REF_ASS" "$ASS")
-  if [ "$RES" != "" ]
+  for i in ./src/test/deca/codegen/valid/*.deca
+  do
+  FILENAME=$(basename -- $i)
+  REF_ASS="./src/test/deca/codegen/valid/result/${FILENAME%.*}.ass"
+  ASS="${i%.*}.ass"
+  if [ -f "$REF_ASS" ]
   then
-    echo "-> ERROR"
-    RESULT=0
-  else
-    echo "-> OK"
+    decac "$i" || exit 1
+    echo "TEST: $i"
+    RES=$(diff "$REF_ASS" "$ASS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR"
+      echo "$RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
+    rm -f "$ASS" 2>/dev/null
+#  else
+    #  echo "Fichier .ass non généré."
+    #  exit 1
   fi
-  rm -f "$ASS" 2>/dev/null
+  done
+else
+  echo "AUCUN TEST TROUVE"
 fi
-done
 
-#for i in ./src/test/deca/syntax/invalid/gencode/*.deca
-#do
-#echo "TEST: $i"
-#LIS="${i%.*}.lis"
-#RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
-#if [ "$RES" != "" ]
-#then
-#  echo "-> ERROR : $RES"
-#  RESULT=0
-#else
-#  echo "-> OK"
-#fi
-#done
+echo "TESTS DE CODEGEN PERF :"
+if [ "$(ls -p ./src/test/deca/codegen/perf/ | grep -v /)" != "" ]
+then
+  for i in ./src/test/deca/codegen/perf/*.deca
+    do
+    FILENAME=$(basename -- $i)
+    REF_ASS="./src/test/deca/codegen/perf/result/${FILENAME%.*}.ass"
+    ASS="${i%.*}.ass"
+    if [ -f "$REF_ASS" ]
+    then
+      decac "$i" || exit 1
+      echo "TEST: $i"
+      RES=$(diff "$REF_ASS" "$ASS")
+      if [ "$RES" != "" ]
+      then
+        echo "-> ERROR"
+        echo "$RES"
+        RESULT=0
+      else
+        echo "-> OK"
+      fi
+      rm -f "$ASS" 2>/dev/null
+  #  else
+      #  echo "Fichier .ass non généré."
+      #  exit 1
+    fi
+    done
+else
+  echo "AUCUN TEST TROUVE"
+fi
 
 if [ "$RESULT" = 0 ]
 then
