@@ -24,15 +24,17 @@ if [ "$(ls ./src/test/deca/syntax/valid/parser/)" != "" ]
 then
   for i in ./src/test/deca/syntax/valid/parser/*.deca
   do
-  echo "TEST: $i"
   LIS="${i%.*}.lis"
-  RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
-  if [ "$RES" != "" ]
-  then
-    echo "-> ERROR"
-    RESULT=0
-  else
-    echo "-> OK"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
   fi
   done
 else
@@ -44,15 +46,17 @@ if [ "$(ls ./src/test/deca/syntax/invalid/parser/)" != "" ]
 then
   for i in ./src/test/deca/syntax/invalid/parser/*.deca
   do
-  echo "TEST: $i"
   LIS="${i%.*}.lis"
-  RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
-  if [ "$RES" != "" ]
-  then
-    echo "-> ERROR : $RES"
-    RESULT=0
-  else
-    echo "-> OK"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR : $RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
   fi
   done
 
