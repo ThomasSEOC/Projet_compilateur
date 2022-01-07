@@ -294,6 +294,14 @@
                         <phase>test</phase>
                         <goals><goal>exec</goal></goals>
                     </execution>
+                    <execution>
+                        <id>complete-gencode</id>
+                        <configuration>
+                            <executable>./src/test/script/complete-gencode.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals><goal>exec</goal></goals>
+                    </execution>
                 </executions>
             </plugin>
 
