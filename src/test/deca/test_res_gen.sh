@@ -4,6 +4,9 @@
 # Version initiale : 01/01/2022
 
 # script permettant de générer automatiquement les fichiers .lis ou .ass des tests
+# le fichier deca de test doit être passé en argument (chemin relatif ou absolu)
+# le choix du launcher est automatique selon le chemin du fichier .dec
+# une validation manuelle du contenu est demandé avant de créer le fichier
 
 FILE=$(cd "$(dirname "$1")" || exit; pwd)/$(basename "$1")
 
