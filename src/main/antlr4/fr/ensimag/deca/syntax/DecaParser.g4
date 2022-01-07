@@ -26,9 +26,11 @@ options {
 @header {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+    import fr.ensimag.deca.tools.SymbolTable;
 }
 
 @members {
+    private static SymbolTable symbol_table = new SymbolTable();
     @Override
     protected AbstractProgram parseProgram() {
         return prog().tree;
@@ -262,22 +264,25 @@ inequality_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new LowerOrEqual($e1.tree,$e2.tree);
-
+            setLocation($tree,$LEQ);
         }
     | e1=inequality_expr GEQ e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new GreaterOrEqual($e1.tree,$e2.tree);
+            setLocation($tree,$GEQ);
         }
     | e1=inequality_expr GT e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Greater($e1.tree,$e2.tree);
+            setLocation($tree,$GT);
         }
     | e1=inequality_expr LT e2=sum_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Lower($e1.tree,$e2.tree);
+            setLocation($tree,$LT);
         }
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
@@ -295,11 +300,13 @@ sum_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Plus($e1.tree,$e2.tree);
+            setLocation($tree,$PLUS);
         }
     | e1=sum_expr MINUS e2=mult_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Minus($e1.tree,$e2.tree);
+            setLocation($tree,$MINUS);
         }
     ;
 
@@ -312,16 +319,19 @@ mult_expr returns[AbstractExpr tree]
             assert($e1.tree != null);                                         
             assert($e2.tree != null);
             $tree = new Multiply($e1.tree,$e2.tree);
+            setLocation($tree,$TIMES);
         }
     | e1=mult_expr SLASH e2=unary_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Divide($e1.tree,$e2.tree);
+            setLocation($tree,$SLASH);
         }
     | e1=mult_expr PERCENT e2=unary_expr {
             assert($e1.tree != null);                                                                          
             assert($e2.tree != null);
             $tree = new Modulo($e1.tree,$e2.tree);
+            setLocation($tree,$PERCENT);
         }
     ;
 
@@ -329,10 +339,12 @@ unary_expr returns[AbstractExpr tree]
     : op=MINUS e=unary_expr {
             assert($e.tree != null);
             $tree = new UnaryMinus($e.tree);
+            setLocation($tree,$op);
         }
     | op=EXCLAM e=unary_expr {
             assert($e.tree != null);
             $tree = new Not($e.tree);
+            setLocation($tree,$op);
         }
     | select_expr {
             assert($select_expr.tree != null);
@@ -348,6 +360,7 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
+            setLocation($tree,$DOT);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
@@ -374,10 +387,13 @@ primary_expr returns[AbstractExpr tree]
         }
     | READINT OPARENT CPARENT {
         $tree = new ReadInt();
+        setLocation($tree,$READINT);
         }
     | READFLOAT OPARENT CPARENT {
         $tree = new ReadFloat();
+        setLocation($tree,$READFLOAT);
         }
+
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
         }
@@ -430,6 +446,8 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
+            $tree = new Identifier(symbol_table.create($IDENT.text));
+            setLocation($tree,$IDENT);
         }
     ;
 
