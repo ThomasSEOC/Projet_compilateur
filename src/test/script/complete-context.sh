@@ -24,15 +24,17 @@ if [ "$(ls ./src/test/deca/context/valid/)" != "" ]
 then
   for i in ./src/test/deca/context/valid/*.deca
   do
-  echo "TEST: $i"
   LIS="${i%.*}.lis"
-  RES=$(test_context "$i" 2>&1 | diff - "$LIS")
-  if [ "$RES" != "" ]
-  then
-    echo "-> ERROR"
-    RESULT=0
-  else
-    echo "-> OK"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_context "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
   fi
   done
 else
@@ -44,15 +46,17 @@ if [ "$(ls ./src/test/deca/context/invalid/)" != "" ]
 then
   for i in ./src/test/deca/context/invalid/*.deca
   do
-  echo "TEST: $i"
   LIS="${i%.*}.lis"
-  RES=$(test_context "$i" 2>&1 | diff - "$LIS")
-  if [ "$RES" != "" ]
-  then
-    echo "-> ERROR : $RES"
-    RESULT=0
-  else
-    echo "-> OK"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_context "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR : $RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
   fi
   done
 else
