@@ -53,7 +53,7 @@ case "$FILENAME" in
         fi
       ;;
     *"gl54/src/test/deca/syntax/valid/parser"*)
-       RES=$(test_lex "./src/test/deca/syntax/valid/parser/$FILENAME")
+       RES=$(test_synt "./src/test/deca/syntax/valid/parser/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -61,14 +61,14 @@ case "$FILENAME" in
         if [ $keep = "y" ]
         then
           LIS="${FILENAME%.*}.lis"
-          test_lex "./src/test/deca/syntax/valid/parser/$FILENAME" 1> "./src/test/deca/syntax/valid/parser/$LIS" 2> "./src/test/deca/syntax/valid/parser/$LIS"
+          test_synt "./src/test/deca/syntax/valid/parser/$FILENAME" 1> "./src/test/deca/syntax/valid/parser/$LIS" 2> "./src/test/deca/syntax/valid/parser/$LIS"
           echo "-> Le fichier lis correctement généré"
         else
           echo "-> Abandon"
         fi
       ;;
     *"gl54/src/test/deca/syntax/invalid/parser"*)
-       RES=$(test_lex "./src/test/deca/syntax/invalid/parser/$FILENAME")
+       RES=$(test_synt "./src/test/deca/syntax/invalid/parser/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -76,14 +76,14 @@ case "$FILENAME" in
         if [ $keep = "y" ]
         then
           LIS="${FILENAME%.*}.lis"
-          test_lex "./src/test/deca/syntax/invalid/parser/$FILENAME" 1> "./src/test/deca/syntax/invalid/parser/$LIS" 2> "./src/test/deca/syntax/invalid/parser/$LIS"
+          test_synt "./src/test/deca/syntax/invalid/parser/$FILENAME" 1> "./src/test/deca/syntax/invalid/parser/$LIS" 2> "./src/test/deca/syntax/invalid/parser/$LIS"
           echo "-> Le fichier lis correctement généré"
         else
           echo "-> Abandon"
         fi
       ;;
     *"gl54/src/test/deca/context/valid"*)
-       RES=$(test_lex "./src/test/deca/context/valid/$FILENAME")
+       RES=$(test_context "./src/test/deca/context/valid/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -91,14 +91,14 @@ case "$FILENAME" in
         if [ $keep = "y" ]
         then
           LIS="${FILENAME%.*}.lis"
-          test_lex "./src/test/deca/context/valid/$FILENAME" 1> "./src/test/deca/context/valid/$LIS" 2> "./src/test/deca/context/valid/$LIS"
+          test_context "./src/test/deca/context/valid/$FILENAME" 1> "./src/test/deca/context/valid/$LIS" 2> "./src/test/deca/context/valid/$LIS"
           echo "-> Le fichier lis correctement généré"
         else
           echo "-> Abandon"
         fi
       ;;
     *"gl54/src/test/deca/context/invalid"*)
-       RES=$(test_lex "./src/test/deca/context/invalid/$FILENAME")
+       RES=$(test_context "./src/test/deca/context/invalid/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -106,7 +106,7 @@ case "$FILENAME" in
         if [ $keep = "y" ]
         then
           LIS="${FILENAME%.*}.lis"
-          test_lex "./src/test/deca/context/invalid/$FILENAME" 1> "./src/test/deca/context/invalid/$LIS" 2> "./src/test/deca/context/invalid/$LIS"
+          test_context "./src/test/deca/context/invalid/$FILENAME" 1> "./src/test/deca/context/invalid/$LIS" 2> "./src/test/deca/context/invalid/$LIS"
           echo "-> Le fichier lis correctement généré"
         else
           echo "-> Abandon"
