@@ -83,20 +83,26 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
         assert($dv1.tree != null);
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
-
+            assert($dv2.tree != null);
+            $l.add($dv2.tree);
         }
       )*
     ;
 
 decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
-
+        AbstractInitialization init = new NoInitialization();
         }
     : i=ident {
+        assert($i.tree != null);
         }
       (EQUALS e=expr {
+        assert($e.tree != null);
+        init = new Initialization($e.tree);
         }
       )? {
+        $tree = new DeclVar(t,$i.tree,init);
+        setLocation($tree,$i.start);
         }
     ;
 
@@ -107,6 +113,7 @@ list_inst returns[ListInst tree]
     : (inst {
         assert($inst.tree != null);
         $tree.add($inst.tree);
+        setLocation($tree,$inst.start);
         }
       )*
     ;
@@ -114,6 +121,8 @@ list_inst returns[ListInst tree]
 inst returns[AbstractInst tree]
     : e1=expr SEMI {
             assert($e1.tree != null);
+            $tree = $e1.tree;
+            setLocation($tree,$e1.start);
         }
     | SEMI {
         }
@@ -410,6 +419,7 @@ primary_expr returns[AbstractExpr tree]
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree ;
         }
     ;
 
