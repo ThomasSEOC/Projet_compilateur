@@ -19,38 +19,53 @@ PATH=./src/test/script/launchers:"$PATH"
 
 RESULT=1
 
-for i in ./src/test/deca/syntax/valid/parser/*.deca
-do
-echo "TEST: $i"
-LIS="${i%.*}.lis"
-RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
-if [ "$RES" != "" ]
+echo "TESTS DU PARSER VALIDES :"
+if [ "$(ls ./src/test/deca/syntax/valid/parser/)" != "" ]
 then
-  echo "-> ERROR"
-  RESULT=0
+  for i in ./src/test/deca/syntax/valid/parser/*.deca
+  do
+  LIS="${i%.*}.lis"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
+  fi
+  done
 else
-  echo "-> OK"
-fi
-done
-
-for i in ./src/test/deca/syntax/invalid/parser/*.deca
-do
-echo "TEST: $i"
-LIS="${i%.*}.lis"
-RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
-if [ "$RES" != "" ]
-then
-  echo "-> ERROR : $RES"
-  RESULT=0
-else
-  echo "-> OK"
-fi
-done
-
-if [ "$RESULT" = 0 ]
-then
-  exit 1
-else
-  exit 0
+  echo "AUCUN TEST TROUVE"
 fi
 
+echo "TESTS DU PARSER INVALIDES :"
+if [ "$(ls ./src/test/deca/syntax/invalid/parser/)" != "" ]
+then
+  for i in ./src/test/deca/syntax/invalid/parser/*.deca
+  do
+  LIS="${i%.*}.lis"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR : $RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
+  fi
+  done
+
+  if [ "$RESULT" = 0 ]
+  then
+    exit 1
+  else
+    exit 0
+  fi
+else
+  echo "AUCUN TEST TROUVE"
+fi

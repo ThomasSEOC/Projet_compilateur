@@ -41,19 +41,20 @@ THIS:                'this';
 WHILE:               'while';
 
 //Séparateurs : 
-ESPACE:              ' '{ skip(); }; // espace
-EOL:                 '\n'{ skip(); }; // fin de ligne
-TAB:                 '\t'{ skip(); }; // tabulation
-CR:                  '\r'{ skip(); }; // retour chariot
+fragment ESPACE:              ' '; // espace
+fragment EOL:                 '\n'; // fin de ligne
+fragment TAB:                 '\t'; // tabulation
+fragment CR:                  '\r'; // retour chariot
 
-FORMAT:              (EOL | TAB | CR);
+fragment FORMAT:    (EOL | TAB | CR);
 WS  :   ( ESPACE | FORMAT) 
          { skip(); };
 
 //Identificateurs :
 fragment LETTER :    ('a'..'z' | 'A'..'Z'); // lettres
 fragment DIGIT:    '0' .. '9'; // chiffres
-IDENT:               (LETTER + '$' + '_')(LETTER + DIGIT + '$' + '_');
+IDENT:               (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+//IDF:                 ('a' .. 'z' | 'A' .. 'Z')+; // identificateur
 
 //Symboles spéciaux :
 LT:                  '<'; // comparateur 'inférieur à'
@@ -95,9 +96,10 @@ fragment FLOATHEX:   ('0x' | '0X') NUMHEX DOT NUMHEX ('P' | 'p') SIGN NUM ('F' |
 FLOAT :              (FLOATDEC | FLOATHEX);
 
 //Chaines de caractère :
-fragment STRING_CAR: ~('"' | '\'' | '\n' ); //caractère d'une chaine de caractères
+fragment STRING_CAR: ~('"' | '\\' | '\n' ); //caractère d'une chaine de caractères
 STRING:              '"' (STRING_CAR | '\\"' | '\\\\')* '"'; //chaine de caractère
 MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"'; //chaine de caractère sur plusieurs lignes
+
 
 //Commentaires :
 COMMENT:             '//' .*? (EOL|EOF)
