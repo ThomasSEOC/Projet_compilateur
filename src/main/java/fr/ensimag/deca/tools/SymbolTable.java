@@ -27,19 +27,13 @@ public class SymbolTable {
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        //Fontion implémentée:
-        Symbol symbol = new Symbol (name);
-        if (this.map.containsValue(symbol)){
-            return (symbol);
-        }
-        else{
-            //Dans ce cas, K et V sont identiques: pas ouf!
-            //Trouver l'identificateur de symbole (genre symbol de type string par ex)
-            String key = name;
-            map.put(key,symbol);
-            return (symbol);
-        }
+
         //throw new UnsupportedOperationException("Symbol creation");
+        Symbol val = new Symbol(name);
+        if(!(map.containsKey(name))){
+            map.put(name,val);
+        }
+        return val;
     }
 
     public static class Symbol {
