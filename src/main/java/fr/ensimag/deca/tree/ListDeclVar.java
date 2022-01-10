@@ -41,8 +41,18 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     public void codeGenListDeclVar(DecacCompiler compiler) {
         for (AbstractDeclVar i : getList()) {
             DeclVar var = (DeclVar) i;
+
+            // set address operand
             var.getType().getVariableDefinition().setOperand(new RegisterOffset(compiler.getCodeGenBackend().getMaxGlobalVAriablesSize(), Register.GB));
+
+            // inc global variables size
             compiler.getCodeGenBackend().incMaxGlobalVAriablesSize();
+
+            // init variable
+            if (var.getInitialization() instanceof Initialization) {
+                Initialization init = (Initialization) var.getInitialization();
+                init.getExpression().codeGenInst(compiler);
+            }
         }
     }
 }
