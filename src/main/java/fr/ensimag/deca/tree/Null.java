@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -10,29 +10,29 @@ import java.io.PrintStream;
  * @author gl54
  * @date 01/01/2022
  */
-public class BooleanLiteral extends AbstractExpr {
+public class Null extends AbstractExpr {
 
-    private boolean value;
+/*
+    private Object value;
 
-    public BooleanLiteral(boolean value) {
-        this.value = value;
+    public Null(){
+        this.value = null;
     }
 
-    public boolean getValue() {
+    public Object getValue(){
         return value;
     }
+*/
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
-        //return new BooleanType(compiler.getSymbolTable().create("boolean"));
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(Boolean.toString(value));
+        s.print("null");
     }
 
     @Override
@@ -47,7 +47,8 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     String prettyPrintNode() {
-        return "BooleanLiteral (" + value + ")";
+        return "Null";
     }
 
 }
+
