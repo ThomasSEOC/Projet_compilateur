@@ -48,10 +48,13 @@ public class EnvironmentExp {
         if (dico.containsKey(key)) {
             return (dico.get(key));
         }
+
+	//Condition d'arrêt
         if (parentEnvironment == null){
             return null;
         }
-        return parentEnvironment.get(key);
+	
+        return parentEnvironment.get(key); //On choisit une fonction récursive
     }
 
     /**
@@ -70,9 +73,12 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
+	if (dico.containsKey(name)) {
+	    throw new DoubleDefException();
+	}
+	
         dico.put(name, def);
         return;
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
 }
