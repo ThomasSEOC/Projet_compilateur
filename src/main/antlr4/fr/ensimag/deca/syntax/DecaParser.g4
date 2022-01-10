@@ -157,6 +157,8 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
+            $tree = new Return($expr.tree);
+            setLocation($tree,$expr.start);
         }
     ;
 
@@ -254,12 +256,13 @@ eq_neq_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Equals($e1.tree,$e2.tree);
+            setLocation($tree,$EQEQ);
         }
     | e1=eq_neq_expr NEQ e2=inequality_expr {
             assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new NotEquals($e1.tree,$e2.tree);
-
+            setLocation($tree,$NEQ);
         }
     ;
 
@@ -267,6 +270,7 @@ inequality_expr returns[AbstractExpr tree]
     : e=sum_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree,$e.start);
         }
     | e1=inequality_expr LEQ e2=sum_expr {
             assert($e1.tree != null);
@@ -303,6 +307,7 @@ sum_expr returns[AbstractExpr tree]
     : e=mult_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree,$e.start);
         }
     | e1=sum_expr PLUS e2=mult_expr {
             assert($e1.tree != null);
@@ -322,6 +327,7 @@ mult_expr returns[AbstractExpr tree]
     : e=unary_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree,$e.start);
         }
     | e1=mult_expr TIMES e2=unary_expr {
             assert($e1.tree != null);                                         
@@ -364,6 +370,7 @@ select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree,$e.start);
         }
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
@@ -373,6 +380,7 @@ select_expr returns[AbstractExpr tree]
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
+
         }
         | /* epsilon */ {
             // we matched "e.i"
@@ -428,16 +436,16 @@ literal returns[AbstractExpr tree]
         setLocation($tree,$INT);
         }   //{ $tree = null; }?
 
-    | fd=FLOAT {
-        $tree = new FloatLiteral(Float.parseFloat($fd.text));
-        setLocation($tree,$fd);
+    | FLOAT {
+        $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+        setLocation($tree,$FLOAT);
         }   //{  $tree = null; }?
 
-    | st=STRING {
+    | STRING {
         String string_content = new String();
-        string_content = $st.text.substring(1,$st.text.length()-1);
+        string_content = $STRING.text.substring(1,$STRING.text.length()-1);
         $tree = new StringLiteral(string_content);
-        setLocation($tree,$st);
+        setLocation($tree,$STRING);
         }   //{$tree != null}?
 
     | TRUE {
