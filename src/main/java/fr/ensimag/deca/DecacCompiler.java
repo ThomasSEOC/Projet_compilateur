@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.CodeGenBackend;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -43,6 +44,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.codeGenBackend = new CodeGenBackend(this);
     }
 
     /**
@@ -114,6 +116,16 @@ public class DecacCompiler {
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
+
+    private final CodeGenBackend codeGenBackend;
+
+    /**
+     * getter for code generation backend
+     * @return codeGenBackend
+     */
+    public CodeGenBackend getCodeGenBackend() {
+        return codeGenBackend;
+    }
 
     /**
      * @see

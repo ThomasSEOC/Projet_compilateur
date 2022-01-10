@@ -44,7 +44,7 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         // create codegen backend
-        CodeGenBackend backend = new CodeGenBackend(compiler);
+        CodeGenBackend backend = compiler.getCodeGenBackend();
 
         // generation of the main program
         compiler.addComment("Main program");

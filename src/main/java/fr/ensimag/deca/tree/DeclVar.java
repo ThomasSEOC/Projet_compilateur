@@ -29,12 +29,15 @@ public class DeclVar extends AbstractDeclVar {
         this.initialization = initialization;
     }
 
+    public AbstractIdentifier getType() {
+        return type;
+    }
+
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
     }
-
     
     @Override
     public void decompile(IndentPrintStream s) {
