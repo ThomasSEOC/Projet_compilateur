@@ -164,13 +164,27 @@ inst returns[AbstractInst tree]
 
 if_then_else returns[IfThenElse tree]
 @init {
+    ListInst elseBranch = new ListInst();
+    IfThenElse elifBranch = null;
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
+            $tree = new IfThenElse($condition.tree,$li_if.tree,elseBranch);
+            setLocation($tree,$if1);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
+            elifBranch = new IfThenElse($elsif_cond.tree, $elsif_li.tree, new ListInst() );
+            elseBranch.add(elifBranch);
+            elseBranch = elifBranch.getElseBranch();
+            setLocation($tree,$ELSE);
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
+            if(elifBranch == null){
+                $tree.setElseBranch($li_else.tree);
+            }
+            else{
+                elifBranch.setElseBranch($li_else.tree);
+            }
         }
       )?
     ;
