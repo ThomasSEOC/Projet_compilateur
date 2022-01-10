@@ -27,6 +27,10 @@ public class CompilerOptions {
     public static final int PARSE_AND_VERIF = 2;
     public static final int ALL = 3;
 
+    public static final int NO_BANNER = 0;
+    public static final int BANNER_OK = 1;
+    public static final int BANNER_ERROR = 2;
+
     public int getDebug() {
         return debug;
     }
@@ -35,7 +39,7 @@ public class CompilerOptions {
         return parallel;
     }
 
-    public boolean getPrintBanner() {
+    public int getPrintBanner() {
         return printBanner;
     }
     
@@ -51,7 +55,7 @@ public class CompilerOptions {
 
     private int debug = 0;
     private boolean parallel = false;
-    private boolean printBanner = false;
+    private int printBanner = 0;
     private List<File> sourceFiles = new ArrayList<File>();
     private int compilerStages = 3;
     private boolean noCheck = false;
@@ -63,7 +67,10 @@ public class CompilerOptions {
             switch (args[i]) {
                 // banner
                 case "-b":
-                    printBanner = true;
+                    printBanner = 1;
+                    if (args.length > 1) {
+                        printBanner = 2;
+                    }
                     break;
                 // parse only
                 case "-p":
@@ -141,6 +148,8 @@ public class CompilerOptions {
     }
 
     protected void displayUsage() {
-        throw new UnsupportedOperationException("not yet implemented");
+        // usage copié du sujet
+        System.out.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-w] <fichier deca>...] | [-b]");
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 }
