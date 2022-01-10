@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
+import fr.ensimag.deca.codegen.*;
+
 /**
  * Deca complete program (class definition plus main block)
  *
@@ -41,10 +43,21 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
+        // create codegen backend
+        CodeGenBackend backend = new CodeGenBackend(compiler);
+
+        // generation of the main program
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
+
+        // add startup code
+        backend.getStartupManager().generateStartupCode();
+
+        // end of the program
         compiler.addInstruction(new HALT());
+
+        // errors
+        backend.getErrorsManager().addErrors();
     }
 
     @Override

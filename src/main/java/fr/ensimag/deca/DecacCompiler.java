@@ -5,10 +5,8 @@ import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -116,7 +114,25 @@ public class DecacCompiler {
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
- 
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction)
+     * added by gl54
+     */
+    public void addFirst(Instruction instruction) {
+        program.addFirst(instruction);
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction,
+     * java.lang.String)
+     * added by gl54
+     */
+    public void addFirst(Instruction instruction, String comment) {
+        program.addFirst(instruction, comment);
+    }
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -179,10 +195,10 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
-        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
-            prog.verifyProgram(this);
-            assert(prog.checkAllDecorations());
-        }
+//        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
+//            prog.verifyProgram(this);
+//            assert(prog.checkAllDecorations());
+//        }
 
         if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
             addComment("start main program");

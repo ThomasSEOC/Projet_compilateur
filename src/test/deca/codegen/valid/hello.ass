@@ -1,7 +1,15 @@
+	TSTO #0
+	BOV stack_overflow_error
+	ADDSP #0
 ; start main program
-; Main program
 ; Beginning of main instructions:
 	WSTR "Hello"
 	WNL
+; Main program
 	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
 ; end main program

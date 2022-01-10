@@ -35,5 +35,10 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
             ClassDefinition currentClass) throws ContextualError {
     }
 
+    public void codeGenListDeclVar(DecacCompiler compiler) {
+        for (AbstractDeclVar i : getList()) {
 
+
+        }
+    }
 }
