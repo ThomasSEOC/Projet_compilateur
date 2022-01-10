@@ -124,6 +124,7 @@ inst returns[AbstractInst tree]
             setLocation($tree,$e1.start);
         }
     | SEMI {
+        $tree = new NoOperation();
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -148,6 +149,7 @@ inst returns[AbstractInst tree]
         }
     | if_then_else {
             assert($if_then_else.tree != null);
+            $tree = $if_then_else.tree;
         }
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
@@ -179,12 +181,10 @@ if_then_else returns[IfThenElse tree]
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
-            if(elifBranch == null){
+            if(elifBranch == null)
                 $tree.setElseBranch($li_else.tree);
-            }
-            else{
+            else
                 elifBranch.setElseBranch($li_else.tree);
-            }
         }
       )?
     ;
