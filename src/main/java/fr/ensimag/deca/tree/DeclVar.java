@@ -33,6 +33,8 @@ public class DeclVar extends AbstractDeclVar {
         return type;
     }
 
+    public AbstractInitialization getInitialization() { return initialization; }
+
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
