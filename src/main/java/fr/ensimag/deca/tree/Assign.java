@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -32,6 +33,11 @@ public class Assign extends AbstractBinaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        AssignOperation operator = new AssignOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
 
     @Override
     protected String getOperatorName() {

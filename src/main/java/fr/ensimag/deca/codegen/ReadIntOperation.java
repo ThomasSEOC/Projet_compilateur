@@ -9,7 +9,7 @@ import fr.ensimag.deca.tree.AbstractExpr;
  * @author gl54
  * @date 11/01/22
  */
-public class IntOperation extends AbstractReadOperation{
+public class ReadIntOperation extends AbstractReadOperation{
 
     /**
      * Constructor of Class IntOperation
@@ -17,7 +17,7 @@ public class IntOperation extends AbstractReadOperation{
      * @param codegenbackend
      * @param expression
      */
-    public IntOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
+    public ReadIntOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
         super(codegenbackend, expression);
     }
 
