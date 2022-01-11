@@ -426,6 +426,8 @@ primary_expr returns[AbstractExpr tree]
 
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
+            $tree = new New($ident.tree);
+            setLocation($tree,$NEW);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
@@ -502,7 +504,10 @@ list_classes returns[ListDeclClass tree]
     ;
 
 class_decl
+    //$tree = new DeclClass($ident.tree,$superclass.tree,$class_body.ldm,$class_body.ldf)
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
+
+
         }
     ;
 
@@ -513,7 +518,11 @@ class_extension returns[AbstractIdentifier tree]
         }
     ;
 
-class_body
+class_body returns[ListDeclField ldm, ListDeclMethod ldf]
+/*@init{
+    $ldm = ListDeclMethod();
+    $ldf = ListDeclField();
+}*/
     : (m=decl_method {
         }
       | decl_field_set
@@ -539,7 +548,11 @@ list_decl_field
     ;
 
 decl_field
+@init{
+    AbstractInitialization initializer;
+}
     : i=ident {
+            
         }
       (EQUALS e=expr {
         }
