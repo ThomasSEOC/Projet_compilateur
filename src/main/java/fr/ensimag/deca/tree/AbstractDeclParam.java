@@ -12,11 +12,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
  * @author gl54
  * @date 11/01/2022
  */
-public abstract class AbstractDeclMethod extends Tree {
 
+public abstract class AbstractDeclParam extends Tree{
 
-    protected abstract void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError;
-
+    protected abstract void verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv)
+        throws ContextualError;
 
 }

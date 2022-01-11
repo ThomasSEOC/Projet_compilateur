@@ -549,10 +549,12 @@ list_decl_field
 
 decl_field
 @init{
-    AbstractInitialization initializer;
+    AbstractInitialization initField;
 }
+        // Cas ou le field n'est pas initialisé dans la classe :
     : i=ident {
-            
+           initField = new Noinitialization
+           $tree = new DeclField();
         }
       (EQUALS e=expr {
         }

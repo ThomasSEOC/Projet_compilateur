@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 /**
  *
  * @author gl54
- * @date 01/01/2022
+ * @date 11/01/2022
  */
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
