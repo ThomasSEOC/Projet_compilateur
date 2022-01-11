@@ -12,10 +12,10 @@
     if (2==3) {
         return ("les mathématiques sont foutus");
     }
-    elseif (2= =3){
+    else if (2==3){
         return ("étrange!");
     }
-    else if {
+    else {
         return ("c'est syntaxiquement faux donc bon...");
     }
 }
