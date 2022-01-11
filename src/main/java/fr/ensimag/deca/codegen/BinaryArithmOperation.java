@@ -6,6 +6,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.DIV;
+import fr.ensimag.ima.pseudocode.instructions.MUL;
+import fr.ensimag.ima.pseudocode.instructions.SUB;
 
 /**
  * Class making binary arithmetical operations
@@ -13,47 +17,47 @@ import fr.ensimag.ima.pseudocode.Register;
  * @author gl54
  * @date 10/01/2022
  */
-public class BinaryArithmOperation {
+public class BinaryArithmOperation extends AbstractBinaryOperation {
     //instanceof
 
-    private CodeGenBackend codegenbackend;
 
     /**
      * Constructor of BinaryArithmOperation
      *
-     * @param codegenbackend
+     * @param codegenbackend, expression
      */
-    public BinaryArithmOperation (CodeGenBackend codegenbackend){
-        this.codegenbackend = codegenbackend;
+    public BinaryArithmOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
+        super(codegenbackend, expression);
     }
 
 
     /**
      * Main class doing the operation
      *
-     * @param expression
+     * @param
      */
-    public void doOperation (AbstractExpr expression){
-        // Il y aura ici forcément 2 expressions (binaires)
-        // Il faut demander deux registres:
-        Register r1 = new Register();
-        Register r2 = new Register();
+    @Override
+    public void doOperation (){
 
-        if (expression instanceof Plus){
-            // codegenbackend.getCompiler().addInstruction(new ADD(r1,r2))
+        VirtualRegister r1 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
+        VirtualRegister r2 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
+
+        if (this.getExpression() instanceof Plus){
+            getCodeGenBackEnd().getCompiler().addInstruction(new ADD(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Plus"));
         }
 
-        if (expression instanceof Minus){
-            // codegenbackend.getCompiler().addInstruction();
+        if (this.getExpression() instanceof Minus){
+            getCodeGenBackEnd().getCompiler().addInstruction(new SUB(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Minus"));
         }
 
-        if (expression instanceof Multiply){
-
+        if (this.getExpression() instanceof Multiply){
+            getCodeGenBackEnd().getCompiler().addInstruction(new MUL(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Multiply"));
         }
 
-        if (expression instanceof Divide){
-
+        if (this.getExpression() instanceof Divide){
+            getCodeGenBackEnd().getCompiler().addInstruction(new DIV(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
         }
+        // Quel registre conserver? Lequel libérer?
 
     }
 

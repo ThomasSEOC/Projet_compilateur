@@ -3,6 +3,7 @@ package fr.ensimag.deca.codegen;
 
 import com.sun.tools.javac.jvm.Code;
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import jdk.vm.ci.code.Register;
 
@@ -13,48 +14,51 @@ import jdk.vm.ci.code.Register;
  * @date 10/01/2022
  */
 
-public class BinaryBoolOperation {
-
-    private CodeGenBackend codegenbackend;
+public class BinaryBoolOperation  extends AbstractBinaryOperation{
 
     /**
      * Constructor pf class BinaryBoolOperation
      *
-     * @param codegenbackend
+     * @param codegenbackend, expression
      */
 
-    public BinaryBoolOperation (CodeGenBackend codegenbackend){
-        this.codegenbackend = codegenbackend;
+    public BinaryBoolOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
+        super(codegenbackend, expression);
     }
 
     /**
      * Main class making binary boolean operations
-     * @param expression
+     * @param
      */
-    public void doOperation (AbstractExpr expression){
+    @Override
+    public void doOperation (){
 
-        Register r1 = new Register();
-        Register r2 = new Register();
+        VirtualRegister r1 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
+        VirtualRegister r2 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
 
-        if (expression instanceof And){
+        //On va devoir faire les calculs avec r1 et r2
+
+        if (this.getExpression() instanceof And){
+        }
+        if (this.getExpression() instanceof Greater){
 
         }
-        if (expression instanceof Greater){
+        if (this.getExpression() instanceof GreaterOrEqual){
 
         }
-        if (expression instanceof GreaterOrEqual){
+        if (this.getExpression() instanceof Lower){
 
         }
-        if (expression instanceof Lower){
+        if (this.getExpression() instanceof LowerOrEqual){
 
         }
-        if (expression instanceof LowerOrEqual){
+        if (this.getExpression() instanceof Equals){
 
         }
-        if (expression instanceof Equals){
+        if (this.getExpression() instanceof NotEquals){
 
         }
-        if (expression instanceof NotEquals){
+        if (this.getExpression() instanceof Not){
 
         }
 

@@ -62,4 +62,11 @@ public class CodeGenBackend {
      * @return compiler
      */
     public DecacCompiler getCompiler() { return compiler; }
+
+    /**
+     * getter for program ContextManager
+     * @return contextManager
+     */
+
+    public ContextManager getContextManager(){ return contextManager; }
 }
