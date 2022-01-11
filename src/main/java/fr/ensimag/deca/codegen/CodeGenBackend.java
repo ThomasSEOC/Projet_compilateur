@@ -1,6 +1,9 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Label;
+
+import java.util.Stack;
 
 /**
  * Backend for codegen which include commonly used fields and methods across the entire codegen step
@@ -17,6 +20,12 @@ public class CodeGenBackend {
     private final DecacCompiler compiler;
     private final ContextManager contextManager;
 
+    private int ifStatementsCount = 0;
+    private int orLabelsCount = 0;
+    private Stack<Label> trueBooleanLabel;
+    private Stack<Label> falseBooleanLabel;
+    private boolean branchCondition;
+
     /**
      * create backend for specified compiler, must be called only once at the beginning of code generation step
      * @param compiler current compiler
@@ -25,7 +34,58 @@ public class CodeGenBackend {
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
         contextManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
+        trueBooleanLabel = new Stack<>();
+        falseBooleanLabel = new Stack<>();
+        branchCondition = false;
         this.compiler = compiler;
+    }
+
+    public void incIfStatementCount() {
+        ifStatementsCount++;
+    }
+
+    public void incOrLabelsCount() {
+        orLabelsCount++;
+    }
+
+    public int getIfStatementsCount() {
+        return ifStatementsCount;
+    }
+
+    public int getOrLabelsCount() {
+        return orLabelsCount;
+    }
+
+    public Label getCurrentTrueBooleanLabel() {
+        return trueBooleanLabel.peek();
+    }
+
+    public Label getCurrentFalseBooleanLabel() {
+        return falseBooleanLabel.peek();
+    }
+
+    public void popCurrentTrueBooleanLabel() {
+        trueBooleanLabel.pop();
+    }
+
+    public void popCurrentFalseBooleanLabel() {
+        falseBooleanLabel.pop();
+    }
+
+    public void trueBooleanLabelPush(Label label) {
+        trueBooleanLabel.push(label);
+    }
+
+    public void FalseBooleanLabelPush(Label label) {
+        falseBooleanLabel.push(label);
+    }
+
+    public void setBranchCondition(Boolean branchCondition) {
+        this.branchCondition = branchCondition;
+    }
+
+    public boolean getBranchCondition() {
+        return branchCondition;
     }
 
     /**

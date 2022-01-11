@@ -37,8 +37,15 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
     @Override
     public void doOperation (){
 
-        VirtualRegister r1 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
-        VirtualRegister r2 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
+//        VirtualRegister r1 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
+//        VirtualRegister r2 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
+
+        // récursion
+        AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
+        AbstractExpr[] ops = {expr.getLeftOperand(), expr.getRightOperand()};
+        this.ListCodeGen(ops);
+        VirtualRegister r2 = getCodeGenBackEnd().getContextManager().operationStackPop();
+        VirtualRegister r1 = getCodeGenBackEnd().getContextManager().operationStackPop();
 
         if (this.getExpression() instanceof Plus){
             getCodeGenBackEnd().getCompiler().addInstruction(new ADD(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Plus"));
