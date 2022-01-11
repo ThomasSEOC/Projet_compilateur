@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.AssignOperation;
+import fr.ensimag.deca.codegen.BinaryArithmOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -27,6 +29,12 @@ public class Modulo extends AbstractOpArith {
     @Override
     protected String getOperatorName() {
         return "%";
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
     }
 
 }
