@@ -24,7 +24,6 @@ CLASS:               'class';
 EXTENDS:             'extends';
 IF:                  'if';
 ELSE:                'else';
-ELSEIF:              'elseif';
 TRUE:                'true';
 FALSE:               'false';
 INSTANCEOF:          'instanceof';
