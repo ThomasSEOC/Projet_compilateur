@@ -55,9 +55,10 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         if (this.getExpression() instanceof Divide){
             getCodeGenBackEnd().getCompiler().addInstruction(new DIV(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
         }
-        // Quel registre conserver? Lequel libérer?
+        //modulo
+
+        r1.destroy();
+        this.getCodeGenBackEnd().getContextManager().operationStackPush(r2);
     }
-
-
 
 }

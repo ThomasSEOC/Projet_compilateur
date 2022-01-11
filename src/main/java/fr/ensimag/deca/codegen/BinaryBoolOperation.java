@@ -35,8 +35,9 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
         VirtualRegister r2 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
 
         //On va devoir faire les calculs avec r1 et r2
-
+        //A faire pr plus tard
         if (this.getExpression() instanceof And){
+
         }
         if (this.getExpression() instanceof Greater){
 
