@@ -6,7 +6,7 @@ import fr.ensimag.ima.pseudocode.ImmediateFloat;
 
 /**
  *
- * @author Ensimag
+ * @author gl54
  * @date 01/01/2022
  */
 public class FloatType extends Type {
@@ -22,7 +22,6 @@ public class FloatType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        //throw new UnsupportedOperationException("not yet implemented");
         return (otherType instanceof FloatType);
     }
 
