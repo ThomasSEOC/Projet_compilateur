@@ -205,6 +205,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+
                     <execution>
                         <id>basic-synt</id>
                         <configuration>
@@ -270,6 +271,7 @@
 <!--                        </goals>-->
 <!--                    </execution>-->
 <!--                    tests ajoutés-->
+
                     <execution>
                         <id>complete-lex</id>
                         <configuration>
@@ -278,7 +280,8 @@
                         <phase>test</phase>
                         <goals><goal>exec</goal></goals>
                     </execution>
-                    <execution>
+
+		    <execution>
                         <id>complete-synt</id>
                         <configuration>
                             <executable>./src/test/script/complete-synt.sh</executable>
@@ -286,7 +289,8 @@
                         <phase>test</phase>
                         <goals><goal>exec</goal></goals>
                     </execution>
-                    <execution>
+
+		    <execution>
                         <id>complete-context</id>
                         <configuration>
                             <executable>./src/test/script/complete-context.sh</executable>
@@ -294,7 +298,8 @@
                         <phase>test</phase>
                         <goals><goal>exec</goal></goals>
                     </execution>
-                    <execution>
+
+		    <execution>
                         <id>complete-gencode</id>
                         <configuration>
                             <executable>./src/test/script/complete-gencode.sh</executable>
@@ -302,10 +307,20 @@
                         <phase>test</phase>
                         <goals><goal>exec</goal></goals>
                     </execution>
-                </executions>
+
+		    <!-- <execution> -->
+		    <!--     <id>unit-test-EnvironmentExp</id> -->
+		    <!-- 	<configuration> -->
+		    <!-- 	    <mainClass>.src/test/java/fr/ensimag/deca/TestEnvironmentExp</mainClass> -->
+		    <!-- 	    <classpathScope>test</classpathScope> -->
+		    <!-- 	</configuration> -->
+		    <!-- 	<phase>test</phase> -->
+		    <!-- 	<goals><goal>java</goal></goals> -->
+		    <!-- </execution> -->
+		</executions>
             </plugin>
 
-            <plugin>
+	    <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
                 <version>4.9.3</version>
