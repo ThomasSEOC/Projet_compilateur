@@ -13,10 +13,9 @@ public class CodeGenBackend {
     private int maxGlobalVAriablesSize = 0;
 
     private final ErrorsManager errorsManager;
-
     private final StartupManager startupManager;
-
     private final DecacCompiler compiler;
+    private final ContextManager registersManager;
 
     /**
      * create backend for specified compiler, must be called only once at the beginning of code generation step
@@ -25,6 +24,7 @@ public class CodeGenBackend {
     public CodeGenBackend(DecacCompiler compiler) {
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
+        registersManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
         this.compiler = compiler;
     }
 
