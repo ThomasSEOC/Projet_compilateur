@@ -7,6 +7,7 @@ import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.IntStream;
 
 /**
@@ -19,6 +20,7 @@ public class ContextManager {
     private int stackOffset = 0;
     private VirtualRegister[] physicalRegisters = new VirtualRegister[16];
     private List<VirtualRegister> inStackRegisters;
+    private Stack<VirtualRegister> operationStack;
 
     /**
      * create the context manager, must be called only once by {@link CodeGenBackend}
@@ -32,6 +34,8 @@ public class ContextManager {
         IntStream.range(0, 16).forEach(i -> physicalRegisters[i] = null);
 
         inStackRegisters = new ArrayList<>();
+
+        operationStack = new Stack<VirtualRegister>();
     }
 
     public CodeGenBackend getBackend() { return backend; }
@@ -114,20 +118,31 @@ public class ContextManager {
         return register;
     }
 
-    public void freeRegister(VirtualRegister virtualRegister) {
-        if (virtualRegister.getIsPhysicalRegister()) {
-            physicalRegisters[((GPRegister) virtualRegister.getDVal()).getNumber()] = null;
-        }
-        else {
-            inStackRegisters.set(virtualRegister.getLocalIndex(), null);
-            while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
-                stackOffset--;
-                inStackRegisters.remove(stackOffset);
-            }
+    public void freePhysicalRegister(VirtualRegister virtualRegister) {
+        physicalRegisters[((GPRegister) virtualRegister.getDVal()).getNumber()] = null;
+    }
+
+    public void freeInStackRegister(VirtualRegister virtualRegister) {
+        inStackRegisters.set(virtualRegister.getLocalIndex(), null);
+        while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
+            stackOffset--;
+            inStackRegisters.remove(stackOffset);
         }
     }
 
     public int getStackOffset() {
         return stackOffset;
+    }
+
+    public VirtualRegister operationStackPop() {
+        return operationStack.pop();
+    }
+
+    public void operationStackPush(VirtualRegister register) {
+        operationStack.push(register);
+    }
+
+    public int operationStackLength() {
+        return operationStack.size();
     }
 }

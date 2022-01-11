@@ -1,11 +1,7 @@
 package fr.ensimag.deca.codegen;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
-import com.sun.tools.javac.jvm.Code;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.*;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 
 /**
  * Class making binary arithmetical operations
@@ -36,24 +32,24 @@ public class BinaryArithmOperation {
     public void doOperation (AbstractExpr expression){
         // Il y aura ici forcément 2 expressions (binaires)
         // Il faut demander deux registres:
-        Register r1 = new Register();
-        Register r2 = new Register();
-
-        if (expression instanceof Plus){
-            // codegenbackend.getCompiler().addInstruction(new ADD(r1,r2))
-        }
-
-        if (expression instanceof Minus){
-            // codegenbackend.getCompiler().addInstruction();
-        }
-
-        if (expression instanceof Multiply){
-
-        }
-
-        if (expression instanceof Divide){
-
-        }
+//        Register r1 = new Register();
+//        Register r2 = new Register();
+//
+//        if (expression instanceof Plus){
+//            // codegenbackend.getCompiler().addInstruction(new ADD(r1,r2))
+//        }
+//
+//        if (expression instanceof Minus){
+//            // codegenbackend.getCompiler().addInstruction();
+//        }
+//
+//        if (expression instanceof Multiply){
+//
+//        }
+//
+//        if (expression instanceof Divide){
+//
+//        }
 
     }
 
