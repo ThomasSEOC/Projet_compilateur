@@ -15,7 +15,7 @@ public class CodeGenBackend {
     private final ErrorsManager errorsManager;
     private final StartupManager startupManager;
     private final DecacCompiler compiler;
-    private final ContextManager registersManager;
+    private final ContextManager contextManager;
 
     /**
      * create backend for specified compiler, must be called only once at the beginning of code generation step
@@ -24,7 +24,7 @@ public class CodeGenBackend {
     public CodeGenBackend(DecacCompiler compiler) {
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
-        registersManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
+        contextManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
         this.compiler = compiler;
     }
 
