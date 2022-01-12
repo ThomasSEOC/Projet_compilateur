@@ -8,6 +8,7 @@ public class VirtualRegister {
     private static final int PHYSICAL = 0;
     private static final int INSTACK = 1;
     private static final int IMMEDIAT_INT = 2;
+    private static final int IMMEDIAT_FLOAT = 3;
 
     private final ContextManager contextManager;
 
@@ -19,8 +20,11 @@ public class VirtualRegister {
     // only relevant if in stack register
     private int localIndex;
 
-    // only relevant if immediate
+    // only relevant if immediate integer
     private ImmediateInteger immediateInteger;
+
+    // only relevant if immediate float
+    private ImmediateFloat immediateFloat;
 
     public VirtualRegister(ContextManager contextManager, GPRegister register) {
         type = PHYSICAL;
@@ -38,6 +42,12 @@ public class VirtualRegister {
         type = IMMEDIAT_INT;
         this.contextManager = contextManager;
         this.immediateInteger = immediate;
+    }
+
+    public VirtualRegister(ContextManager contextManager, ImmediateFloat immediate) {
+        type = IMMEDIAT_FLOAT;
+        this.contextManager = contextManager;
+        this.immediateFloat = immediate;
     }
 
     public void destroy() {

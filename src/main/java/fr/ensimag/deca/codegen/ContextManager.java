@@ -1,6 +1,8 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
@@ -16,10 +18,13 @@ import java.util.stream.IntStream;
 public class ContextManager {
     private final CodeGenBackend backend;
     private final int usableRegistersCount;
+
     private int currentRegisterIndex = 2;
     private int stackOffset = 0;
+
     private VirtualRegister[] physicalRegisters = new VirtualRegister[16];
     private List<VirtualRegister> inStackRegisters;
+
     private Stack<VirtualRegister> operationStack;
 
     /**
@@ -122,6 +127,14 @@ public class ContextManager {
             inStackRegisters.add(register);
         }
         return register;
+    }
+
+    public VirtualRegister requestNewRegister(ImmediateInteger immediate) {
+        return new VirtualRegister(this, immediate);
+    }
+
+    public VirtualRegister requestNewRegister(ImmediateFloat immediate) {
+        return new VirtualRegister(this, immediate);
     }
 
     public void freePhysicalRegister(VirtualRegister virtualRegister) {
