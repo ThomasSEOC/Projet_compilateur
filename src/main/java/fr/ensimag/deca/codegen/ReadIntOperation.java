@@ -2,6 +2,7 @@ package fr.ensimag.deca.codegen;
 
 
 import fr.ensimag.deca.tree.AbstractExpr;
+import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 
 /**
  * Class using int types
@@ -28,7 +29,9 @@ public class ReadIntOperation extends AbstractReadOperation{
      */
     @Override
     public void doOperation(){
-        //il faut ici charger un int
+        //Rien en entrée:
+        getCodeGenBackEnd().getCompiler().addInstruction(new RFLOAT());
+
     }
 
 

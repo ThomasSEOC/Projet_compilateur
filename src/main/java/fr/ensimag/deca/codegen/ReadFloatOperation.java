@@ -1,6 +1,10 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.AbstractExpr;
+import fr.ensimag.deca.tree.ReadFloat;
+import fr.ensimag.deca.tree.UnaryMinus;
+import fr.ensimag.ima.pseudocode.instructions.OPP;
+import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 
 /**
  * Class using float types
@@ -24,6 +28,10 @@ public class ReadFloatOperation extends AbstractReadOperation {
     @Override
     public void doOperation(){
 
+        //Rien en entrée:
+        getCodeGenBackEnd().getCompiler().addInstruction(new RFLOAT());
+
     }
+
 
 }
