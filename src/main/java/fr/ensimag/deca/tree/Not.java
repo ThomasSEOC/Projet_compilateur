@@ -22,7 +22,7 @@ public class Not extends AbstractUnaryExpr {
             ClassDefinition currentClass) throws ContextualError {
 	Type typeOperand = operand.getType();
 	if (typeOperand.isBoolean()) {
-	    return typeOperand();
+	    return typeOperand;
 	}
 	throw new ContextualError("not(" + operand + ") : " + operand + " is not a boolean");
     }
