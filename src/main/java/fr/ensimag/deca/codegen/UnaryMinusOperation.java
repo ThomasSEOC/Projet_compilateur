@@ -20,5 +20,4 @@ public class UnaryMinusOperation extends AbstractOperation {
         getCodeGenBackEnd().getCompiler().addInstruction(new OPP(r1.requestPhysicalRegister(), r1.requestPhysicalRegister()));
     }
 
-
 }
