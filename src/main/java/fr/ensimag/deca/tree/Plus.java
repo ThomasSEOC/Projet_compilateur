@@ -23,11 +23,4 @@ public class Plus extends AbstractOpArith {
         BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
         operator.doOperation();
     }
-
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
-        operator.doOperation();
-        operator.print();
-    }
 }

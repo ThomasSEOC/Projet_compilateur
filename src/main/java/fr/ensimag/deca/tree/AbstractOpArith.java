@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BinaryArithmOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -22,5 +23,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+        operator.print();
     }
 }

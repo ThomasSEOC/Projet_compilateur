@@ -49,6 +49,10 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         }
 
         if (this.getExpression() instanceof Minus){
+            // invert register
+            VirtualRegister temp = r1;
+            r1 = r2;
+            r2 = temp;
             getCodeGenBackEnd().getCompiler().addInstruction(new SUB(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Minus"));
         }
 
@@ -57,9 +61,18 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         }
 
         if (this.getExpression() instanceof Divide){
-            getCodeGenBackEnd().getCompiler().addInstruction(new DIV(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
+            VirtualRegister temp = r1;
+            r1 = r2;
+            r2 = temp;
+            getCodeGenBackEnd().getCompiler().addInstruction(new QUO(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
         }
-        //modulo
+
+        if (this.getExpression() instanceof Modulo){
+            VirtualRegister temp = r1;
+            r1 = r2;
+            r2 = temp;
+            getCodeGenBackEnd().getCompiler().addInstruction(new REM(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
+        }
 
         r1.destroy();
         this.getCodeGenBackEnd().getContextManager().operationStackPush(r2);

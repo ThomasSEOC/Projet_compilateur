@@ -4,20 +4,17 @@
 	BOV stack_overflow_error
 	ADDSP #0
 ; Beginning of main instructions:
-	LOAD #2, R2
-	ADD #1, R2	; Operation Plus
-	LOAD #3, R3
-	ADD R2, R3	; Operation Plus
-	LOAD #4, R4
-	ADD R3, R4	; Operation Plus
-	LOAD #5, R5
-	ADD R4, R5	; Operation Plus
-	LOAD #6, R6
-	ADD R5, R6	; Operation Plus
-	LOAD R6, R1
+	LOAD #8, R2
+	QUO #2, R2	; Operation Divide
+	LOAD R2, R1
 	WINT
 	WNL
-	LOAD #1, R2
+	LOAD #16, R2
+	REM #3, R2	; Operation Divide
+	LOAD R2, R1
+	WINT
+	WNL
+	LOAD #3, R2
 	ADD #1, R2	; Operation Plus
 	LOAD R2, R1
 	WINT
