@@ -25,6 +25,8 @@ public abstract class AbstractOperation {
 
     public abstract void doOperation();
 
+    public abstract void print();
+
     /**
      * Recursion on the branch expressions
      * There are 1 or 2 expressions in AbstractExpr[]

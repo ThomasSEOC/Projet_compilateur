@@ -34,4 +34,9 @@ public class AssignOperation extends AbstractOperation {
         // destroy register
         result.destroy();
     }
+
+    @Override
+    public void print() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

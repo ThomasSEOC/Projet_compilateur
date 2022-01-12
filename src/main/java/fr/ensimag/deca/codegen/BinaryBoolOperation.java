@@ -110,5 +110,12 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
         }
     }
 
+    @Override
+    public void print() {
+        doOperation();
+
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
 
 }

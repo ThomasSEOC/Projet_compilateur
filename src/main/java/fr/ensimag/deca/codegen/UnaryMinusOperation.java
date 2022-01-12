@@ -22,4 +22,9 @@ public class UnaryMinusOperation extends AbstractOperation {
         getCodeGenBackEnd().getContextManager().operationStackPush(r1);
     }
 
+    @Override
+    public void print() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
 }

@@ -4,10 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.ADD;
-import fr.ensimag.ima.pseudocode.instructions.DIV;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Class making binary arithmetical operations
@@ -66,6 +63,29 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 
         r1.destroy();
         this.getCodeGenBackEnd().getContextManager().operationStackPush(r2);
+    }
+
+    @Override
+    public void print() {
+        //doOperation();
+
+        VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
+
+        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(r.getDVal(), GPRegister.getR(1)));
+
+        if (r.getIsFloat()) {
+            if (getCodeGenBackEnd().getPrintHex()) {
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+            }
+            else {
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+            }
+        }
+        else {
+            getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+        }
+
+        r.destroy();
     }
 
 }

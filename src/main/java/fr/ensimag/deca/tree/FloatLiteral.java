@@ -52,14 +52,8 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), GPRegister.getR(1)));
-
-        if (compiler.getCodeGenBackend().getPrintHex()) {
-            compiler.addInstruction(new WFLOATX());
-        }
-        else {
-            compiler.addInstruction(new WFLOAT());
-        }
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
     }
 
     @Override

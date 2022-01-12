@@ -12,7 +12,6 @@ public class Plus extends AbstractOpArith {
     public Plus(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
- 
 
     @Override
     protected String getOperatorName() {
@@ -23,5 +22,12 @@ public class Plus extends AbstractOpArith {
     protected void codeGenInst(DecacCompiler compiler) {
         BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
         operator.doOperation();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+        operator.print();
     }
 }

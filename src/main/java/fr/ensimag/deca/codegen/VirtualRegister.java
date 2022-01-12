@@ -16,6 +16,8 @@ public class VirtualRegister {
 
     private int type;
 
+    private boolean isValueFloat = false;
+
     // only relevant if physical register
     private GPRegister physicalRegister;
 
@@ -89,7 +91,13 @@ public class VirtualRegister {
         if (type != PHYSICAL) {
             // need to request a free physical register
             contextManager.AllocatePhysicalRegister(this);
+            if (type != INSTACK) {
+                contextManager.getBackend().getCompiler().addInstruction(new LOAD(this.getDVal(), physicalRegister));
+            }
         }
+
+        type = PHYSICAL;
+
         return physicalRegister;
     }
 
@@ -120,12 +128,27 @@ public class VirtualRegister {
     }
 
     public void setPhysical(GPRegister register) {
-        type = PHYSICAL;
         physicalRegister = register;
     }
 
     public void setInStack(int localIndex) {
         type = INSTACK;
         this.localIndex = localIndex;
+    }
+
+    public void setFloat() {
+        isValueFloat = true;
+    }
+
+    public void setInt() {
+        isValueFloat = false;
+    }
+
+    public boolean getIsFloat() {
+        return isValueFloat;
+    }
+
+    public boolean getIsInStack() {
+        return type == INSTACK;
     }
 }

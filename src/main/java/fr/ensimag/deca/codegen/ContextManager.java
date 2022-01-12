@@ -59,19 +59,21 @@ public class ContextManager {
             // a register is available
             GPRegister register = GPRegister.getR(currentRegisterIndex);
 
-            int localIndex = virtualRegister.getLocalIndex();
-            // if a pop is possible
-            if (localIndex == stackOffset) {
-                stackOffset--;
-                while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
+            if (virtualRegister.getIsInStack()) {
+                int localIndex = virtualRegister.getLocalIndex();
+                // if a pop is possible
+                if (localIndex == stackOffset) {
                     stackOffset--;
-                    inStackRegisters.remove(stackOffset);
+                    while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
+                        stackOffset--;
+                        inStackRegisters.remove(stackOffset);
+                    }
+                    backend.getCompiler().addInstruction(new POP(register), "local variable is on top of stack");
                 }
-                backend.getCompiler().addInstruction(new POP(register), "local variable is on top of stack");
-            }
-            else {
-                inStackRegisters.set(localIndex, null);
-                backend.getCompiler().addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("copy from stack R%d", currentRegisterIndex));
+                else {
+                    inStackRegisters.set(localIndex, null);
+                    backend.getCompiler().addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("copy from stack R%d", currentRegisterIndex));
+                }
             }
 
             // mov from in stack to physical

@@ -2,5 +2,5 @@
 //    Programme minimaliste pour tester manuellement
 
 {
-        printx(5.56);
+        print(1+2);
 }

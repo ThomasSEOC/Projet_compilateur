@@ -5,6 +5,7 @@ import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RINT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
  * Class using int types
@@ -40,6 +41,12 @@ public class ReadIntOperation extends AbstractReadOperation{
 
         getCodeGenBackEnd().getContextManager().operationStackPush(r);
 
+    }
+
+    @Override
+    public void print() {
+        getCodeGenBackEnd().getCompiler().addInstruction(new RINT());
+        getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
     }
 
 

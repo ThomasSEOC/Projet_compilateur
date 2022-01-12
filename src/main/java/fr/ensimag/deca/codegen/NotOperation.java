@@ -45,4 +45,11 @@ public class NotOperation extends AbstractOperation {
         ListCodeGen(expr);
     }
 
+    @Override
+    public void print() {
+        doOperation();
+
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
 }

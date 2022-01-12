@@ -4,6 +4,8 @@ import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 
 /**
  * Class using float types
@@ -35,6 +37,17 @@ public class ReadFloatOperation extends AbstractReadOperation {
         getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(GPRegister.getR(1), r.requestPhysicalRegister()));
 
         getCodeGenBackEnd().getContextManager().operationStackPush(r);
+    }
+
+    @Override
+    public void print() {
+        getCodeGenBackEnd().getCompiler().addInstruction(new RFLOAT());
+        if (getCodeGenBackEnd().getPrintHex()) {
+            getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+        }
+        else {
+            getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+        }
     }
 
 
