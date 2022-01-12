@@ -37,23 +37,42 @@ import fr.ensimag.deca.tools.SymbolTable;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    
+
+
+
+    /**
+     * Symbols
+     */
+    private static SymbolTable symbol_table = new SymbolTable();
+
     /**
      * Portable newline character.
      */
     private static final String nl = System.getProperty("line.separator", "\n");
-    private static SymbolTable symbol_table = new SymbolTable();
+
 
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
 
+
+        /**
+         * Predefined symbols
+         */
+        symbol_table.create("void");
+        symbol_table.create("boolean");
+        symbol_table.create("float");
+        symbol_table.create("int");
+        symbol_table.create("Object");
+
     }
+
 
     public SymbolTable getSymbolTable(){
         return symbol_table;
     }
+
     /**
      * Source file associated with this compiler instance.
      */
