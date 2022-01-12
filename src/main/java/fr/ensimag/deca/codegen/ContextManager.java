@@ -149,7 +149,13 @@ public class ContextManager {
     }
 
     public void freePhysicalRegister(VirtualRegister virtualRegister) {
-        physicalRegisters[((GPRegister) virtualRegister.getDVal()).getNumber()] = null;
+        int registerIndex = ((GPRegister) virtualRegister.getDVal()).getNumber();
+        physicalRegisters[registerIndex] = null;
+        if (registerIndex == (currentRegisterIndex-1)) {
+            while ((currentRegisterIndex > 2) && (physicalRegisters[currentRegisterIndex] == null)) {
+                currentRegisterIndex--;
+            }
+        }
     }
 
     public void freeInStackRegister(VirtualRegister virtualRegister) {
