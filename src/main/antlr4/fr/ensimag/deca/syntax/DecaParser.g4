@@ -563,18 +563,22 @@ decl_field returns[AbstractDeclField tree]
         }
     ;
 
-decl_method
+decl_method returns[AbstractDeclMethod tree]
 @init {
-    AbstractMethodBody amb;
+
 }
     : type ident OPARENT params=list_params CPARENT (block {
         assert($block.decls != null);
         assert($block.insts != null);
-        amb = new Method($block.decls,$block.insts);
-
+        AbstractMethodBody amb = new MethodBody($block.decls,$block.insts);
+        $tree = new DeclMethod($type.tree,$ident.tree,$params.tree,amb);
+        setLocation($tree,$type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
-            amb = new M
+            StringLiteral string = new StringLiteral($code.text);
+            AbstractMethodBody amb = new MethodAsmBody(string);
+            $tree = new DeclMethod($type.tree,$ident.tree,$params.tree,amb);
+            setLocation($tree,$code.start);
         }
       ) {
         }
@@ -585,11 +589,11 @@ list_params returns[ListDeclParam tree]
     $tree = new ListDeclParam();
 }
     : (p1=param {
-        assert(p1 != null);
+        assert($p1.tree != null);
         $tree.add($p1.tree);
         setLocation($tree,$p1.start);
         } (COMMA p2=param {
-        assert(p2 != null);
+        assert($p2.tree != null);
         $tree.add($p2.tree);
         setLocation($tree,$p2.start);
         }
@@ -609,8 +613,8 @@ multi_line_string returns[String text, Location location]
 
 param returns [AbstractDeclParam tree]
     : type ident {
-        assert(type != null);
-        assert(ident != null);
+        assert($type.tree != null);
+        assert($ident.tree != null);
         $tree = new DeclParam($type.tree,$ident.tree);
         setLocation($tree,$type.start);
         }
