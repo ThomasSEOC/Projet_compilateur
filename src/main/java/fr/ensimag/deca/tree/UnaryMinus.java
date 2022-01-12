@@ -30,7 +30,6 @@ public class UnaryMinus extends AbstractUnaryExpr {
         operator.doOperation();
     }
 
-
     @Override
     protected String getOperatorName() {
         return "-";

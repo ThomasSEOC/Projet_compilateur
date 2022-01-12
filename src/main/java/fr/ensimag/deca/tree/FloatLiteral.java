@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.LiteralOperation;
+import fr.ensimag.deca.codegen.UnaryMinusOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -37,6 +39,11 @@ public class FloatLiteral extends AbstractExpr {
         throw new UnsupportedOperationException("not yet implemented");        
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

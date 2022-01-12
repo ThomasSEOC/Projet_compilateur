@@ -3,6 +3,7 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
@@ -134,6 +135,14 @@ public class ContextManager {
     }
 
     public VirtualRegister requestNewRegister(ImmediateFloat immediate) {
+        return new VirtualRegister(this, immediate);
+    }
+
+    public VirtualRegister requestNewRegister(ImmediateString immediate) {
+        return new VirtualRegister(this, immediate);
+    }
+
+    public VirtualRegister requestNewRegister(boolean immediate) {
         return new VirtualRegister(this, immediate);
     }
 

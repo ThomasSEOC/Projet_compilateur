@@ -9,6 +9,8 @@ public class VirtualRegister {
     private static final int INSTACK = 1;
     private static final int IMMEDIAT_INT = 2;
     private static final int IMMEDIAT_FLOAT = 3;
+    private static final int IMMEDIAT_BOOLEAN = 4;
+    private static final int IMMEDIAT_STRING = 5;
 
     private final ContextManager contextManager;
 
@@ -20,11 +22,14 @@ public class VirtualRegister {
     // only relevant if in stack register
     private int localIndex;
 
-    // only relevant if immediate integer
+    // only relevant if immediate integer or boolean
     private ImmediateInteger immediateInteger;
 
     // only relevant if immediate float
     private ImmediateFloat immediateFloat;
+
+    // only relevant if immediate string
+    private ImmediateString immediateString;
 
     public VirtualRegister(ContextManager contextManager, GPRegister register) {
         type = PHYSICAL;
@@ -48,6 +53,23 @@ public class VirtualRegister {
         type = IMMEDIAT_FLOAT;
         this.contextManager = contextManager;
         this.immediateFloat = immediate;
+    }
+
+    public VirtualRegister(ContextManager contextManager, Boolean immediate) {
+        type = IMMEDIAT_BOOLEAN;
+        this.contextManager = contextManager;
+        if (immediate) {
+            this.immediateInteger = new ImmediateInteger(1);
+        }
+        else {
+            this.immediateInteger = new ImmediateInteger(0);
+        }
+    }
+
+    public VirtualRegister(ContextManager contextManager, ImmediateString immediate) {
+        type = IMMEDIAT_STRING;
+        this.contextManager = contextManager;
+        this.immediateString = immediate;
     }
 
     public void destroy() {
@@ -82,10 +104,19 @@ public class VirtualRegister {
         else if (type == INSTACK) {
             return new RegisterOffset(localIndex - contextManager.getStackOffset(), Register.SP);
         }
-        else {
-            // integer immediate
+        else if (type == IMMEDIAT_INT) {
             return immediateInteger;
         }
+        else if (type == IMMEDIAT_FLOAT) {
+            return immediateFloat;
+        }
+        else { // IMMEDIAT_BOOLEAN
+            return immediateInteger;
+        }
+    }
+
+    public ImmediateString getImmediateString() {
+        return immediateString;
     }
 
     public void setPhysical(GPRegister register) {

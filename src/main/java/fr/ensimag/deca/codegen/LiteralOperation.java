@@ -1,10 +1,9 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.tree.AbstractExpr;
-import fr.ensimag.deca.tree.FloatLiteral;
-import fr.ensimag.deca.tree.IntLiteral;
+import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.ImmediateString;
 
 public class LiteralOperation extends AbstractOperation {
 
@@ -22,6 +21,16 @@ public class LiteralOperation extends AbstractOperation {
         else if (getExpression() instanceof FloatLiteral) {
             FloatLiteral expr = (FloatLiteral) getExpression();
             VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateFloat(expr.getValue()));
+            getCodeGenBackEnd().getContextManager().operationStackPush(r);
+        }
+        else if (getExpression() instanceof BooleanLiteral) {
+            BooleanLiteral expr = (BooleanLiteral) getExpression();
+            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(expr.getValue());
+            getCodeGenBackEnd().getContextManager().operationStackPush(r);
+        }
+        else if (getExpression() instanceof StringLiteral) {
+            StringLiteral expr = (StringLiteral) getExpression();
+            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateString(expr.getValue()));
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
     }
