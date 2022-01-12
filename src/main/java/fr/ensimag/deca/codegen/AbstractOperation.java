@@ -41,6 +41,10 @@ public abstract class AbstractOperation {
         return this.expression;
     }
 
+    public void setExpression(AbstractExpr expression) {
+        this.expression = expression;
+    }
+
     /**
      * Getter for codegenbackend
      * @return codegenbackend

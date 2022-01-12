@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BinaryBoolOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -23,5 +24,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        BinaryBoolOperation operator = new BinaryBoolOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
 }
