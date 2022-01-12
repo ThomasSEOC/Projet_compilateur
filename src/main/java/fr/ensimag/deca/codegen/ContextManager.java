@@ -84,6 +84,9 @@ public class ContextManager {
 
             // push register to stack
             stackOffset++;
+            if (stackOffset > backend.getMaxStackSize()) {
+                backend.incMaxStackSize();
+            }
             inStackRegisters.add(oldRegister);
             oldRegister.setInStack(stackOffset);
             backend.getCompiler().addInstruction(new PUSH((GPRegister) oldRegister.getDVal()), "no more GP register available");
@@ -112,6 +115,9 @@ public class ContextManager {
         else {
             // no more free register
             stackOffset++;
+            if (stackOffset > backend.getMaxStackSize()) {
+                backend.incMaxStackSize();
+            }
             register = new VirtualRegister(this, stackOffset);
             inStackRegisters.add(register);
         }

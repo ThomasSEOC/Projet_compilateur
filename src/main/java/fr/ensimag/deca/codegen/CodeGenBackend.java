@@ -111,6 +111,11 @@ public class CodeGenBackend {
     public void incMaxGlobalVAriablesSize() { maxGlobalVAriablesSize++; }
 
     /**
+     * increment the maximum stack size
+     */
+    public void incMaxStackSize() { maxStackSize++; }
+
+    /**
      * getter for program ErrorManager
      * @return errorsManager
      */

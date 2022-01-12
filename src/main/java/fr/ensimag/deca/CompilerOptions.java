@@ -97,11 +97,11 @@ public class CompilerOptions {
                         throw new CLIException("Merci d'indiquer un nombre de registres");
                     }
                     int value = parseInt(args[i]);
-                    if ((value >= 2) && (value <= 16)) {
+                    if ((value >= 4) && (value <= 16)) {
                         registersCount = value;
                     }
                     else {
-                        throw new CLIException("le nombre de registre doit être compris entre 2 et 16 inclus");
+                        throw new CLIException("le nombre de registre doit être compris entre 4 et 16 inclus");
                     }
                     break;
                 // debug
