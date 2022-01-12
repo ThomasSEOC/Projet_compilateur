@@ -8,4 +8,6 @@ public class MOV extends LOAD {
     public MOV(GPRegister in, GPRegister out) {
         super((DVal) in, out);
     }
+
+    public MOV(DVal in, GPRegister out) { super(in, out); }
 }

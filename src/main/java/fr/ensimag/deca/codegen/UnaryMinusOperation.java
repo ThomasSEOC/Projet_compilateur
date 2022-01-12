@@ -18,6 +18,8 @@ public class UnaryMinusOperation extends AbstractOperation {
         VirtualRegister r1 = getCodeGenBackEnd().getContextManager().operationStackPop();
 
         getCodeGenBackEnd().getCompiler().addInstruction(new OPP(r1.requestPhysicalRegister(), r1.requestPhysicalRegister()));
+
+        getCodeGenBackEnd().getContextManager().operationStackPush(r1);
     }
 
 }
