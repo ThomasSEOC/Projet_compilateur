@@ -552,9 +552,10 @@ decl_field
     AbstractInitialization initField;
 }
         // Cas ou le field n'est pas initialisé dans la classe :
+        //initField = new Noinitialization
+        //           $tree = new DeclField();
     : i=ident {
-           initField = new Noinitialization
-           $tree = new DeclField();
+
         }
       (EQUALS e=expr {
         }
