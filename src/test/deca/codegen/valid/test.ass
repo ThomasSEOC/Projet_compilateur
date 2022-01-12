@@ -2,10 +2,11 @@
 	BOV stack_overflow_error
 	ADDSP #0
 ; start main program
-; Beginning of main instructions:
-	WSTR "Hello"
-	WNL
 ; Main program
+; Beginning of main instructions:
+	LOAD #5, R1
+	WINT
+	WNL
 	HALT
 ; error messages
 stack_overflow_error:

@@ -1,10 +1,8 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.AbstractExpr;
-import fr.ensimag.deca.tree.ReadFloat;
-import fr.ensimag.deca.tree.UnaryMinus;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.OPP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
 
 /**
@@ -34,7 +32,7 @@ public class ReadFloatOperation extends AbstractReadOperation {
 
         VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister();
 
-        getCodeGenBackEnd().getCompiler().addInstruction(new MOV(GPRegister.getR(1), r.requestPhysicalRegister()));
+        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(GPRegister.getR(1), r.requestPhysicalRegister()));
 
         getCodeGenBackEnd().getContextManager().operationStackPush(r);
     }

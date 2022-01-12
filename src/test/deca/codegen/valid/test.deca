@@ -1,0 +1,6 @@
+// Description:
+//    Programme minimaliste pour tester manuellement
+
+{
+        println(5);
+}

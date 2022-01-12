@@ -207,10 +207,10 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
-        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
-            prog.verifyProgram(this);
-            assert(prog.checkAllDecorations());
-        }
+//        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
+//            prog.verifyProgram(this);
+//            assert(prog.checkAllDecorations());
+//        }
 
         if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
             addComment("start main program");
