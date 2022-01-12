@@ -16,7 +16,6 @@ public abstract class AbstractBinaryOperation extends AbstractOperation {
      * Constructor of Class AbstractBinaryOperation
      * @param codegenbackend expression
      */
-
     public AbstractBinaryOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
         super (codegenbackend, expression);
     }

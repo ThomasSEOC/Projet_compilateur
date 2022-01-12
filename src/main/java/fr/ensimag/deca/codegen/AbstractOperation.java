@@ -25,6 +25,11 @@ public abstract class AbstractOperation {
 
     public abstract void doOperation();
 
+    /**
+     * Recursion on the branch expressions
+     * There are 1 or 2 expressions in AbstractExpr[]
+     * @param expressions
+     */
     public void ListCodeGen(AbstractExpr[] expressions) {
         ListInst list = new ListInst();
         for (AbstractExpr abstractExpr : expressions) {
@@ -41,6 +46,10 @@ public abstract class AbstractOperation {
         return this.expression;
     }
 
+    /**
+     * Setter of Expression in AbstractOperation Class
+     * @param expression
+     */
     public void setExpression(AbstractExpr expression) {
         this.expression = expression;
     }
