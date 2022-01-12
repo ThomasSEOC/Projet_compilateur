@@ -12,9 +12,9 @@ public class DeclMethod extends AbstractDeclMethod{
     private AbstractIdentifier type;
     private AbstractIdentifier name;
     private ListDeclParam listDeclParam;
-    private MethodBody methodBody;
+    private AbstractMethodBody methodBody;
 
-    public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam listDeclParam, MethodBody methodBody){
+    public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam listDeclParam, AbstractMethodBody methodBody){
         Validate.notNull(type);
         Validate.notNull(name);
         this.type = type;
