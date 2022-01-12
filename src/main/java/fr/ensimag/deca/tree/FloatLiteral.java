@@ -13,6 +13,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -52,7 +53,13 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(new ImmediateFloat(value), GPRegister.getR(1)));
-        compiler.addInstruction(new WFLOAT());
+
+        if (compiler.getCodeGenBackend().getPrintHex()) {
+            compiler.addInstruction(new WFLOATX());
+        }
+        else {
+            compiler.addInstruction(new WFLOAT());
+        }
     }
 
     @Override

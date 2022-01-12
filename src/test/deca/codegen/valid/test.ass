@@ -1,12 +1,11 @@
+; start main program
+; Main program
 	TSTO #0
 	BOV stack_overflow_error
 	ADDSP #0
-; start main program
-; Main program
 ; Beginning of main instructions:
-	LOAD #5, R1
-	WINT
-	WNL
+	LOAD #0x1.63d70ap2, R1
+	WFLOATX
 	HALT
 ; error messages
 stack_overflow_error:

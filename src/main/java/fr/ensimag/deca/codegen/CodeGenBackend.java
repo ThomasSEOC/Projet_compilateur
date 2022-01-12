@@ -27,18 +27,21 @@ public class CodeGenBackend {
     private Stack<Label> falseBooleanLabel;
     private boolean branchCondition;
 
+    private boolean printHex;
+
     /**
      * create backend for specified compiler, must be called only once at the beginning of code generation step
      * @param compiler current compiler
      */
     public CodeGenBackend(DecacCompiler compiler) {
+        this.compiler = compiler;
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
         contextManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
         trueBooleanLabel = new Stack<>();
         falseBooleanLabel = new Stack<>();
         branchCondition = false;
-        this.compiler = compiler;
+        printHex = false;
     }
 
     public void incIfStatementCount() {
@@ -114,6 +117,10 @@ public class CodeGenBackend {
      * increment the maximum stack size
      */
     public void incMaxStackSize() { maxStackSize++; }
+
+    public boolean getPrintHex() { return printHex; }
+
+    public void setPrintHex(boolean printHex) { this.printHex = printHex; }
 
     /**
      * getter for program ErrorManager

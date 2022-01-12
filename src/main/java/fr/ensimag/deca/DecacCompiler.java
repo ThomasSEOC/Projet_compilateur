@@ -147,6 +147,15 @@ public class DecacCompiler {
     }
 
     /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(java.lang.String)
+     * added by gl54
+     */
+    public void addFirst(String comment) {
+        program.addFirst(comment);
+    }
+
+    /**
      * Run the compiler (parse source file, generate code)
      *
      * @return true on error
@@ -213,7 +222,6 @@ public class DecacCompiler {
 //        }
 
         if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
-            addComment("start main program");
             prog.codeGenProgram(this);
             addComment("end main program");
             LOG.debug("Generated assembly code:" + nl + program.display());

@@ -47,11 +47,12 @@ public class Program extends AbstractProgram {
         CodeGenBackend backend = compiler.getCodeGenBackend();
 
         // generation of the main program
-        compiler.addComment("Main program");
         main.codeGenMain(compiler);
 
         // add startup code
         backend.getStartupManager().generateStartupCode();
+        compiler.addFirst("Main program");
+        compiler.addFirst("start main program");
 
         // end of the program
         compiler.addInstruction(new HALT());
