@@ -547,7 +547,7 @@ list_decl_field
       )*
     ;
 
-decl_field
+decl_field returns[AbstractDeclField tree]
 @init{
     AbstractInitialization initField;
 }
@@ -565,18 +565,33 @@ decl_field
 
 decl_method
 @init {
+    AbstractMethodBody amb;
 }
     : type ident OPARENT params=list_params CPARENT (block {
+        assert($block.decls != null);
+        assert($block.insts != null);
+        amb = new Method($block.decls,$block.insts);
+
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+            amb = new M
         }
       ) {
         }
     ;
 
-list_params
+list_params returns[ListDeclParam tree]
+@init{
+    $tree = new ListDeclParam();
+}
     : (p1=param {
+        assert(p1 != null);
+        $tree.add($p1.tree);
+        setLocation($tree,$p1.start);
         } (COMMA p2=param {
+        assert(p2 != null);
+        $tree.add($p2.tree);
+        setLocation($tree,$p2.start);
         }
       )*)?
     ;
@@ -592,7 +607,11 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
+param returns [AbstractDeclParam tree]
     : type ident {
+        assert(type != null);
+        assert(ident != null);
+        $tree = new DeclParam($type.tree,$ident.tree);
+        setLocation($tree,$type.start);
         }
     ;
