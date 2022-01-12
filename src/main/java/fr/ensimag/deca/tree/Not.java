@@ -20,11 +20,12 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Type typeOperand = operand.getType();
+	AbstractExpr op = getOperand();
+	Type typeOperand = op.getType();
 	if (typeOperand.isBoolean()) {
 	    return typeOperand;
 	}
-	throw new ContextualError("not(" + operand + ") : " + operand + " is not a boolean");
+	throw new ContextualError("not(" + op + ") : " + op + " is not a boolean", getLocation());
     }
 
     
@@ -32,10 +33,4 @@ public class Not extends AbstractUnaryExpr {
     protected String getOperatorName() {
         return "!";
     }
-}
-
-@Override
-    protected String getOperatorName() {
-    return "!";
-}
 }
