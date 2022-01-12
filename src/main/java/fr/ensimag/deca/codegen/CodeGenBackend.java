@@ -21,6 +21,7 @@ public class CodeGenBackend {
     private final ContextManager contextManager;
 
     private int ifStatementsCount = 0;
+    private int whileStatementsCount = 0;
     private int orLabelsCount = 0;
     private Stack<Label> trueBooleanLabel;
     private Stack<Label> falseBooleanLabel;
@@ -44,6 +45,8 @@ public class CodeGenBackend {
         ifStatementsCount++;
     }
 
+    public void incWhileStatementCount() { whileStatementsCount++; }
+
     public void incOrLabelsCount() {
         orLabelsCount++;
     }
@@ -51,6 +54,8 @@ public class CodeGenBackend {
     public int getIfStatementsCount() {
         return ifStatementsCount;
     }
+
+    public int getWhileStatementsCount() { return whileStatementsCount; }
 
     public int getOrLabelsCount() {
         return orLabelsCount;
@@ -76,7 +81,7 @@ public class CodeGenBackend {
         trueBooleanLabel.push(label);
     }
 
-    public void FalseBooleanLabelPush(Label label) {
+    public void falseBooleanLabelPush(Label label) {
         falseBooleanLabel.push(label);
     }
 

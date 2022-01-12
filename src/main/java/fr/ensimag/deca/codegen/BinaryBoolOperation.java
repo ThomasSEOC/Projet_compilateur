@@ -45,7 +45,7 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             Label falseLabel = new Label("Or_" + this.getCodeGenBackEnd().getOrLabelsCount() + "_false");
 
             getCodeGenBackEnd().trueBooleanLabelPush(trueLabel);
-            getCodeGenBackEnd().FalseBooleanLabelPush(falseLabel); // in case of and at left
+            getCodeGenBackEnd().falseBooleanLabelPush(falseLabel); // in case of and at left
             getCodeGenBackEnd().setBranchCondition(true);
             AbstractExpr[] op1 = {expr.getLeftOperand()};
             ListCodeGen(op1);
