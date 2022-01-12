@@ -2,7 +2,9 @@ package fr.ensimag.deca.codegen;
 
 
 import fr.ensimag.deca.tree.AbstractExpr;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.RFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.RINT;
 
 /**
  * Class using int types
@@ -30,7 +32,13 @@ public class ReadIntOperation extends AbstractReadOperation{
     @Override
     public void doOperation(){
         //Rien en entrée:
-        getCodeGenBackEnd().getCompiler().addInstruction(new RFLOAT());
+        getCodeGenBackEnd().getCompiler().addInstruction(new RINT());
+
+        VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister();
+
+        getCodeGenBackEnd().getCompiler().addInstruction(new MOV(GPRegister.getR(1), r.requestPhysicalRegister()));
+
+        getCodeGenBackEnd().getContextManager().operationStackPush(r);
 
     }
 
