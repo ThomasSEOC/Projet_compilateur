@@ -9,14 +9,17 @@ import java.io.PrintStream;
 
 public class DeclField extends AbstractDeclField{
 
+    final private Visibility visibility;
     private AbstractIdentifier type;
     private AbstractIdentifier field;
     private AbstractInitialization init;
 
-    public DeclField(AbstractIdentifier type, AbstractIdentifier field, AbstractInitialization init){
+    public DeclField(Visibility visibility, AbstractIdentifier type, AbstractIdentifier field, AbstractInitialization init){
+        Validate.notNull(visibility);
         Validate.notNull(type);
         Validate.notNull(field);
         Validate.notNull(init);
+        this.visibility = visibility;
         this.type = type;
         this.field = field;
         this.init = init;
@@ -31,6 +34,9 @@ public class DeclField extends AbstractDeclField{
     @Override
     public void decompile(IndentPrintStream s) {
         // A mettre en forme
+        if(visibility == Visibility.PROTECTED){
+            s.print("protected");
+        }
         type.decompile(s);
         field.decompile(s);
         init.decompile(s);
