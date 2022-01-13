@@ -1,0 +1,16 @@
+//Test:
+//Multiplication et division d'entiers et de flottants
+//----------
+//Résultat:
+// 1 + 1 = 2
+// 1 + -2 = -1
+//----------
+//Historique:
+//Créé le 13.01.2022
+
+{
+println ( " 7 * 7 = " + 7*7);
+println ( " 16 / 4 = " 16/4);
+
+}
+
