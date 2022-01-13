@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.opti.ControlFlowGraph;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -38,6 +39,10 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
         declVariables.codeGenListDeclVar(compiler);
+
+        // create control flow graph;
+        ControlFlowGraph graph = new ControlFlowGraph(insts);
+        System.out.println(graph);
 
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
