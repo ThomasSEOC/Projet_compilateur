@@ -35,13 +35,7 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-<<<<<<< HEAD
-
         this.main.verifyMain(compiler);
-
-=======
-        main.verifyMain(compiler);
->>>>>>> bda65d009fe599ebfed8c9aedb02957f90a7f3ec
         LOG.debug("verify program: end");
     }
 
