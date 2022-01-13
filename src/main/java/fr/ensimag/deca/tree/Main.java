@@ -37,16 +37,17 @@ public class Main extends AbstractMain {
 
 	//Création de l'environment local
 	EnvironmentExp localEnv = new EnvironmentExp(null);
-	Map <String, Symbol> map = compiler.getSymbolTable().getMap();
-	Type typeB = new BooleanType(map.get("boolean"));
+	Map<String, Symbol> symbolTable = compiler.getSymbolTable().getMap();
+	Map<String, Type> typeTable= compiler.getTypeTable();
+	Type typeB = typeTable.get("boolean");
 	try{
-	localEnv.declare(map.get("Object"), new VariableDefinition(typeB, getLocation()));
+	localEnv.declare(symbolTable.get("Object"), new VariableDefinition(typeB, getLocation()));
 	} catch(DoubleDefException e) {
 	    System.out.println("Object : " + e);
 	    System.exit(1);	    
 	}
 	    
-	Type typeV = new VoidType(map.get("void"));
+	Type typeV = typeTable.get("void");
 	declVariables.verifyListDeclVariable(compiler, localEnv, null);
 	insts.verifyListInst(compiler, localEnv, null, typeV);
 	LOG.debug("verify Main: end");

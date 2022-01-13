@@ -18,6 +18,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
 import fr.ensimag.deca.tools.SymbolTable;
+import java.util.HashMap;
+import fr.ensimag.deca.context.*;
 
 
 /**
@@ -38,13 +40,20 @@ import fr.ensimag.deca.tools.SymbolTable;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
-
+    
+    
 
     /**
      * Symbols
      */
     private static SymbolTable symbolTable = new SymbolTable();
 
+    /**
+     * Types
+     */
+    private static HashMap<String, Type> typeTable = new HashMap<String, Type>();
+
+    
     /**
      * Portable newline character.
      */
@@ -61,16 +70,27 @@ public class DecacCompiler {
          * Predefined symbols
          */
         symbolTable.create("void");
+	typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
         symbolTable.create("boolean");
+	typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
         symbolTable.create("float");
+	typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
         symbolTable.create("int");
+	typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
+	
         symbolTable.create("Object");
 
+
+	
     }
 
 
     public SymbolTable getSymbolTable(){
         return symbolTable;
+    }
+
+    public HashMap<String, Type> getTypeTable() {
+	return typeTable;
     }
 
     /**

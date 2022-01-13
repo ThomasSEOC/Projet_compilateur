@@ -20,7 +20,9 @@ public class NoOperation extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (returnType != null) {
+	    throw new ContextualError("No operation needed", getLocation());
+	}
     }
 
     @Override

@@ -183,29 +183,12 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        SymbolTable types = compiler.getSymbolTable();
-	Map<String, Symbol> map = types.getMap();
-	Type type;
-	if (map.get(name.getName()) == null) {
+	Map<String, Type> typeTable = compiler.getTypeTable();
+	Type type = typeTable.get(name.getName());
+	if (type == null) {
 	    throw new ContextualError(name + " is not a type", getLocation());
   	}
-	if (name.getName() == "void") {
-	    type = new VoidType(name);
-	    return type;
-	}
-	if (name.getName() == "boolean") {
-	    type = new BooleanType(name);
-	    return type;
-	}
-	if (name.getName() == "float") {
-	    type = new FloatType(name);
-	    return type;
-	}
-	if (name.getName() == "int") {
-	    type = new IntType(name);
-	    return type;
-	}
-	throw new ContextualError(name + " is not a type", getLocation());
+	return type;
     }
     
     

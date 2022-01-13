@@ -42,6 +42,7 @@ public abstract class AbstractPrint extends AbstractInst {
             throws ContextualError {
 	Type typeExpr;
 	Iterator<AbstractExpr> it = arguments.iterator();
+	System.out.println(compiler.getTypeTable().keySet());
 	while (it.hasNext()) {
 	    AbstractExpr expr = it.next();    
 	    typeExpr = expr.getType();
