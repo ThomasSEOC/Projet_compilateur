@@ -21,10 +21,10 @@ public class ConvFloat extends AbstractUnaryExpr {
             ClassDefinition currentClass) {
         //throw new UnsupportedOperationException("not yet implemented");
 
-        Type floatType = new FloatType(compiler.getSymbolTable().create("float"));
-        //getOperand().setType(new IntType(compiler.getSymbolTable().create("int")));
+         Type floatType = new FloatType(compiler.getSymbolTable().create("float"));
+        // //getOperand().setType(new IntType(compiler.getSymbolTable().create("int")));
 
-        setType(floatType);
+        // setType(floatType);
 
         return floatType;
 

@@ -46,7 +46,7 @@ public abstract class AbstractPrint extends AbstractInst {
 	//     AbstractExpr expr = it.next();    
 	//     typeExpr = expr.getType();
 	//     if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()){
-	// 	 throw new ContextualError("print(" + expr + ") : " + expr + " is not a boolean", getLocation());
+	// 	 throw new ContextualError("print("What is printed needs to be either an int, a float or a string", getLocation());
 	//     }
 	// }
 	// C'est pas ça mais faudra garder pour plus tard

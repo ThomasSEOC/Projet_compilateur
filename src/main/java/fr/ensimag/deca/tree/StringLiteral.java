@@ -34,7 +34,11 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+	Type type = getType();
+	if (type.isString()) {
+	    return type;
+	}
+        throw new ContextualError("Not a string", getLocation());
     }
 
     @Override
