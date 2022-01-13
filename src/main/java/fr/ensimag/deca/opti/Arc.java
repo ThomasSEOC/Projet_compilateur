@@ -6,7 +6,9 @@ public class Arc {
 
     public Arc(AbstractCodeBloc start, AbstractCodeBloc stop) {
         this.start = start;
+        start.addOutArc(this);
         this.stop = stop;
+        stop.addInArc(this);
     }
 
     public AbstractCodeBloc getStart() {

@@ -46,11 +46,11 @@ abstract class Graph {
         return arcs;
     }
 
-    protected AbstractCodeBloc getStart() {
+    protected AbstractCodeBloc getStartBloc() {
         return start;
     }
 
-    protected AbstractCodeBloc getStop() {
+    protected AbstractCodeBloc getStopBloc() {
         return stop;
     }
 

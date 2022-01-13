@@ -1,19 +1,21 @@
 package fr.ensimag.deca.opti;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractInst;
 import fr.ensimag.deca.tree.IfThenElse;
 import fr.ensimag.deca.tree.ListInst;
 import fr.ensimag.deca.tree.While;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControlFlowGraph extends Graph {
+    private DecacCompiler compiler;
     private ListInst instructions;
 
-    public ControlFlowGraph(ListInst instructions) {
+    public ControlFlowGraph(DecacCompiler compiler, ListInst instructions) {
         super();
         this.instructions = instructions;
+        this.compiler = compiler;
         createCFG();
     }
 
@@ -48,8 +50,16 @@ public class ControlFlowGraph extends Graph {
 
         addCodeBloc(currentBloc);
 
-        addArc(new Arc(getStart(), currentBloc));
-        addArc(new Arc(currentBloc, getStop()));
+        addArc(new Arc(getStartBloc(), currentBloc));
+        addArc(new Arc(currentBloc, getStopBloc()));
     }
 
+    public void codeGen() {
+        AbstractCodeBloc bloc = getStartBloc();
+        while (bloc != getStopBloc()) {
+            System.out.println(bloc);
+            bloc.getInstructions().codeGenListInst(compiler);
+            bloc = bloc.outArcs.get(0).getStop();
+        }
+    }
 }

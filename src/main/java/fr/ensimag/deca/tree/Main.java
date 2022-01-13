@@ -40,12 +40,14 @@ public class Main extends AbstractMain {
         // A FAIRE: traiter les déclarations de variables.
         declVariables.codeGenListDeclVar(compiler);
 
-        // create control flow graph;
-        ControlFlowGraph graph = new ControlFlowGraph(insts);
-        System.out.println(graph);
-
         compiler.addComment("Beginning of main instructions:");
-        insts.codeGenListInst(compiler);
+        // create control flow graph;
+        ControlFlowGraph graph = new ControlFlowGraph(compiler, insts);
+        System.out.println(graph);
+        graph.codeGen();
+
+//        compiler.addComment("Beginning of main instructions:");
+//        insts.codeGenListInst(compiler);
     }
     
     @Override
