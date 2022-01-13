@@ -1,0 +1,7 @@
+// Test non valide 4:
+// il n'y a pas de booléen ni de 0 / 1 dans la condition du if
+// Créé le 13.01.2022
+
+{
+if (2);
+}

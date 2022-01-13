@@ -2,15 +2,23 @@
 //Multiplication et division d'entiers et de flottants
 //----------
 //Résultat:
-// 1 + 1 = 2
-// 1 + -2 = -1
+// 7 * 7 = 49
+// 16 / 4 = 4
+// 0.9 * 0.9 = 0.81
+// 1.3 * 0.5 + 3 / (4 * 2.5) = 0.95
+// On trouve 0.95
 //----------
 //Historique:
 //Créé le 13.01.2022
 
 {
 println ( " 7 * 7 = " + 7*7);
-println ( " 16 / 4 = " 16/4);
-
+println ( " 16 / 4 = " + 16/4);
+println ( " 0.9 * 0.9 = " + 0.9 * 0.9);
+println ( " 1.3 * 0.5 + 3 / (4 * 2.5) =  0,95 ");
+println ( " On trouve " + 1.3 * 0.5 + 3 / (4 * 2.5));
+// println ( "Approximations:");
+// println ( " 1/3 = " + 1/3);
+// println ( " 0.3/ 0.88 = " + 0,3/ 0.88);
 }
 

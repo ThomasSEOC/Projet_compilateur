@@ -1,0 +1,7 @@
+// Test non valide 5:
+// MAuvaise opération sur les modulos
+// Créé le 13.01.2022
+
+{
+return (2.5 % 5);
+}

@@ -1,0 +1,9 @@
+// Test non valide 1:
+// a+a=4 n'a aucun sens
+// Créé le 13.01.2022
+
+{
+int a = 2;
+a + a = 4;
+return a;
+}

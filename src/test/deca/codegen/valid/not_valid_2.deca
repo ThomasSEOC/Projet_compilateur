@@ -1,0 +1,8 @@
+// Test non valide 2:
+// Opération booléenne sur des entiers
+// Créé le 13.01.2022
+
+{
+println (true && false);
+println (1 && 2);
+}
