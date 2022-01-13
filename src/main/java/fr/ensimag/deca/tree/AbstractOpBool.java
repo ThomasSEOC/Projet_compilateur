@@ -27,7 +27,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 	if (typeLOp.isBoolean() && typeROp.isBoolean()) {
 	    return typeLOp;
 	}
-	throw new ContextualError("Both binary boolean operator need a boolean", getLocation());
+	throw new ContextualError("Both binary boolean operators need to be a boolean", getLocation());
     }
 
 }

@@ -30,6 +30,6 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 	    setType(boolType);
 	    return boolType;
 	}
-	throw new ContextualError("Both binary arithmetic operators need either an int or a float", getLocation());
+	throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
     }
 }

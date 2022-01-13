@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -13,8 +13,11 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -180,7 +183,29 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        SymbolTable types = compiler.getSymbolTable();
+	Map<String, Symbol> map = types.getMap();
+	Type type;
+	if (map.get(name.getName()) == null) {
+	    throw new ContextualError(name + " is not a type", getLocation());
+  	}
+	if (name.getName() == "void") {
+	    type = new VoidType(name);
+	    return type;
+	}
+	if (name.getName() == "boolean") {
+	    type = new BooleanType(name);
+	    return type;
+	}
+	if (name.getName() == "float") {
+	    type = new FloatType(name);
+	    return type;
+	}
+	if (name.getName() == "int") {
+	    type = new IntType(name);
+	    return type;
+	}
+	throw new ContextualError(name + " is not a type", getLocation());
     }
     
     

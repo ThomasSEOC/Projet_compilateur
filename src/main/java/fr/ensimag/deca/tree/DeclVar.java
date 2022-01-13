@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -33,6 +34,16 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+	if (type.getExpDefinition().getType().isVoid()) {
+	    throw new ContextualError("Var must not be void", getLocation());
+	}
+	try {
+	    localEnv.declare(varName.getName(), type.getExpDefinition());
+	} catch (DoubleDefException e) {
+	    System.out.println(varName.getName() + " : " + e);
+	    System.exit(1);
+	}
+	
     }
 
     

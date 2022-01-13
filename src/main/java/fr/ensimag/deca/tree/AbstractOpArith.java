@@ -34,6 +34,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 	    }
 	    return typeROp; //si les opérandes ne sont pas toutes les deux des int et que l'opérande de gauche n'est pas un float, alors celle de droite l'est
 	}
-	throw new ContextualError("Both binary arithmetic operator need either an int or a float", getLocation());
+	
+	throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
     }
 }
