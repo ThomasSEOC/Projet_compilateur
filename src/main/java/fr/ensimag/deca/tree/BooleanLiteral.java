@@ -27,8 +27,12 @@ public class BooleanLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-        //return new BooleanType(compiler.getSymbolTable().create("boolean"));
+	Type type = getType();
+	if (type.isBoolean()) {
+	    return type;
+	}
+        throw new ContextualError("Not a boolean", getLocation());
+    
     }
 
     @Override

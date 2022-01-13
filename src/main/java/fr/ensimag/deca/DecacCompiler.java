@@ -42,7 +42,7 @@ public class DecacCompiler {
     /**
      * Symbols
      */
-    private static SymbolTable symbol_table = new SymbolTable();
+    private static SymbolTable symbolTable = new SymbolTable();
 
     /**
      * Portable newline character.
@@ -59,17 +59,17 @@ public class DecacCompiler {
         /**
          * Predefined symbols
          */
-        symbol_table.create("void");
-        symbol_table.create("boolean");
-        symbol_table.create("float");
-        symbol_table.create("int");
-        symbol_table.create("Object");
+        symbolTable.create("void");
+        symbolTable.create("boolean");
+        symbolTable.create("float");
+        symbolTable.create("int");
+        symbolTable.create("Object");
 
     }
 
 
     public SymbolTable getSymbolTable(){
-        return symbol_table;
+        return symbolTable;
     }
 
     /**
