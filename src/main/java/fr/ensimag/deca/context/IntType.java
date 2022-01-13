@@ -6,7 +6,7 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 
 /**
  *
- * @author Ensimag
+ * @author gl54
  * @date 01/01/2022
  */
 public class IntType extends Type {
@@ -22,7 +22,6 @@ public class IntType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        //throw new UnsupportedOperationException("not yet implemented");
         return (otherType instanceof IntType);
     }
 

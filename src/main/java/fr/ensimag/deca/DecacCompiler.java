@@ -16,6 +16,8 @@ import java.io.PrintStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
+import fr.ensimag.deca.tools.SymbolTable;
+
 
 /**
  * Decac compiler instance.
@@ -34,17 +36,40 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    
+
+
+
+    /**
+     * Symbols
+     */
+    private static SymbolTable symbol_table = new SymbolTable();
+
     /**
      * Portable newline character.
      */
     private static final String nl = System.getProperty("line.separator", "\n");
+
 
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
         this.codeGenBackend = new CodeGenBackend(this);
+
+        /**
+         * Predefined symbols
+         */
+        symbol_table.create("void");
+        symbol_table.create("boolean");
+        symbol_table.create("float");
+        symbol_table.create("int");
+        symbol_table.create("Object");
+
+    }
+
+
+    public SymbolTable getSymbolTable(){
+        return symbol_table;
     }
 
     /**

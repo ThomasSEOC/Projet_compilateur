@@ -111,7 +111,7 @@ MULTI_LINE_COMMENT:  '/*' .*? '*/'
 
 
 //Inclusion de fichier
-fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_');
+fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_')+;
 INCLUDE:             '#include' (' ')* '"' FILENAME '"';
 
 

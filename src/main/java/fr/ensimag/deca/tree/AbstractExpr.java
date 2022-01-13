@@ -82,7 +82,10 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (!type.sameType(expectedType)) {
+	    throw new ContextualError(expectedType + " is expected", getLocation());
+	}
+	return this;
     }
     
     

@@ -11,6 +11,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import java.util.Iterator;
 
 /**
  * Print statement (print, println, ...).
@@ -39,7 +40,15 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+	Type typeExpr;
+	Iterator<AbstractExpr> it = arguments.iterator();
+	while (it.hasNext()) {
+	    AbstractExpr expr = it.next();    
+	    typeExpr = expr.getType();
+	    if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()){
+		 throw new ContextualError("print(" + expr + ") : " + expr + " is not a boolean", getLocation());
+	    }
+	}
     }
 
     @Override

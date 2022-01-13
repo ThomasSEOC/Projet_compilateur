@@ -36,11 +36,19 @@ public class IfThenElse extends AbstractInst {
     public ListInst getThenBranch() { return thenBranch; }
 
     public ListInst getElseBranch() { return elseBranch; }
-    
+
+    public void setElseBranch(ListInst elseBranch){
+        this.elseBranch = elseBranch ;
+    }
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+	Type typeCondition = condition.getType();
+	if (!typeCondition.isBoolean()) {
+	    throw new ContextualError("if(" + condition + ") : " + condition + " is not a boolean", getLocation());
+	}
     }
 
     @Override
@@ -51,7 +59,21 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("if (");
+        condition.decompile(s);
+        s.println(") {");
+        s.indent();
+        thenBranch.decompile(s);
+        s.unindent();
+        s.println("}");
+        if(elseBranch != null){
+            s.println("{");
+            s.indent();
+            elseBranch.decompile(s);
+            s.unindent();
+            s.println("}");
+        }
+
     }
 
     @Override

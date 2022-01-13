@@ -1,0 +1,17 @@
+// Description:
+//    Programme avec lignes multiples de string
+//
+// Resultats:
+//    "coucou comment ca va"
+//
+// Historique:
+//    cree le 10/01/2022
+//    par Caroline
+
+"coucou
+comment
+
+ca
+        va
+
+"

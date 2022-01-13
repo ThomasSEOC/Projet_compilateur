@@ -1,0 +1,14 @@
+// Description:
+//    Programme avec caractères non reconnus
+//
+// Resultats:
+//    token recognition error pour #
+//
+// Historique:
+//    cree le 10/01/2022
+//    par Caroline
+
+{
+class A {               # je met une erreur ici
+    println("cette phrase ne sera pas reconnue");
+}

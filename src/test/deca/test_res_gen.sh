@@ -25,7 +25,7 @@ FILENAME="$(basename -- $FILE)"
 case "$FILENAME" in
   *".deca")
   case "$FILE" in
-    *"gl54/src/test/deca/syntax/valid/lexer"*)
+    *"src/test/deca/syntax/valid/lexer"*)
       RES=$(test_lex "./src/test/deca/syntax/valid/lexer/$FILENAME")
       echo "le résultat du test est :"
       echo "$RES"
@@ -40,7 +40,7 @@ case "$FILENAME" in
         echo "-> Abandon"
       fi
       ;;
-    *"gl54/src/test/deca/syntax/invalid/lexer"*)
+    *"src/test/deca/syntax/invalid/lexer"*)
        RES=$(test_lex "./src/test/deca/syntax/invalid/lexer/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
@@ -55,7 +55,7 @@ case "$FILENAME" in
           echo "-> Abandon"
         fi
       ;;
-    *"gl54/src/test/deca/syntax/valid/parser"*)
+    *"src/test/deca/syntax/valid/parser"*)
        RES=$(test_synt "./src/test/deca/syntax/valid/parser/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
@@ -70,7 +70,7 @@ case "$FILENAME" in
           echo "-> Abandon"
         fi
       ;;
-    *"gl54/src/test/deca/syntax/invalid/parser"*)
+    *"src/test/deca/syntax/invalid/parser"*)
        RES=$(test_synt "./src/test/deca/syntax/invalid/parser/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
@@ -85,7 +85,7 @@ case "$FILENAME" in
           echo "-> Abandon"
         fi
       ;;
-    *"gl54/src/test/deca/context/valid"*)
+    *"src/test/deca/context/valid"*)
        RES=$(test_context "./src/test/deca/context/valid/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
@@ -100,7 +100,7 @@ case "$FILENAME" in
           echo "-> Abandon"
         fi
       ;;
-    *"gl54/src/test/deca/context/invalid"*)
+    *"src/test/deca/context/invalid"*)
        RES=$(test_context "./src/test/deca/context/invalid/$FILENAME")
         echo "le résultat du test est :"
         echo "$RES"
@@ -115,7 +115,7 @@ case "$FILENAME" in
           echo "-> Abandon"
         fi
       ;;
-    *"gl54/src/test/deca/codegen/valid"*)
+    *"src/test/deca/codegen/valid"*)
        ASS="${FILENAME%.*}.ass"
        rm "./src/test/deca/codegen/valid/$ASS" 2> /dev/null
        RES=$(decac "./src/test/deca/codegen/valid/$FILENAME")
@@ -135,7 +135,7 @@ case "$FILENAME" in
        fi
        rm "./src/test/deca/codegen/valid/$ASS" 2> /dev/null
       ;;
-    *"gl54/src/test/deca/codegen/invalid"*)
+    *"src/test/deca/codegen/invalid"*)
         ASS="${FILENAME%.*}.ass"
         rm "./src/test/deca/codegen/invalid/$ASS" 2> /dev/null
         RES=$(decac "./src/test/deca/codegen/invalid/$FILENAME")
