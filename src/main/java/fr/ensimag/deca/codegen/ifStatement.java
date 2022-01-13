@@ -34,6 +34,8 @@ public class ifStatement {
 
         backend.getCompiler().addLabel(elseLabel);
         expression.getElseBranch().codeGenListInst(backend.getCompiler());
+
+        backend.getCompiler().addLabel(endLabel);
         
         backend.popCurrentTrueBooleanLabel();
         backend.popCurrentFalseBooleanLabel();
