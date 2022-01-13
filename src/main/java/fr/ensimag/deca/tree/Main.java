@@ -6,6 +6,10 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import fr.ensimag.deca.context.*;
+import java.util.Map;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 
 /**
  * @author gl54
@@ -30,8 +34,22 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
-        LOG.debug("verify Main: end");
-        throw new UnsupportedOperationException("not yet implemented");
+
+	//Création de l'environment local
+	EnvironmentExp localEnv = new EnvironmentExp(null);
+	Map <String, Symbol> map = compiler.getSymbolTable().getMap();
+	Type typeB = new BooleanType(map.get("boolean"));
+	try{
+	localEnv.declare(map.get("Object"), new VariableDefinition(typeB, getLocation()));
+	} catch(DoubleDefException e) {
+	    System.out.println("Object : " + e);
+	    System.exit(1);	    
+	}
+	    
+	Type typeV = new VoidType(map.get("void"));
+	declVariables.verifyListDeclVariable(compiler, localEnv, null);
+	insts.verifyListInst(compiler, localEnv, null, typeV);
+	LOG.debug("verify Main: end");
     }
 
     @Override
