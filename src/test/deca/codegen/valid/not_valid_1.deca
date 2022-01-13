@@ -1,6 +1,7 @@
 // Test non valide 1:
 // a+a=4 n'a aucun sens
 // Créé le 13.01.2022
+// Pas compilé -> validé [erreur ligne 8]
 
 {
 int a = 2;
