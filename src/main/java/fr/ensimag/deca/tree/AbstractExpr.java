@@ -82,10 +82,17 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        if (!type.sameType(expectedType)) {
-	    throw new ContextualError(expectedType + " is expected", getLocation());
+	if (type.isInt() && expectedType.isBoolean()) {
+	    ConvFloat thisConvFloat = new ConvFloat(this);
+	    return thisConvFloat;
 	}
-	return this;
+	if ((type.isFloat() && expectedType.isInt()) || type.sameType(expectedType)) {
+	    return this;
+	}
+
+	//Il va falloir rajouter le cas des sous-types avec les objets
+	
+	throw new ContextualError(expectedType + " is expected", getLocation());
     }
     
     
@@ -93,7 +100,10 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+	Type typeVerif = verifyExpr(compiler,localEnv, currentClass);
+	if (!type.sameType(returnType)) {
+	    throw new ContextualError(returnType + " is needed", getLocation());
+	}
     }
 
     /**
@@ -108,9 +118,9 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type typeCondition = this.verifyExpr(compiler, localEnv, currentClass);
+        Type typeCondition = getType();
         if (!typeCondition.isBoolean()) {
-            throw new ContextualError("There mus be a condition here", getLocation());
+            throw new ContextualError("Condition needs to be a boolean", getLocation());
         }
     }
 

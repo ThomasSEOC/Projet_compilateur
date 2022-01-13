@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -13,8 +13,11 @@ import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -167,7 +170,11 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        ExpDefinition def = localEnv.get(name);
+	if (def != null) {
+	    return def.getType();
+	}
+	throw new ContextualError(name + " n'est pas défini", getLocation());
     }
 
     /**
@@ -176,7 +183,12 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+	Map<String, Type> typeTable = compiler.getTypeTable();
+	Type type = typeTable.get(name.getName());
+	if (type == null) {
+	    throw new ContextualError(name + " is not a type", getLocation());
+  	}
+	return type;
     }
     
     

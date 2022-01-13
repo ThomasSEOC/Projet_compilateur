@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.util.Iterator;
+
 /**
  * 
  * @author gl54
@@ -31,6 +32,7 @@ public class ListInst extends TreeList<AbstractInst> {
         while (it.hasNext()) {
             it.next().verifyInst(compiler, localEnv, currentClass, returnType);
         }
+
 
     }
 

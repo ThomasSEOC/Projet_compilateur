@@ -20,7 +20,13 @@ public class NoOperation extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+<<<<<<< HEAD
         // There is nothing to do there
+=======
+        if (returnType != null) {
+	    throw new ContextualError("No operation needed", getLocation());
+	}
+>>>>>>> bda65d009fe599ebfed8c9aedb02957f90a7f3ec
     }
 
     @Override
