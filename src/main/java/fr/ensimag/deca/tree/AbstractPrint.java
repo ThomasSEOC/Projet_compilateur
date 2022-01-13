@@ -40,15 +40,16 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-	Type typeExpr;
-	Iterator<AbstractExpr> it = arguments.iterator();
-	while (it.hasNext()) {
-	    AbstractExpr expr = it.next();    
-	    typeExpr = expr.getType();
-	    if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()){
-		 throw new ContextualError("print(" + expr + ") : " + expr + " is not a boolean", getLocation());
-	    }
-	}
+	// Type typeExpr;
+	// Iterator<AbstractExpr> it = arguments.iterator();
+	// while (it.hasNext()) {
+	//     AbstractExpr expr = it.next();    
+	//     typeExpr = expr.getType();
+	//     if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()){
+	// 	 throw new ContextualError("print(" + expr + ") : " + expr + " is not a boolean", getLocation());
+	//     }
+	// }
+	// C'est pas ça mais faudra garder pour plus tard
     }
 
     @Override

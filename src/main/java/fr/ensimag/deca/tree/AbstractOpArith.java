@@ -21,6 +21,19 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+	AbstractExpr lOp = getLeftOperand();
+	AbstractExpr rOp = getRightOperand();
+	Type typeLOp = lOp.getType();
+	Type typeROp = rOp.getType();
+	if ((typeLOp.isInt() || typeLOp.isFloat()) && (typeLOp.isInt() || typeLOp.isFloat())) {
+	    if (typeLOp.isInt() && typeLOp.isInt()) {
+		return typeLOp;
+	    }
+	    if (typeLOp.isFloat()) {
+		return typeLOp;
+	    }
+	    return typeROp;
+	}
+	throw new ContextualError("Both binary arithmetic operator need either an int or a float", getLocation());
     }
 }

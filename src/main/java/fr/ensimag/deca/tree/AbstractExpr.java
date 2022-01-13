@@ -82,9 +82,9 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        if (!type.sameType(expectedType)) {
-	    throw new ContextualError(expectedType + " is expected", getLocation());
-	}
+        // if (!type.sameType(expectedType)) {
+	//     throw new ContextualError(expectedType + " is expected", getLocation());
+	// }
 	return this;
     }
     
@@ -108,7 +108,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+	Type typeCondition = getType();
+	if (!typeCondition.isBoolean()) {
+	    throw new ContextualError("Condition needs to be a boolean", getLocation());
+	}
     }
 
     /**
