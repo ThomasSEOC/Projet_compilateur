@@ -54,7 +54,7 @@ WS  :   ( ESPACE | FORMAT)
 fragment LETTER :    ('a'..'z' | 'A'..'Z'); // lettres
 fragment DIGIT:    '0' .. '9'; // chiffres
 IDENT:               (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
-//IDF:                 ('a' .. 'z' | 'A' .. 'Z')+; // identificateur
+
 
 //Symboles spéciaux :
 LT:                  '<'; // comparateur 'inférieur à'
@@ -113,8 +113,3 @@ MULTI_LINE_COMMENT:  '/*' .*? '*/'
 //Inclusion de fichier
 fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_')+;
 INCLUDE:             '#include' (' ')* '"' FILENAME '"';
-
-
-//UNKNOWN:            .;
-
-
