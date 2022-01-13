@@ -19,6 +19,7 @@ public class CodeGenBackend {
     private final StartupManager startupManager;
     private final DecacCompiler compiler;
     private final ContextManager contextManager;
+    private final ClassManager classManager;
 
     private int ifStatementsCount = 0;
     private int whileStatementsCount = 0;
@@ -38,6 +39,7 @@ public class CodeGenBackend {
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
         contextManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
+        classManager = new ClassManager(this);
         trueBooleanLabel = new Stack<>();
         falseBooleanLabel = new Stack<>();
         branchCondition = false;
@@ -144,6 +146,7 @@ public class CodeGenBackend {
      * getter for program ContextManager
      * @return contextManager
      */
-
     public ContextManager getContextManager(){ return contextManager; }
+
+    public ClassManager getClassManager() { return classManager; }
 }
