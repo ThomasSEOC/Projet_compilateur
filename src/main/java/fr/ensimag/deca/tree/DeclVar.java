@@ -30,6 +30,12 @@ public class DeclVar extends AbstractDeclVar {
         this.initialization = initialization;
     }
 
+    public AbstractIdentifier getType() {
+        return type;
+    }
+
+    public AbstractInitialization getInitialization() { return initialization; }
+
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
@@ -45,7 +51,6 @@ public class DeclVar extends AbstractDeclVar {
 	}
 	
     }
-
     
     @Override
     public void decompile(IndentPrintStream s) {

@@ -1,0 +1,24 @@
+; start main program
+; Main program
+	TSTO #0
+	BOV stack_overflow_error
+	ADDSP #0
+; Beginning of main instructions:
+	LOAD #1, R2
+	CMP #1, R2
+	BGT if_1_else
+if_1_then:
+	WSTR "oh yes"
+	WNL
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
+	WSTR "oh no"
+	WNL
+if_1_end:
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

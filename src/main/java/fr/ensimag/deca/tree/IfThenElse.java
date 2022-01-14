@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.ifStatement;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -30,15 +31,16 @@ public class IfThenElse extends AbstractInst {
         this.elseBranch = elseBranch;
     }
 
+    public AbstractExpr getCondition() { return condition; }
 
-    public ListInst getElseBranch(){
-        return this.elseBranch;
-    }
+    public ListInst getThenBranch() { return thenBranch; }
+
+    public ListInst getElseBranch() { return elseBranch; }
 
     public void setElseBranch(ListInst elseBranch){
         this.elseBranch = elseBranch ;
     }
-    
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
@@ -48,7 +50,8 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        ifStatement operator = new ifStatement(compiler.getCodeGenBackend(), this);
+        operator.createStatement();
     }
 
     @Override

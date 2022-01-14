@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.AssignOperation;
+import fr.ensimag.deca.codegen.LiteralOperation;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -33,6 +35,11 @@ public class BooleanLiteral extends AbstractExpr {
     
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -53,5 +60,12 @@ public class BooleanLiteral extends AbstractExpr {
     String prettyPrintNode() {
         return "BooleanLiteral (" + value + ")";
     }
+
+    //Not implemented yet
+    /*@Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        AssignOperation operator = new AssignOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }*/
 
 }

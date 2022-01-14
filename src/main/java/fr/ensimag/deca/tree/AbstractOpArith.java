@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BinaryArithmOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -36,5 +37,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 	}
 	
 	throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+        operator.print();
     }
 }

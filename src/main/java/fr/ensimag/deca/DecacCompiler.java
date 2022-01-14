@@ -1,14 +1,13 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.CodeGenBackend;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -55,7 +54,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-
+        this.codeGenBackend = new CodeGenBackend(this);
 
         /**
          * Predefined symbols
@@ -142,7 +141,44 @@ public class DecacCompiler {
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
- 
+
+    private final CodeGenBackend codeGenBackend;
+
+    /**
+     * getter for code generation backend
+     * @return codeGenBackend
+     */
+    public CodeGenBackend getCodeGenBackend() {
+        return codeGenBackend;
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction)
+     * added by gl54
+     */
+    public void addFirst(Instruction instruction) {
+        program.addFirst(instruction);
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction,
+     * java.lang.String)
+     * added by gl54
+     */
+    public void addFirst(Instruction instruction, String comment) {
+        program.addFirst(instruction, comment);
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(java.lang.String)
+     * added by gl54
+     */
+    public void addFirst(String comment) {
+        program.addFirst(comment);
+    }
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -150,6 +186,7 @@ public class DecacCompiler {
      * @return true on error
      */
     public boolean compile() {
+        // le fichier de sortie est créé par défaut au même endroit que le fichier source, mais avec l'extension .ass
         String sourceFile = source.getAbsolutePath();
         String destFile = sourceFile.replaceFirst("[.][^.]+$", "") + ".ass";
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
@@ -204,27 +241,30 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
+//        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
+//            prog.verifyProgram(this);
+//            assert(prog.checkAllDecorations());
+//        }
 
-//        prog.verifyProgram(this);
-//        assert(prog.checkAllDecorations());
+        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
+            prog.codeGenProgram(this);
+            addComment("end main program");
+            LOG.debug("Generated assembly code:" + nl + program.display());
+            LOG.info("Output file assembly file is: " + destName);
 
-        addComment("start main program");
-        prog.codeGenProgram(this);
-        addComment("end main program");
-        LOG.debug("Generated assembly code:" + nl + program.display());
-        LOG.info("Output file assembly file is: " + destName);
+            FileOutputStream fstream = null;
+            try {
+                fstream = new FileOutputStream(destName);
+            } catch (FileNotFoundException e) {
+                throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+            }
 
-        FileOutputStream fstream = null;
-        try {
-            fstream = new FileOutputStream(destName);
-        } catch (FileNotFoundException e) {
-            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+            LOG.info("Writing assembler file ...");
+
+            program.display(new PrintStream(fstream));
+            LOG.info("Compilation of " + sourceName + " successful.");
         }
 
-        LOG.info("Writing assembler file ...");
-
-        program.display(new PrintStream(fstream));
-        LOG.info("Compilation of " + sourceName + " successful.");
         return false;
     }
 
