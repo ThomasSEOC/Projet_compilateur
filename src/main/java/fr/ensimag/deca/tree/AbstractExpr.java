@@ -82,12 +82,12 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-	if (type.isInt() && expectedType.isBoolean()) {
-	    ConvFloat thisConvFloat = new ConvFloat(this);
-	    return thisConvFloat;
-	}
-	if ((type.isFloat() && expectedType.isInt()) || type.sameType(expectedType)) {
-	    return this;
+        if (type.isInt() && expectedType.isBoolean()) {
+            ConvFloat thisConvFloat = new ConvFloat(this);
+            return thisConvFloat;
+        }
+        if ((type.isFloat() && expectedType.isInt()) || type.sameType(expectedType)) {
+            return this;
 	}
 
 	//Il va falloir rajouter le cas des sous-types avec les objets
