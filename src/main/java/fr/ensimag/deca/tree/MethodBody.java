@@ -9,31 +9,35 @@ import java.io.PrintStream;
 
 public class MethodBody extends AbstractMethodBody{
 
-    private ListDeclVar listDeclVar;
-    private ListInst listInst;
+    final private ListDeclVar vars;
+    final private ListInst insts;
 
-    public MethodBody(ListDeclVar listDeclVar, ListInst listInst){
-        Validate.notNull(listDeclVar);
-        Validate.notNull(listInst);
-        this.listDeclVar = listDeclVar;
-        this.listInst = listInst;
+    public MethodBody(ListDeclVar vars, ListInst insts){
+        Validate.notNull(vars);
+        Validate.notNull(insts);
+        this.insts = insts;
+        this.vars = vars;
     }
 
     @Override
     public void decompile(IndentPrintStream s){
-        listDeclVar.decompile(s);
-        listInst.decompile(s);
+        s.print("{");
+        s.indent();
+        vars.decompile(s);
+        insts.decompile(s);
+        s.unindent();
+        s.print("}");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix){
-        listDeclVar.prettyPrint(s,prefix,false);
-        listInst.prettyPrint(s,prefix,true);
+        vars.prettyPrint(s,prefix,false);
+        insts.prettyPrint(s,prefix,true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f){
-        listInst.iter(f);
-        listDeclVar.iter(f);
+        insts.iter(f);
+        vars.iter(f);
     }
 }

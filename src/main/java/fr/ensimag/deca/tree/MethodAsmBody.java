@@ -9,25 +9,29 @@ import java.io.PrintStream;
 
 public class MethodAsmBody extends AbstractMethodBody{
 
-    private StringLiteral stringLiteral;
+    final private StringLiteral code;
 
-    public MethodAsmBody(StringLiteral stringLiteral){
-        Validate.notNull(stringLiteral);
-        this.stringLiteral = stringLiteral;
+    public MethodAsmBody(StringLiteral code){
+        Validate.notNull(code);
+        this.code = code;
     }
 
     @Override
     public void decompile(IndentPrintStream s){
-        stringLiteral.decompile(s);
+        s.print("asm(");
+        code.decompile(s);
+        s.print(")");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix){
-        stringLiteral.prettyPrint(s,prefix,true);
+
+        code.prettyPrint(s,prefix,true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f){
-        stringLiteral.iter(f);
+
+        code.iter(f);
     }
 }
