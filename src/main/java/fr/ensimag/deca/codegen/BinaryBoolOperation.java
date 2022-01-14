@@ -65,7 +65,9 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             ListCodeGen(ops);
             VirtualRegister r2 = getCodeGenBackEnd().getContextManager().operationStackPop();
             VirtualRegister r1 = getCodeGenBackEnd().getContextManager().operationStackPop();
-            getCodeGenBackEnd().getCompiler().addInstruction(new CMP(r1.getDVal(), r2.requestPhysicalRegister()));
+            getCodeGenBackEnd().getCompiler().addInstruction(new CMP(r2.getDVal(), r1.requestPhysicalRegister()));
+            r1.destroy();
+            r2.destroy();
 
             if (getCodeGenBackEnd().getBranchCondition()) {
                 if (getExpression() instanceof Greater) {

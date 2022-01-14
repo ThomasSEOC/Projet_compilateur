@@ -4,14 +4,9 @@
 	BOV stack_overflow_error
 	ADDSP #0
 ; Beginning of main instructions:
-	LOAD #8, R2
-	QUO #2, R2	; Operation Divide
-	LOAD R2, R1
-	WINT
-	WNL
 	LOAD #1, R2
 	CMP #1, R2
-	BNE if_1_else
+	BGT if_1_else
 if_1_then:
 	WSTR "oh yes"
 	WNL

@@ -64,14 +64,14 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
             VirtualRegister temp = r1;
             r1 = r2;
             r2 = temp;
-            getCodeGenBackEnd().getCompiler().addInstruction(new QUO(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
+            getCodeGenBackEnd().getCompiler().addInstruction(new QUO(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Quotient"));
         }
 
         if (this.getExpression() instanceof Modulo){
             VirtualRegister temp = r1;
             r1 = r2;
             r2 = temp;
-            getCodeGenBackEnd().getCompiler().addInstruction(new REM(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
+            getCodeGenBackEnd().getCompiler().addInstruction(new REM(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Remainder"));
         }
 
         r1.destroy();
