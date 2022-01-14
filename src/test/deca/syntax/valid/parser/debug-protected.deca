@@ -8,6 +8,6 @@
 //    cree le 10/01/2022
 //    par Caroline
 
-{
+class A{
     protected int x;
 }

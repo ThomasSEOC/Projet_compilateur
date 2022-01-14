@@ -98,14 +98,19 @@ FLOAT :              (FLOATDEC | FLOATHEX);
 //Chaines de caractère :
 fragment STRING_CAR: ~('"' | '\\' | '\n' ); //caractère d'une chaine de caractères
 STRING:              '"' (STRING_CAR | '\\"' | '\\\\')* '"'; //chaine de caractère
-MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"'; //chaine de caractère sur plusieurs lignes
-
+MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+ /*
+ {
+     String s = getText();
+     setText(s.substring(1,s.length()-1).replace("\\\","\"").replace("\\\\","\\"));
+ }; //chaine de caractère sur plusieurs lignes//chaine de caractère sur plusieurs lignes
+*/
 
 //Commentaires :
 COMMENT:             '//' .*? (EOL|EOF)
                      { skip();};
 
-MULTI_LINE_COMMENT:  '/*' .*? '*/'  
+MULTI_LINE_COMMENT:  '/*' .*? '*/'
                      { skip();};
 
 

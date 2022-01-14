@@ -451,10 +451,11 @@ literal returns[AbstractExpr tree]
         setLocation($tree,$FLOAT);
         }   //{  $tree = null; }?
 
-    | STRING {
-        String string_content = new String();
-        string_content = $STRING.text.substring(1,$STRING.text.length()-1);
-        $tree = new StringLiteral(string_content);
+    | STRING
+         //String string_content = new String();
+         //string_content = $STRING.text.substring(1,$STRING.text.length()-1);
+        {
+        $tree = new StringLiteral($STRING.text);
         setLocation($tree,$STRING);
         }   //{$tree != null}?
 
@@ -517,13 +518,13 @@ class_extension returns[AbstractIdentifier tree]
 
 class_body returns[ListDeclField ldf, ListDeclMethod ldm]
 @init{
-        ListDeclMethod ldm = new ListDeclMethod();
-        ListDeclField ldf = new ListDeclField();
+        $ldm = new ListDeclMethod();
+        $ldf = new ListDeclField();
 }
     : (m=decl_method {
-        ldm.add($m.tree);
+        $ldm.add($m.tree);
         }
-      | decl_field_set[ldf]{
+      | decl_field_set[$ldf]{
       }
       )*
     ;
@@ -582,7 +583,6 @@ decl_method returns[AbstractDeclMethod tree]
 }
     : type ident OPARENT params=list_params CPARENT (block {
         amb = new MethodBody($block.decls,$block.insts);
-        setLocation($tree,$type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
             StringLiteral string = new StringLiteral($code.text);
