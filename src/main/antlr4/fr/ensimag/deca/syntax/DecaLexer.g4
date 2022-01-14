@@ -88,7 +88,7 @@ INT:                 '0' | POSITIVE_DIGIT DIGIT*;
 fragment NUM:        DIGIT+;
 fragment SIGN:       (PLUS | MINUS | EPS);
 fragment EXP:        ('E' | 'e') SIGN NUM;
-fragment DEC:        NUM DOT NUM; // a voir si ca marche, sinon NUM ',' NUM
+fragment DEC:        NUM DOT NUM;
 fragment FLOATDEC:   (DEC | DEC EXP)('F' | 'f' | EPS);
 fragment DIGITHEX:   (DIGIT | 'A'..'F' | 'a'..'f');
 fragment NUMHEX:     DIGITHEX+;
