@@ -27,7 +27,7 @@ public class EnvironmentExp {
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
 
-    private Map<Symbol, ExpDefinition> dico = new HashMap<Symbol, ExpDefinition>();
+    private Map<Symbol, Definition> dico = new HashMap<Symbol, Definition>();
 
     EnvironmentExp parentEnvironment; //Superclass
     
@@ -48,7 +48,7 @@ public class EnvironmentExp {
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    public ExpDefinition get(Symbol key) {
+    public Definition get(Symbol key) {
         if (dico.containsKey(key)) {
             return (dico.get(key));
         }
@@ -76,13 +76,12 @@ public class EnvironmentExp {
      *             if the symbol is already defined at the "current" dictionary
      *
      */
-    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
+    public void declare(Symbol name, Definition def) throws DoubleDefException {
 	if (dico.containsKey(name)) {
 	    throw new DoubleDefException("Arleady defined");
 	}
 	
         dico.put(name, def);
-        return;
     }
 
 }

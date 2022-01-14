@@ -170,7 +170,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        ExpDefinition def = localEnv.get(name);
+        Definition def = localEnv.get(name);
 	if (def != null) {
 	    return def.getType();
 	}
@@ -183,11 +183,12 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-	    Map<String, Type> typeTable = compiler.getTypeTable();
-        Type type = typeTable.get(name.getName());
+	EnvironmentExp localEnv = compiler.getEnvPredef();
+        Type type = localEnv.get(name).getType();
         if (type == null) {
             throw new ContextualError(name + " is not a type", getLocation());
         }
+        setType(type);
         return type;
     }
     
