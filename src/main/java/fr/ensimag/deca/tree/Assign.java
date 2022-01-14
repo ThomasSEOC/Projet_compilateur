@@ -29,17 +29,11 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        AbstractLValue lOp = getLeftOperand();
-        if (!(lOp instanceof Identifier)) {
-            throw new ContextualError("This is not an identifier", getLocation());
-        }
 
-        Type typeLOp = lOp.getType();
-
-
-        AbstractExpr rOp = verifyRValue(compiler, localEnv, currentClass, typeLOp);
-        //localEnv.declare(((Identifier) lOp).getName(), ((Identifier) lOp).getExpDefinition());
-
+        AbstractLValue lOp = this.getLeftOperand();
+        Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
+        this.verifyRValue(compiler, localEnv, currentClass, typeLOp);
+        this.setType(typeLOp);
         return typeLOp;
     }
 
