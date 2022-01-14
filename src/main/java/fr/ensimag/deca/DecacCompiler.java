@@ -260,11 +260,11 @@ public class DecacCompiler {
             return true;
         }
         assert(prog.checkAllLocations());
+        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
+            prog.verifyProgram(this);
+            assert(prog.checkAllDecorations());
+        }
 
-//        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
-//            prog.verifyProgram(this);
-//            assert(prog.checkAllDecorations());
-//        }
 
         if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
             prog.codeGenProgram(this);
