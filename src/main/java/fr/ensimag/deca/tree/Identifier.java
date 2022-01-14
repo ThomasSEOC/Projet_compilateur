@@ -188,6 +188,7 @@ public class Identifier extends AbstractIdentifier {
         if (type == null) {
             throw new ContextualError(name + " is not a type", getLocation());
         }
+        setType(type);
         return type;
     }
     

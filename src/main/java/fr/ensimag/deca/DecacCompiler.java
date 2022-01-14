@@ -69,13 +69,13 @@ public class DecacCompiler {
          * Predefined symbols
          */
         symbolTable.create("void");
-	typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
+	    typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
         symbolTable.create("boolean");
-	typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
+	    typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
         symbolTable.create("float");
-	typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
+	    typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
         symbolTable.create("int");
-	typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
+	    typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
 	
         symbolTable.create("Object");
 
@@ -259,10 +259,11 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+
+//        assert(prog.checkAllLocations());
         if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
             prog.verifyProgram(this);
-            assert(prog.checkAllDecorations());
+//            assert(prog.checkAllDecorations());
         }
 
 

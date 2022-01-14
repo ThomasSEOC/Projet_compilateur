@@ -77,12 +77,10 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-	if (dico.containsKey(name)) {
-	    throw new DoubleDefException("Arleady defined");
-	}
-	
+        if (dico.containsKey(name)) {
+            throw new DoubleDefException("Arleady defined");
+        }
         dico.put(name, def);
-        return;
     }
 
 }

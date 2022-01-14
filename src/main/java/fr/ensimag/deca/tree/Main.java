@@ -35,22 +35,22 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
 
-	//Création de l'environment local
-	EnvironmentExp localEnv = new EnvironmentExp(null);
-	Map<String, Symbol> symbolTable = compiler.getSymbolTable().getMap();
-	Map<String, Type> typeTable= compiler.getTypeTable();
-	Type typeB = typeTable.get("boolean");
-	try{
-	localEnv.declare(symbolTable.get("Object"), new VariableDefinition(typeB, getLocation()));
-	} catch(DoubleDefException e) {
-	    System.out.println("Object : " + e);
-	    System.exit(1);	    
-	}
-	    
-	Type typeV = typeTable.get("void");
-	declVariables.verifyListDeclVariable(compiler, localEnv, null);
-	insts.verifyListInst(compiler, localEnv, null, typeV);
-	LOG.debug("verify Main: end");
+        //Création de l'environment local
+        EnvironmentExp localEnv = new EnvironmentExp(null);
+        Map<String, Symbol> symbolTable = compiler.getSymbolTable().getMap();
+        Map<String, Type> typeTable= compiler.getTypeTable();
+        Type typeB = typeTable.get("boolean");
+        try{
+        localEnv.declare(symbolTable.get("Object"), new VariableDefinition(typeB, getLocation()));
+        } catch(DoubleDefException e) {
+            System.out.println("Object : " + e);
+            System.exit(1);
+        }
+
+        Type typeV = typeTable.get("void");
+        declVariables.verifyListDeclVariable(compiler, localEnv, null);
+        insts.verifyListInst(compiler, localEnv, null, typeV);
+        LOG.debug("verify Main: end");
     }
 
     @Override
