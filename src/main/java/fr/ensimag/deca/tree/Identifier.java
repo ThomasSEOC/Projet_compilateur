@@ -183,12 +183,12 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-	Map<String, Type> typeTable = compiler.getTypeTable();
-	Type type = typeTable.get(name.getName());
-	if (type == null) {
-	    throw new ContextualError(name + " is not a type", getLocation());
-  	}
-	return type;
+	    Map<String, Type> typeTable = compiler.getTypeTable();
+        Type type = typeTable.get(name.getName());
+        if (type == null) {
+            throw new ContextualError(name + " is not a type", getLocation());
+        }
+        return type;
     }
     
     

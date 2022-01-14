@@ -40,16 +40,16 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-	Iterator<AbstractExpr> it = arguments.iterator();
-	//System.out.println(compiler.getTypeTable().keySet());
-	while (it.hasNext()) {
-        Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);
-	    if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()){
-		    throw new ContextualError("What is printed needs to be either an int, a float or a string", getLocation());
-	    }
-	}
-    }
 
+        Iterator<AbstractExpr> it = arguments.iterator();
+        //System.out.println(compiler.getTypeTable().keySet());
+        while (it.hasNext()) {
+            Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);
+            if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()) {
+                throw new ContextualError("What is printed needs to be either an int, a float or a string", getLocation());
+            }
+        }
+    }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         compiler.getCodeGenBackend().setPrintHex(getPrintHex());
