@@ -18,7 +18,7 @@ import java.util.Map;
  * @date 01/01/2022
  */
 public class SymbolTable {
-    private Map<String, Symbol> map = new HashMap<String, Symbol>();
+    private Map<String, Symbol> map = new HashMap<>();
 
     /**
      * Create or reuse a symbol.
@@ -34,6 +34,10 @@ public class SymbolTable {
             map.put(name,val);
         }
         return val;
+    }
+
+    public Symbol getSymbol(String name) {
+        return map.get(name);
     }
 
     public Map<String, Symbol> getMap() {

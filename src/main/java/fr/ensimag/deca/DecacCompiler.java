@@ -58,7 +58,7 @@ public class DecacCompiler {
     private EnvironmentExp envPredef = new EnvironmentExp(null);    
 
     public EnvironmentExp getEnvPredef() {
-	return envPredef;
+	    return envPredef;
     }
 					  
     
@@ -78,7 +78,7 @@ public class DecacCompiler {
         /**
          * Predefined symbols
          */
-        symbolTable.create("void");
+    symbolTable.create("void");
 
 	//typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
 	TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
@@ -96,25 +96,25 @@ public class DecacCompiler {
 	TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
 	try {
-	    envPredef.declare(symbolTable.getMap().get("void"), voidDef);
+	    envPredef.declare(symbolTable.getSymbol("void"), voidDef);
 	} catch (DoubleDefException e) {
 	    System.out.println("void : " +e);
 	    System.exit(1);
 	}
 	try {
-	    envPredef.declare(symbolTable.getMap().get("boolean"), booleanDef);
+	    envPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
 	} catch (DoubleDefException e) {
 	    System.out.println("boolean : " +e);
 	    System.exit(1);
 	}
 	try {
-	    envPredef.declare(symbolTable.getMap().get("float"), floatDef);
+	    envPredef.declare(symbolTable.getSymbol("float"), floatDef);
 	} catch (DoubleDefException e) {
 	    System.out.println("void : " +e);
 	    System.exit(1);
 	}
 	try {
-	    envPredef.declare(symbolTable.getMap().get("int"), intDef);
+	    envPredef.declare(symbolTable.getSymbol("int"), intDef);
 	} catch (DoubleDefException e) {
 	    System.out.println("void : " +e);
 	    System.exit(1);
