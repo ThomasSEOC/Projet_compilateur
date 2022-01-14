@@ -4,6 +4,21 @@
 	BOV stack_overflow_error
 	ADDSP #0
 ; Beginning of main instructions:
+	LOAD #2, R2
+	OPP R2, R2
+	LOAD R2, R1
+	WINT
+	WNL
+	LOAD #16, R2
+	REM #3, R2	; Operation Remainder
+	LOAD R2, R1
+	WINT
+	WNL
+	LOAD #3, R2
+	ADD #1, R2	; Operation Plus
+	LOAD R2, R1
+	WINT
+	WNL
 	LOAD #1, R2
 	CMP #1, R2
 	BGT if_1_else
