@@ -1,11 +1,11 @@
 // Description:
-//    Programme comportant des chaines de caractères imbriquées
+// Program containing a while an a print
 //
-// Resultats:
-//    error car token sdfdgdbd n'existe pas
+// Results:
+// Error (x uninitialized)
 //
-// Historique:
-//    cree le 01/01/2022
+// Historic:
+// created le 13/01/2022
 
 {
     int x ;
