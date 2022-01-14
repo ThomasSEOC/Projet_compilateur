@@ -35,10 +35,12 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Type type = getType();
-	if (type.isString()) {
-	    return type;
-	}
+        Type type = getType();
+
+        if (type.isString()) {
+            return type;
+        }
+
         throw new ContextualError("Not a string", getLocation());
     }
 
