@@ -79,9 +79,10 @@ public class DecacCompiler {
          * Predefined symbols
          */
         symbolTable.create("void");
+
 	//typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
 	TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
-	
+
 	symbolTable.create("boolean");
 	//typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
 	TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
@@ -302,10 +303,11 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
+
+//        assert(prog.checkAllLocations());
         if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
             prog.verifyProgram(this);
-            assert(prog.checkAllDecorations());
+//            assert(prog.checkAllDecorations());
         }
 
 

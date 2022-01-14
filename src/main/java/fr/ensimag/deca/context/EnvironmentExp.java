@@ -82,7 +82,6 @@ public class EnvironmentExp {
 	}
 	
         dico.put(name, def);
-        return;
     }
 
 }
