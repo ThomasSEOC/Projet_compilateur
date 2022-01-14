@@ -42,7 +42,6 @@ public abstract class AbstractPrint extends AbstractInst {
             throws ContextualError {
 
         Iterator<AbstractExpr> it = arguments.iterator();
-        //System.out.println(compiler.getTypeTable().keySet());
         while (it.hasNext()) {
             Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);
             if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()) {
