@@ -2,11 +2,11 @@
 //    Programme minimaliste utilisant println.
 //
 // Resultats:
-//    Hello
+//    Hel/*bonjour*/lo
 //
 // Historique:
 //    cree le 01/01/2022
 
 {
-        println("Hello");
+        println("Hel/*bonjour*/lo");
 }

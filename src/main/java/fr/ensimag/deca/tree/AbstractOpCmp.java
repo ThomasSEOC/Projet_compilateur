@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BinaryBoolOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.BooleanType;
 import fr.ensimag.deca.DecacCompiler;
@@ -31,5 +32,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 	    return boolType;
 	}
 	throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        BinaryBoolOperation operator = new BinaryBoolOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
     }
 }

@@ -3,6 +3,8 @@ package fr.ensimag.deca;
 import java.io.File;
 import org.apache.log4j.Logger;
 
+import static fr.ensimag.deca.CompilerOptions.*;
+
 /**
  * Main class for the command-line Deca compiler.
  *
@@ -25,11 +27,24 @@ public class DecacMain {
             options.displayUsage();
             System.exit(1);
         }
-        if (options.getPrintBanner()) {
-            throw new UnsupportedOperationException("decac -b not yet implemented");
+        if (options.getPrintBanner() == BANNER_OK) {
+            System.out.println("EQUIPE GL54 : ");
+            System.out.println(" - Wang Caroline");
+            System.out.println(" - Ho-Sun Jules");
+            System.out.println(" - Falgaryrac Loïc");
+            System.out.println(" - Dijs Thomas");
+            System.out.println(" - Noiry Sylvain");
+            System.exit(0);
+        }
+        else if (options.getPrintBanner() == BANNER_ERROR) {
+            System.out.println("L'option -b s'utilise seule");
+            options.displayUsage();
+            System.exit(1);
         }
         if (options.getSourceFiles().isEmpty()) {
-            throw new UnsupportedOperationException("decac without argument not yet implemented");
+            System.out.println("Aucun fichier source spécifié");
+            options.displayUsage();
+            //throw new UnsupportedOperationException("decac without argument not yet implemented");
         }
         if (options.getParallel()) {
             // A FAIRE : instancier DecacCompiler pour chaque fichier à

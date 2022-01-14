@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.BinaryBoolOperation;
+import fr.ensimag.deca.codegen.NotOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -28,7 +30,12 @@ public class Not extends AbstractUnaryExpr {
 	throw new ContextualError("not needs a boolean", getLocation());
     }
 
-    
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        NotOperation operator = new NotOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
+
     @Override
     protected String getOperatorName() {
         return "!";
