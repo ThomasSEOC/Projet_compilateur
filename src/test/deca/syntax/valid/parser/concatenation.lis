@@ -6,5 +6,5 @@
          []> [11, 8] Println
              `> ListExpr [List with 1 elements]
                 []> [11, 16] Plus
-                    +> [11, 16] StringLiteral (Hello)
-                    `> [11, 26] StringLiteral (World!)
+                    +> [11, 16] StringLiteral ("Hello")
+                    `> [11, 26] StringLiteral ("World!")

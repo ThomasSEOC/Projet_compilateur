@@ -31,15 +31,21 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 		Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
 		Type typeROp = rOp.verifyExpr(compiler, localEnv, currentClass);
 		if ((typeLOp.isInt() || typeLOp.isFloat()) && (typeROp.isInt() || typeROp.isFloat())) { // vérifie que les deux opérandes sont soit des int soit des float
+			setType(typeLOp);
 			if (typeLOp.isInt() && typeROp.isInt()) {
-				setType(typeLOp);
 				return typeLOp; //si les 2 sont des int, retourne int
 			}
-			if (typeLOp.isFloat()) {
-				throw new UnsupportedOperationException("ça va buggé ce truc");
-				//return typeLOp; //si l'opérande de gauche est un flottant, retourne un flottant
+			else if (typeLOp.isFloat() && typeROp.isFloat()) {
+				return typeLOp; //si l'opérande de gauche est un flottant, retourne un flottant
 			}
-			throw new UnsupportedOperationException("ça va buggé ce truc aussi");
+			else if (typeLOp.isFloat() && typeROp.isInt()) {
+				setRightOperand(new ConvFloat(getRightOperand()));
+				return typeLOp;
+			}
+			else {
+				setLeftOperand(new ConvFloat(getLeftOperand()));
+				return typeROp;
+			}
 			//return typeROp; //si les opérandes ne sont pas toutes les deux des int et que l'opérande de gauche n'est pas un float, alors celle de droite l'est
 		}
 

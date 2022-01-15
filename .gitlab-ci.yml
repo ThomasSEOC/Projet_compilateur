@@ -18,7 +18,7 @@ test:
   stage: test
   script:
     - source /home/gl/.bashrc
-    - mvn -Dmaven.test.failure.ignore clean verify
+    - mvn clean verify
 #    - mvn -Djacoco.skip=false -Dmaven.test.failure.ignore clean verify
   only:
     - dev

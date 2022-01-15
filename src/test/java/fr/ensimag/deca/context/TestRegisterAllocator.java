@@ -1,48 +1,68 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ContextManager;
 import fr.ensimag.deca.codegen.VirtualRegister;
+import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
 import static org.mockito.Mockito.*;
 
 public class TestRegisterAllocator {
+    DecacCompiler compiler;
+
+    @Mock
+    CompilerOptions compilerOptions;
+
+    @BeforeEach
+    public void setup() throws ContextualError {
+        MockitoAnnotations.initMocks(this);
+        compiler = new DecacCompiler(compilerOptions, null);
+        when(compilerOptions.getRegistersCount()).thenReturn(4);
+    }
+
     @Test
     public void testOnePhysicalRegister() {
-        ContextManager contextManager = new ContextManager(null);
+        ContextManager contextManager = compiler.getCodeGenBackend().getContextManager();
         VirtualRegister register = contextManager.requestNewRegister();
         DVal dval = register.getDVal();
-        System.out.println("DVAL: " + dval.toString());
+        assertEquals("R2", dval.toString());
         GPRegister physicalRegister = register.requestPhysicalRegister();
-        System.out.println("Physical register: " + physicalRegister.getNumber());
+        assertEquals(physicalRegister.getNumber(), 2);
     }
 
     @Test
     public void testFourPhysicalRegister() {
-        ContextManager contextManager = new ContextManager(null);
+        ContextManager contextManager = compiler.getCodeGenBackend().getContextManager();
         VirtualRegister register1 = contextManager.requestNewRegister();
         VirtualRegister register2 = contextManager.requestNewRegister();
         VirtualRegister register3 = contextManager.requestNewRegister();
         VirtualRegister register4 = contextManager.requestNewRegister();
 
         DVal dval = register1.getDVal();
-        System.out.println("register1 DVAL: " + dval.toString());
+        assertEquals("R2", dval.toString());
         GPRegister physicalRegister = register1.requestPhysicalRegister();
-        System.out.println("register1 Physical register: " + physicalRegister.getNumber());
+        assertEquals(physicalRegister.getNumber(), 2);
 
         dval = register2.getDVal();
-        System.out.println("register2 DVAL: " + dval.toString());
+        assertEquals("R3", dval.toString());
         physicalRegister = register2.requestPhysicalRegister();
-        System.out.println("register2 Physical register: " + physicalRegister.getNumber());
+        assertEquals(physicalRegister.getNumber(), 3);
 
         dval = register3.getDVal();
-        System.out.println("register3 DVAL: " + dval.toString());
+        assertEquals("-1(SP)", dval.toString());
+
 
         dval = register4.getDVal();
-        System.out.println("register4 DVAL: " + dval.toString());
+        assertEquals("0(SP)", dval.toString());
     }
 }
