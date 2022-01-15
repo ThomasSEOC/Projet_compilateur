@@ -57,9 +57,12 @@ public class DeclVar extends AbstractDeclVar {
 
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
+//            compiler.getSymbolTable().getSymbol(varName.getName().getName())
 //            System.out.println(varName.getName());
 //            localEnv.declare(varName.getName(), type.getExpDefinition());
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
+
+            //System.out.println(compiler.getSymbolTable().getSymbol(varName.getName().getName()));
         } catch (DoubleDefException e) {
             throw new ContextualError("Var is already defined", getLocation());
 //            System.out.println(varName.getName() + " : " + e);
@@ -88,11 +91,12 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     public void codeGenDeclVar(DecacCompiler compiler) {
-        // set address operand
-        varName.getVariableDefinition().setOperand(new RegisterOffset(compiler.getCodeGenBackend().getMaxGlobalVAriablesSize(), Register.GB));
+        // declare variable to backend
+        compiler.getCodeGenBackend().addVariable(varName.getName().getName());
+        int offset = compiler.getCodeGenBackend().getVariableOffset(varName.getName().getName());
 
-        // inc global variables size
-        compiler.getCodeGenBackend().incMaxGlobalVAriablesSize();
+        // set address operand
+        varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.GB));
 
         // init variable if initialization
         if (initialization instanceof Initialization) {

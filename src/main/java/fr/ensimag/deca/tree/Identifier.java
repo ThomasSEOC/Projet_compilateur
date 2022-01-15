@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.IdentifierRead;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
@@ -173,9 +174,9 @@ public class Identifier extends AbstractIdentifier {
         // obligé de récupérer le vrai symble, jsp pourquoi
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
         Definition def = localEnv.get(realSymbol);
-//        System.out.println(def);
         setDefinition(def);
         if (def != null) {
+            setType(def.getType());
             return def.getType();
         }
         throw new ContextualError(name + " n'est pas défini", getLocation());
@@ -191,6 +192,7 @@ public class Identifier extends AbstractIdentifier {
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
 //        System.out.println(localEnv.get(realSymbol));
         Type type = localEnv.get(realSymbol).getType();
+//        System.out.println("coucou " + type + " " + getLocation());
         if (type == null) {
             throw new ContextualError(name + " is not a type", getLocation());
         }
@@ -235,4 +237,10 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+//        System.out.println(getType());
+        IdentifierRead operator = new IdentifierRead(compiler.getCodeGenBackend(), this);
+        operator.print();
+    }
 }
