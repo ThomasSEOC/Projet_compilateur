@@ -44,8 +44,10 @@ public class IntLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateInteger(value), GPRegister.getR(1)));
-        compiler.addInstruction(new WINT());
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
+//        compiler.addInstruction(new LOAD(new ImmediateInteger(value), GPRegister.getR(1)));
+//        compiler.addInstruction(new WINT());
     }
 
     @Override

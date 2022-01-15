@@ -29,11 +29,12 @@ public class SymbolTable {
     public Symbol create(String name) {
 
         //throw new UnsupportedOperationException("Symbol creation");
-        Symbol val = new Symbol(name);
         if(!(map.containsKey(name))){
+            Symbol val = new Symbol(name);
             map.put(name,val);
         }
-        return val;
+
+        return map.get(name);
     }
 
     public Symbol getSymbol(String name) {

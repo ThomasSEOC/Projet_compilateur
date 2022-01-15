@@ -69,7 +69,8 @@ public class LiteralOperation extends AbstractOperation {
         }
         else if (getExpression() instanceof StringLiteral) {
             StringLiteral expr = (StringLiteral) getExpression();
-            getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString(expr.getValue())));
+            String toDisplay = expr.getValue().substring(1, expr.getValue().length()-1);
+            getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString(toDisplay)));
         }
     }
 

@@ -39,6 +39,12 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(Boolean.toString(value));
     }

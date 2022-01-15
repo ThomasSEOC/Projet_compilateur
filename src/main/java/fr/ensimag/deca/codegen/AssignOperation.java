@@ -25,7 +25,7 @@ public class AssignOperation extends AbstractOperation {
         VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
 
         // generate address where to store result
-        Identifier identifier = (Identifier) expr.getRightOperand();
+        Identifier identifier = (Identifier) expr.getLeftOperand();
         DAddr addr = identifier.getVariableDefinition().getOperand();
 
         // store result

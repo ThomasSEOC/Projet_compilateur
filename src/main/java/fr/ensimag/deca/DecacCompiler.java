@@ -74,54 +74,53 @@ public class DecacCompiler {
         this.source = source;
         this.codeGenBackend = new CodeGenBackend(this);
 
-		
         /**
          * Predefined symbols
          */
-    symbolTable.create("void");
+        symbolTable.create("void");
 
-	//typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
-	TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
+        //typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
+        TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
 
-	symbolTable.create("boolean");
-	//typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
-	TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
-	
-	symbolTable.create("float");
-	//typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
-	TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
-	
-	symbolTable.create("int");
-	//typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
-	TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
+        symbolTable.create("boolean");
+        //typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
+        TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
 
-	try {
-	    envPredef.declare(symbolTable.getSymbol("void"), voidDef);
-	} catch (DoubleDefException e) {
-	    System.out.println("void : " +e);
-	    System.exit(1);
-	}
-	try {
-	    envPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
-	} catch (DoubleDefException e) {
-	    System.out.println("boolean : " +e);
-	    System.exit(1);
-	}
-	try {
-	    envPredef.declare(symbolTable.getSymbol("float"), floatDef);
-	} catch (DoubleDefException e) {
-	    System.out.println("void : " +e);
-	    System.exit(1);
-	}
-	try {
-	    envPredef.declare(symbolTable.getSymbol("int"), intDef);
-	} catch (DoubleDefException e) {
-	    System.out.println("void : " +e);
-	    System.exit(1);
-	}
-	
+        symbolTable.create("float");
+        //typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
+        TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
 
-	symbolTable.create("Object");
+        symbolTable.create("int");
+        //typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
+        TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
+
+        try {
+            envPredef.declare(symbolTable.getSymbol("void"), voidDef);
+        } catch (DoubleDefException e) {
+            System.out.println("void : " +e);
+            System.exit(1);
+        }
+        try {
+            envPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
+        } catch (DoubleDefException e) {
+            System.out.println("boolean : " +e);
+            System.exit(1);
+        }
+        try {
+            envPredef.declare(symbolTable.getSymbol("float"), floatDef);
+        } catch (DoubleDefException e) {
+            System.out.println("void : " +e);
+            System.exit(1);
+        }
+        try {
+            envPredef.declare(symbolTable.getSymbol("int"), intDef);
+        } catch (DoubleDefException e) {
+            System.out.println("void : " +e);
+            System.exit(1);
+        }
+
+
+        symbolTable.create("Object");
 
 
 	

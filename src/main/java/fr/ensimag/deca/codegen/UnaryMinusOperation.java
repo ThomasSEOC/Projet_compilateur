@@ -2,7 +2,8 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.UnaryMinus;
-import fr.ensimag.ima.pseudocode.instructions.OPP;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 public class UnaryMinusOperation extends AbstractOperation {
     public UnaryMinusOperation(CodeGenBackend backend, AbstractExpr expression) {
@@ -24,7 +25,23 @@ public class UnaryMinusOperation extends AbstractOperation {
 
     @Override
     public void print() {
-        throw new UnsupportedOperationException("not yet implemented");
+        VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
+
+        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(r.getDVal(), GPRegister.getR(1)));
+
+        if (r.getIsFloat()) {
+            if (getCodeGenBackEnd().getPrintHex()) {
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+            }
+            else {
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+            }
+        }
+        else {
+            getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+        }
+
+        r.destroy();
     }
 
 }

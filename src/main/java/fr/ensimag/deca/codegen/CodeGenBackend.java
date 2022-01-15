@@ -3,6 +3,8 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -14,6 +16,8 @@ import java.util.Stack;
 public class CodeGenBackend {
     private int maxStackSize = 0;
     private int maxGlobalVAriablesSize = 0;
+
+    private final Map<String, Integer> variables;
 
     private final ErrorsManager errorsManager;
     private final StartupManager startupManager;
@@ -35,9 +39,10 @@ public class CodeGenBackend {
      */
     public CodeGenBackend(DecacCompiler compiler) {
         this.compiler = compiler;
+        variables = new HashMap<>();
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
-        contextManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
+        contextManager = new ContextManager(this);
         trueBooleanLabel = new Stack<>();
         falseBooleanLabel = new Stack<>();
         branchCondition = false;
@@ -108,10 +113,13 @@ public class CodeGenBackend {
      */
     public int getMaxGlobalVAriablesSize() { return maxGlobalVAriablesSize; }
 
-    /**
-     * increment the number of global variables
-     */
-    public void incMaxGlobalVAriablesSize() { maxGlobalVAriablesSize++; }
+    public void addVariable(String name) {
+        variables.put(name, ++maxGlobalVAriablesSize);
+    }
+
+    public int getVariableOffset(String name) {
+        return variables.get(name);
+    }
 
     /**
      * increment the maximum stack size

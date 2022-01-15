@@ -95,9 +95,9 @@ public abstract class AbstractExpr extends AbstractInst {
             return this;
 	    }
 
-	//Il va falloir rajouter le cas des sous-types avec les objets
+	    //Il va falloir rajouter le cas des sous-types avec les objets
 
-	throw new ContextualError(expectedType + " is expected", getLocation());
+    	throw new ContextualError(expectedType + " is expected", getLocation());
     }
     
     
@@ -105,10 +105,11 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-	Type typeVerif = verifyExpr(compiler,localEnv, currentClass);
-	if (!type.sameType(returnType)) {
-	    throw new ContextualError(returnType + " is needed", getLocation());
-	}
+        Type typeVerif = verifyExpr(compiler,localEnv, currentClass);
+//        if (!type.sameType(returnType)) {
+//            throw new ContextualError(returnType + " is needed", getLocation());
+//        }
+        // c'est buggé
     }
 
     /**
@@ -123,6 +124,7 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        this.verifyExpr(compiler, localEnv, currentClass);
         Type typeCondition = getType();
         if (!typeCondition.isBoolean()) {
             throw new ContextualError("Condition needs to be a boolean", getLocation());
