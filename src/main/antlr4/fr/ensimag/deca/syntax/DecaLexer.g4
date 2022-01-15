@@ -41,19 +41,20 @@ THIS:                'this';
 WHILE:               'while';
 
 //Séparateurs : 
-ESPACE:              ' '{ skip(); }; // espace
-EOL:                 '\n'{ skip(); }; // fin de ligne
-TAB:                 '\t'{ skip(); }; // tabulation
-CR:                  '\r'{ skip(); }; // retour chariot
+fragment ESPACE:              ' '; // espace
+fragment EOL:                 '\n'; // fin de ligne
+fragment TAB:                 '\t'; // tabulation
+fragment CR:                  '\r'; // retour chariot
 
-FORMAT:              (EOL | TAB | CR);
+fragment FORMAT:    (EOL | TAB | CR);
 WS  :   ( ESPACE | FORMAT) 
          { skip(); };
 
 //Identificateurs :
 fragment LETTER :    ('a'..'z' | 'A'..'Z'); // lettres
 fragment DIGIT:    '0' .. '9'; // chiffres
-IDENT:               (LETTER + '$' + '_')(LETTER + DIGIT + '$' + '_');
+IDENT:               (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+
 
 //Symboles spéciaux :
 LT:                  '<'; // comparateur 'inférieur à'
@@ -87,7 +88,7 @@ INT:                 '0' | POSITIVE_DIGIT DIGIT*;
 fragment NUM:        DIGIT+;
 fragment SIGN:       (PLUS | MINUS | EPS);
 fragment EXP:        ('E' | 'e') SIGN NUM;
-fragment DEC:        NUM DOT NUM; // a voir si ca marche, sinon NUM ',' NUM
+fragment DEC:        NUM DOT NUM;
 fragment FLOATDEC:   (DEC | DEC EXP)('F' | 'f' | EPS);
 fragment DIGITHEX:   (DIGIT | 'A'..'F' | 'a'..'f');
 fragment NUMHEX:     DIGITHEX+;
@@ -95,24 +96,25 @@ fragment FLOATHEX:   ('0x' | '0X') NUMHEX DOT NUMHEX ('P' | 'p') SIGN NUM ('F' |
 FLOAT :              (FLOATDEC | FLOATHEX);
 
 //Chaines de caractère :
-fragment STRING_CAR: ~('"' | '\'' | '\n' ); //caractère d'une chaine de caractères
+fragment STRING_CAR: ~('"' | '\\' | '\n' ); //caractère d'une chaine de caractères
 STRING:              '"' (STRING_CAR | '\\"' | '\\\\')* '"'; //chaine de caractère
-MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"'; //chaine de caractère sur plusieurs lignes
+MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+ /*
+ {
+     String s = getText();
+     setText(s.substring(1,s.length()-1).replace("\\\","\"").replace("\\\\","\\"));
+ }; //chaine de caractère sur plusieurs lignes//chaine de caractère sur plusieurs lignes
+*/
 
 //Commentaires :
-COMMENT:             '//' .*? EOL  
+COMMENT:             '//' .*? (EOL|EOF)
                      { skip();};
 
-MULTI_LINE_COMMENT:  '/*' .*? '*/'  
+MULTI_LINE_COMMENT:  '/*' .*? '*/'
                      { skip();};
 
 
 
 //Inclusion de fichier
-fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_');
+fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_')+;
 INCLUDE:             '#include' (' ')* '"' FILENAME '"';
-
-
-//UNKNOWN:            .;
-
-

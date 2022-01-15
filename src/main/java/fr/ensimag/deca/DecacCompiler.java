@@ -1,14 +1,13 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.CodeGenBackend;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +16,13 @@ import java.io.PrintStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
+import fr.ensimag.deca.tools.SymbolTable;
+import java.util.HashMap;
+import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.tree.Location;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
+
 
 /**
  * Decac compiler instance.
@@ -35,17 +41,99 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    
+    
+
+    /**
+     * Symbols
+     */
+    private SymbolTable symbolTable = new SymbolTable();
+
+    /**
+     * Types
+     */
+    //    private HashMap<String, Type> typeTable = new HashMap<String, Type>();
+
+    private EnvironmentExp envPredef = new EnvironmentExp(null);    
+
+    public EnvironmentExp getEnvPredef() {
+	    return envPredef;
+    }
+					  
     
     /**
      * Portable newline character.
      */
     private static final String nl = System.getProperty("line.separator", "\n");
 
+
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.codeGenBackend = new CodeGenBackend(this);
+
+        /**
+         * Predefined symbols
+         */
+        symbolTable.create("void");
+
+        //typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
+        TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
+
+        symbolTable.create("boolean");
+        //typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
+        TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
+
+        symbolTable.create("float");
+        //typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
+        TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
+
+        symbolTable.create("int");
+        //typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
+        TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
+
+        try {
+            envPredef.declare(symbolTable.getSymbol("void"), voidDef);
+        } catch (DoubleDefException e) {
+            System.out.println("void : " +e);
+            System.exit(1);
+        }
+        try {
+            envPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
+        } catch (DoubleDefException e) {
+            System.out.println("boolean : " +e);
+            System.exit(1);
+        }
+        try {
+            envPredef.declare(symbolTable.getSymbol("float"), floatDef);
+        } catch (DoubleDefException e) {
+            System.out.println("void : " +e);
+            System.exit(1);
+        }
+        try {
+            envPredef.declare(symbolTable.getSymbol("int"), intDef);
+        } catch (DoubleDefException e) {
+            System.out.println("void : " +e);
+            System.exit(1);
+        }
+
+
+        symbolTable.create("Object");
+
+
+	
     }
+
+
+    public SymbolTable getSymbolTable(){
+        return symbolTable;
+    }
+
+    // public HashMap<String, Type> getTypeTable() {
+    // 	return typeTable;
+    // }
 
     /**
      * Source file associated with this compiler instance.
@@ -116,7 +204,44 @@ public class DecacCompiler {
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
- 
+
+    private final CodeGenBackend codeGenBackend;
+
+    /**
+     * getter for code generation backend
+     * @return codeGenBackend
+     */
+    public CodeGenBackend getCodeGenBackend() {
+        return codeGenBackend;
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction)
+     * added by gl54
+     */
+    public void addFirst(Instruction instruction) {
+        program.addFirst(instruction);
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction,
+     * java.lang.String)
+     * added by gl54
+     */
+    public void addFirst(Instruction instruction, String comment) {
+        program.addFirst(instruction, comment);
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(java.lang.String)
+     * added by gl54
+     */
+    public void addFirst(String comment) {
+        program.addFirst(comment);
+    }
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -124,8 +249,9 @@ public class DecacCompiler {
      * @return true on error
      */
     public boolean compile() {
+        // le fichier de sortie est créé par défaut au même endroit que le fichier source, mais avec l'extension .ass
         String sourceFile = source.getAbsolutePath();
-        String destFile = null;
+        String destFile = sourceFile.replaceFirst("[.][^.]+$", "") + ".ass";
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
         // A FAIRE: fichier .deca.
         PrintStream err = System.err;
@@ -176,29 +302,33 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
+
         assert(prog.checkAllLocations());
-
-
-        prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
-
-        addComment("start main program");
-        prog.codeGenProgram(this);
-        addComment("end main program");
-        LOG.debug("Generated assembly code:" + nl + program.display());
-        LOG.info("Output file assembly file is: " + destName);
-
-        FileOutputStream fstream = null;
-        try {
-            fstream = new FileOutputStream(destName);
-        } catch (FileNotFoundException e) {
-            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
+            prog.verifyProgram(this);
+            assert(prog.checkAllDecorations());
         }
 
-        LOG.info("Writing assembler file ...");
 
-        program.display(new PrintStream(fstream));
-        LOG.info("Compilation of " + sourceName + " successful.");
+        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
+            prog.codeGenProgram(this);
+            addComment("end main program");
+            LOG.debug("Generated assembly code:" + nl + program.display());
+            LOG.info("Output file assembly file is: " + destName);
+
+            FileOutputStream fstream = null;
+            try {
+                fstream = new FileOutputStream(destName);
+            } catch (FileNotFoundException e) {
+                throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+            }
+
+            LOG.info("Writing assembler file ...");
+
+            program.display(new PrintStream(fstream));
+            LOG.info("Compilation of " + sourceName + " successful.");
+        }
+
         return false;
     }
 

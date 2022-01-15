@@ -1,11 +1,14 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.codegen.LiteralOperation;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+
 import java.io.PrintStream;
 
 /**
@@ -28,9 +31,24 @@ public class IntLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type intType = new IntType(compiler.getSymbolTable().create("int"));
+        this.setType(intType);
+        return intType;
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
+//        compiler.addInstruction(new LOAD(new ImmediateInteger(value), GPRegister.getR(1)));
+//        compiler.addInstruction(new WINT());
+    }
 
     @Override
     String prettyPrintNode() {

@@ -1,0 +1,13 @@
+// Description:
+//    Programme avec tous types de chaines de caractères
+//
+// Resultats:
+//    error at line
+//
+// Historique:
+//    cree le 10/01/2022
+//    par Caroline
+
+"coucou"
+"coucou \\" ca va"
+"coucou \\\\ ca doit marcher"

@@ -1,0 +1,16 @@
+// Description:
+// Program containing a while an a print
+//
+// Results:
+// Error (x uninitialized)
+//
+// Historic:
+// created le 13/01/2022
+
+{
+    int x ;
+    while( x < 2){
+        x = readInt();
+        println(0.5*(x*x));
+    }
+}

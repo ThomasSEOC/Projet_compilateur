@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
+import fr.ensimag.deca.codegen.*;
+
 /**
  * Deca complete program (class definition plus main block)
  *
@@ -35,16 +37,28 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        throw new UnsupportedOperationException("not yet implemented");
-        // LOG.debug("verify program: end");
+        this.main.verifyMain(compiler);
+        LOG.debug("verify program: end");
     }
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
-        compiler.addComment("Main program");
+        // create codegen backend
+        CodeGenBackend backend = compiler.getCodeGenBackend();
+
+        // generation of the main program
         main.codeGenMain(compiler);
+
+        // add startup code
+        backend.getStartupManager().generateStartupCode();
+        compiler.addFirst("Main program");
+        compiler.addFirst("start main program");
+
+        // end of the program
         compiler.addInstruction(new HALT());
+
+        // errors
+        backend.getErrorsManager().addErrors();
     }
 
     @Override

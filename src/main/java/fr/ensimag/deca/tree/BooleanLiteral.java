@@ -1,10 +1,9 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.codegen.AssignOperation;
+import fr.ensimag.deca.codegen.LiteralOperation;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -28,9 +27,22 @@ public class BooleanLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type booleanType = new BooleanType(compiler.getSymbolTable().create("boolean"));
+        this.setType(booleanType);
+        return booleanType;
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -51,5 +63,12 @@ public class BooleanLiteral extends AbstractExpr {
     String prettyPrintNode() {
         return "BooleanLiteral (" + value + ")";
     }
+
+    //Not implemented yet
+    /*@Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        AssignOperation operator = new AssignOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }*/
 
 }

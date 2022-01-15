@@ -19,33 +19,49 @@ PATH=./src/test/script/launchers:"$PATH"
 
 RESULT=1
 
-for i in ./src/test/deca/context/valid/*.deca
-do
-echo "TEST: $i"
-LIS="${i%.*}.lis"
-RES=$(test_context "$i" 2>&1 | diff - "$LIS")
-if [ "$RES" != "" ]
+echo "TESTS CONTEXT VALIDES :"
+if [ "$(ls ./src/test/deca/context/valid/)" != "" ]
 then
-  echo "-> ERROR"
-  RESULT=0
+  for i in ./src/test/deca/context/valid/*.deca
+  do
+  LIS="${i%.*}.lis"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_context "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR : $RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
+  fi
+  done
 else
-  echo "-> OK"
+  echo "AUCUN TEST TROUVE"
 fi
-done
 
-for i in ./src/test/deca/context/invalid/*.deca
-do
-echo "TEST: $i"
-LIS="${i%.*}.lis"
-RES=$(test_context "$i" 2>&1 | diff - "$LIS")
-if [ "$RES" != "" ]
+echo "TESTS CONTEXT VALIDES :"
+if [ "$(ls ./src/test/deca/context/invalid/)" != "" ]
 then
-  echo "-> ERROR : $RES"
-  RESULT=0
+  for i in ./src/test/deca/context/invalid/*.deca
+  do
+  LIS="${i%.*}.lis"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_context "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR : $RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
+  fi
+  done
 else
-  echo "-> OK"
+  echo "AUCUN TEST TROUVE"
 fi
-done
 
 if [ "$RESULT" = 0 ]
 then

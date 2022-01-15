@@ -19,33 +19,49 @@ PATH=./src/test/script/launchers:"$PATH"
 
 RESULT=1
 
-for i in ./src/test/deca/syntax/valid/lexer/*.deca
-do
-echo "TEST: $i"
-LIS="${i%.*}.lis"
-RES=$(test_lex "$i" 2>&1 | diff - "$LIS")
-if [ "$RES" != "" ]
+echo "TESTS DU LEXER VALIDES :"
+if [ "$(ls ./src/test/deca/syntax/valid/lexer/)" != "" ]
 then
-  echo "-> ERROR"
-  RESULT=0
+  for i in ./src/test/deca/syntax/valid/lexer/*.deca
+  do
+  LIS="${i%.*}.lis"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_lex "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR : $RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
+  fi
+  done
 else
-  echo "-> OK"
+  echo "AUCUN TEST TROUVE"
 fi
-done
 
-for i in ./src/test/deca/syntax/invalid/lexer/*.deca
-do
-echo "TEST: $i"
-LIS="${i%.*}.lis"
-RES=$(test_lex "$i" 2>&1 | diff - "$LIS")
-if [ "$RES" != "" ]
+echo "TESTS DU LEXER INVALIDES :"
+if [ "$(ls ./src/test/deca/syntax/invalid/lexer/)" != "" ]
 then
-  echo "-> ERROR : $RES"
-  RESULT=0
+  for i in ./src/test/deca/syntax/invalid/lexer/*.deca
+  do
+  LIS="${i%.*}.lis"
+  if [ -f "$LIS" ]; then
+    echo "TEST: $i"
+    RES=$(test_lex "$i" 2>&1 | diff - "$LIS")
+    if [ "$RES" != "" ]
+    then
+      echo "-> ERROR : $RES"
+      RESULT=0
+    else
+      echo "-> OK"
+    fi
+  fi
+  done
 else
-  echo "-> OK"
+  echo "AUCUN TEST TROUVE"
 fi
-done
 
 if [ "$RESULT" = 0 ]
 then

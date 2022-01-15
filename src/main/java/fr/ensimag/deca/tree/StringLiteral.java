@@ -1,10 +1,8 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.codegen.LiteralOperation;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -34,17 +32,27 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type stringType = new StringType(compiler.getSymbolTable().create("string"));
+        this.setType(stringType);
+        return stringType;
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new WSTR(new ImmediateString(value)));
+//        compiler.addInstruction(new WSTR(new ImmediateString(value)));
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

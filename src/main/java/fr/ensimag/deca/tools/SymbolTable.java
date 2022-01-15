@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tools;
 
+//import sun.jvm.hotspot.debugger.cdbg.Sym;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,12 +13,12 @@ import java.util.Map;
  * Symbol comparison can be done by comparing references, and the hashCode()
  * method of Symbols can be used to define efficient HashMap (no string
  * comparison or hashing required).
- * 
+ *
  * @author gl54
  * @date 01/01/2022
  */
 public class SymbolTable {
-    private Map<String, Symbol> map = new HashMap<String, Symbol>();
+    private Map<String, Symbol> map = new HashMap<>();
 
     /**
      * Create or reuse a symbol.
@@ -25,7 +27,22 @@ public class SymbolTable {
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        throw new UnsupportedOperationException("Symbol creation");
+
+        //throw new UnsupportedOperationException("Symbol creation");
+        if(!(map.containsKey(name))){
+            Symbol val = new Symbol(name);
+            map.put(name,val);
+        }
+
+        return map.get(name);
+    }
+
+    public Symbol getSymbol(String name) {
+        return map.get(name);
+    }
+
+    public Map<String, Symbol> getMap() {
+	return map;
     }
 
     public static class Symbol {

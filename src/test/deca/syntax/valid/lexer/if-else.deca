@@ -1,0 +1,21 @@
+// Description:
+//    Programme qui teste les if et les else
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 10/01/2022
+//    par Caroline
+
+{
+    if (2==3) {
+        return ("les mathématiques sont foutus");
+    }
+    else if (2==3){
+        return ("étrange!");
+    }
+    else {
+        return ("c'est syntaxiquement faux donc bon...");
+    }
+}

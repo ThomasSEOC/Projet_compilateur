@@ -6,6 +6,10 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+import fr.ensimag.deca.context.*;
+import java.util.Map;
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 
 /**
  * @author gl54
@@ -30,13 +34,17 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
+
+        declVariables.verifyListDeclVariable(compiler, compiler.getEnvPredef(), null);
+        insts.verifyListInst(compiler, compiler.getEnvPredef(), null, compiler.getEnvPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
         LOG.debug("verify Main: end");
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
+        declVariables.codeGenListDeclVar(compiler);
+
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
     }

@@ -1,10 +1,10 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
@@ -29,9 +29,20 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        AbstractLValue lOp = this.getLeftOperand();
+        Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
+        getRightOperand().verifyRValue(compiler, localEnv, currentClass, typeLOp);
+        setType(typeLOp);
+//        System.out.println(getType());
+        return typeLOp;
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        AssignOperation operator = new AssignOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
 
     @Override
     protected String getOperatorName() {

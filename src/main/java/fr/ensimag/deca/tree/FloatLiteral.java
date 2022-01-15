@@ -1,12 +1,16 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.codegen.LiteralOperation;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -34,9 +38,22 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");        
+        Type floatType = new FloatType(compiler.getSymbolTable().create("float"));
+        this.setType(floatType);
+        return floatType;
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
