@@ -57,7 +57,9 @@ public class DeclVar extends AbstractDeclVar {
 
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
-            localEnv.declare(varName.getName(), type.getExpDefinition());
+//            System.out.println(varName.getName());
+//            localEnv.declare(varName.getName(), type.getExpDefinition());
+            localEnv.declare(varName.getName(), varName.getVariableDefinition());
         } catch (DoubleDefException e) {
             throw new ContextualError("Var is already defined", getLocation());
 //            System.out.println(varName.getName() + " : " + e);

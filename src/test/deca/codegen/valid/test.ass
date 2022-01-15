@@ -1,11 +1,12 @@
 ; start main program
 ; Main program
-	TSTO #0
+	TSTO #1
 	BOV stack_overflow_error
 	ADDSP #0
+	LOAD #1, R2
+	ADD #1, R2	; Operation Plus
+	STORE R2, 0(GB)
 ; Beginning of main instructions:
-	WSTR "dfikgj"
-	WNL
 	HALT
 ; error messages
 stack_overflow_error:

@@ -185,12 +185,14 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
 	    EnvironmentExp localEnv = compiler.getEnvPredef();
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-        System.out.println(localEnv.get(realSymbol));
+//        System.out.println(localEnv.get(realSymbol));
         Type type = localEnv.get(realSymbol).getType();
         if (type == null) {
             throw new ContextualError(name + " is not a type", getLocation());
         }
         setType(type);
+        setDefinition(new TypeDefinition(type, getLocation()));
+//        System.out.println(getName());
         return type;
     }
     
