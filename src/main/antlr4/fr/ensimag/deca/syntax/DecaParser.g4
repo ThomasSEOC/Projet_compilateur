@@ -96,6 +96,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         init = new Initialization($e.tree);
         }
       )? {
+        setLocation(init,$i.start);
         $tree = new DeclVar(t,$i.tree,init);
         setLocation($tree,$i.start);
         }
@@ -579,6 +580,7 @@ decl_field[Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
             setLocation($tree,$EQUALS);
         }
       )? {
+            setLocation(init,$i.start);
             $tree = new DeclField($v,$t,$i.tree,initField);
             setLocation($tree,$i.start);
         }
