@@ -1,9 +1,11 @@
 ; start main program
 ; Main program
-	TSTO #1
+	TSTO #0
 	BOV stack_overflow_error
 	ADDSP #0
 ; Beginning of main instructions:
+	WSTR "dfikgj"
+	WNL
 	HALT
 ; error messages
 stack_overflow_error:

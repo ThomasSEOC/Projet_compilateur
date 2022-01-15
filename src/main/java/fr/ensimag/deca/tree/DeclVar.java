@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -53,7 +54,7 @@ public class DeclVar extends AbstractDeclVar {
 
         // check initialization
         initialization.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
-        // initialization.setLocation(getLocation());
+//        initialization.setLocation(getLocation());
 
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
