@@ -170,11 +170,15 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Definition def = localEnv.get(name);
-	if (def != null) {
-	    return def.getType();
-	}
-	throw new ContextualError(name + " n'est pas défini", getLocation());
+        // obligé de récupérer le vrai symble, jsp pourquoi
+        Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+        Definition def = localEnv.get(realSymbol);
+//        System.out.println(def);
+        setDefinition(def);
+        if (def != null) {
+            return def.getType();
+        }
+        throw new ContextualError(name + " n'est pas défini", getLocation());
     }
 
     /**

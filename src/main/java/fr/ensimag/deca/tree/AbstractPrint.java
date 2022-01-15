@@ -40,7 +40,6 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-
         Iterator<AbstractExpr> it = arguments.iterator();
         while (it.hasNext()) {
             Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);

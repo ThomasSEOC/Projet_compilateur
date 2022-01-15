@@ -35,9 +35,9 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
 
-	declVariables.verifyListDeclVariable(compiler, compiler.getEnvPredef(), null);
-	insts.verifyListInst(compiler, compiler.getEnvPredef(), null, compiler.getEnvPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
-	LOG.debug("verify Main: end");
+        declVariables.verifyListDeclVariable(compiler, compiler.getEnvPredef(), null);
+        insts.verifyListInst(compiler, compiler.getEnvPredef(), null, compiler.getEnvPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
+        LOG.debug("verify Main: end");
     }
 
     @Override
