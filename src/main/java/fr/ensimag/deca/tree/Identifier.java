@@ -238,8 +238,13 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        IdentifierRead operator = new IdentifierRead(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
+
+    @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-//        System.out.println(getType());
         IdentifierRead operator = new IdentifierRead(compiler.getCodeGenBackend(), this);
         operator.print();
     }

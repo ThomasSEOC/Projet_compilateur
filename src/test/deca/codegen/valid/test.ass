@@ -1,13 +1,20 @@
 ; start main program
 ; Main program
-	TSTO #1
+	TSTO #3
 	BOV stack_overflow_error
 	ADDSP #0
 	LOAD #1, R2
-	ADD #1, R2	; Operation Plus
 	STORE R2, 1(GB)
+	LOAD 1(GB), R2
+	ADD #1, R2	; Operation Plus
+	STORE R2, 2(GB)
+	LOAD #3, R2
+	STORE R2, 3(GB)
 ; Beginning of main instructions:
 	LOAD 1(GB), R1
+	WINT
+	WNL
+	LOAD 2(GB), R1
 	WINT
 	WNL
 	HALT

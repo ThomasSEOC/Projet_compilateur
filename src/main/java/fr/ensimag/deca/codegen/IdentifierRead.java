@@ -19,13 +19,16 @@ public class IdentifierRead extends AbstractOperation {
 
     @Override
     public void doOperation() {
-        throw new UnsupportedOperationException("not yet implemented");
+        Identifier expr = (Identifier) getExpression();
+        VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister();
+        int offset = getCodeGenBackEnd().getVariableOffset(expr.getName().getName());
+        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new RegisterOffset(offset, Register.GB), r.requestPhysicalRegister()));
+        getCodeGenBackEnd().getContextManager().operationStackPush(r);
     }
 
     @Override
     public void print() {
         Identifier expr = (Identifier) getExpression();
-        //System.out.println(expr.getType());
         if (expr.getType() instanceof IntType) {
             int offset = getCodeGenBackEnd().getVariableOffset(expr.getName().getName());
             getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new RegisterOffset(offset, Register.GB), GPRegister.getR(1)));

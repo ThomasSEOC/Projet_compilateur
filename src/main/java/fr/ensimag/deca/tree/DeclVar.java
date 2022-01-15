@@ -104,6 +104,7 @@ public class DeclVar extends AbstractDeclVar {
             init.getExpression().codeGenInst(compiler);
             VirtualRegister result = compiler.getCodeGenBackend().getContextManager().operationStackPop();
             compiler.addInstruction(new STORE(result.requestPhysicalRegister(), varName.getVariableDefinition().getOperand()));
+            result.destroy();
         }
     }
 }
