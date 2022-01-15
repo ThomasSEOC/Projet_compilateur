@@ -24,10 +24,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
 		AbstractExpr lOp = getLeftOperand();
 		AbstractExpr rOp = getRightOperand();
-		lOp.verifyExpr(compiler, localEnv, currentClass);
-		rOp.verifyExpr(compiler, localEnv, currentClass);
-		Type typeLOp = lOp.getType();
-		Type typeROp = rOp.getType();
+//		lOp.verifyExpr(compiler, localEnv, currentClass);
+//		rOp.verifyExpr(compiler, localEnv, currentClass);
+//		Type typeLOp = lOp.getType();
+//		Type typeROp = rOp.getType();
+		Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
+		Type typeROp = rOp.verifyExpr(compiler, localEnv, currentClass);
 		if ((typeLOp.isInt() || typeLOp.isFloat()) && (typeROp.isInt() || typeROp.isFloat())) { // vérifie que les deux opérandes sont soit des int soit des float
 			if (typeLOp.isInt() && typeROp.isInt()) {
 				setType(typeLOp);

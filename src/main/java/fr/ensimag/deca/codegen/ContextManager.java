@@ -18,7 +18,6 @@ import java.util.stream.IntStream;
  */
 public class ContextManager {
     private final CodeGenBackend backend;
-    private final int usableRegistersCount;
 
     private int currentRegisterIndex = 2;
     private int stackOffset = 0;
@@ -31,11 +30,9 @@ public class ContextManager {
     /**
      * create the context manager, must be called only once by {@link CodeGenBackend}
      * @param backend {@link CodeGenBackend}
-     * @param usableRegisterCount usable registers count
      */
-    public ContextManager(CodeGenBackend backend, int usableRegisterCount) {
+    public ContextManager(CodeGenBackend backend) {
         this.backend = backend;
-        this.usableRegistersCount = usableRegisterCount;
 
         IntStream.range(0, 16).forEach(i -> physicalRegisters[i] = null);
 
@@ -51,10 +48,11 @@ public class ContextManager {
      * @return usableRegistersCount
      */
     public int getUsableRegistersCount() {
-        return usableRegistersCount;
+        return backend.getCompiler().getCompilerOptions().getRegistersCount();
     }
 
     public void AllocatePhysicalRegister(VirtualRegister virtualRegister) {
+        int usableRegistersCount = backend.getCompiler().getCompilerOptions().getRegistersCount();
         if (currentRegisterIndex < usableRegistersCount) {
             // a register is available
             GPRegister register = GPRegister.getR(currentRegisterIndex);
@@ -114,7 +112,8 @@ public class ContextManager {
 
     public VirtualRegister requestNewRegister() {
         VirtualRegister register;
-        if (currentRegisterIndex < usableRegistersCount) {
+        int usableRegistersCount = backend.getCompiler().getCompilerOptions().getRegistersCount();
+                if (currentRegisterIndex < usableRegistersCount) {
             // physical register available
             register = new VirtualRegister(this, GPRegister.getR(currentRegisterIndex));
             physicalRegisters[currentRegisterIndex] = register;

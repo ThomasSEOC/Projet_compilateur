@@ -42,7 +42,7 @@ public class CodeGenBackend {
         variables = new HashMap<>();
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
-        contextManager = new ContextManager(this, compiler.getCompilerOptions().getRegistersCount());
+        contextManager = new ContextManager(this);
         trueBooleanLabel = new Stack<>();
         falseBooleanLabel = new Stack<>();
         branchCondition = false;

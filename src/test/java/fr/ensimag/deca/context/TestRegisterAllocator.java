@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 public class TestRegisterAllocator {
     @Test
     public void testOnePhysicalRegister() {
-        ContextManager contextManager = new ContextManager(null, 16);
+        ContextManager contextManager = new ContextManager(null);
         VirtualRegister register = contextManager.requestNewRegister();
         DVal dval = register.getDVal();
         System.out.println("DVAL: " + dval.toString());
@@ -23,7 +23,7 @@ public class TestRegisterAllocator {
 
     @Test
     public void testFourPhysicalRegister() {
-        ContextManager contextManager = new ContextManager(null, 4);
+        ContextManager contextManager = new ContextManager(null);
         VirtualRegister register1 = contextManager.requestNewRegister();
         VirtualRegister register2 = contextManager.requestNewRegister();
         VirtualRegister register3 = contextManager.requestNewRegister();
