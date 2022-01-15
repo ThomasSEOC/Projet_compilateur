@@ -32,8 +32,9 @@ public class Assign extends AbstractBinaryExpr {
 
         AbstractLValue lOp = this.getLeftOperand();
         Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
-        this.verifyRValue(compiler, localEnv, currentClass, typeLOp);
-        this.setType(typeLOp);
+        getRightOperand().verifyRValue(compiler, localEnv, currentClass, typeLOp);
+        setType(typeLOp);
+//        System.out.println(getType());
         return typeLOp;
     }
 
