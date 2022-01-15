@@ -4,9 +4,9 @@
 {
         int x = 1;
         int y = 1+x;
-        int z = 3;
-        println(x);
-        println(y);
+        int z = y+y;
+        println("salut");
+        println(x, ", ", y, ", ", z);
         //println(8/2);
         //println(16%3);
         //println(1+3);

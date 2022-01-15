@@ -8,13 +8,20 @@
 	LOAD 1(GB), R2
 	ADD #1, R2	; Operation Plus
 	STORE R2, 2(GB)
-	LOAD #3, R2
-	STORE R2, 3(GB)
+	LOAD 2(GB), R2
+	LOAD 2(GB), R3
+	ADD R2, R3	; Operation Plus
+	STORE R3, 3(GB)
 ; Beginning of main instructions:
+	WSTR "salut"
+	WNL
 	LOAD 1(GB), R1
 	WINT
-	WNL
+	WSTR ", "
 	LOAD 2(GB), R1
+	WINT
+	WSTR ", "
+	LOAD 3(GB), R1
 	WINT
 	WNL
 	HALT
