@@ -42,7 +42,7 @@ case "$FILENAME" in
       fi
       ;;
     *"src/test/deca/syntax/invalid/lexer"*)
-       RES=$(test_lex "./src/test/deca/syntax/invalid/lexer/$FILENAME" 2>&1)
+        RES=$(test_lex "./src/test/deca/syntax/invalid/lexer/$FILENAME" 2>&1)
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -58,7 +58,7 @@ case "$FILENAME" in
         fi
       ;;
     *"src/test/deca/syntax/valid/parser"*)
-       RES=$(test_synt "./src/test/deca/syntax/valid/parser/$FILENAME" 2>&1)
+        RES=$(test_synt "./src/test/deca/syntax/valid/parser/$FILENAME" 2>&1)
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -74,7 +74,7 @@ case "$FILENAME" in
         fi
       ;;
     *"src/test/deca/syntax/invalid/parser"*)
-       RES=$(test_synt "./src/test/deca/syntax/invalid/parser/$FILENAME" 2>&1)
+        RES=$(test_synt "./src/test/deca/syntax/invalid/parser/$FILENAME" 2>&1)
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -90,7 +90,7 @@ case "$FILENAME" in
         fi
       ;;
     *"src/test/deca/context/valid"*)
-       RES=$(test_context "./src/test/deca/context/valid/$FILENAME" 2>&1)
+        RES=$(test_context "./src/test/deca/context/valid/$FILENAME" 2>&1)
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "
@@ -106,7 +106,7 @@ case "$FILENAME" in
         fi
       ;;
     *"src/test/deca/context/invalid"*)
-       RES=$(test_context "./src/test/deca/context/invalid/$FILENAME" 2>&1)
+        RES=$(test_context "./src/test/deca/context/invalid/$FILENAME" 2>&1)
         echo "le résultat du test est :"
         echo "$RES"
         echo -n "est-ce que cela vous convient ? y/n : "

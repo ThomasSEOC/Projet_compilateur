@@ -26,7 +26,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
 	if (typeOperand.isInt() || typeOperand.isFloat()) {
 	    return typeOperand;
 	}
-	throw new ContextualError("Unary minus needs either an int or a float", getLocation());
+	throw new ContextualError("not(" + op + ") : " + op + " is neither an int or a float",getLocation());
     }
 
     @Override
