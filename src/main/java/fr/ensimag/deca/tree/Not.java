@@ -27,7 +27,7 @@ public class Not extends AbstractUnaryExpr {
 	if (typeOperand.isBoolean()) {
 	    return typeOperand;
 	}
-	throw new ContextualError("not needs a boolean", getLocation());
+    throw new ContextualError("not(" + op + ") : " + op + " is not a boolean",getLocation());
     }
 
     @Override

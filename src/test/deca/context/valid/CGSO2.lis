@@ -1,0 +1,83 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+`> [12, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [12, 0] Main
+      +> ListDeclVar [List with 2 elements]
+      |  []> [13, 5] DeclVar
+      |  ||  +> [13, 0] Identifier (bool)
+      |  ||  +> [13, 5] Identifier (t)
+      |  ||  `> Initialization
+      |  ||     `> [13, 9] BooleanLiteral (true)
+      |  []> [14, 5] DeclVar
+      |      +> [14, 0] Identifier (bool)
+      |      +> [14, 5] Identifier (f)
+      |      `> Initialization
+      |         `> [14, 9] BooleanLiteral (false)
+      `> [15, 0] ListInst [List with 1 elements]
+         []> [15, 0] IfThenElse
+             +> [15, 4] Identifier (t)
+             +> [34, 4] ListInst [List with 5 elements]
+             |  []> [16, 4] IfThenElse
+             |  ||  +> [16, 10] Or
+             |  ||  |  +> [16, 8] Identifier (f)
+             |  ||  |  `> [16, 13] And
+             |  ||  |     +> [16, 14] Identifier (t)
+             |  ||  |     `> [16, 19] Identifier (f)
+             |  ||  +> [17, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [17, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [17, 17] StringLiteral (erreur programme)
+             |  ||  `> ListInst [List with 0 elements]
+             |  []> [19, 4] IfThenElse
+             |  ||  +> [19, 10] Or
+             |  ||  |  +> [19, 8] Identifier (t)
+             |  ||  |  `> [19, 13] Identifier (f)
+             |  ||  +> [20, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [20, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [20, 16] StringLiteral (1)
+             |  ||  `> [23, 8] ListInst [List with 1 elements]
+             |  ||     []> [23, 8] Println
+             |  ||         `> ListExpr [List with 1 elements]
+             |  ||            []> [23, 17] StringLiteral (erreur)
+             |  []> [28, 4] IfThenElse
+             |  ||  +> [25, 8] NotEquals
+             |  ||  |  +> [25, 8] Identifier (t)
+             |  ||  |  `> [25, 13] Identifier (f)
+             |  ||  +> [26, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [26, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [26, 16] StringLiteral ( 2)
+             |  ||  `> ListInst [List with 1 elements]
+             |  ||     []> IfThenElse
+             |  ||         +> [28, 13] BooleanLiteral (true)
+             |  ||         +> [29, 8] ListInst [List with 1 elements]
+             |  ||         |  []> [29, 8] Println
+             |  ||         |      `> ListExpr [List with 1 elements]
+             |  ||         |         []> [29, 17] StringLiteral (erreur)
+             |  ||         `> ListInst [List with 0 elements]
+             |  []> [31, 4] IfThenElse
+             |  ||  +> [31, 8] Not
+             |  ||  |  `> [31, 9] Identifier (f)
+             |  ||  +> [32, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [32, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [32, 16] StringLiteral (  3)
+             |  ||  `> ListInst [List with 0 elements]
+             |  []> [37, 4] IfThenElse
+             |      +> [34, 8] Identifier (f)
+             |      +> [35, 8] ListInst [List with 1 elements]
+             |      |  []> [35, 8] Println
+             |      |      `> ListExpr [List with 1 elements]
+             |      |         []> [35, 17] StringLiteral (erreur)
+             |      `> ListInst [List with 1 elements]
+             |         []> IfThenElse
+             |             +> [37, 13] Equals
+             |             |  +> [37, 13] Identifier (t)
+             |             |  `> [37, 18] BooleanLiteral (true)
+             |             +> [38, 8] ListInst [List with 1 elements]
+             |             |  []> [38, 8] Println
+             |             |      `> ListExpr [List with 1 elements]
+             |             |         []> [38, 16] StringLiteral (   Soleil!)
+             |             `> ListInst [List with 0 elements]
+             `> ListInst [List with 0 elements]

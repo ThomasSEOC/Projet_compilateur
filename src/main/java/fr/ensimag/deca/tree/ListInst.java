@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import java.util.Iterator;
 
 /**
  * 
@@ -27,7 +28,12 @@ public class ListInst extends TreeList<AbstractInst> {
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Iterator<AbstractInst> it = this.iterator();
+        while (it.hasNext()) {
+            it.next().verifyInst(compiler, localEnv, currentClass, returnType);
+        }
+
+
     }
 
     public void codeGenListInst(DecacCompiler compiler) {

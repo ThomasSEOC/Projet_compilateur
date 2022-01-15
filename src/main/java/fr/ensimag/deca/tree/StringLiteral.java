@@ -1,11 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.LiteralOperation;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
@@ -35,11 +32,9 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Type type = getType();
-	if (type.isString()) {
-	    return type;
-	}
-        throw new ContextualError("Not a string", getLocation());
+        Type stringType = new StringType(compiler.getSymbolTable().create("string"));
+        this.setType(stringType);
+        return stringType;
     }
 
     @Override

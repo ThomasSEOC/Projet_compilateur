@@ -1,11 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.LiteralOperation;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
@@ -34,11 +31,9 @@ public class IntLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Type type = getType();
-	if (type.isInt()) {
-	    return type;
-	}
-        throw new ContextualError("Not an int", getLocation());
+        Type intType = new IntType(compiler.getSymbolTable().create("int"));
+        this.setType(intType);
+        return intType;
     }
 
     @Override

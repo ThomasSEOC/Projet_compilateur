@@ -30,7 +30,7 @@ then
     RES=$(test_lex "$i" 2>&1 | diff - "$LIS")
     if [ "$RES" != "" ]
     then
-      echo "-> ERROR"
+      echo "-> ERROR : $RES"
       RESULT=0
     else
       echo "-> OK"

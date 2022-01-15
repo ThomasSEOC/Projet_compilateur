@@ -1,21 +1,28 @@
-// Description:
-//    Programme avec objet
+// Test du parseur avec les classes, constructeurs et méthodes
 //
-// Resultats:
-//    a.x
-//
-// Historique:
-//    cree le 10/01/2022
-//    par Caroline
+// Date:
+// 14.01.2022
+
 
 class A {
     protected int x ;
+
+    public A (int x){
+        this.x = x;
+    }
+
     void setX(int x) {
         this.x = x ;
     }
+
     int getX() {
         return x ;
     }
+
+    void Advance(int a){
+        this.setX(a);
+    }
+
     void init() {
         x = 0 ;
     }

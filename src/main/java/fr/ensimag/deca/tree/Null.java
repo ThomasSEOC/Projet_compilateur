@@ -26,11 +26,9 @@ public class Null extends AbstractExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-	Type type = getType();
-	if (type.isNull()) {
-	    return type;
-	}
-        throw new ContextualError("Not null", getLocation());
+        Type nullType = new NullType(compiler.getSymbolTable().create("null"));
+        this.setType(nullType);
+        return nullType;
     }
 
 

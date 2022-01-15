@@ -14,9 +14,9 @@ import java.io.PrintStream;
 public class EmptyMain extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-	if (compiler.getSymbolTable() != null) {
-	    throw new ContextualError("EmptyMain not empty", getLocation());
-	}
+	//if (compiler.getSymbolTable() != null) {
+	//  throw new ContextualError("EmptyMain not empty", getLocation());
+	//}
     }
 
     @Override

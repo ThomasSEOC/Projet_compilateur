@@ -82,16 +82,21 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-	if (type.isInt() && expectedType.isBoolean()) {
-	    ConvFloat thisConvFloat = new ConvFloat(this);
-	    return thisConvFloat;
-	}
-	if ((type.isFloat() && expectedType.isInt()) || type.sameType(expectedType)) {
-	    return this;
-	}
+
+        Type type = this.verifyExpr(compiler, localEnv, currentClass);
+
+        if (type.isInt() && expectedType.isFloat()) {
+            AbstractExpr convFloat = new ConvFloat(this);
+            convFloat.verifyExpr(compiler, localEnv, currentClass);
+            convFloat.setLocation(this.getLocation());
+            return convFloat;
+        }
+        if (type.sameType(expectedType)) {
+            return this;
+	    }
 
 	//Il va falloir rajouter le cas des sous-types avec les objets
-	
+
 	throw new ContextualError(expectedType + " is expected", getLocation());
     }
     
@@ -118,10 +123,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Type typeCondition = getType();
-	if (!typeCondition.isBoolean()) {
-	    throw new ContextualError("Condition needs to be a boolean", getLocation());
-	}
+        Type typeCondition = getType();
+        if (!typeCondition.isBoolean()) {
+            throw new ContextualError("Condition needs to be a boolean", getLocation());
+        }
     }
 
     /**

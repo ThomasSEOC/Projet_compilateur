@@ -1,0 +1,12 @@
+// Description:
+//    Programme minimaliste utilisant println.
+//
+// Resultats:
+//    Hel/*bonjour*/lo
+//
+// Historique:
+//    cree le 01/01/2022
+
+{
+        println("Hel/*bonjour*/lo");
+}

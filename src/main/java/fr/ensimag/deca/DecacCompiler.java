@@ -17,6 +17,11 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
 import fr.ensimag.deca.tools.SymbolTable;
+import java.util.HashMap;
+import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.tree.Location;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
 
 
 /**
@@ -37,13 +42,26 @@ import fr.ensimag.deca.tools.SymbolTable;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
-
+    
+    
 
     /**
      * Symbols
      */
-    private static SymbolTable symbolTable = new SymbolTable();
+    private SymbolTable symbolTable = new SymbolTable();
 
+    /**
+     * Types
+     */
+    //    private HashMap<String, Type> typeTable = new HashMap<String, Type>();
+
+    private EnvironmentExp envPredef = new EnvironmentExp(null);    
+
+    public EnvironmentExp getEnvPredef() {
+	    return envPredef;
+    }
+					  
+    
     /**
      * Portable newline character.
      */
@@ -56,21 +74,67 @@ public class DecacCompiler {
         this.source = source;
         this.codeGenBackend = new CodeGenBackend(this);
 
+		
         /**
          * Predefined symbols
          */
-        symbolTable.create("void");
-        symbolTable.create("boolean");
-        symbolTable.create("float");
-        symbolTable.create("int");
-        symbolTable.create("Object");
+    symbolTable.create("void");
 
+	//typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
+	TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
+
+	symbolTable.create("boolean");
+	//typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
+	TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
+	
+	symbolTable.create("float");
+	//typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
+	TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
+	
+	symbolTable.create("int");
+	//typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
+	TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
+
+	try {
+	    envPredef.declare(symbolTable.getSymbol("void"), voidDef);
+	} catch (DoubleDefException e) {
+	    System.out.println("void : " +e);
+	    System.exit(1);
+	}
+	try {
+	    envPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
+	} catch (DoubleDefException e) {
+	    System.out.println("boolean : " +e);
+	    System.exit(1);
+	}
+	try {
+	    envPredef.declare(symbolTable.getSymbol("float"), floatDef);
+	} catch (DoubleDefException e) {
+	    System.out.println("void : " +e);
+	    System.exit(1);
+	}
+	try {
+	    envPredef.declare(symbolTable.getSymbol("int"), intDef);
+	} catch (DoubleDefException e) {
+	    System.out.println("void : " +e);
+	    System.exit(1);
+	}
+	
+
+	symbolTable.create("Object");
+
+
+	
     }
 
 
     public SymbolTable getSymbolTable(){
         return symbolTable;
     }
+
+    // public HashMap<String, Type> getTypeTable() {
+    // 	return typeTable;
+    // }
 
     /**
      * Source file associated with this compiler instance.
@@ -239,12 +303,13 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert(prog.checkAllLocations());
 
-//        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
-//            prog.verifyProgram(this);
-//            assert(prog.checkAllDecorations());
-//        }
+        assert(prog.checkAllLocations());
+        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
+            prog.verifyProgram(this);
+            assert(prog.checkAllDecorations());
+        }
+
 
         if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
             prog.codeGenProgram(this);

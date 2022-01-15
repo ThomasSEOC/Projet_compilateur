@@ -1,0 +1,21 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [12, 0] ListInst [List with 2 elements]
+         []> [11, 0] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [11, 9] Plus
+         ||         +> [11, 9] StringLiteral ( 1 + 1 = )
+         ||         `> [11, 23] Plus
+         ||            +> [11, 24] Int (1)
+         ||            `> [11, 26] Int (1)
+         []> [12, 0] Println
+             `> ListExpr [List with 1 elements]
+                []> [12, 9] Plus
+                    +> [12, 9] StringLiteral ( 1 + -2 = )
+                    `> [12, 24] Plus
+                       +> [12, 25] Int (1)
+                       `> [12, 29] UnaryMinus
+                          `> [12, 31] Int (2)

@@ -170,11 +170,15 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        ExpDefinition def = localEnv.get(name);
-	if (def != null) {
-	    return def.getType();
-	}
-	throw new ContextualError(name + " n'est pas défini", getLocation());
+        // obligé de récupérer le vrai symble, jsp pourquoi
+        Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+        Definition def = localEnv.get(realSymbol);
+//        System.out.println(def);
+        setDefinition(def);
+        if (def != null) {
+            return def.getType();
+        }
+        throw new ContextualError(name + " n'est pas défini", getLocation());
     }
 
     /**
@@ -183,29 +187,17 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        SymbolTable types = compiler.getSymbolTable();
-	Map<String, Symbol> map = types.getMap();
-	Type type;
-	if (map.get(name.getName()) == null) {
-	    throw new ContextualError(name + " is not a type", getLocation());
-  	}
-	if (name.getName() == "void") {
-	    type = new VoidType(name);
-	    return type;
-	}
-	if (name.getName() == "boolean") {
-	    type = new BooleanType(name);
-	    return type;
-	}
-	if (name.getName() == "float") {
-	    type = new FloatType(name);
-	    return type;
-	}
-	if (name.getName() == "int") {
-	    type = new IntType(name);
-	    return type;
-	}
-	throw new ContextualError(name + " is not a type", getLocation());
+	    EnvironmentExp localEnv = compiler.getEnvPredef();
+        Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+//        System.out.println(localEnv.get(realSymbol));
+        Type type = localEnv.get(realSymbol).getType();
+        if (type == null) {
+            throw new ContextualError(name + " is not a type", getLocation());
+        }
+        setType(type);
+        setDefinition(new TypeDefinition(type, getLocation()));
+//        System.out.println(getName());
+        return type;
     }
     
     

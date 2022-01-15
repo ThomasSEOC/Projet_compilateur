@@ -19,13 +19,8 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        //throw new UnsupportedOperationException("not yet implemented");
-
-         Type floatType = new FloatType(compiler.getSymbolTable().create("float"));
-        // //getOperand().setType(new IntType(compiler.getSymbolTable().create("int")));
-
-        // setType(floatType);
-
+        Type floatType = new FloatType(compiler.getSymbolTable().create("float"));
+        this.setType(floatType);
         return floatType;
 
 
