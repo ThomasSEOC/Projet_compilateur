@@ -54,7 +54,6 @@ public class DeclVar extends AbstractDeclVar {
 
         // check initialization
         initialization.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
-//        initialization.setLocation(getLocation());
 
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
