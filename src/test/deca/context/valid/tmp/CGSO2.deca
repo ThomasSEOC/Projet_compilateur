@@ -10,8 +10,8 @@
 
 
 {
-bool t = true;
-bool f = false;
+boolean t = true;
+boolean f = false;
 if (t){
     if (f || (t && f)){
         println ("erreur programme");
