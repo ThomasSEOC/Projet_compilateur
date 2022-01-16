@@ -55,7 +55,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
-        operator.doOperation();
         operator.print();
     }
 }

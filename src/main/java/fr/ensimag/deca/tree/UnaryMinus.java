@@ -41,7 +41,6 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         UnaryMinusOperation operator = new UnaryMinusOperation(compiler.getCodeGenBackend(), this);
-        operator.doOperation();
         operator.print();
     }
 

@@ -1,0 +1,40 @@
+; start main program
+; Main program
+	TSTO #2
+	BOV stack_overflow_error
+	ADDSP #0
+	LOAD #2, R2
+	OPP R2, R2
+	STORE R2, 1(GB)
+	LOAD #0x1.266666p1, R2
+	OPP R2, R2
+	STORE R2, 2(GB)
+; Beginning of main instructions:
+	LOAD 1(GB), R1
+	WINT
+	WNL
+	LOAD 2(GB), R1
+	WFLOAT
+	WNL
+	LOAD #1, R2
+	OPP R2, R2
+	LOAD R2, R1
+	WINT
+	WNL
+	LOAD #0x1.8p0, R2
+	OPP R2, R2
+	LOAD R2, R1
+	WFLOAT
+	WNL
+	LOAD #0x1.8p0, R2
+	OPP R2, R2
+	LOAD R2, R1
+	WFLOATX
+	WNL
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

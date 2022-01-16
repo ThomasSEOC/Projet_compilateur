@@ -22,12 +22,13 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	AbstractExpr op = getOperand();
-	Type typeOperand = op.getType();
-	if (typeOperand.isBoolean()) {
-	    return typeOperand;
-	}
-    throw new ContextualError("not(" + op + ") : " + op + " is not a boolean",getLocation());
+        AbstractExpr op = getOperand();
+        op.verifyExpr(compiler, localEnv, currentClass);
+        Type typeOperand = op.getType();
+        if (typeOperand.isBoolean()) {
+            return typeOperand;
+        }
+        throw new ContextualError("not(" + op + ") : " + op + " is not a boolean",getLocation());
     }
 
     @Override
