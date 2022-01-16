@@ -20,7 +20,11 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Iterator<AbstractDeclVar> it = this.iterator();
+        while (it.hasNext()) {
+            AbstractDeclVar var = it.next();
+            var.decompile(s);
+        }
     }
 
     /**
