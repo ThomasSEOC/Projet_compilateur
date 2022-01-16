@@ -7,37 +7,18 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
-/**
- * class responsible for literal operations
- */
 public class LiteralOperation extends AbstractOperation {
 
-    /**
-     * constructor for {@link LiteralOperation}
-     * @param backend global code generation backend
-     * @param expression expression related to operation
-     */
     public LiteralOperation(CodeGenBackend backend, AbstractExpr expression) {
         super(backend, expression);
     }
 
-    /**
-     * method called to generate code for literal usage
-     */
     @Override
     public void doOperation() {
-        // separate according to literal type
         if (getExpression() instanceof IntLiteral) {
-            // cast to IntLiteral
             IntLiteral expr = (IntLiteral) getExpression();
-
-            // request integer immediate virtual register
             VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(expr.getValue()));
-
-            // set data type
             r.setInt();
-
-            // push to operation stack
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
         else if (getExpression() instanceof FloatLiteral) {
@@ -59,17 +40,10 @@ public class LiteralOperation extends AbstractOperation {
         }
     }
 
-    /**
-     * method called to generate code form literal print
-     */
     @Override
     public void print() {
-        // separate according to literal type
         if (getExpression() instanceof IntLiteral) {
-            // cast to IntLiteral
             IntLiteral expr = (IntLiteral) getExpression();
-
-            // load value into R1 and print it
             getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new ImmediateInteger(expr.getValue()), GPRegister.getR(1)));
             getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
         }

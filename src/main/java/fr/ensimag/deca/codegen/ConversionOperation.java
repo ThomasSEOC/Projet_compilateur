@@ -42,7 +42,6 @@ public class ConversionOperation extends AbstractOperation {
 
             getCodeGenBackEnd().getCompiler().addInstruction(new FLOAT(r.requestPhysicalRegister(), GPRegister.getR(1)));
 
-
             if (getCodeGenBackEnd().getPrintHex()) {
                 getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
             }

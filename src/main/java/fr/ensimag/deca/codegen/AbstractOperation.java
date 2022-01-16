@@ -4,41 +4,33 @@ import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.ListInst;
 
 /**
- * Once the tree done, this Class allows choosing
+ * Once the tree done, this Class allows to choose
  * which class will make calculations
  *
- * @author gl54
- * @date 11/01/2022
  */
 public abstract class AbstractOperation {
 
-    private final CodeGenBackend codegenbackend;
+    private CodeGenBackend codegenbackend;
     private AbstractExpr expression;
 
     /**
      * Constructor of class AbstractOperation
-     * @param codegenbackend global backend to every codegen steps
-     * @param expression expression related to the current operation
+     * @param codegenbackend
+     * @param expression
      */
     public AbstractOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
         this.codegenbackend = codegenbackend;
         this.expression = expression;
     }
 
-    /**
-     * called by codeGenInst method in AbstractExpr derived class
-     */
     public abstract void doOperation();
 
-    /**
-     * called by codeGenPrint method in AbstractExpr derived class
-     */
     public abstract void print();
 
     /**
      * Recursion on the branch expressions
-     * There are usually 1 or 2 expressions in AbstractExpr[]
-     * @param expressions list of AbstractExpr
+     * There are 1 or 2 expressions in AbstractExpr[]
+     * @param expressions
      */
     public void ListCodeGen(AbstractExpr[] expressions) {
         ListInst list = new ListInst();
@@ -50,7 +42,7 @@ public abstract class AbstractOperation {
 
     /**
      * getter of expression
-     * @return expression related to current Operation
+     * @return expression
      */
     public AbstractExpr getExpression(){
         return this.expression;
@@ -58,7 +50,7 @@ public abstract class AbstractOperation {
 
     /**
      * Setter of Expression in AbstractOperation Class
-     * @param expression expression related to current operation
+     * @param expression
      */
     public void setExpression(AbstractExpr expression) {
         this.expression = expression;

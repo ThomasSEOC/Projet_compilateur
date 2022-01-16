@@ -9,7 +9,7 @@
 
 {
    int a;
-   boolean b;
+   string b;
 
    // Doit etre refuse.
    a = b;
