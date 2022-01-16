@@ -42,7 +42,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         else {
             throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
         }
-            // ça va buggé ce truc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // ça va bugger ce truc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Type boolType = new BooleanType(compiler.getSymbolTable().create("boolean"));
         setType(boolType);
         return boolType;
