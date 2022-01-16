@@ -21,44 +21,47 @@ public class NotOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        // cast to Not
+        Not expr = (Not) getExpression();
+
         // separate according to operand type
-        if (getExpression() instanceof And) {
+        if (expr.getOperand() instanceof And) {
             // use de Morgan theorem
-            Not leftOperand = new Not(((And) getExpression()).getLeftOperand());
-            Not righOperand = new Not(((And) getExpression()).getRightOperand());
+            Not leftOperand = new Not(((And) expr.getOperand()).getLeftOperand());
+            Not righOperand = new Not(((And) expr.getOperand()).getRightOperand());
             Or newExpression = new Or(leftOperand, righOperand);
             this.setExpression(newExpression);
         }
-        else if (getExpression() instanceof Or) {
+        else if (expr.getOperand() instanceof Or) {
             // use de Morgan theorem
-            Not leftOperand = new Not(((And) getExpression()).getLeftOperand());
-            Not righOperand = new Not(((And) getExpression()).getRightOperand());
+            Not leftOperand = new Not(((Or) expr.getOperand()).getLeftOperand());
+            Not righOperand = new Not(((Or) expr.getOperand()).getRightOperand());
             And newExpression = new And(leftOperand, righOperand);
             this.setExpression(newExpression);
         }
         // reverse classical boolean operations
-        else if (getExpression() instanceof Greater) {
-            this.setExpression(new LowerOrEqual(((Greater) getExpression()).getLeftOperand(), ((Greater) getExpression()).getRightOperand()));
+        else if (expr.getOperand() instanceof Greater) {
+            setExpression(new LowerOrEqual(((Greater) expr.getOperand()).getLeftOperand(), ((Greater) expr.getOperand()).getRightOperand()));
         }
-        else if (getExpression() instanceof GreaterOrEqual) {
-            this.setExpression(new Lower(((GreaterOrEqual) getExpression()).getLeftOperand(), ((GreaterOrEqual) getExpression()).getRightOperand()));
+        else if (expr.getOperand() instanceof GreaterOrEqual) {
+            setExpression(new Lower(((GreaterOrEqual) expr.getOperand()).getLeftOperand(), ((GreaterOrEqual) expr.getOperand()).getRightOperand()));
         }
-        else if (this.getExpression() instanceof Lower){
-            this.setExpression(new GreaterOrEqual(((Lower) getExpression()).getLeftOperand(), ((Lower) getExpression()).getRightOperand()));
+        else if (expr.getOperand() instanceof Lower){
+            setExpression(new GreaterOrEqual(((Lower) expr.getOperand()).getLeftOperand(), ((Lower) expr.getOperand()).getRightOperand()));
         }
-        else if (this.getExpression() instanceof LowerOrEqual){
-            this.setExpression(new Greater(((LowerOrEqual) getExpression()).getLeftOperand(), ((LowerOrEqual) getExpression()).getRightOperand()));
+        else if (expr.getOperand() instanceof LowerOrEqual){
+            setExpression(new Greater(((LowerOrEqual) expr.getOperand()).getLeftOperand(), ((LowerOrEqual) expr.getOperand()).getRightOperand()));
         }
-        else if (this.getExpression() instanceof Equals){
-            this.setExpression(new Greater(((Equals) getExpression()).getLeftOperand(), ((Equals) getExpression()).getRightOperand()));
+        else if (expr.getOperand() instanceof Equals){
+            setExpression(new NotEquals(((Equals) expr.getOperand()).getLeftOperand(), ((Equals) expr.getOperand()).getRightOperand()));
         }
-        else if (this.getExpression() instanceof NotEquals){
-            this.setExpression(new Greater(((NotEquals) getExpression()).getLeftOperand(), ((NotEquals) getExpression()).getRightOperand()));
+        else if (expr.getOperand() instanceof NotEquals){
+            setExpression(new Equals(((NotEquals) expr.getOperand()).getLeftOperand(), ((NotEquals) expr.getOperand()).getRightOperand()));
         }
 
         // generate code with change done
-        AbstractExpr[] expr = {this.getExpression()};
-        ListCodeGen(expr);
+        AbstractExpr[] exp = {getExpression()};
+        ListCodeGen(exp);
     }
 
     /**

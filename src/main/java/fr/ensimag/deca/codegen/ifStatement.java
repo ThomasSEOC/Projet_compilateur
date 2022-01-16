@@ -2,6 +2,7 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.AbstractInst;
 import fr.ensimag.deca.tree.IfThenElse;
+import fr.ensimag.deca.tree.Not;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
@@ -39,8 +40,14 @@ public class ifStatement {
         backend.falseBooleanLabelPush(elseLabel);
 
         // generate code for condition
-        BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());
-        operator.doOperation();
+        if (expression.getCondition() instanceof Not) {
+            NotOperation operator = new NotOperation(backend, expression.getCondition());
+            operator.doOperation();
+        }
+        else {
+            BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());
+            operator.doOperation();
+        }
 
         // add then label
         backend.getCompiler().addLabel(thenLabel);

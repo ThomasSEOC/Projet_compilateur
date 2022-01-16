@@ -46,17 +46,17 @@ public class LiteralOperation extends AbstractOperation {
             r.setFloat();
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
-        else if (getExpression() instanceof BooleanLiteral) {
-            BooleanLiteral expr = (BooleanLiteral) getExpression();
-            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(expr.getValue());
-            r.setInt();
-            getCodeGenBackEnd().getContextManager().operationStackPush(r);
-        }
-        else if (getExpression() instanceof StringLiteral) {
-            StringLiteral expr = (StringLiteral) getExpression();
-            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateString(expr.getValue()));
-            getCodeGenBackEnd().getContextManager().operationStackPush(r);
-        }
+//        else if (getExpression() instanceof BooleanLiteral) {
+//            BooleanLiteral expr = (BooleanLiteral) getExpression();
+//            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(expr.getValue());
+//            r.setInt();
+//            getCodeGenBackEnd().getContextManager().operationStackPush(r);
+//        }
+//        else if (getExpression() instanceof StringLiteral) {
+//            StringLiteral expr = (StringLiteral) getExpression();
+//            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateString(expr.getValue()));
+//            getCodeGenBackEnd().getContextManager().operationStackPush(r);
+//        }
     }
 
     /**

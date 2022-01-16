@@ -1,0 +1,10 @@
+{
+    int x = -2;
+    float y = -2.3;
+    println(x);
+    println(y);
+
+    println(-1);
+    println(-1.5);
+    printlnx(-1.5);
+}

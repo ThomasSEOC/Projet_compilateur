@@ -191,23 +191,23 @@ public class ContextManager {
         return new VirtualRegister(this, immediate);
     }
 
-    /**
-     * method called to request a new immediate virtual register
-     * @param immediate string immediate
-     * @return new virtual register
-     */
-    public VirtualRegister requestNewRegister(ImmediateString immediate) {
-        return new VirtualRegister(this, immediate);
-    }
-
-    /**
-     * method called to request a new immediate virtual register
-     * @param immediate boolean immediate
-     * @return new virtual register
-     */
-    public VirtualRegister requestNewRegister(boolean immediate) {
-        return new VirtualRegister(this, immediate);
-    }
+//    /**
+//     * method called to request a new immediate virtual register
+//     * @param immediate string immediate
+//     * @return new virtual register
+//     */
+//    public VirtualRegister requestNewRegister(ImmediateString immediate) {
+//        return new VirtualRegister(this, immediate);
+//    }
+//
+//    /**
+//     * method called to request a new immediate virtual register
+//     * @param immediate boolean immediate
+//     * @return new virtual register
+//     */
+//    public VirtualRegister requestNewRegister(boolean immediate) {
+//        return new VirtualRegister(this, immediate);
+//    }
 
     /**
      * remove a virtual register from physical registers
@@ -220,7 +220,7 @@ public class ContextManager {
 
         // if last indexed physical register, need to decrement index until it points a used register
         if (registerIndex == (currentRegisterIndex-1)) {
-            while ((currentRegisterIndex > 2) && (physicalRegisters[currentRegisterIndex] == null)) {
+            while ((currentRegisterIndex > 2) && (physicalRegisters[currentRegisterIndex-1] == null)) {
                 currentRegisterIndex--;
             }
         }
@@ -231,7 +231,7 @@ public class ContextManager {
      * @param virtualRegister virtual register to remove
      */
     public void freeInStackRegister(VirtualRegister virtualRegister) {
-        inStackRegisters.set(virtualRegister.getLocalIndex(), null);
+        inStackRegisters.set(virtualRegister.getLocalIndex()-1, null);
         while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
             stackOffset--;
             inStackRegisters.remove(stackOffset);
@@ -262,11 +262,11 @@ public class ContextManager {
         operationStack.push(register);
     }
 
-    /**
-     * get operation stack length
-     * @return length of operation stack
-     */
-    public int operationStackLength() {
-        return operationStack.size();
-    }
+//    /**
+//     * get operation stack length
+//     * @return length of operation stack
+//     */
+//    public int operationStackLength() {
+//        return operationStack.size();
+//    }
 }

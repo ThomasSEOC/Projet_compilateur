@@ -61,10 +61,10 @@ public class UnaryMinusOperation extends AbstractOperation {
         // separate according to type and Hex
         if (r.getIsFloat()) {
             if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
             }
         }
         else {
