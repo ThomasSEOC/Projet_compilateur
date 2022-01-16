@@ -1,0 +1,13 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//    Ligne 11: Pas de type void dans une déclaration
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+  	void v;
+	print("ne doit pas s'afficher car v n'existe pas");
+}
