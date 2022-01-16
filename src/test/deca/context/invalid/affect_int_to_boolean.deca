@@ -9,7 +9,7 @@
 
 {
    boolean a;
-   float b;
+   int b;
 
    // Doit etre refuse.
    a = b;
