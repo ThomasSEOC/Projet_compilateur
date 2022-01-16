@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import com.sun.imageio.plugins.common.SubImageInputStream;
+//import com.sun.imageio.plugins.common.SubImageInputStream;
 import fr.ensimag.deca.codegen.IdentifierRead;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.FloatType;

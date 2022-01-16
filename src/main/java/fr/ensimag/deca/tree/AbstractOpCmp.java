@@ -29,12 +29,24 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         Type typeLOp = lOp.getType();
         Type typeROp = rOp.getType();
         if ((typeLOp.isInt() || typeLOp.isFloat()) && (typeROp.isInt() || typeROp.isFloat())) {
-            // ça va buggé ce truc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            Type boolType = new BooleanType(compiler.getSymbolTable().create("boolean"));
-            setType(boolType);
-            return boolType;
+            if ((typeLOp.isInt() && typeROp.isFloat())) {
+                ConvFloat convFloat = new ConvFloat(this.getLeftOperand());
+                convFloat.verifyExpr(compiler, localEnv, currentClass);
+                this.setLeftOperand(convFloat);
+            } else if ((typeLOp.isFloat() && typeROp.isInt())) {
+                ConvFloat convFloat = new ConvFloat(this.getRightOperand());
+                convFloat.verifyExpr(compiler, localEnv, currentClass);
+                this.setRightOperand(convFloat);
+            }
         }
-        throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
+        else {
+            throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
+        }
+            // ça va buggé ce truc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        Type boolType = new BooleanType(compiler.getSymbolTable().create("boolean"));
+        setType(boolType);
+        return boolType;
+
     }
 
     @Override
