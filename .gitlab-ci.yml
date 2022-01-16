@@ -20,6 +20,9 @@ test:
     - source /home/gl/.bashrc
 #    - mvn clean verify
     - mvn -Djacoco.skip=false clean verify
+  artifacts:
+    paths:
+      - target/site/index.html
   only:
     - dev
     - master
