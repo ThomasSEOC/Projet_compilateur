@@ -7,6 +7,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  * @author gl54
@@ -25,6 +26,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
         op.verifyExpr(compiler, localEnv, currentClass);
         Type typeOperand = op.getType();
         if (typeOperand.isInt() || typeOperand.isFloat()) {
+            setType(typeOperand);
             return typeOperand;
         }
         throw new ContextualError("not(" + op + ") : " + op + " is neither an int or a float",getLocation());
@@ -39,8 +41,14 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         UnaryMinusOperation operator = new UnaryMinusOperation(compiler.getCodeGenBackend(), this);
-        operator.doOperation();
         operator.print();
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print("-");
+        getOperand().decompile(s);
+        s.println(";");
     }
 
     @Override

@@ -8,8 +8,8 @@
 //    cree le 01/01/2022
 
 {
-   int a;
-   string b;
+   boolean a;
+   int b;
 
    // Doit etre refuse.
    a = b;

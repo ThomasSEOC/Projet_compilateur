@@ -1,0 +1,7 @@
+{
+    println(1+1);
+    println(2-1);
+    println(4/2);
+    println(5%2);
+    println(5*3);
+}
