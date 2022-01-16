@@ -1,0 +1,10 @@
+{
+    //String x = "test";
+    //Boolean y = true;
+    //println(x);
+    //println(y);
+
+    println(5);
+    println(5.5);
+    printlnx(5.5);
+}

@@ -54,7 +54,12 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
             this.getCodeGenBackEnd().getContextManager().operationStackPush(rOp);
         }
         else if (this.getExpression() instanceof Divide){
-            getCodeGenBackEnd().getCompiler().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Quotient");
+            if (lOp.getIsFloat() || rOp.getIsFloat()) {
+                getCodeGenBackEnd().getCompiler().addInstruction(new DIV(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Division");
+            }
+            else {
+                getCodeGenBackEnd().getCompiler().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Quotient");
+            }
             rOp.destroy();
             this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
@@ -84,10 +89,10 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         // use appropriate write instruction according to type and Hex
         if (r.getIsFloat()) {
             if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
             }
         }
         else {

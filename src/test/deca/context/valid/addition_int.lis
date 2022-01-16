@@ -26,5 +26,6 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
                     +> [12, 24] Int (1)
                     |  type: int
                     `> [12, 28] UnaryMinus
+                       type: int
                        `> [12, 30] Int (2)
                           type: int

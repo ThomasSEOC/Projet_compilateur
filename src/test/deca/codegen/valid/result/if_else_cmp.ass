@@ -1,0 +1,101 @@
+; start main program
+; Main program
+	TSTO #0
+	BOV stack_overflow_error
+	ADDSP #0
+; Beginning of main instructions:
+	LOAD #1, R2
+	CMP #1, R2
+	BEQ if_1_else
+if_1_then:
+	WSTR "no"
+	WNL
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
+	WSTR "yes"
+	WNL
+if_1_end:
+	LOAD #1, R2
+	CMP #1, R2
+	BGE if_2_else
+if_2_then:
+	WSTR "no"
+	WNL
+	BRA if_2_end	; jump to end of if statement
+if_2_else:
+	WSTR "yes"
+	WNL
+if_2_end:
+	LOAD #1, R2
+	CMP #1, R2
+	BLE if_3_else
+if_3_then:
+	WSTR "no"
+	WNL
+	BRA if_3_end	; jump to end of if statement
+if_3_else:
+	WSTR "yes"
+	WNL
+if_3_end:
+	LOAD #2, R2
+	CMP #1, R2
+	BGT if_4_else
+if_4_then:
+	WSTR "no"
+	WNL
+	BRA if_4_end	; jump to end of if statement
+if_4_else:
+	WSTR "yes"
+	WNL
+if_4_end:
+	LOAD #2, R2
+	CMP #1, R2
+	BGE if_5_else
+if_5_then:
+	WSTR "no"
+	WNL
+	BRA if_5_end	; jump to end of if statement
+if_5_else:
+	WSTR "yes"
+	WNL
+if_5_end:
+	LOAD #1, R2
+	CMP #2, R2
+	BLT if_6_else
+if_6_then:
+	WSTR "no"
+	WNL
+	BRA if_6_end	; jump to end of if statement
+if_6_else:
+	WSTR "yes"
+	WNL
+if_6_end:
+	LOAD #1, R2
+	CMP #2, R2
+	BLE if_7_else
+if_7_then:
+	WSTR "no"
+	WNL
+	BRA if_7_end	; jump to end of if statement
+if_7_else:
+	WSTR "yes"
+	WNL
+if_7_end:
+	LOAD #2, R2
+	CMP #1, R2
+	BNE if_8_else
+if_8_then:
+	WSTR "no"
+	WNL
+	BRA if_8_end	; jump to end of if statement
+if_8_else:
+	WSTR "yes"
+	WNL
+if_8_end:
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

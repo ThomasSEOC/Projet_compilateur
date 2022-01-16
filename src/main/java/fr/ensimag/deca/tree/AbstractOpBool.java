@@ -23,9 +23,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
 	AbstractExpr lOp = getLeftOperand();
 	AbstractExpr rOp = getRightOperand();
+    lOp.verifyExpr(compiler, localEnv, currentClass);
+    rOp.verifyExpr(compiler, localEnv, currentClass);
 	Type typeLOp = lOp.getType();
 	Type typeROp = rOp.getType();
 	if (typeLOp.isBoolean() && typeROp.isBoolean()) {
+        setType(typeLOp);
 	    return typeLOp;
 	}
 	throw new ContextualError("Both binary boolean operators need to be a boolean", getLocation());
