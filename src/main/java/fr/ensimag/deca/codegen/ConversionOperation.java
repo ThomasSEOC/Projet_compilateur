@@ -52,23 +52,24 @@ public class ConversionOperation extends AbstractOperation {
      */
     @Override
     public void print() {
-        if (getExpression() instanceof ConvFloat) {
-            // do operation
-            doOperation();
-
-            // get result
-            VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
-
-            // print it according to Hex
-            if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
-            }
-            else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
-            }
-
-            // free virtual register
-            r.destroy();
-        }
+        throw new UnsupportedOperationException("useless method");
+//        if (getExpression() instanceof ConvFloat) {
+//            // do operation
+//            doOperation();
+//
+//            // get result
+//            VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
+//
+//            // print it according to Hex
+//            if (getCodeGenBackEnd().getPrintHex()) {
+//                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+//            }
+//            else {
+//                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+//            }
+//
+//            // free virtual register
+//            r.destroy();
+//        }
     }
 }

@@ -199,15 +199,15 @@ public class ContextManager {
 //    public VirtualRegister requestNewRegister(ImmediateString immediate) {
 //        return new VirtualRegister(this, immediate);
 //    }
-//
-//    /**
-//     * method called to request a new immediate virtual register
-//     * @param immediate boolean immediate
-//     * @return new virtual register
-//     */
-//    public VirtualRegister requestNewRegister(boolean immediate) {
-//        return new VirtualRegister(this, immediate);
-//    }
+
+    /**
+     * method called to request a new immediate virtual register
+     * @param immediate boolean immediate
+     * @return new virtual register
+     */
+    public VirtualRegister requestNewRegister(boolean immediate) {
+        return new VirtualRegister(this, immediate);
+    }
 
     /**
      * remove a virtual register from physical registers

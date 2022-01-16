@@ -1,8 +1,6 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.tree.AbstractInst;
-import fr.ensimag.deca.tree.IfThenElse;
-import fr.ensimag.deca.tree.Not;
+import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
@@ -42,6 +40,14 @@ public class ifStatement {
         // generate code for condition
         if (expression.getCondition() instanceof Not) {
             NotOperation operator = new NotOperation(backend, expression.getCondition());
+            operator.doOperation();
+        }
+        else if (expression.getCondition() instanceof Identifier) {
+            IdentifierRead operator = new IdentifierRead(backend, expression.getCondition());
+            operator.doOperation();
+        }
+        else if (expression.getCondition() instanceof BooleanLiteral) {
+            LiteralOperation operator = new LiteralOperation(backend, expression.getCondition());
             operator.doOperation();
         }
         else {

@@ -22,10 +22,9 @@ public class ConvFloat extends AbstractUnaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
         Type floatType = new FloatType(compiler.getSymbolTable().create("float"));
-        this.setType(floatType);
+        setType(floatType);
         return floatType;
     }
-
 
     @Override
     protected String getOperatorName() {

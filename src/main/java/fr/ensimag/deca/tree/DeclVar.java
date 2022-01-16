@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.codegen.VirtualRegister;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
@@ -101,10 +102,15 @@ public class DeclVar extends AbstractDeclVar {
         // init variable if initialization
         if (initialization instanceof Initialization) {
             Initialization init = (Initialization) initialization;
-            init.getExpression().codeGenInst(compiler);
-            VirtualRegister result = compiler.getCodeGenBackend().getContextManager().operationStackPop();
-            compiler.addInstruction(new STORE(result.requestPhysicalRegister(), varName.getVariableDefinition().getOperand()));
-            result.destroy();
+
+            // create an Assign
+            Assign expr = new Assign(varName, init.getExpression());
+            AssignOperation operator = new AssignOperation(compiler.getCodeGenBackend(), expr);
+            operator.doOperation();
+//            init.getExpression().codeGenInst(compiler);
+//            VirtualRegister result = compiler.getCodeGenBackend().getContextManager().operationStackPop();
+//            compiler.addInstruction(new STORE(result.requestPhysicalRegister(), varName.getVariableDefinition().getOperand()));
+//            result.destroy();
         }
     }
 }

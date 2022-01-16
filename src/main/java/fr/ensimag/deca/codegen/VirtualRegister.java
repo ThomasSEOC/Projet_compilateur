@@ -80,22 +80,22 @@ public class VirtualRegister {
         this.immediateFloat = immediate;
     }
 
-//    /**
-//     * constructor for boolean immediate register (cast to int)
-//     * @param contextManager current context manager
-//     * @param immediate boolean immediate value
-//     */
-//    public VirtualRegister(ContextManager contextManager, Boolean immediate) {
-//        type = IMMEDIAT_BOOLEAN;
-//        this.contextManager = contextManager;
-//        if (immediate) {
-//            this.immediateInteger = new ImmediateInteger(1);
-//        }
-//        else {
-//            this.immediateInteger = new ImmediateInteger(0);
-//        }
-//    }
-//
+    /**
+     * constructor for boolean immediate register (cast to int)
+     * @param contextManager current context manager
+     * @param immediate boolean immediate value
+     */
+    public VirtualRegister(ContextManager contextManager, Boolean immediate) {
+        type = IMMEDIAT_BOOLEAN;
+        this.contextManager = contextManager;
+        if (immediate) {
+            this.immediateInteger = new ImmediateInteger(1);
+        }
+        else {
+            this.immediateInteger = new ImmediateInteger(0);
+        }
+    }
+
 //    /**
 //     * constructor for string immediate register
 //     * @param contextManager current context manager
@@ -166,9 +166,9 @@ public class VirtualRegister {
         else if (type == IMMEDIAT_FLOAT) {
             return immediateFloat;
         }
-//        else if (type == IMMEDIAT_BOOLEAN) {
-//            return immediateInteger;
-//        }
+        else if (type == IMMEDIAT_BOOLEAN) {
+            return immediateInteger;
+        }
         else { // error
             throw new UnsupportedOperationException("cannot get DVal for the current type and/or addressing mode");
         }
