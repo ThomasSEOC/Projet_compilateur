@@ -18,10 +18,10 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
       |      +> [12, 7] Identifier (b)
       |      |  definition: variable defined at [12, 7], type=int
       |      `> [12, 7] NoInitialization
-      `> [15, 3] ListInst [List with 1 elements]
-         []> [15, 3] Assign
+      `> [14, 3] ListInst [List with 1 elements]
+         []> [14, 3] Assign
              type: float
-             +> [15, 3] Identifier (a)
+             +> [14, 3] Identifier (a)
              |  definition: variable defined at [11, 9], type=float
-             `> [15, 7] Identifier (b)
+             `> [14, 7] Identifier (b)
                 definition: variable defined at [12, 7], type=int
