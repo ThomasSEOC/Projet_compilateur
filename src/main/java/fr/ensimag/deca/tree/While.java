@@ -1,13 +1,13 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.whileStatement;
+import fr.ensimag.deca.codegen.WhileStatement;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -37,7 +37,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        whileStatement statement = new whileStatement(compiler.getCodeGenBackend(), this);
+        WhileStatement statement = new WhileStatement(compiler.getCodeGenBackend(), this);
         statement.createStatement();
     }
 
