@@ -15,7 +15,7 @@ import java.util.Stack;
  */
 public class CodeGenBackend {
     private int maxStackSize = 0;
-    private int maxGlobalVariablesSize = 0;
+    private int maxGlobalVAriablesSize = 0;
 
     private final Map<String, Integer> variables;
 
@@ -27,8 +27,8 @@ public class CodeGenBackend {
     private int ifStatementsCount = 0;
     private int whileStatementsCount = 0;
     private int orLabelsCount = 0;
-    private final Stack<Label> trueBooleanLabel;
-    private final Stack<Label> falseBooleanLabel;
+    private Stack<Label> trueBooleanLabel;
+    private Stack<Label> falseBooleanLabel;
     private boolean branchCondition;
 
     private boolean printHex;
@@ -39,119 +39,64 @@ public class CodeGenBackend {
      */
     public CodeGenBackend(DecacCompiler compiler) {
         this.compiler = compiler;
-
         variables = new HashMap<>();
-
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
         contextManager = new ContextManager(this);
-
         trueBooleanLabel = new Stack<>();
         falseBooleanLabel = new Stack<>();
         branchCondition = false;
-
         printHex = false;
     }
 
-    /**
-     * increment the number of if statements
-     */
     public void incIfStatementCount() {
         ifStatementsCount++;
     }
 
-    /**
-     * increment the number of while statements
-     */
     public void incWhileStatementCount() { whileStatementsCount++; }
 
-    /**
-     * increment the number of Or labels
-     */
     public void incOrLabelsCount() {
         orLabelsCount++;
     }
 
-    /**
-     * getter for ifStatementsCount
-     * @return the number of if statements
-     */
     public int getIfStatementsCount() {
         return ifStatementsCount;
     }
 
-    /**
-     * getter for whileStatementsCount
-     * @return the number of while statements
-     */
     public int getWhileStatementsCount() { return whileStatementsCount; }
 
-    /**
-     * getter for orLabelsCount
-     * @return the number of Or labels
-     */
     public int getOrLabelsCount() {
         return orLabelsCount;
     }
 
-    /**
-     * getter for top of trueBooleanLabel stack
-     * @return the current true condition label to branch on
-     */
     public Label getCurrentTrueBooleanLabel() {
         return trueBooleanLabel.peek();
     }
 
-    /**
-     * getter for top of falseBooleanLabel stack
-     * @return the current false condition label to branch on
-     */
     public Label getCurrentFalseBooleanLabel() {
         return falseBooleanLabel.peek();
     }
 
-    /**
-     * remove the last element of trueBooleanLabel stack
-     */
     public void popCurrentTrueBooleanLabel() {
         trueBooleanLabel.pop();
     }
 
-    /**
-     * remove the last element of falseBooleanLabel stack
-     */
     public void popCurrentFalseBooleanLabel() {
         falseBooleanLabel.pop();
     }
 
-    /**
-     * push a label to trueBooleanLabel stack
-     * @param label label to branch on in case of true condition
-     */
     public void trueBooleanLabelPush(Label label) {
         trueBooleanLabel.push(label);
     }
 
-    /**
-     * push a label to falseBooleanLabel stack
-     * @param label label to branch on in case of false condition
-     */
     public void falseBooleanLabelPush(Label label) {
         falseBooleanLabel.push(label);
     }
 
-    /**
-     * set if branch must be done in case of true or false condition
-     * @param branchCondition result of a condition to branch
-     */
     public void setBranchCondition(Boolean branchCondition) {
         this.branchCondition = branchCondition;
     }
 
-    /**
-     * getter for branchCondition
-     * @return the result of a condition to branch
-     */
     public boolean getBranchCondition() {
         return branchCondition;
     }
@@ -164,23 +109,14 @@ public class CodeGenBackend {
 
     /**
      * getter for current global variables max size
-     * @return maxGlobalVariablesSize
+     * @return maxGlobalVAriablesSize
      */
-    public int getMaxGlobalVAriablesSize() { return maxGlobalVariablesSize; }
+    public int getMaxGlobalVAriablesSize() { return maxGlobalVAriablesSize; }
 
-    /**
-     * add a declared global variable
-     * @param name string used to identify variable
-     */
     public void addVariable(String name) {
-        variables.put(name, ++maxGlobalVariablesSize);
+        variables.put(name, ++maxGlobalVAriablesSize);
     }
 
-    /**
-     * get the offset count from GB for the specified global variable
-     * @param name string used to identify variable
-     * @return offset count form GB
-     */
     public int getVariableOffset(String name) {
         return variables.get(name);
     }
@@ -190,16 +126,8 @@ public class CodeGenBackend {
      */
     public void incMaxStackSize() { maxStackSize++; }
 
-    /**
-     * getter for printHex
-     * @return true if float must be displayed in hex format, false otherwise
-     */
     public boolean getPrintHex() { return printHex; }
 
-    /**
-     * set if float must be displayed in hex format
-     * @param printHex true if float must be displayed in hex format, false otherwise
-     */
     public void setPrintHex(boolean printHex) { this.printHex = printHex; }
 
     /**
@@ -224,5 +152,6 @@ public class CodeGenBackend {
      * getter for program ContextManager
      * @return contextManager
      */
+
     public ContextManager getContextManager(){ return contextManager; }
 }

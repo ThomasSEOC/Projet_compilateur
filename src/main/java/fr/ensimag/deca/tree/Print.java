@@ -1,7 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.tools.IndentPrintStream;
-
 /**
  * @author gl54
  * @date 01/01/2022
@@ -13,15 +11,6 @@ public class Print extends AbstractPrint {
      */
     public Print(boolean printHex, ListExpr arguments) {
         super(printHex, arguments);
-    }
-
-    @Override
-    public void decompile(IndentPrintStream s) {
-        s.print("print(");
-        for (AbstractExpr a : getArguments().getList()) {
-            a.decompile(s);
-        }
-        s.println(");");
     }
 
     @Override

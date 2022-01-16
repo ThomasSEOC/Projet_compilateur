@@ -1,0 +1,13 @@
+// Description:
+//    println non valid
+//
+// Resultats:
+//    Ligne 12: modulo must be used with 2 integers
+//
+// Historique:
+//    cree le 01/01/2022
+
+
+{
+    int m = 2.5 % 5;
+}
