@@ -9,15 +9,11 @@
 int a;
 float b;
 boolean c;
-string d;
+//c = true;
+//string d;
+//d = "Hello";
 int e = 2;
 float f = 2.2;
 float g = 2;
 boolean h = false;
-string i = "Hello";
-a = 1;
-b = 1.1;
-b = 2;
-c = true;
-d = "Hello";
 }

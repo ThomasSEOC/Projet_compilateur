@@ -85,9 +85,6 @@ public class DecacCompiler {
         symbolTable.create("int");
         TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
-	symbolTable.create("string");
-        TypeDefinition stringDef = new TypeDefinition(new StringType(symbolTable.getMap().get("string")), Location.BUILTIN);
-
         try {
             envPredef.declare(symbolTable.getSymbol("void"), voidDef);
         } catch (DoubleDefException e) {
@@ -112,16 +109,8 @@ public class DecacCompiler {
             System.out.println("int : " + e);
             System.exit(1);
         }
-        try {
-            envPredef.declare(symbolTable.getSymbol("string"), stringDef);
-        } catch (DoubleDefException e) {
-            System.out.println("string : " + e);
-            System.exit(1);
-        }
-
 
         symbolTable.create("Object");
-
 
 	
     }
@@ -300,31 +289,35 @@ public class DecacCompiler {
             return true;
         }
 
+        if (compilerOptions.getCompilerStages() == CompilerOptions.PARSE_ONLY) {
+            System.out.println(prog.decompile());
+            return false;
+        }
+
         assert(prog.checkAllLocations());
-        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
-            prog.verifyProgram(this);
-            assert(prog.checkAllDecorations());
+        prog.verifyProgram(this);
+        assert(prog.checkAllDecorations());
+
+        if (compilerOptions.getCompilerStages() == CompilerOptions.PARSE_AND_VERIF) {
+            return false;
         }
 
+        prog.codeGenProgram(this);
+        addComment("end main program");
+        LOG.debug("Generated assembly code:" + nl + program.display());
+        LOG.info("Output file assembly file is: " + destName);
 
-        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
-            prog.codeGenProgram(this);
-            addComment("end main program");
-            LOG.debug("Generated assembly code:" + nl + program.display());
-            LOG.info("Output file assembly file is: " + destName);
-
-            FileOutputStream fstream = null;
-            try {
-                fstream = new FileOutputStream(destName);
-            } catch (FileNotFoundException e) {
-                throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
-            }
-
-            LOG.info("Writing assembler file ...");
-
-            program.display(new PrintStream(fstream));
-            LOG.info("Compilation of " + sourceName + " successful.");
+        FileOutputStream fstream = null;
+        try {
+            fstream = new FileOutputStream(destName);
+        } catch (FileNotFoundException e) {
+            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
+
+        LOG.info("Writing assembler file ...");
+
+        program.display(new PrintStream(fstream));
+        LOG.info("Compilation of " + sourceName + " successful.");
 
         return false;
     }
