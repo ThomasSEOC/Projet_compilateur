@@ -7,6 +7,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  *
@@ -41,5 +42,12 @@ public class Not extends AbstractUnaryExpr {
     @Override
     protected String getOperatorName() {
         return "!";
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print("!(");
+        getOperand().decompile(s);
+        s.print(")");
     }
 }

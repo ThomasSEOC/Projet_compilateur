@@ -17,9 +17,17 @@ public class Print extends AbstractPrint {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("print(");
-        for (AbstractExpr a : getArguments().getList()) {
-            a.decompile(s);
+        if (getPrintHex()) {
+            s.print("printx(");
+        }
+        else {
+            s.print("print(");
+        }
+        for (int i = 0; i < getArguments().getList().size(); i++) {
+            getArguments().getList().get(i).decompile(s);
+            if ((i+1) < getArguments().getList().size()) {
+                s.print(", ");
+            }
         }
         s.println(");");
     }

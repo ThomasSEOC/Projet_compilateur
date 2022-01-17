@@ -5,6 +5,9 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author gl54
  * @date 01/01/2022
@@ -27,9 +30,17 @@ public class Println extends AbstractPrint {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("println(");
-        for (AbstractExpr a : getArguments().getList()) {
-            a.decompile(s);
+        if (getPrintHex()) {
+            s.print("printlnx(");
+        }
+        else {
+            s.print("println(");
+        }
+        for (int i = 0; i < getArguments().getList().size(); i++) {
+            getArguments().getList().get(i).decompile(s);
+            if ((i+1) < getArguments().getList().size()) {
+                s.print(", ");
+            }
         }
         s.println(");");
     }

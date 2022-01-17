@@ -48,7 +48,6 @@ public class UnaryMinus extends AbstractUnaryExpr {
     public void decompile(IndentPrintStream s) {
         s.print("-");
         getOperand().decompile(s);
-        s.println(";");
     }
 
     @Override

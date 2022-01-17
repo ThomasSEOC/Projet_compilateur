@@ -64,7 +64,7 @@ public abstract class AbstractPrint extends AbstractInst {
         }
     }
 
-    private boolean getPrintHex() {
+    protected boolean getPrintHex() {
         return printHex;
     }
 
