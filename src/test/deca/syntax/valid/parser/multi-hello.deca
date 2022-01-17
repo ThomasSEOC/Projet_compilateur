@@ -9,9 +9,7 @@
 
 {
         //println("Hello");
-        println("wor
-
-        ld");
+        println("world");
                println("Hello");  //       println("world\n");
 
 }
