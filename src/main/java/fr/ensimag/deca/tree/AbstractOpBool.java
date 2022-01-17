@@ -25,9 +25,20 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 	AbstractExpr rOp = getRightOperand();
     lOp.verifyExpr(compiler, localEnv, currentClass);
     rOp.verifyExpr(compiler, localEnv, currentClass);
-	Type typeLOp = lOp.getType();
-	Type typeROp = rOp.getType();
-	if (typeLOp.isBoolean() && typeROp.isBoolean()) {
+        Type typeLOp;
+        Type typeROp;
+        if (lOp.getType()== null){
+            typeLOp = lOp.getOperand().getType();
+        } else {
+            typeLOp = lOp.getType();
+        }
+        if (rOp.getType() == null){
+            typeROp = rOp.getOperand().getType();
+        } else {
+            typeROp = rOp.getType();
+        }
+
+        if (typeLOp.isBoolean() && typeROp.isBoolean()) {
         setType(typeLOp);
 	    return typeLOp;
 	}
