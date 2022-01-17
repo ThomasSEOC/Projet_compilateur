@@ -1,0 +1,32 @@
+// Description:
+//    AND, OR, NOT
+//
+// Resultats:
+//    rien
+//
+// Historique:
+//    cree le 01/01/2022
+
+
+{
+    boolean f = false;
+    boolean t = true;
+    boolean f1 = false;
+    boolean t1 = true;
+
+
+/* Identifier only */
+    // AND
+    if (t && t) { }       // bool and bool
+    if (t && !t) { }      // bool and not bool
+    if (!t && t) { }      // not bool and bool
+    if (!t && !t) { }     // not bool and not bool
+
+    // OR
+
+    if (t || t) { }       // bool or bool
+    if (t || !t) { }      // bool or not bool
+    if (!t || t) { }      // not bool or bool
+    if (!t || !t) { }     // not bool or not bool
+
+}
