@@ -13,11 +13,11 @@ float b;
 //b = 2;
 boolean c;
 //c = true;
-string d;
+//string d;
 //d = "Hello";
 int e = 2;
 float f = 2.2;
 float g = 2;
 boolean h = false;
-string i = "Hello";
+//string i = "Hello";
 }
