@@ -54,6 +54,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
          ||  |  +> [21, 8] Identifier (t)
          ||  |  |  definition: variable defined at [13, 12], type=boolean
          ||  |  `> [21, 13] Not
+         ||  |     type: boolean
          ||  |     `> [21, 14] Identifier (t)
          ||  |        definition: variable defined at [13, 12], type=boolean
          ||  +> ListInst [List with 0 elements]
@@ -62,6 +63,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
          ||  +> [22, 8] And
          ||  |  type: boolean
          ||  |  +> [22, 8] Not
+         ||  |  |  type: boolean
          ||  |  |  `> [22, 9] Identifier (t)
          ||  |  |     definition: variable defined at [13, 12], type=boolean
          ||  |  `> [22, 14] Identifier (t)
@@ -72,9 +74,11 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
          ||  +> [23, 8] And
          ||  |  type: boolean
          ||  |  +> [23, 8] Not
+         ||  |  |  type: boolean
          ||  |  |  `> [23, 9] Identifier (t)
          ||  |  |     definition: variable defined at [13, 12], type=boolean
          ||  |  `> [23, 14] Not
+         ||  |     type: boolean
          ||  |     `> [23, 15] Identifier (t)
          ||  |        definition: variable defined at [13, 12], type=boolean
          ||  +> ListInst [List with 0 elements]
@@ -94,6 +98,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
          ||  |  +> [28, 8] Identifier (t)
          ||  |  |  definition: variable defined at [13, 12], type=boolean
          ||  |  `> [28, 13] Not
+         ||  |     type: boolean
          ||  |     `> [28, 14] Identifier (t)
          ||  |        definition: variable defined at [13, 12], type=boolean
          ||  +> ListInst [List with 0 elements]
@@ -102,6 +107,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
          ||  +> [29, 11] Or
          ||  |  type: boolean
          ||  |  +> [29, 8] Not
+         ||  |  |  type: boolean
          ||  |  |  `> [29, 9] Identifier (t)
          ||  |  |     definition: variable defined at [13, 12], type=boolean
          ||  |  `> [29, 14] Identifier (t)
@@ -112,9 +118,11 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
              +> [30, 11] Or
              |  type: boolean
              |  +> [30, 8] Not
+             |  |  type: boolean
              |  |  `> [30, 9] Identifier (t)
              |  |     definition: variable defined at [13, 12], type=boolean
              |  `> [30, 14] Not
+             |     type: boolean
              |     `> [30, 15] Identifier (t)
              |        definition: variable defined at [13, 12], type=boolean
              +> ListInst [List with 0 elements]

@@ -13,7 +13,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
       |      |  definition: variable defined at [2, 10], type=float
       |      `> [2, 10] Initialization
       |         `> [2, 14] Plus
-      |            type: int
+      |            type: float
       |            +> ConvFloat
       |            |  type: float
       |            |  `> [2, 14] Int (1)
