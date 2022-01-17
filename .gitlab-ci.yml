@@ -19,7 +19,9 @@ test:
   script:
     - source /home/gl/.bashrc
 #    - mvn clean verify
-    - mvn -Djacoco.skip=false clean verify
+    - mvn compile
+    - mvn test-compile
+    - mvn -Djacoco.skip=false verify
     - cat target/site/index.html
   artifacts:
     paths:
