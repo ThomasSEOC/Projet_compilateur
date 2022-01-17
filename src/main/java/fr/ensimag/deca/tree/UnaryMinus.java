@@ -29,7 +29,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
             setType(typeOperand);
             return typeOperand;
         }
-        throw new ContextualError("not(" + op + ") : " + op + " is neither an int or a float",getLocation());
+        throw new ContextualError("Unary minus operands needs to be either an int or a float", getLocation());
     }
 
     @Override

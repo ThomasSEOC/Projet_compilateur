@@ -30,7 +30,7 @@ public class Not extends AbstractUnaryExpr {
             setType(typeOperand);
             return typeOperand;
         }
-        throw new ContextualError("not(" + op + ") : " + op + " is not a boolean",getLocation());
+        throw new ContextualError("Not operand needs to be a boolean",getLocation());
     }
 
     @Override
