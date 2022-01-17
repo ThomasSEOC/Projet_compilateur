@@ -1,0 +1,11 @@
+// While infini
+
+// Il doit y avoir un débordement de pile
+
+// Date: 17.01.2022
+
+{
+    while (true){
+        println ("infini");
+    }
+}
