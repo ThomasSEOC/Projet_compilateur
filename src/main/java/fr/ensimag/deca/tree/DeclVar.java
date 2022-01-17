@@ -58,24 +58,15 @@ public class DeclVar extends AbstractDeclVar {
 
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
-//            compiler.getSymbolTable().getSymbol(varName.getName().getName())
-//            System.out.println(varName.getName());
-//            localEnv.declare(varName.getName(), type.getExpDefinition());
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
-
-            //System.out.println(compiler.getSymbolTable().getSymbol(varName.getName().getName()));
         } catch (DoubleDefException e) {
             throw new ContextualError("Var is already defined", getLocation());
-//            System.out.println(varName.getName() + " : " + e);
-//            System.exit(1);
         }
     }
     
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(type.getName().getName() + " " + varName.getName().getName());
-        initialization.decompile(s);
-        s.println(";");
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

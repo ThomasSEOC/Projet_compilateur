@@ -30,11 +30,11 @@ public class Assign extends AbstractBinaryExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
 
+        //On vérifie si les deux opérandes sont de types compatibles
         AbstractLValue lOp = this.getLeftOperand();
         Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
         getRightOperand().verifyRValue(compiler, localEnv, currentClass, typeLOp);
         setType(typeLOp);
-//        System.out.println(getType());
         return typeLOp;
     }
 

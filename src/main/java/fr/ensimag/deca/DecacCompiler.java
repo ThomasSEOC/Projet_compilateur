@@ -41,21 +41,16 @@ import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-
-    
     
 
     /**
      * Symbols
      */
+    //On crée une table de symbole pour pouvoir l'utiliser dans l'ensemble du programme
     private SymbolTable symbolTable = new SymbolTable();
 
-    /**
-     * Types
-     */
-    //    private HashMap<String, Type> typeTable = new HashMap<String, Type>();
-
-    private EnvironmentExp envPredef = new EnvironmentExp(null);    
+    //On crée l'environnement prédéfini
+    private EnvironmentExp envPredef = new EnvironmentExp(null);
 
     public EnvironmentExp getEnvPredef() {
 	    return envPredef;
@@ -77,21 +72,17 @@ public class DecacCompiler {
         /**
          * Predefined symbols
          */
+        //On crée les symboles de chaque type et on les associe à leur définition
         symbolTable.create("void");
-
-        //typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
         TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
 
         symbolTable.create("boolean");
-        //typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
         TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
 
         symbolTable.create("float");
-        //typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
         TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
 
         symbolTable.create("int");
-        //typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
         TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
         try {
@@ -131,9 +122,6 @@ public class DecacCompiler {
         return symbolTable;
     }
 
-    // public HashMap<String, Type> getTypeTable() {
-    // 	return typeTable;
-    // }
 
     /**
      * Source file associated with this compiler instance.
@@ -303,35 +291,31 @@ public class DecacCompiler {
             return true;
         }
 
-        if (compilerOptions.getCompilerStages() == CompilerOptions.PARSE_ONLY) {
-            System.out.println(prog.decompile());
-            return false;
-        }
-
         assert(prog.checkAllLocations());
-        prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
-
-        if (compilerOptions.getCompilerStages() == CompilerOptions.PARSE_AND_VERIF) {
-            return false;
+        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
+            prog.verifyProgram(this);
+            assert(prog.checkAllDecorations());
         }
 
-        prog.codeGenProgram(this);
-        addComment("end main program");
-        LOG.debug("Generated assembly code:" + nl + program.display());
-        LOG.info("Output file assembly file is: " + destName);
 
-        FileOutputStream fstream = null;
-        try {
-            fstream = new FileOutputStream(destName);
-        } catch (FileNotFoundException e) {
-            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
+            prog.codeGenProgram(this);
+            addComment("end main program");
+            LOG.debug("Generated assembly code:" + nl + program.display());
+            LOG.info("Output file assembly file is: " + destName);
+
+            FileOutputStream fstream = null;
+            try {
+                fstream = new FileOutputStream(destName);
+            } catch (FileNotFoundException e) {
+                throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
+            }
+
+            LOG.info("Writing assembler file ...");
+
+            program.display(new PrintStream(fstream));
+            LOG.info("Compilation of " + sourceName + " successful.");
         }
-
-        LOG.info("Writing assembler file ...");
-
-        program.display(new PrintStream(fstream));
-        LOG.info("Compilation of " + sourceName + " successful.");
 
         return false;
     }

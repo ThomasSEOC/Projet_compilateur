@@ -85,12 +85,15 @@ public abstract class AbstractExpr extends AbstractInst {
 
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
 
+        //Si l'expression est de type int et que le type attendu est float,
+        // on la convertit en ConvFloat
         if (type.isInt() && expectedType.isFloat()) {
             AbstractExpr convFloat = new ConvFloat(this);
             convFloat.verifyExpr(compiler, localEnv, currentClass);
             convFloat.setLocation(this.getLocation());
             return convFloat;
         }
+
         if (type.sameType(expectedType)) {
             return this;
 	    }
@@ -105,11 +108,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        Type typeVerif = verifyExpr(compiler,localEnv, currentClass);
-//        if (!type.sameType(returnType)) {
-//            throw new ContextualError(returnType + " is needed", getLocation());
-//        }
-        // c'est buggé
+        verifyExpr(compiler,localEnv, currentClass);
     }
 
     /**

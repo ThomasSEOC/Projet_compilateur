@@ -24,9 +24,10 @@ public class Modulo extends AbstractOpArith {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        //throw new UnsupportedOperationException("not yet implemented");
         Type leftOperandType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightOperandType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        //Vérifie si les deux opérandes sont de type int
         if (leftOperandType.isInt() && rightOperandType.isInt()) {
             this.setType(leftOperandType);
             return (leftOperandType);

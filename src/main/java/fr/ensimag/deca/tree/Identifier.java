@@ -171,7 +171,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // obligé de récupérer le vrai symble, jsp pourquoi
+        // Obligé de récupérer le vrai symbole
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
         Definition def = localEnv.get(realSymbol);
         setDefinition(def);
@@ -190,15 +190,12 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
 	    EnvironmentExp localEnv = compiler.getEnvPredef();
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-//        System.out.println(localEnv.get(realSymbol));
         Type type = localEnv.get(realSymbol).getType();
-//        System.out.println("coucou " + type + " " + getLocation());
         if (type == null) {
             throw new ContextualError(name + " is not a type", getLocation());
         }
         setType(type);
         setDefinition(new TypeDefinition(type, getLocation()));
-//        System.out.println(getName());
         return type;
     }
     

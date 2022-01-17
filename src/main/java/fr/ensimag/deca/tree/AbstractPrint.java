@@ -44,9 +44,12 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+
+        //On parcourt l'ensemble des expressions pour toutes les vérifier
         Iterator<AbstractExpr> it = arguments.iterator();
         while (it.hasNext()) {
             Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);
+            //On vérifie si le type de l'expression étudiée est compatible avec print ou println
             if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()) {
                 throw new ContextualError("What is printed needs to be either an int, a float or a string", getLocation());
             }
