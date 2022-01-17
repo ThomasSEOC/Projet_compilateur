@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ClassManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
@@ -20,7 +21,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    public void codeGen(AbstractIdentifier nameClass) {
+    public void codeGen(ClassManager classManager, AbstractIdentifier nameClass) {
         String name = nameClass.getName().getName();
 
         throw new UnsupportedOperationException("not yet implemented");

@@ -2,19 +2,19 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ClassManager {
     private final CodeGenBackend backend;
     private List<AbstractClassObject> classList;
+    private Map<AbstractIdentifier, AbstractClassObject> classMap;
     private int vtableOffset;
 
     public ClassManager(CodeGenBackend backend) {
         this.backend = backend;
         vtableOffset = 0;
         classList = new ArrayList<>();
+        classMap = new HashMap<AbstractIdentifier, AbstractClassObject>();
         classList.add(new DefaultObject(this));
     }
 
@@ -29,6 +29,11 @@ public class ClassManager {
     public void addClass(AbstractIdentifier nameClass, AbstractIdentifier superClass, ListDeclMethod methods, ListDeclField fields) {
         ClassObject classDefinition = new ClassObject(this, nameClass, superClass, methods, fields);
         classList.add(classDefinition);
+        classMap.put(nameClass, classDefinition);
+    }
+
+    public AbstractClassObject getClassObject(AbstractIdentifier nameClass) {
+        return classMap.get(nameClass);
     }
 
     private List<List<AbstractClassObject>> orderClassObjects() {
@@ -80,10 +85,11 @@ public class ClassManager {
     }
 
     public void VTableCodeGen() {
-        List<List<AbstractClassObject>> ordredClassList = orderClassObjects();
+        List<List<AbstractClassObject>> orderedClassList = orderClassObjects();
 
-        for (List<AbstractClassObject> stage : ordredClassList) {
+        for (List<AbstractClassObject> stage : orderedClassList) {
             for (AbstractClassObject classObject : stage) {
+                backend.getCompiler().addComment("init vtable for " + classObject.getClassName().getName() + " object");
                 classObject.VTableCodeGen(vtableOffset);
                 vtableOffset += classObject.getVTableSize();
             }

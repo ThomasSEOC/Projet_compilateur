@@ -1,7 +1,6 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -30,6 +29,7 @@ public class DefaultObject extends AbstractClassObject {
 
     @Override
     public void VTableCodeGen(int offset) {
+        setVTableOffset(offset);
         DecacCompiler compiler = getClassManager().getBackend().getCompiler();
         compiler.addComment("init vtable for default object");
         compiler.addInstruction(new LOAD(new NullOperand(), GPRegister.getR(0)));
@@ -39,8 +39,20 @@ public class DefaultObject extends AbstractClassObject {
     }
 
     @Override
+    public void StructureCodeGen(int offset) {
+        DecacCompiler compiler = getClassManager().getBackend().getCompiler();
+        compiler.addInstruction(new LOAD(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
+        compiler.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, GPRegister.LB)));
+    }
+
+    @Override
     public int getVTableSize() {
         return 2;
+    }
+
+    @Override
+    public int getStructureSize() {
+        return 1;
     }
 
     @Override
