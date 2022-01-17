@@ -28,7 +28,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         rOp.verifyExpr(compiler, localEnv, currentClass);
         Type typeLOp = lOp.getType();
         Type typeROp = rOp.getType();
+
+	//On vérifie si les opérandes sont soit des int soit des float
         if ((typeLOp.isInt() || typeLOp.isFloat()) && (typeROp.isInt() || typeROp.isFloat())) {
+	    //Si l'une desdeux opérenades est un int alors que l'autre est un
+	    // float, on la convertit en ConvFloat
             if ((typeLOp.isInt() && typeROp.isFloat())) {
                 ConvFloat convFloat = new ConvFloat(this.getLeftOperand());
                 convFloat.verifyExpr(compiler, localEnv, currentClass);
@@ -39,10 +43,12 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                 this.setRightOperand(convFloat);
             }
         }
-        else {
+
+	//Sinon, on vérifie si les opérandes sont des booléens
+	else if (!typeLOp.isBoolean() || !typeROp.isBoolean()){
             throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
         }
-            // ça va bugger ce truc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
         Type boolType = new BooleanType(compiler.getSymbolTable().create("boolean"));
         setType(boolType);
         return boolType;
