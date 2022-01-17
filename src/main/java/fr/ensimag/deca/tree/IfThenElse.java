@@ -31,6 +31,7 @@ public class IfThenElse extends AbstractInst {
         this.elseBranch = elseBranch;
     }
 
+
     public AbstractExpr getCondition() { return condition; }
 
     public ListInst getThenBranch() { return thenBranch; }
@@ -45,7 +46,9 @@ public class IfThenElse extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-	condition.verifyCondition(compiler, localEnv, currentClass);
+        this.condition.verifyCondition(compiler, localEnv, currentClass);
+        this.thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+        this.elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override
@@ -63,14 +66,13 @@ public class IfThenElse extends AbstractInst {
         thenBranch.decompile(s);
         s.unindent();
         s.println("}");
-        if(elseBranch != null){
-            s.println("{");
+        if((elseBranch != null) && (elseBranch.size() != 0)){
+            s.println("else {");
             s.indent();
             elseBranch.decompile(s);
             s.unindent();
             s.println("}");
         }
-
     }
 
     @Override

@@ -27,18 +27,21 @@ public class BooleanLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Type type = getType();
-	if (type.isBoolean()) {
-	    return type;
-	}
-        throw new ContextualError("Not a boolean", getLocation());
-    
+        Type booleanType = new BooleanType(compiler.getSymbolTable().create("boolean"));
+        this.setType(booleanType);
+        return booleanType;
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
         operator.doOperation();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        LiteralOperation operator = new LiteralOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
     }
 
     @Override

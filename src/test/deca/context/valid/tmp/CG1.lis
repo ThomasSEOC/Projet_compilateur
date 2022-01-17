@@ -1,0 +1,38 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+`> [13, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [13, 0] Main
+      +> ListDeclVar [List with 2 elements]
+      |  []> [14, 4] DeclVar
+      |  ||  +> [14, 0] Identifier (int)
+      |  ||  +> [14, 4] Identifier (a)
+      |  ||  `> Initialization
+      |  ||     `> [14, 8] Int (0)
+      |  []> [15, 6] DeclVar
+      |      +> [15, 0] Identifier (float)
+      |      +> [15, 6] Identifier (b)
+      |      `> Initialization
+      |         `> [15, 10] Int (4)
+      `> [21, 0] ListInst [List with 2 elements]
+         []> [16, 0] While
+         ||  +> [16, 7] Lower
+         ||  |  +> [16, 7] Identifier (a)
+         ||  |  `> [16, 11] Int (4)
+         ||  `> [19, 4] ListInst [List with 3 elements]
+         ||     []> [17, 4] Assign
+         ||     ||  +> [17, 4] Identifier (a)
+         ||     ||  `> [17, 8] Plus
+         ||     ||     +> [17, 8] Identifier (a)
+         ||     ||     `> [17, 21] Float (1.5)
+         ||     []> [18, 4] Assign
+         ||     ||  +> [18, 4] Identifier (b)
+         ||     ||  `> [18, 8] Plus
+         ||     ||     +> [18, 8] Identifier (b)
+         ||     ||     `> [18, 12] Int (1)
+         ||     []> [19, 4] Print
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [19, 11] Plus
+         ||                +> [19, 11] StringLiteral (ici, a vaut)
+         ||                `> [19, 27] Identifier (a)
+         []> [21, 7] Return
+             `> [21, 7] Identifier (b)

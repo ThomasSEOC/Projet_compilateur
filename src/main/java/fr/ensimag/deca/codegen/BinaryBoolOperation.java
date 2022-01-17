@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -11,63 +10,90 @@ import fr.ensimag.ima.pseudocode.instructions.*;
  * @author gl54
  * @date 10/01/2022
  */
-
 public class BinaryBoolOperation  extends AbstractBinaryOperation{
 
     /**
      * Constructor pf class BinaryBoolOperation
      *
-     * @param codegenbackend, expression
+     * @param codegenbackend global codegen backend
+     * @param expression expression related to current operation
      */
-
     public BinaryBoolOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
         super(codegenbackend, expression);
     }
 
     /**
-     * Main class making binary boolean operations
-     * @param
+     * method called to generate code for binary boolean operation
      */
     @Override
     public void doOperation () {
-        AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
+        // cast expression to AbstractBinaryExpr
+        AbstractBinaryExpr expr = (AbstractBinaryExpr) getExpression();
 
+        // separate according to boolean operation, And and Or are managed in a different way
         if (this.getExpression() instanceof And){
-            // compute left part first and right part after
+            // branch if condition is false
             getCodeGenBackEnd().setBranchCondition(false);
+
+            // compute left part first and right part after
             AbstractExpr[] ops = {expr.getLeftOperand(), expr.getRightOperand()};
             ListCodeGen(ops);
         }
         else if (this.getExpression() instanceof Or) {
+            // request a nex Or label
             getCodeGenBackEnd().incOrLabelsCount();
 
+            // create label for true and false conditions
             Label trueLabel = new Label("Or_" + this.getCodeGenBackEnd().getOrLabelsCount() + "_true");
             Label falseLabel = new Label("Or_" + this.getCodeGenBackEnd().getOrLabelsCount() + "_false");
 
+            // push labels
             getCodeGenBackEnd().trueBooleanLabelPush(trueLabel);
             getCodeGenBackEnd().falseBooleanLabelPush(falseLabel); // in case of and at left
+
+            // branch on true condition
             getCodeGenBackEnd().setBranchCondition(true);
+
+            // generate code for left operand
             AbstractExpr[] op1 = {expr.getLeftOperand()};
             ListCodeGen(op1);
 
+            // add label and pop it
             getCodeGenBackEnd().getCompiler().addLabel(falseLabel);
             getCodeGenBackEnd().popCurrentFalseBooleanLabel();
 
+            // branch on false condition
             getCodeGenBackEnd().setBranchCondition(false);
+
+            // generate code for right operand
             AbstractExpr[] op2 = {expr.getRightOperand()};
             ListCodeGen(op2);
+
+            // add label and pop it
             getCodeGenBackEnd().getCompiler().addLabel(trueLabel);
             getCodeGenBackEnd().popCurrentTrueBooleanLabel();
         }
         else {
             // classical boolean operation
+
+            // generate code for left and right operand
             AbstractExpr[] ops = {expr.getLeftOperand(), expr.getRightOperand()};
             ListCodeGen(ops);
-            VirtualRegister r2 = getCodeGenBackEnd().getContextManager().operationStackPop();
-            VirtualRegister r1 = getCodeGenBackEnd().getContextManager().operationStackPop();
-            getCodeGenBackEnd().getCompiler().addInstruction(new CMP(r1.getDVal(), r2.requestPhysicalRegister()));
 
+            // get result out of operation stack
+            VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
+            VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
+
+            // compare registers
+            getCodeGenBackEnd().getCompiler().addInstruction(new CMP(rOp.getDVal(), lOp.requestPhysicalRegister()));
+
+            // destroy registers
+            rOp.destroy();
+            lOp.destroy();
+
+            // generate branch instruction
             if (getCodeGenBackEnd().getBranchCondition()) {
+                // branch on true condition
                 if (getExpression() instanceof Greater) {
                     getCodeGenBackEnd().getCompiler().addInstruction(new BGT(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
                 }
@@ -88,6 +114,8 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
                 }
             }
             else {
+                // branch on false condition
+                // need to inverse branch operations
                 if (getExpression() instanceof Greater) {
                     getCodeGenBackEnd().getCompiler().addInstruction(new BLE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
                 }
@@ -110,6 +138,10 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
         }
     }
 
+    /**
+     * method called to generate code for printing result of binary boolean operation
+     * pretty useless method
+     */
     @Override
     public void print() {
         doOperation();

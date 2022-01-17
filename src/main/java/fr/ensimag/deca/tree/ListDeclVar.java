@@ -20,7 +20,11 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Iterator<AbstractDeclVar> it = this.iterator();
+        while (it.hasNext()) {
+            AbstractDeclVar var = it.next();
+            var.decompile(s);
+        }
     }
 
     /**
@@ -37,28 +41,17 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */    
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Iterator<AbstractDeclVar> it = this.iterator();
-	while (it.hasNext()) {
-	    AbstractDeclVar var = it.next();
-	    var.verifyDeclVar(compiler, localEnv, currentClass);
-	}
+        Iterator<AbstractDeclVar> it = this.iterator();
+        while (it.hasNext()) {
+            AbstractDeclVar var = it.next();
+            var.verifyDeclVar(compiler, localEnv, currentClass);
+        }
     }
 
     public void codeGenListDeclVar(DecacCompiler compiler) {
         for (AbstractDeclVar i : getList()) {
             DeclVar var = (DeclVar) i;
-
-            // set address operand
-            var.getType().getVariableDefinition().setOperand(new RegisterOffset(compiler.getCodeGenBackend().getMaxGlobalVAriablesSize(), Register.GB));
-
-            // inc global variables size
-            compiler.getCodeGenBackend().incMaxGlobalVAriablesSize();
-
-            // init variable
-            if (var.getInitialization() instanceof Initialization) {
-                Initialization init = (Initialization) var.getInitialization();
-                init.getExpression().codeGenInst(compiler);
-            }
+            ((DeclVar) i).codeGenDeclVar(compiler);
         }
     }
 }

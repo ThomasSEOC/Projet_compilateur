@@ -1,11 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.LiteralOperation;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -41,11 +38,9 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	Type type = getType();
-	if (type.isFloat()) {
-	    return type;
-	}
-        throw new ContextualError("Not a float", getLocation());
+        Type floatType = new FloatType(compiler.getSymbolTable().create("float"));
+        this.setType(floatType);
+        return floatType;
     }
 
     @Override

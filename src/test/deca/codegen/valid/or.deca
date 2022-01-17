@@ -1,0 +1,59 @@
+{
+    if ((1 == 1) || (2 == 2)) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if ((1 != 1) || (2 == 2)) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if ((1 == 1) || (2 != 2)) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if ((1 != 1) || (2 != 2)) {
+        println("no");
+    }
+    else {
+        println("yes");
+    }
+
+    // test operand branch on true condition
+
+    if ((2 > 1) || (2 == 2)) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if ((2 >= 1) || (2 == 2)) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if ((1 < 2) || (2 == 2)) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if ((1 <= 2) || (2 == 2)) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+}

@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.IdentifierRead;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
@@ -170,11 +171,15 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        ExpDefinition def = localEnv.get(name);
-	if (def != null) {
-	    return def.getType();
-	}
-	throw new ContextualError(name + " n'est pas défini", getLocation());
+        // Obligé de récupérer le vrai symbole
+        Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+        Definition def = localEnv.get(realSymbol);
+        setDefinition(def);
+        if (def != null) {
+            setType(def.getType());
+            return def.getType();
+        }
+        throw new ContextualError(name + " n'est pas défini", getLocation());
     }
 
     /**
@@ -183,29 +188,17 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        SymbolTable types = compiler.getSymbolTable();
-	Map<String, Symbol> map = types.getMap();
-	Type type;
-	if (map.get(name.getName()) == null) {
-	    throw new ContextualError(name + " is not a type", getLocation());
-  	}
-	if (name.getName() == "void") {
-	    type = new VoidType(name);
-	    return type;
-	}
-	if (name.getName() == "boolean") {
-	    type = new BooleanType(name);
-	    return type;
-	}
-	if (name.getName() == "float") {
-	    type = new FloatType(name);
-	    return type;
-	}
-	if (name.getName() == "int") {
-	    type = new IntType(name);
-	    return type;
-	}
-	throw new ContextualError(name + " is not a type", getLocation());
+	    EnvironmentExp localEnv = compiler.getEnvPredef();
+	    try {
+		Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+		  Type type = localEnv.get(realSymbol).getType();
+	  
+		 setType(type);
+        setDefinition(new TypeDefinition(type, getLocation()));
+        return type;
+	    } catch (NullPointerException e) {
+		throw new ContextualError(name + " is not a type", getLocation());
+	    }
     }
     
     
@@ -243,4 +236,15 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        IdentifierRead operator = new IdentifierRead(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        IdentifierRead operator = new IdentifierRead(compiler.getCodeGenBackend(), this);
+        operator.print();
+    }
 }

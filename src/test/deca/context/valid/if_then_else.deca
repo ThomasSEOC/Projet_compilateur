@@ -1,0 +1,16 @@
+// Description:
+//    Programme testant IfThenElse.
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 17/01/2022
+{
+if (false){
+1+1;
+}
+else {
+2+2;
+}
+}

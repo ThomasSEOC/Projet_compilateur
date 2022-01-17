@@ -1,0 +1,13 @@
+// Description:
+//    print non valid
+//
+// Resultats:
+//    Ligne 12: blabla n'est pas défini
+//
+// Historique:
+//    cree le 01/01/2022
+
+
+{
+    print (blabla);
+}

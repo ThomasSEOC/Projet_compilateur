@@ -1,0 +1,33 @@
+{
+    boolean x = false;
+    boolean y = (2 > 1);
+    x = true;
+
+    if (true) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if (false) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if (x) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+
+    if (y) {
+        println("yes");
+    }
+    else {
+        println("no");
+    }
+}
