@@ -189,14 +189,16 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
 	    EnvironmentExp localEnv = compiler.getEnvPredef();
-        Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-        Type type = localEnv.get(realSymbol).getType();
-        if (type == null) {
-            throw new ContextualError(name + " is not a type", getLocation());
-        }
-        setType(type);
+	    try {
+		Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+		  Type type = localEnv.get(realSymbol).getType();
+	  
+		 setType(type);
         setDefinition(new TypeDefinition(type, getLocation()));
         return type;
+	    } catch (NullPointerException e) {
+		throw new ContextualError(name + " is not a type", getLocation());
+	    }
     }
     
     
