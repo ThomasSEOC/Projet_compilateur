@@ -56,11 +56,13 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify progr
                     `> [19, 39] Divide
                        type: int
                        +> ConvFloat
+                       |  type: float
                        |  `> [19, 37] Int (3)
                        |     type: int
                        `> [19, 41] Multiply
                           type: int
                           +> ConvFloat
+                          |  type: float
                           |  `> [19, 42] Int (4)
                           |     type: int
                           `> [19, 46] Float (2.5)

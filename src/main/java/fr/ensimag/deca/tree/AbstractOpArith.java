@@ -38,13 +38,16 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 			else if (typeLOp.isFloat() && typeROp.isFloat()) {
 				return typeLOp; //si l'opérande de gauche est un flottant, retourne un flottant
 			}
-			else if (typeLOp.isFloat() && typeROp.isInt()) {
-				setRightOperand(new ConvFloat(getRightOperand()));
-				return typeLOp;
-			}
-			else {
-				setLeftOperand(new ConvFloat(getLeftOperand()));
+			else if ((typeLOp.isInt() && typeROp.isFloat())) {
+				ConvFloat convFloat = new ConvFloat(this.getLeftOperand());
+				convFloat.verifyExpr(compiler, localEnv, currentClass);
+				this.setLeftOperand(convFloat);
 				return typeROp;
+			} else if ((typeLOp.isFloat() && typeROp.isInt())) {
+				ConvFloat convFloat = new ConvFloat(this.getRightOperand());
+				convFloat.verifyExpr(compiler, localEnv, currentClass);
+				this.setRightOperand(convFloat);
+				return typeLOp;
 			}
 			//return typeROp; //si les opérandes ne sont pas toutes les deux des int et que l'opérande de gauche n'est pas un float, alors celle de droite l'est
 		}
