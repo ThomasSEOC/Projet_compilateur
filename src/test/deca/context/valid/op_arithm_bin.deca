@@ -1,0 +1,31 @@
+// Description:
+//    Programme testant les opérateurs binaires arithmétiques.
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 17/01/2022
+{
+2/1;
+2.1/1;
+2/1.2;
+2.1/1.2;
+
+2-1;
+2.1-1;
+2-1.2;
+2.1-1.2;
+
+2%1;
+	
+2*1;
+2.1*1;
+2*1.2;
+2.1*1.2;
+
+2+1;
+2.1+1;
+2+1.2;
+2.1+1.2;
+}
