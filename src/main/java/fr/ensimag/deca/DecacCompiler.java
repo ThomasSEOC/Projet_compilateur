@@ -85,9 +85,6 @@ public class DecacCompiler {
         symbolTable.create("int");
         TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
-	symbolTable.create("string");
-        TypeDefinition stringDef = new TypeDefinition(new StringType(symbolTable.getMap().get("string")), Location.BUILTIN);
-
         try {
             envPredef.declare(symbolTable.getSymbol("void"), voidDef);
         } catch (DoubleDefException e) {
@@ -112,16 +109,8 @@ public class DecacCompiler {
             System.out.println("int : " + e);
             System.exit(1);
         }
-        try {
-            envPredef.declare(symbolTable.getSymbol("string"), stringDef);
-        } catch (DoubleDefException e) {
-            System.out.println("string : " + e);
-            System.exit(1);
-        }
-
 
         symbolTable.create("Object");
-
 
 	
     }
