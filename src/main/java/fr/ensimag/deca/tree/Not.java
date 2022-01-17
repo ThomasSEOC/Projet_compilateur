@@ -26,6 +26,7 @@ public class Not extends AbstractUnaryExpr {
         op.verifyExpr(compiler, localEnv, currentClass);
         Type typeOperand = op.getType();
         if (typeOperand.isBoolean()) {
+            setType(typeOperand);
             return typeOperand;
         }
         throw new ContextualError("not(" + op + ") : " + op + " is not a boolean",getLocation());

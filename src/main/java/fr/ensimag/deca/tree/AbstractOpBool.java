@@ -27,13 +27,35 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         rOp.verifyExpr(compiler, localEnv, currentClass);
         Type typeLOp = lOp.getType();
         Type typeROp = rOp.getType();
-
         //On vérifie que les deux opérandes sont deux booléens
         if (typeLOp.isBoolean() && typeROp.isBoolean()) {
             setType(typeLOp);
             return typeLOp;
         }
         throw new ContextualError("Both binary boolean operators need to be a boolean", getLocation());
+
+        //        AbstractExpr lOp = getLeftOperand();
+//        AbstractExpr rOp = getRightOperand();
+//        lOp.verifyExpr(compiler, localEnv, currentClass);
+//        rOp.verifyExpr(compiler, localEnv, currentClass);
+//        Type typeLOp;
+//        Type typeROp;
+//        if (lOp.getType()== null){
+//            typeLOp = lOp.getOperand().getType();
+//        } else {
+//            typeLOp = lOp.getType();
+//        }
+//        if (rOp.getType() == null){
+//            typeROp = rOp.getOperand().getType();
+//        } else {
+//            typeROp = rOp.getType();
+//        }
+//
+//        if (typeLOp.isBoolean() && typeROp.isBoolean()) {
+//            setType(typeLOp);
+//            return typeLOp;
+//        }
+//        throw new ContextualError("Both binary boolean operators need to be a boolean", getLocation());
     }
 
     @Override

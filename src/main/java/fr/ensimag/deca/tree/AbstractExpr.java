@@ -18,6 +18,15 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public abstract class AbstractExpr extends AbstractInst {
+    private AbstractExpr operand;
+
+    protected void setOperand(AbstractExpr operand) {
+        Validate.notNull(operand);
+        this.operand = operand;
+    }
+    public AbstractExpr getOperand() {
+        return operand;
+    }
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
