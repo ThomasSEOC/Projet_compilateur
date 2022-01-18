@@ -93,9 +93,9 @@ public class ClassObject extends AbstractClassObject {
         VirtualRegister register = getClassManager().getBackend().getContextManager().requestNewRegister();
 
         // check null pointer
-        compiler.addInstruction(new LOAD(registerOffset, register.requestPhysicalRegister()));
-        compiler.addInstruction(new CMP(new NullOperand(), register.requestPhysicalRegister()));
-        compiler.addInstruction(new BEQ(getClassManager().getBackend().getErrorsManager().getDereferencementNullLabel()));
+        compiler.getCodeGenBackend().addInstruction(new LOAD(registerOffset, register.requestPhysicalRegister()));
+        compiler.getCodeGenBackend().addInstruction(new CMP(new NullOperand(), register.requestPhysicalRegister()));
+        compiler.getCodeGenBackend().addInstruction(new BEQ(getClassManager().getBackend().getErrorsManager().getDereferencementNullLabel()));
 
         getClassManager().getBackend().getContextManager().operationStackPush(register);
     }

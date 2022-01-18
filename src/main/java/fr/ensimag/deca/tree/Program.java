@@ -50,7 +50,7 @@ public class Program extends AbstractProgram {
         main.codeGenMain(compiler);
 
         // add startup code
-        backend.getStartupManager().generateStartupCode();
+//        backend.getStartupManager().generateStartupCode();
         compiler.addFirst("Main program");
         compiler.addFirst("start main program");
 

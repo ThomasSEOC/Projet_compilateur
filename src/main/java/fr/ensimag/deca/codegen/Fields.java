@@ -19,7 +19,7 @@ public class Fields {
         int i = offset;
         for (AbstractDeclField abstractField : object.getFields().getList()) {
             DeclField field = (DeclField) abstractField;
-            compiler.addComment("init " + object.getNameClass().getName().getName() + "." + field.getField().getName().getName());
+            compiler.getCodeGenBackend().addComment("init " + object.getNameClass().getName().getName() + "." + field.getField().getName().getName());
             if (field.getInit() instanceof Initialization) {
                 // use assign
                 Assign assign = new Assign(field.getField(), ((Initialization) field.getInit()).getExpression());
@@ -28,8 +28,8 @@ public class Fields {
             }
             else {
                 // copy 0 to field
-                compiler.addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
-                compiler.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i, Register.LB)));
+                compiler.getCodeGenBackend().addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
+                compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i, Register.LB)));
             }
             i++;
         }
@@ -42,7 +42,7 @@ public class Fields {
         VirtualRegister result = compiler.getCodeGenBackend().getContextManager().operationStackPop();
         VirtualRegister addressRegister = compiler.getCodeGenBackend().getContextManager().operationStackPop();
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(offset, addressRegister.requestPhysicalRegister()), result.requestPhysicalRegister()));
+        compiler.getCodeGenBackend().addInstruction(new LOAD(new RegisterOffset(offset, addressRegister.requestPhysicalRegister()), result.requestPhysicalRegister()));
     }
 
     public void codeGenRead(String fieldName) {
@@ -51,7 +51,7 @@ public class Fields {
         DecacCompiler compiler = object.getClassManager().getBackend().getCompiler();
         VirtualRegister register = compiler.getCodeGenBackend().getContextManager().operationStackPop();
 
-        compiler.addInstruction(new LOAD(new RegisterOffset(offset, register.requestPhysicalRegister()), register.requestPhysicalRegister()));
+        compiler.getCodeGenBackend().addInstruction(new LOAD(new RegisterOffset(offset, register.requestPhysicalRegister()), register.requestPhysicalRegister()));
 
         compiler.getCodeGenBackend().getContextManager().operationStackPush(register);
     }

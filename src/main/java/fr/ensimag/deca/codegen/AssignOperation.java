@@ -60,7 +60,7 @@ public class AssignOperation extends AbstractOperation {
             DAddr addr = identifier.getVariableDefinition().getOperand();
 
             // store result
-            getCodeGenBackEnd().getCompiler().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
+            getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
 
             // destroy register
             result.destroy();

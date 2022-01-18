@@ -2,10 +2,7 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.ConvFloat;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 
 /**
  * Class responsible for type conversion
@@ -37,7 +34,7 @@ public class ConversionOperation extends AbstractOperation {
             VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
 
             // convert it
-            getCodeGenBackEnd().getCompiler().addInstruction(new FLOAT(r.requestPhysicalRegister(), r.requestPhysicalRegister()));
+            getCodeGenBackEnd().addInstruction(new FLOAT(r.requestPhysicalRegister(), r.requestPhysicalRegister()));
 
             // push result to operation stack
             getCodeGenBackEnd().getContextManager().operationStackPush(r);

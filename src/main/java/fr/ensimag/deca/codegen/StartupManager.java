@@ -31,19 +31,19 @@ public class StartupManager {
         // check stack overflow
         DecacCompiler compiler = backend.getCompiler();
 
-//        List<Instruction> instructions = new ArrayList<>();
-//        List<String> comments = new ArrayList<>();
-//        instructions.add(new TSTO(backend.getMaxGlobalVAriablesSize()));
-//        instructions.add(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
-//        instructions.add(new ADDSP(backend.getMaxStackSize()));
-//        comments.add("");
-//        comments.add("");
-//        comments.add("");
-//
-//        backend.addInstructionFirst(instructions, comments);
+        List<Instruction> instructions = new ArrayList<>();
+        List<String> comments = new ArrayList<>();
+        instructions.add(new TSTO(backend.getMaxGlobalVAriablesSize()));
+        instructions.add(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
+        instructions.add(new ADDSP(backend.getMaxStackSize()));
+        comments.add(null);
+        comments.add(null);
+        comments.add(null);
 
-        compiler.addFirst(new ADDSP(backend.getMaxStackSize()));
-        compiler.addFirst(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
-        compiler.addFirst(new TSTO(backend.getMaxGlobalVAriablesSize()));
+        backend.addInstructionFirst(instructions, comments);
+
+//        compiler.addFirst(new ADDSP(backend.getMaxStackSize()));
+//        compiler.addFirst(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
+//        compiler.addFirst(new TSTO(backend.getMaxGlobalVAriablesSize()));
     }
 }

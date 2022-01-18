@@ -45,10 +45,10 @@ public class Main extends AbstractMain {
         // A FAIRE: traiter les déclarations de variables.
         declVariables.codeGenListDeclVar(compiler);
 
-        compiler.addComment("Beginning of main instructions:");
+        compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
 
-//        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
+        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
 
         compiler.getCodeGenBackend().writeInstructions();
     }

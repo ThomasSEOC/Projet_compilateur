@@ -41,7 +41,7 @@ public class IdentifierRead extends AbstractOperation {
         int offset = getCodeGenBackEnd().getVariableOffset(expr.getName().getName());
 
         // load into physical register
-        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new RegisterOffset(offset, Register.GB), r.requestPhysicalRegister()));
+        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(offset, Register.GB), r.requestPhysicalRegister()));
 
         // push virtual register to operation stack
         getCodeGenBackEnd().getContextManager().operationStackPush(r);
@@ -59,18 +59,18 @@ public class IdentifierRead extends AbstractOperation {
         int offset = getCodeGenBackEnd().getVariableOffset(expr.getName().getName());
 
         // load variable into R1
-        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new RegisterOffset(offset, Register.GB), GPRegister.getR(1)));
+        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(offset, Register.GB), GPRegister.getR(1)));
 
         // separate according to type
         if (expr.getType() instanceof IntType) {
-            getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+            getCodeGenBackEnd().addInstruction(new WINT());
         }
         else if (expr.getType() instanceof FloatType) {
             if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+                getCodeGenBackEnd().addInstruction(new WFLOATX());
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+                getCodeGenBackEnd().addInstruction(new WFLOAT());
             }
         }
         else

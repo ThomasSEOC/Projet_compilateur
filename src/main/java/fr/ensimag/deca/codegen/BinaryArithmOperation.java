@@ -39,32 +39,32 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 
         // separate code generation according to arithmetic operation
         if (this.getExpression() instanceof Plus){
-            getCodeGenBackEnd().getCompiler().addInstruction(new ADD(lOp.getDVal(), rOp.requestPhysicalRegister()), "Operation Plus");
+            getCodeGenBackEnd().addInstruction(new ADD(lOp.getDVal(), rOp.requestPhysicalRegister()), "Operation Plus");
             lOp.destroy();
             this.getCodeGenBackEnd().getContextManager().operationStackPush(rOp);
         }
         else if (this.getExpression() instanceof Minus){
-            getCodeGenBackEnd().getCompiler().addInstruction(new SUB(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Minus");
+            getCodeGenBackEnd().addInstruction(new SUB(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Minus");
             rOp.destroy();
             this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
         else if (this.getExpression() instanceof Multiply){
-            getCodeGenBackEnd().getCompiler().addInstruction(new MUL(lOp.getDVal(), rOp.requestPhysicalRegister()), "Operation Multiply");
+            getCodeGenBackEnd().addInstruction(new MUL(lOp.getDVal(), rOp.requestPhysicalRegister()), "Operation Multiply");
             lOp.destroy();
             this.getCodeGenBackEnd().getContextManager().operationStackPush(rOp);
         }
         else if (this.getExpression() instanceof Divide){
             if (lOp.getIsFloat() || rOp.getIsFloat()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new DIV(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Division");
+                getCodeGenBackEnd().addInstruction(new DIV(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Division");
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Quotient");
+                getCodeGenBackEnd().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Quotient");
             }
             rOp.destroy();
             this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
         else if (this.getExpression() instanceof Modulo){
-            getCodeGenBackEnd().getCompiler().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Remainder");
+            getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Remainder");
             rOp.destroy();
             this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
@@ -84,19 +84,19 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
 
         // move result to R1
-        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(r.getDVal(), GPRegister.getR(1)));
+        getCodeGenBackEnd().addInstruction(new LOAD(r.getDVal(), GPRegister.getR(1)));
 
         // use appropriate write instruction according to type and Hex
         if (r.getIsFloat()) {
             if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+                getCodeGenBackEnd().addInstruction(new WFLOATX());
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+                getCodeGenBackEnd().addInstruction(new WFLOAT());
             }
         }
         else {
-            getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+            getCodeGenBackEnd().addInstruction(new WINT());
         }
 
         // free used register

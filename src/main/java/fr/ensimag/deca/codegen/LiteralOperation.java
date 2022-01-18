@@ -70,18 +70,18 @@ public class LiteralOperation extends AbstractOperation {
             IntLiteral expr = (IntLiteral) getExpression();
 
             // load value into R1 and print it
-            getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new ImmediateInteger(expr.getValue()), GPRegister.getR(1)));
-            getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+            getCodeGenBackEnd().addInstruction(new LOAD(new ImmediateInteger(expr.getValue()), GPRegister.getR(1)));
+            getCodeGenBackEnd().addInstruction(new WINT());
         }
         else if (getExpression() instanceof FloatLiteral) {
             FloatLiteral expr = (FloatLiteral) getExpression();
-            getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new ImmediateFloat(expr.getValue()), GPRegister.getR(1)));
+            getCodeGenBackEnd().addInstruction(new LOAD(new ImmediateFloat(expr.getValue()), GPRegister.getR(1)));
 
             if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+                getCodeGenBackEnd().addInstruction(new WFLOATX());
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+                getCodeGenBackEnd().addInstruction(new WFLOAT());
             }
         }
 //        else if (getExpression() instanceof BooleanLiteral) {
@@ -96,7 +96,7 @@ public class LiteralOperation extends AbstractOperation {
         else if (getExpression() instanceof StringLiteral) {
             StringLiteral expr = (StringLiteral) getExpression();
             String toDisplay = expr.getValue().substring(1, expr.getValue().length()-1);
-            getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString(toDisplay)));
+            getCodeGenBackEnd().addInstruction(new WSTR(new ImmediateString(toDisplay)));
         }
     }
 

@@ -25,7 +25,7 @@ public class Println extends AbstractPrint {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         super.codeGenInst(compiler);
-        compiler.addInstruction(new WNL());
+        compiler.getCodeGenBackend().addInstruction(new WNL());
     }
 
     @Override

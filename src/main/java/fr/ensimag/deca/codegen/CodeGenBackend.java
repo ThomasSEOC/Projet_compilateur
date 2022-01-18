@@ -309,7 +309,7 @@ public class CodeGenBackend {
         labels.add(label);
         instructions.add(null);
         instructionsComments.add(null);
-        labels.add(null);
+        comments.add(null);
     }
 
     public void  addComment(String comment) {
@@ -322,7 +322,7 @@ public class CodeGenBackend {
     public void writeInstructions() {
         for (int i = 0; i < instructions.size(); i++) {
             if (instructions.get(i) != null) {
-                if (!Objects.equals(comments.get(i), null)) {
+                if (!Objects.equals(instructionsComments.get(i), null)) {
                     compiler.addInstruction(instructions.get(i), instructionsComments.get(i));
                 }
                 else {

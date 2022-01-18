@@ -56,22 +56,22 @@ public class ifStatement {
         }
 
         // add then label
-        backend.getCompiler().addLabel(thenLabel);
+        backend.addLabel(thenLabel);
 
         // generate code for then branch
         expression.getThenBranch().codeGenListInst(backend.getCompiler());
 
         // add unconditioned branch to end if
-        backend.getCompiler().addInstruction(new BRA(endLabel), "jump to end of if statement");
+        backend.addInstruction(new BRA(endLabel), "jump to end of if statement");
 
         // add else label
-        backend.getCompiler().addLabel(elseLabel);
+        backend.addLabel(elseLabel);
 
         // generate code for else branch
         expression.getElseBranch().codeGenListInst(backend.getCompiler());
 
         // add end if label
-        backend.getCompiler().addLabel(endLabel);
+        backend.addLabel(endLabel);
 
         // pop labels
         backend.popCurrentTrueBooleanLabel();

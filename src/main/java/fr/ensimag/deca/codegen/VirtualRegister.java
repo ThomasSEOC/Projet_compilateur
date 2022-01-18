@@ -132,7 +132,7 @@ public class VirtualRegister {
             // need to request a free physical register
             contextManager.AllocatePhysicalRegister(this);
             if (type != INSTACK) {
-                contextManager.getBackend().getCompiler().addInstruction(new LOAD(this.getDVal(), physicalRegister));
+                contextManager.getBackend().addInstruction(new LOAD(this.getDVal(), physicalRegister));
             }
         }
 

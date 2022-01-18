@@ -75,7 +75,7 @@ public class ContextManager {
                 // check if a pop is possible
                 if (localIndex == stackOffset) {
                     // pop data to physical register
-                    backend.getCompiler().addInstruction(new POP(register), "local variable is on top of stack");
+                    backend.addInstruction(new POP(register), "local variable is on top of stack");
 
                     // free stack from current data
                     stackOffset--;
@@ -87,7 +87,7 @@ public class ContextManager {
                     }
                 } else {
                     // copy data to physical register
-                    backend.getCompiler().addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("copy from stack R%d", currentRegisterIndex));
+                    backend.addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("copy from stack R%d", currentRegisterIndex));
 
                     // indicate that this data in stack is unused
                     inStackRegisters.set(localIndex, null);
@@ -120,7 +120,7 @@ public class ContextManager {
                 backend.incMaxStackSize();
             }
             inStackRegisters.add(oldRegister);
-            backend.getCompiler().addInstruction(new PUSH((GPRegister) oldRegister.getDVal()), "no more GP register available");
+            backend.addInstruction(new PUSH((GPRegister) oldRegister.getDVal()), "no more GP register available");
             oldRegister.setInStack(stackOffset);
 
             // add virtual register to physical registers
@@ -132,7 +132,7 @@ public class ContextManager {
             }
 
             // load into physical register
-            backend.getCompiler().addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("Load from stack to R%d", currentRegisterIndex));
+            backend.addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("Load from stack to R%d", currentRegisterIndex));
 
             // set virtual register as physical register
             virtualRegister.setPhysical(register);

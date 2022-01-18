@@ -31,13 +31,13 @@ public class ReadFloatOperation extends AbstractReadOperation {
     @Override
     public void doOperation(){
         // add float read instruction
-        getCodeGenBackEnd().getCompiler().addInstruction(new RFLOAT());
+        getCodeGenBackEnd().addInstruction(new RFLOAT());
 
         // request new virtual register
         VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister();
 
         // copy R1 to virtual register
-        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(GPRegister.getR(1), r.requestPhysicalRegister()));
+        getCodeGenBackEnd().addInstruction(new LOAD(GPRegister.getR(1), r.requestPhysicalRegister()));
 
         // add virtual register to operation stack
         getCodeGenBackEnd().getContextManager().operationStackPush(r);
@@ -49,14 +49,14 @@ public class ReadFloatOperation extends AbstractReadOperation {
     @Override
     public void print() {
         // add float read instruction
-        getCodeGenBackEnd().getCompiler().addInstruction(new RFLOAT());
+        getCodeGenBackEnd().addInstruction(new RFLOAT());
 
         // print according to float format
         if (getCodeGenBackEnd().getPrintHex()) {
-            getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+            getCodeGenBackEnd().addInstruction(new WFLOATX());
         }
         else {
-            getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+            getCodeGenBackEnd().addInstruction(new WFLOAT());
         }
     }
 

@@ -31,13 +31,13 @@ public class ReadIntOperation extends AbstractReadOperation{
     @Override
     public void doOperation(){
         // read int to R1
-        getCodeGenBackEnd().getCompiler().addInstruction(new RINT());
+        getCodeGenBackEnd().addInstruction(new RINT());
 
         // request new virtual register
         VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister();
 
         // copy R1 to virtual register
-        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(GPRegister.getR(1), r.requestPhysicalRegister()));
+        getCodeGenBackEnd().addInstruction(new LOAD(GPRegister.getR(1), r.requestPhysicalRegister()));
 
         // push virtual register to operation stack
         getCodeGenBackEnd().getContextManager().operationStackPush(r);
@@ -49,10 +49,10 @@ public class ReadIntOperation extends AbstractReadOperation{
     @Override
     public void print() {
         // read int to R1
-        getCodeGenBackEnd().getCompiler().addInstruction(new RINT());
+        getCodeGenBackEnd().addInstruction(new RINT());
 
         // print R1
-        getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+        getCodeGenBackEnd().addInstruction(new WINT());
     }
 
 
