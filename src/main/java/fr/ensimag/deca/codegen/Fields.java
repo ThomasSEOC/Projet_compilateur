@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -14,45 +13,53 @@ public class Fields {
     }
 
     public void codeGenDecl(int offset) {
-        DecacCompiler compiler = object.getClassManager().getBackend().getCompiler();
-//        compiler.addInstruction(new LOAD(new RegisterOffset(offset, Register.LB), GPRegister.getR(1)));
+        CodeGenBackend backend = object.getClassManager().getBackend();
+
+        VirtualRegister objectStructurePointer = object.getClassManager().getBackend().getContextManager().operationStackPop();
+
         int i = offset;
         for (AbstractDeclField abstractField : object.getFields().getList()) {
             DeclField field = (DeclField) abstractField;
-            compiler.getCodeGenBackend().addComment("init " + object.getNameClass().getName().getName() + "." + field.getField().getName().getName());
+            backend.addComment("init " + object.getNameClass().getName().getName() + "." + field.getField().getName().getName());
             if (field.getInit() instanceof Initialization) {
                 // use assign
+                // risque de bug
                 Assign assign = new Assign(field.getField(), ((Initialization) field.getInit()).getExpression());
                 AssignOperation operator = new AssignOperation(object.getClassManager().getBackend(), assign);
                 operator.doOperation();
             }
             else {
                 // copy 0 to field
-                compiler.getCodeGenBackend().addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
-                compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i, Register.LB)));
+                backend.addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
+                backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i, objectStructurePointer.requestPhysicalRegister())));
             }
             i++;
         }
+
+        objectStructurePointer.destroy();
     }
 
     public void codeGenAssign(String fieldName) {
+        // risque de bug
         int offset = object.getFieldOffset(fieldName);
 
-        DecacCompiler compiler = object.getClassManager().getBackend().getCompiler();
-        VirtualRegister result = compiler.getCodeGenBackend().getContextManager().operationStackPop();
-        VirtualRegister addressRegister = compiler.getCodeGenBackend().getContextManager().operationStackPop();
+        CodeGenBackend backend = object.getClassManager().getBackend();
+        VirtualRegister result = backend.getContextManager().operationStackPop();
+        VirtualRegister addressRegister = backend.getContextManager().operationStackPop();
 
-        compiler.getCodeGenBackend().addInstruction(new LOAD(new RegisterOffset(offset, addressRegister.requestPhysicalRegister()), result.requestPhysicalRegister()));
+        backend.addInstruction(new LOAD(new RegisterOffset(offset, addressRegister.requestPhysicalRegister()), result.requestPhysicalRegister()));
+        result.destroy();
+        addressRegister.destroy();
     }
 
     public void codeGenRead(String fieldName) {
         int offset = object.getFieldOffset(fieldName);
 
-        DecacCompiler compiler = object.getClassManager().getBackend().getCompiler();
-        VirtualRegister register = compiler.getCodeGenBackend().getContextManager().operationStackPop();
+        CodeGenBackend backend = object.getClassManager().getBackend();
+        VirtualRegister register = backend.getContextManager().operationStackPop();
 
-        compiler.getCodeGenBackend().addInstruction(new LOAD(new RegisterOffset(offset, register.requestPhysicalRegister()), register.requestPhysicalRegister()));
+        backend.addInstruction(new LOAD(new RegisterOffset(offset, register.requestPhysicalRegister()), register.requestPhysicalRegister()));
 
-        compiler.getCodeGenBackend().getContextManager().operationStackPush(register);
+        backend.getContextManager().operationStackPush(register);
     }
 }

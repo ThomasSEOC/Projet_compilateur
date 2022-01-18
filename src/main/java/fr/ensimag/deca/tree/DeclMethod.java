@@ -56,4 +56,11 @@ public class DeclMethod extends AbstractDeclMethod{
 
 
 
+    public AbstractIdentifier getType() { return type; }
+
+    public AbstractIdentifier getName() { return name; }
+
+    public ListDeclParam getParams() { return params; }
+
+    public AbstractMethodBody getBody() { return body; }
 }

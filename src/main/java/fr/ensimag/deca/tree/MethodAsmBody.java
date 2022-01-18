@@ -34,4 +34,9 @@ public class MethodAsmBody extends AbstractMethodBody{
 
         code.iter(f);
     }
+
+    @Override
+    public void codeGen(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

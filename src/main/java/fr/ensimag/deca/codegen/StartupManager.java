@@ -29,13 +29,11 @@ public class StartupManager {
      */
     public void generateStartupCode() {
         // check stack overflow
-        DecacCompiler compiler = backend.getCompiler();
-
         List<Instruction> instructions = new ArrayList<>();
         List<String> comments = new ArrayList<>();
-        instructions.add(new TSTO(backend.getMaxGlobalVAriablesSize()));
+        instructions.add(new TSTO(backend.getMaxStackSize()));
         instructions.add(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
-        instructions.add(new ADDSP(backend.getMaxStackSize()));
+        instructions.add(new ADDSP(backend.getContextDataSize()));
         comments.add(null);
         comments.add(null);
         comments.add(null);

@@ -20,10 +20,4 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             s.println();
         }
     }
-
-    public void codeGen(ClassManager classManager, AbstractIdentifier nameClass) {
-        String name = nameClass.getName().getName();
-
-        throw new UnsupportedOperationException("not yet implemented");
-    }
 }

@@ -1,6 +1,8 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.*;
 
@@ -101,5 +103,44 @@ public class ClassManager {
         for (AbstractClassObject classObject : classList) {
             classObject.methodsCodeGen();
         }
+    }
+
+    public void instanceOfCodeGen(AbstractClassObject targetObject) {
+        // version primitive non fonctionnelle
+        Label start = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_start");
+        Label endSucess = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_sucess");
+        Label endFailure = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_failure");
+        Label end = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_end");
+
+        backend.addComment("instance of " + targetObject.getClassName().getName().getName());
+        backend.addInstruction(new LEA(new RegisterOffset(targetObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
+        VirtualRegister object = backend.getContextManager().operationStackPop();
+        backend.addInstruction(new LOAD(object.requestPhysicalRegister(), GPRegister.getR(1)));
+        backend.addLabel(start);
+        backend.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(0)), GPRegister.getR(1)));
+        backend.addInstruction(new CMP(GPRegister.getR(0), GPRegister.getR(1)));
+        backend.addInstruction(new BEQ(endSucess));
+        backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(1)));
+        backend.addInstruction(new BEQ(endFailure));
+        backend.addInstruction(new BRA(start));
+
+        // pas sûr
+        object.destroy();
+
+        VirtualRegister result = backend.getContextManager().requestNewRegister();
+        backend.addLabel(endSucess);
+        backend.addInstruction(new LOAD(new ImmediateInteger(1), result.requestPhysicalRegister()));
+        backend.addInstruction(new BRA(end));
+        backend.addLabel(endFailure);
+        backend.addInstruction(new LOAD(new ImmediateInteger(0), result.requestPhysicalRegister()));
+        backend.addLabel(end);
+    }
+
+    public void destroyObjectCodeGen() {
+        VirtualRegister objectPointer = backend.getContextManager().operationStackPop();
+        backend.addComment("destroy allocated object");
+        backend.addInstruction(new CMP(new NullOperand(), objectPointer.requestPhysicalRegister()));
+        backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
+        backend.addInstruction(new DEL(objectPointer.requestPhysicalRegister()));
     }
 }

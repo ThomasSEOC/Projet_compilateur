@@ -3,9 +3,8 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,8 @@ public class ContextManager {
 
     private final Stack<VirtualRegister> operationStack;
 
+    private final boolean[] toSavePhysicalRegisters = new boolean[16];
+
     /**
      * constructor context manager, must be called only once by {@link CodeGenBackend}
      * @param backend {@link CodeGenBackend}
@@ -34,9 +35,38 @@ public class ContextManager {
         this.backend = backend;
 
         IntStream.range(0, 16).forEach(i -> physicalRegisters[i] = null);
+        IntStream.range(0, 16).forEach(i -> toSavePhysicalRegisters[i] = false);
         inStackRegisters = new ArrayList<>();
 
         operationStack = new Stack<>();
+    }
+
+    public void destroy() {
+        // save register at beginning
+        List<Instruction> savingInstructions = new ArrayList<>();
+        List<String> savingComments = new ArrayList<>();
+        for (int i = 0; i < 16; i++) {
+            if (toSavePhysicalRegisters[i]) {
+                savingInstructions.add(new PUSH(GPRegister.getR(i)));
+                savingComments.add(String.format("save R%d", i));
+            }
+        }
+        backend.addInstructionFirst(savingInstructions, savingComments);
+
+        // if SP has an offset, remove it
+        if (stackOffset != 0) {
+            backend.addInstruction(new SUBSP(stackOffset));
+        }
+
+        // restore registers at the end
+        for (int i = 0; i < 16; i++) {
+            if (toSavePhysicalRegisters[i]) {
+                backend.addInstruction(new POP(GPRegister.getR(i)), String.format("restore R%d", i));
+            }
+        }
+
+        // add RTS instruction
+        backend.addInstruction(new RTS());
     }
 
     /**
@@ -96,6 +126,7 @@ public class ContextManager {
 
             // mov virtual register from in stack to physical
             physicalRegisters[currentRegisterIndex] = virtualRegister;
+            toSavePhysicalRegisters[currentRegisterIndex] = true;
 
             // set virtual register as physical register
             virtualRegister.setPhysical(register);
@@ -125,6 +156,7 @@ public class ContextManager {
 
             // add virtual register to physical registers
             physicalRegisters[currentRegisterIndex] = virtualRegister;
+            toSavePhysicalRegisters[currentRegisterIndex] = true;
 
             // remove virtual register from stack if it's the case
             if (virtualRegister.getIsInStack()) {
@@ -157,6 +189,7 @@ public class ContextManager {
             // create physical register
             register = new VirtualRegister(this, GPRegister.getR(currentRegisterIndex));
             physicalRegisters[currentRegisterIndex] = register;
+            toSavePhysicalRegisters[currentRegisterIndex] = true;
             currentRegisterIndex++;
         }
         else { // no more free register

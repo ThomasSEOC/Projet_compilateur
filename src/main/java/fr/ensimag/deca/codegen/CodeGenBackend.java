@@ -21,6 +21,7 @@ public class CodeGenBackend {
     private final Map<String, Integer> globalVariables;
     private final Stack<Map<String, Integer>> localVariables;
     private final Stack<Integer> localVariableSize;
+    private final Stack<Integer> tempUseStackSize;
     private final List<Instruction> instructions;
     private final List<String> instructionsComments;
     private final List<String> comments;
@@ -29,7 +30,7 @@ public class CodeGenBackend {
     private final ErrorsManager errorsManager;
     private final StartupManager startupManager;
     private final DecacCompiler compiler;
-    private final ContextManager contextManager;
+    private final Stack<ContextManager> contextManagers;
     private final ClassManager classManager;
 
     private int ifStatementsCount = 0;
@@ -51,6 +52,7 @@ public class CodeGenBackend {
         globalVariables = new HashMap<>();
         localVariables = new Stack<>();
         localVariableSize = new Stack<>();
+        tempUseStackSize = new Stack();
         instructions = new ArrayList<>();
         comments = new ArrayList<>();
         instructionsComments = new ArrayList<>();
@@ -58,7 +60,8 @@ public class CodeGenBackend {
 
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
-        contextManager = new ContextManager(this);
+        contextManagers = new Stack<>();
+        contextManagers.add(new ContextManager(this));
         classManager = new ClassManager(this);
         trueBooleanLabel = new Stack<>();
         falseBooleanLabel = new Stack<>();
@@ -174,13 +177,23 @@ public class CodeGenBackend {
      * getter for current max stack size
      * @return maxStackSize
      */
-    public int getMaxStackSize() { return maxStackSize; }
+    public int getMaxStackSize() {
+        if (tempUseStackSize.size() != 0) {
+            return localVariableSize.peek() + tempUseStackSize.peek();
+        }
+        return maxStackSize;
+    }
 
     /**
      * getter for current global variables max size
      * @return maxGlobalVariablesSize
      */
-    public int getMaxGlobalVAriablesSize() { return maxGlobalVariablesSize; }
+    public int getContextDataSize() {
+        if (tempUseStackSize.size() != 0) {
+            return localVariableSize.peek();
+        }
+        return maxGlobalVariablesSize;
+    }
 
     public void addVariable(String name, int size) {
         // if local context exists
@@ -191,6 +204,7 @@ public class CodeGenBackend {
         // add to global variables
         else {
             globalVariables.put(name, ++maxGlobalVariablesSize);
+            maxStackSize++;
         }
     }
 
@@ -202,10 +216,14 @@ public class CodeGenBackend {
         addVariable(name, 1);
     }
 
+    public void addParam(String name, int offset) {
+        localVariables.peek().put(name, offset);
+    }
+
     /**
      * get the offset count from GB for the specified global variable
      * @param name string used to identify variable
-     * @return offset count form GB
+     * @return offset count from LB
      */
     public int getVariableOffset(String name) {
         // search in local context if exists
@@ -268,18 +286,22 @@ public class CodeGenBackend {
      * getter for program ContextManager
      * @return contextManager
      */
-    public ContextManager getContextManager(){ return contextManager; }
+    public ContextManager getContextManager(){ return contextManagers.peek(); }
 
     public ClassManager getClassManager() { return classManager; }
 
-    public void pushContext() {
+    public void createContext() {
         localVariableSize.push(0);
         localVariables.push(new HashMap<>());
+        tempUseStackSize.push(0);
+        contextManagers.push(new ContextManager(this));
     }
 
     public void popContext() {
         localVariableSize.pop();
         localVariables.pop();
+        tempUseStackSize.pop();
+        contextManagers.pop().destroy();
     }
 
     public void addInstruction(Instruction instruction) {
@@ -312,7 +334,7 @@ public class CodeGenBackend {
         comments.add(null);
     }
 
-    public void  addComment(String comment) {
+    public void addComment(String comment) {
         comments.add(comment);
         instructions.add(null);
         instructionsComments.add(null);
