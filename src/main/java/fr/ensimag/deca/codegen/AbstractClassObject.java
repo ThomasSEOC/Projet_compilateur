@@ -2,7 +2,7 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.AbstractIdentifier;
 
-abstract class AbstractClassObject {
+public abstract class AbstractClassObject {
     private final ClassManager classManager;
     private int VTableOffset;
 

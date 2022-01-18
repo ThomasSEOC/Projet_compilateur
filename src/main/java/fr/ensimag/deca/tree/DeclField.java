@@ -25,6 +25,11 @@ public class DeclField extends AbstractDeclField{
         this.init = init;
     }
 
+    public AbstractIdentifier getType() { return type; }
+
+    public AbstractIdentifier getField() { return field; }
+
+    public AbstractInitialization getInit() { return init; }
 
     @Override
     protected void verifyDeclField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {

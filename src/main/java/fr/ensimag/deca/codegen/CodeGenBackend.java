@@ -1,11 +1,12 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Backend for codegen which include commonly used fields and methods across the entire codegen step
@@ -17,7 +18,13 @@ public class CodeGenBackend {
     private int maxStackSize = 0;
     private int maxGlobalVariablesSize = 0;
 
-    private final Map<String, Integer> variables;
+    private final Map<String, Integer> globalVariables;
+    private final Stack<Map<String, Integer>> localVariables;
+    private final Stack<Integer> localVariableSize;
+    private final List<Instruction> instructions;
+    private final List<String> instructionsComments;
+    private final List<String> comments;
+    private final List<Label> labels;
 
     private final ErrorsManager errorsManager;
     private final StartupManager startupManager;
@@ -41,7 +48,13 @@ public class CodeGenBackend {
     public CodeGenBackend(DecacCompiler compiler) {
         this.compiler = compiler;
 
-        variables = new HashMap<>();
+        globalVariables = new HashMap<>();
+        localVariables = new Stack<>();
+        localVariableSize = new Stack<>();
+        instructions = new ArrayList<>();
+        comments = new ArrayList<>();
+        instructionsComments = new ArrayList<>();
+        labels = new ArrayList<>();
 
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
@@ -169,12 +182,24 @@ public class CodeGenBackend {
      */
     public int getMaxGlobalVAriablesSize() { return maxGlobalVariablesSize; }
 
+    public void addVariable(String name, int size) {
+        // if local context exists
+        if (localVariables.size() != 0) {
+            localVariableSize.push(localVariableSize.pop() + size);
+            localVariables.peek().put(name, localVariableSize.peek());
+        }
+        // add to global variables
+        else {
+            globalVariables.put(name, ++maxGlobalVariablesSize);
+        }
+    }
+
     /**
      * add a declared global variable
      * @param name string used to identify variable
      */
     public void addVariable(String name) {
-        variables.put(name, ++maxGlobalVariablesSize);
+        addVariable(name, 1);
     }
 
     /**
@@ -183,7 +208,25 @@ public class CodeGenBackend {
      * @return offset count form GB
      */
     public int getVariableOffset(String name) {
-        return variables.get(name);
+        // search in local context if exists
+        if (localVariables.size() != 0) {
+            if (localVariables.peek().containsKey(name)) {
+                return localVariables.peek().get(name);
+            }
+        }
+        // search in global context
+        return globalVariables.get(name);
+    }
+
+    public RegisterOffset getVariableRegisterOffset(String name) {
+        // search in local context if exists
+        if (localVariables.size() != 0) {
+            if (localVariables.peek().containsKey(name)) {
+                return new RegisterOffset(localVariables.peek().get(name), Register.LB);
+            }
+        }
+        // search in global context
+        return new RegisterOffset(globalVariables.get(name), Register.GB);
     }
 
     /**
@@ -228,4 +271,72 @@ public class CodeGenBackend {
     public ContextManager getContextManager(){ return contextManager; }
 
     public ClassManager getClassManager() { return classManager; }
+
+    public void pushContext() {
+        localVariableSize.push(0);
+        localVariables.push(new HashMap<>());
+    }
+
+    public void popContext() {
+        localVariableSize.pop();
+        localVariables.pop();
+    }
+
+    public void addInstruction(Instruction instruction) {
+        instructions.add(instruction);
+        instructionsComments.add(null);
+        comments.add(null);
+        labels.add(null);
+    }
+
+    public void addInstruction(Instruction instruction, String comment) {
+        instructions.add(instruction);
+        instructionsComments.add(comment);
+        comments.add(null);
+        labels.add(null);
+    }
+
+    public void addInstructionFirst(List<Instruction> instructionsArray, List<String> commentsArray) {
+        for (int i = instructionsArray.size() - 1; i >= 0; i--) {
+            instructions.add(0, instructionsArray.get(i));
+            instructionsComments.add(0, commentsArray.get(i));
+            comments.add(0, null);
+            labels.add(0, null);
+        }
+    }
+
+    public void addLabel(Label label) {
+        labels.add(label);
+        instructions.add(null);
+        instructionsComments.add(null);
+        labels.add(null);
+    }
+
+    public void  addComment(String comment) {
+        comments.add(comment);
+        instructions.add(null);
+        instructionsComments.add(null);
+        labels.add(null);
+    }
+
+    public void writeInstructions() {
+        for (int i = 0; i < instructions.size(); i++) {
+            if (instructions.get(i) != null) {
+                if (!Objects.equals(comments.get(i), null)) {
+                    compiler.addInstruction(instructions.get(i), instructionsComments.get(i));
+                }
+                else {
+                    compiler.addInstruction(instructions.get(i));
+                }
+            }
+            else if (comments.get(i) != null) {
+                compiler.addComment(comments.get(i));
+            }
+            else {
+                compiler.addLabel(labels.get(i));
+            }
+        }
+        instructions.clear();
+        comments.clear();
+    }
 }

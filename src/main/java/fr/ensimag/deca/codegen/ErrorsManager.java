@@ -15,6 +15,8 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 public class ErrorsManager {
     private final CodeGenBackend backend;
     private final Label stackOverflowLabel = new Label("stack_overflow_error");
+    private final Label dereferencementNullLabel = new Label("dereferencement.null");
+    private boolean isDereferencementNullLabelUsed = false;
 
     /**
      * create Error manager, must only be call once by CodeGenBackend
@@ -30,6 +32,10 @@ public class ErrorsManager {
     public void addErrors() {
         backend.getCompiler().addComment("error messages");
         addSTackOverflowError();
+
+        if (isDereferencementNullLabelUsed) {
+            addDereferencementNullError();
+        }
     }
 
     /**
@@ -38,6 +44,11 @@ public class ErrorsManager {
      */
     public Label getStackOverflowLabel() { return stackOverflowLabel; }
 
+    public Label getDereferencementNullLabel() {
+        isDereferencementNullLabelUsed = true;
+        return dereferencementNullLabel;
+    }
+
     /**
      * add assembly code for stack overflow error handler
      */
@@ -45,6 +56,14 @@ public class ErrorsManager {
         DecacCompiler compiler = backend.getCompiler();
         compiler.addLabel(stackOverflowLabel);
         compiler.addInstruction(new WSTR("Erreur : dépassement de pile"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+    }
+
+    private void addDereferencementNullError() {
+        DecacCompiler compiler = backend.getCompiler();
+        compiler.addLabel(dereferencementNullLabel);
+        compiler.addInstruction(new WSTR("Erreur : dereferencement de null"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
     }

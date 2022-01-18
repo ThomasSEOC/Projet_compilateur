@@ -47,6 +47,10 @@ public class Main extends AbstractMain {
 
         compiler.addComment("Beginning of main instructions:");
         insts.codeGenListInst(compiler);
+
+//        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
+
+        compiler.getCodeGenBackend().writeInstructions();
     }
     
     @Override

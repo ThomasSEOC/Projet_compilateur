@@ -1,7 +1,11 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.instructions.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class responsible for code generation of startup sequence
@@ -26,6 +30,18 @@ public class StartupManager {
     public void generateStartupCode() {
         // check stack overflow
         DecacCompiler compiler = backend.getCompiler();
+
+//        List<Instruction> instructions = new ArrayList<>();
+//        List<String> comments = new ArrayList<>();
+//        instructions.add(new TSTO(backend.getMaxGlobalVAriablesSize()));
+//        instructions.add(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
+//        instructions.add(new ADDSP(backend.getMaxStackSize()));
+//        comments.add("");
+//        comments.add("");
+//        comments.add("");
+//
+//        backend.addInstructionFirst(instructions, comments);
+
         compiler.addFirst(new ADDSP(backend.getMaxStackSize()));
         compiler.addFirst(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
         compiler.addFirst(new TSTO(backend.getMaxGlobalVAriablesSize()));
