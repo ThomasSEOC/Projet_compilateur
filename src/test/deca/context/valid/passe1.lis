@@ -1,0 +1,21 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:30) - verify listClass: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:35) - verify listClass: end
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify program: end
+`> [1, 0] Program
+   +> ListDeclClass [List with 2 elements]
+   |  []> [1, 0] DeclClass
+   |  ||  +> [1, 6] Identifier (A)
+   |  ||  |  definition: type defined at [1, 0], type=A
+   |  ||  +> Identifier (Object)
+   |  ||  |  definition: type defined at null, type=Object
+   |  ||  +> ListDeclMethod [List with 0 elements]
+   |  ||  `> ListDeclField [List with 0 elements]
+   |  []> [2, 0] DeclClass
+   |      +> [2, 6] Identifier (B)
+   |      |  definition: type defined at [2, 0], type=B
+   |      +> [2, 8] Identifier (A)
+   |      |  definition: type defined at [2, 8], type=A
+   |      +> ListDeclMethod [List with 0 elements]
+   |      `> ListDeclField [List with 0 elements]
+   `> EmptyMain
