@@ -4,8 +4,7 @@ import fr.ensimag.deca.codegen.CodeGenBackend;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.deca.tree.AbstractProgram;
-import fr.ensimag.deca.tree.LocationException;
+import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 
 import java.io.File;
@@ -19,10 +18,7 @@ import org.apache.log4j.Logger;
 import fr.ensimag.deca.tools.SymbolTable;
 import java.util.HashMap;
 import fr.ensimag.deca.context.*;
-import fr.ensimag.deca.tree.Location;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
-import fr.ensimag.deca.tree.DeclClass;
-
 
 
 /**
@@ -43,14 +39,12 @@ import fr.ensimag.deca.tree.DeclClass;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
-    //On crée une table de symbole qui servira pour tout le programme
     private SymbolTable symbolTable = new SymbolTable();
 
-    //On crée les environnements prédéfinis du programme
     private EnvironmentType envTypesPredef = new EnvironmentType();    
     private EnvironmentExp envExpPredef = new EnvironmentExp(null);
     
-    //Accesseurs des environnements prédéfinis
+    // Getters
     public EnvironmentType getTypesPredef() {
 	    return envTypesPredef;
     }
@@ -72,32 +66,34 @@ public class DecacCompiler {
         this.codeGenBackend = new CodeGenBackend(this);
 
 
-        //On crée les symboles de l'environnement prédéfini en les mettant dans la table de symboles,
-	// puis on les ajoute avec leur définition associée dans l'environnement prédéfini
-
+        // symbols predefined
         symbolTable.create("void");
-        TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
-
         symbolTable.create("boolean");
-	TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
-
         symbolTable.create("float");
-	TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
-
         symbolTable.create("int");
-	IntType intType = new IntType(symbolTable.getMap().get("int"));
-	TypeDefinition intDef = new TypeDefinition(/*new IntType(symbolTable.getMap().get("int"))*/intType, Location.BUILTIN);
+        symbolTable.create("Object");
+        symbolTable.create("equals");
 
-	envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
-	envTypesPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
-	envTypesPredef.declare(symbolTable.getSymbol("float"), floatDef);
-	envTypesPredef.declare(symbolTable.getSymbol("int"), intDef);
-        
+        // Definitions of the predef types
+	    TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
+        TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
+        TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
+	    TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
-	//On crée l'environnement associé à la classe Object
-	//EnvironmentExp envExpObject = new EnvironmentExp(null);
-	//À faire quand on se sera occupé des méthodes
-        //symbolTable.create("Object");
+        // Definition for the class Object
+        ClassType object =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
+        ClassDefinition objDef = object.getDefinition();
+        //Identifier ObjId = new Identifier(symbolTable.getMap().get("Object"));
+        //DeclClass classObject = DeclClass(ObjId, null, methods, field);
+
+        // Declare in the envTypePredef
+        envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
+        envTypesPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
+        envTypesPredef.declare(symbolTable.getSymbol("float"), floatDef);
+        envTypesPredef.declare(symbolTable.getSymbol("int"), intDef);
+        envTypesPredef.declare(symbolTable.getSymbol("Object"), objDef);
+
+
 
     }
 
