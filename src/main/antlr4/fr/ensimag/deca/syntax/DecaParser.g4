@@ -79,7 +79,6 @@ decl_var_set[ListDeclVar l]
 
 list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
-        assert($dv1.tree != null);
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
             $l.add($dv2.tree);
@@ -92,7 +91,6 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         AbstractInitialization init = new NoInitialization();
         }
     : i=ident {
-        assert($i.tree != null);
         }
       (EQUALS e=expr {
         init = new Initialization($e.tree);
@@ -385,7 +383,6 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
-            setLocation($tree,$DOT);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
