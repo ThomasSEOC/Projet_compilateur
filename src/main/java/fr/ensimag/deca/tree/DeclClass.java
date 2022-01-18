@@ -61,14 +61,13 @@ public class DeclClass extends AbstractDeclClass {
 
         // put in the dictionary
         compiler.getTypesPredef().declare(nameClass.getName(), classDefinition);
-
-
-
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
+	field.verifyListDeclField(compiler);
+	methods.verifyListDeclMethods(compiler);
         throw new UnsupportedOperationException("not yet implemented");
     }
     

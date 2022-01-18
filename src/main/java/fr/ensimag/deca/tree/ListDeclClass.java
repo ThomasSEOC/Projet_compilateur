@@ -44,7 +44,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         while (it.hasNext()) {
             it.next().verifyClassMembers(compiler);
         }
-        LOG.debug("verify listClassMember: end");
+	LOG.debug("verify listClassMember: end");
     }
     
     /**

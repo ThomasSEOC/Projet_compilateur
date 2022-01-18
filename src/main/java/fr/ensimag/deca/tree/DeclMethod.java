@@ -23,6 +23,12 @@ public class DeclMethod extends AbstractDeclMethod{
         this.body = body;
     }
 
+        @Override
+    protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+	throw new UnsupportedOperationException("not yet implemented");
+    }
+
+
     @Override
     public void decompile(IndentPrintStream s){
         type.decompile(s);
