@@ -85,7 +85,8 @@ public class DecacCompiler {
 	TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
 
         symbolTable.create("int");
-        TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
+	IntType intType = new IntType(symbolTable.getMap().get("int"));
+	TypeDefinition intDef = new TypeDefinition(/*new IntType(symbolTable.getMap().get("int"))*/intType, Location.BUILTIN);
 
 	envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
 	envTypesPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);

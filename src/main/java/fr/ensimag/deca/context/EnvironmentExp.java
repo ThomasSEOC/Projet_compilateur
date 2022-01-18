@@ -26,7 +26,7 @@ public class EnvironmentExp {
     
     //Dictionnaire associant un symbole avec sa définition
     private Map<Symbol, ExpDefinition> dico = new HashMap<Symbol, ExpDefinition>();
-
+        
     EnvironmentExp parentEnvironment; //Superclass
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {

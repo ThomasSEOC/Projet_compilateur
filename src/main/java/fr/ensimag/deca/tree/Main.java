@@ -36,6 +36,7 @@ public class Main extends AbstractMain {
         // (mais ce n'est à priori pas nécessaire).
 	declVariables.verifyListDeclVariable(compiler, compiler.getExpPredef(), null);
 	insts.verifyListInst(compiler, compiler.getExpPredef(), null, compiler.getTypesPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
+
 	LOG.debug("verify Main: end");
     }
 
