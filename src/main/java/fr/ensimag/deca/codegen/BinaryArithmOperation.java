@@ -37,11 +37,14 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
         VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
+        // get correct operand
+        lOp.requestPhysicalRegister();
+
         // separate code generation according to arithmetic operation
         if (this.getExpression() instanceof Plus){
-            getCodeGenBackEnd().addInstruction(new ADD(lOp.getDVal(), rOp.requestPhysicalRegister()), "Operation Plus");
-            lOp.destroy();
-            this.getCodeGenBackEnd().getContextManager().operationStackPush(rOp);
+            getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Plus");
+            rOp.destroy();
+            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
         else if (this.getExpression() instanceof Minus){
             getCodeGenBackEnd().addInstruction(new SUB(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Minus");
@@ -49,9 +52,9 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
             this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
         else if (this.getExpression() instanceof Multiply){
-            getCodeGenBackEnd().addInstruction(new MUL(lOp.getDVal(), rOp.requestPhysicalRegister()), "Operation Multiply");
-            lOp.destroy();
-            this.getCodeGenBackEnd().getContextManager().operationStackPush(rOp);
+            getCodeGenBackEnd().addInstruction(new MUL(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Multiply");
+            rOp.destroy();
+            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
         else if (this.getExpression() instanceof Divide){
             if (lOp.getIsFloat() || rOp.getIsFloat()) {

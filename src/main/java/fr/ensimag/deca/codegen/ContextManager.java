@@ -132,7 +132,7 @@ public class ContextManager {
             }
 
             // load into physical register
-            backend.addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("Load from stack to R%d", currentRegisterIndex));
+//            backend.addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("Load virtual register to R%d", currentRegisterIndex));
 
             // set virtual register as physical register
             virtualRegister.setPhysical(register);

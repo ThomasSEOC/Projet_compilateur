@@ -1,7 +1,6 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.tree.AbstractInst;
-import fr.ensimag.deca.tree.While;
+import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
@@ -42,8 +41,22 @@ public class WhileStatement {
         backend.addLabel(startLabel);
 
         // generate code for condition
-        BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());
-        operator.doOperation();
+        if (expression.getCondition() instanceof Not) {
+            NotOperation operator = new NotOperation(backend, expression.getCondition());
+            operator.doOperation();
+        }
+        else if (expression.getCondition() instanceof Identifier) {
+            IdentifierRead operator = new IdentifierRead(backend, expression.getCondition());
+            operator.doOperation();
+        }
+        else if (expression.getCondition() instanceof BooleanLiteral) {
+            LiteralOperation operator = new LiteralOperation(backend, expression.getCondition());
+            operator.doOperation();
+        }
+        else {
+            BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());
+            operator.doOperation();
+        }
 
         // add body label
         backend.addLabel(bodyLabel);
