@@ -34,10 +34,9 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
-
-        declVariables.verifyListDeclVariable(compiler, compiler.getEnvPredef(), null);
-        insts.verifyListInst(compiler, compiler.getEnvPredef(), null, compiler.getEnvPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
-        LOG.debug("verify Main: end");
+	declVariables.verifyListDeclVariable(compiler, compiler.getExpPredef(), null);
+	insts.verifyListInst(compiler, compiler.getExpPredef(), null, compiler.getTypesPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
+	LOG.debug("verify Main: end");
     }
 
     @Override

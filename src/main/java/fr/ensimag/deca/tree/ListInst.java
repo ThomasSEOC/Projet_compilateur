@@ -30,7 +30,7 @@ public class ListInst extends TreeList<AbstractInst> {
             throws ContextualError {
         Iterator<AbstractInst> it = this.iterator();
         while (it.hasNext()) {
-            it.next().verifyInst(compiler, localEnv, currentClass, returnType);
+	    it.next().verifyInst(compiler, localEnv, currentClass, returnType);
         }
     }
 

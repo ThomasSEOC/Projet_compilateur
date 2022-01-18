@@ -23,9 +23,9 @@ import java.util.Map;
  * @date 01/01/2022
  */
 public class EnvironmentExp {
-
+    
     //Dictionnaire associant un symbole avec sa définition
-    private Map<Symbol, Definition> dico = new HashMap<Symbol, Definition>();
+    private Map<Symbol, ExpDefinition> dico = new HashMap<Symbol, ExpDefinition>();
 
     EnvironmentExp parentEnvironment; //Superclass
     
@@ -79,7 +79,7 @@ public class EnvironmentExp {
      *             if the symbol is already defined at the "current" dictionary
      *
      */
-    public void declare(Symbol name, Definition def) throws DoubleDefException {
+    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
 	if (dico.containsKey(name)) {
 	    throw new DoubleDefException("Arleady defined");
 	}

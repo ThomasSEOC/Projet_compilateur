@@ -172,9 +172,10 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         // Obligé de récupérer le vrai symbole
-        Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-        Definition def = localEnv.get(realSymbol);
-        setDefinition(def);
+	Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+	EnvironmentType envTypes = compiler.getTypesPredef();
+	TypeDefinition def = envTypes.get(realSymbol);
+	setDefinition(def);
         if (def != null) {
             setType(def.getType());
             return def.getType();
@@ -188,17 +189,19 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-	    EnvironmentExp localEnv = compiler.getEnvPredef();
-	    try {
-		Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-		  Type type = localEnv.get(realSymbol).getType();
-	  
-		 setType(type);
+	System.out.println("e");
+	EnvironmentType envTypes = compiler.getTypesPredef();
+	System.out.println("f");
+	Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+	System.out.println("g");
+	Type type = envTypes.get(realSymbol).getType();
+	System.out.println("h");
+	if (type == null) {
+            throw new ContextualError(name + " is not a type", getLocation());
+        }
+        setType(type);
         setDefinition(new TypeDefinition(type, getLocation()));
-        return type;
-	    } catch (NullPointerException e) {
-		throw new ContextualError(name + " is not a type", getLocation());
-	    }
+	return type;
     }
     
     

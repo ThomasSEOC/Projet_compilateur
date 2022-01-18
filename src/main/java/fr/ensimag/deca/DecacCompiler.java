@@ -21,6 +21,7 @@ import java.util.HashMap;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+import fr.ensimag.deca.tree.DeclClass;
 
 
 
@@ -41,21 +42,22 @@ import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    
 
-    /**
-     * Symbols
-     */
-    //On crée une table de symbole pour pouvoir l'utiliser dans l'ensemble du programme
+    //On crée une table de symbole qui servira pour tout le programme
     private SymbolTable symbolTable = new SymbolTable();
 
-    //On crée l'environnement prédéfini
-    private EnvironmentExp envPredef = new EnvironmentExp(null);
-
-    public EnvironmentExp getEnvPredef() {
-	    return envPredef;
+    //On crée les environnements prédéfinis du programme
+    private EnvironmentType envTypesPredef = new EnvironmentType();    
+    private EnvironmentExp envExpPredef = new EnvironmentExp(null);
+    
+    //Accesseurs des environnements prédéfinis
+    public EnvironmentType getTypesPredef() {
+	    return envTypesPredef;
     }
-					  
+    public EnvironmentExp getExpPredef() {
+	return envExpPredef;
+
+    }
     
     /**
      * Portable newline character.
@@ -69,57 +71,39 @@ public class DecacCompiler {
         this.source = source;
         this.codeGenBackend = new CodeGenBackend(this);
 
-        /**
-         * Predefined symbols
-         */
-        //On crée les symboles de chaque type et on les associe à leur définition
+
+        //On crée les symboles de l'environnement prédéfini en les mettant dans la table de symboles,
+	// puis on les ajoute avec leur définition associée dans l'environnement prédéfini
+
         symbolTable.create("void");
         TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
 
         symbolTable.create("boolean");
-        TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
+	TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
 
         symbolTable.create("float");
-        TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
+	TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
 
         symbolTable.create("int");
         TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
-        try {
-            envPredef.declare(symbolTable.getSymbol("void"), voidDef);
-        } catch (DoubleDefException e) {
-            System.out.println("void : " + e);
-            System.exit(1);
-        }
-        try {
-            envPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
-        } catch (DoubleDefException e) {
-            System.out.println("boolean : " + e);
-            System.exit(1);
-        }
-        try {
-            envPredef.declare(symbolTable.getSymbol("float"), floatDef);
-        } catch (DoubleDefException e) {
-            System.out.println("float : " + e);
-            System.exit(1);
-        }
-        try {
-            envPredef.declare(symbolTable.getSymbol("int"), intDef);
-        } catch (DoubleDefException e) {
-            System.out.println("int : " + e);
-            System.exit(1);
-        }
+	envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
+	envTypesPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
+	envTypesPredef.declare(symbolTable.getSymbol("float"), floatDef);
+	envTypesPredef.declare(symbolTable.getSymbol("int"), intDef);
+        
 
-        symbolTable.create("Object");
+	//On crée l'environnement associé à la classe Object
+	//EnvironmentExp envExpObject = new EnvironmentExp(null);
+	//À faire quand on se sera occupé des méthodes
+        //symbolTable.create("Object");
 
-	
     }
 
 
     public SymbolTable getSymbolTable(){
         return symbolTable;
     }
-
 
     /**
      * Source file associated with this compiler instance.
