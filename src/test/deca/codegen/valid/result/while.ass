@@ -11,12 +11,11 @@ while_1_start:
 	CMP #5, R2
 	BGE while_1_end
 while_1_body:
-	WSTR "et un tout de plus"
+	WSTR "et un tour de plus"
 	WNL
 	LOAD 1(GB), R2
-	LOAD #1, R3
-	ADD R2, R3	; Operation Plus
-	STORE R3, 1(GB)
+	ADD #1, R2	; Operation Plus
+	STORE R2, 1(GB)
 	BRA while_1_start
 while_1_end:
 	HALT
