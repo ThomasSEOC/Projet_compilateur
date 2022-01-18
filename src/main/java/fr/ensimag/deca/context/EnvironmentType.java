@@ -19,8 +19,6 @@ public class EnvironmentType {
 
     private Map<Symbol, TypeDefinition> dico = new HashMap<Symbol, TypeDefinition>();
 
-    public Map getMap(){return dico;}
-
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
