@@ -117,4 +117,8 @@ MULTI_LINE_COMMENT:  '/*' .*? '*/'
 
 //Inclusion de fichier
 fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_')+;
-INCLUDE:             '#include' (' ')* '"' FILENAME '"';
+INCLUDE:             '#include' (ESPACE)* '"' FILENAME '"'
+                     {
+                        doInclude(getText());
+                        skip();
+                     };
