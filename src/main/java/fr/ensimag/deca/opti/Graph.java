@@ -22,7 +22,7 @@ abstract class Graph {
     }
 
     protected void addCodeBloc(AbstractCodeBloc bloc) {
-        if (!blocs.contains(bloc)) {
+        if (!blocs.contains(bloc) && (bloc != getStartBloc()) && (bloc != getStopBloc())) {
             blocs.add(bloc);
         }
     }
@@ -40,6 +40,12 @@ abstract class Graph {
 
     protected void addArc(Arc arc) {
         arcs.add(arc);
+        if (!(getBlocs().contains(arc.getStart()))) {
+            addCodeBloc(arc.getStart());
+        }
+        if (!(getBlocs().contains(arc.getStop()))) {
+            addCodeBloc(arc.getStop());
+        }
     }
 
     protected List<Arc> getArcs() {
