@@ -4,7 +4,6 @@
 //    Historique:
 //    cree le 18/01/2022
 
-#include
 
 {
     int a = 10;
