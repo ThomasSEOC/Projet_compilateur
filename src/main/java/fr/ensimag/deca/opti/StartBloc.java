@@ -6,7 +6,6 @@ import fr.ensimag.ima.pseudocode.instructions.BRA;
 public class StartBloc extends AbstractCodeBloc {
     public StartBloc(int id) {
         super(id);
-        inArcs = null;
     }
 
     @Override

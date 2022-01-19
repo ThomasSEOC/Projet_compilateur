@@ -101,6 +101,8 @@ public class SSAProcessor {
         for (InstructionIdentifiers identifiers : bloc.getInstructionIdentifiersList()) {
             processInstructionIdentifiers(identifiers, localSSA);
         }
+
+        graph.addDoneBloc(bloc);
     }
 
     public void process() {

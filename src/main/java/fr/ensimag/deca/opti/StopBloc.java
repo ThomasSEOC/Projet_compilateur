@@ -5,7 +5,6 @@ import fr.ensimag.ima.pseudocode.Label;
 public class StopBloc extends AbstractCodeBloc {
     public StopBloc(int id) {
         super(id);
-        outArcs = null;
     }
 
     @Override

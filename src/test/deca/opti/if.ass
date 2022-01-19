@@ -5,7 +5,6 @@ Code.Bloc.0:
 Code.Bloc.2:
 	WSTR "coucou"
 	WNL
-	BRA Code.Bloc.3
 Code.Bloc.3:
 	LOAD #1, R2
 	CMP #1, R2
@@ -13,7 +12,6 @@ Code.Bloc.3:
 Code.Bloc.5:
 	WSTR "yes"
 	WNL
-	BRA Code.Bloc.4
 Code.Bloc.4:
 	BRA Code.Bloc.1
 Code.Bloc.6:

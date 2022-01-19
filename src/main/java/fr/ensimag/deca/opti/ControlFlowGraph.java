@@ -14,12 +14,15 @@ public class ControlFlowGraph extends Graph {
     private final DecacCompiler compiler;
     private final ListInst instructions;
     private List<AbstractCodeBloc> codeGenDoneBlocs;
+    private SSAProcessor ssaProcessor;
 
     public ControlFlowGraph(DecacCompiler compiler, ListInst instructions) {
         super();
         this.instructions = instructions;
         this.compiler = compiler;
         createCFG();
+        this.ssaProcessor = new SSAProcessor(this);
+        ssaProcessor.process();
     }
 
     private void CFGRecursion(List<AbstractInst> instructionsList, AbstractCodeBloc inCodeBloc, AbstractCodeBloc outCodeBloc) {
