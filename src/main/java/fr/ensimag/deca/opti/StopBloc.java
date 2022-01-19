@@ -10,4 +10,9 @@ public class StopBloc extends AbstractCodeBloc {
     public String toString() {
         return "Stop bloc #" + getId() + " : " + inArcs.size() + " in arcs";
     }
+
+    @Override
+    public void codeGen(ControlFlowGraph graph) {
+        super.codeGen(graph);
+    }
 }

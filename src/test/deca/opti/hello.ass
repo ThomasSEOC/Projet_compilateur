@@ -3,23 +3,9 @@
 ; Beginning of main instructions:
 Code.Bloc.0:
 Code.Bloc.2:
-	WSTR "coucou"
+	WSTR "hello world"
 	WNL
-	BRA Code.Bloc.3
-Code.Bloc.3:
-	LOAD #1, R2
-	CMP #1, R2
-	BNE Code.Bloc.6
-Code.Bloc.5:
-	WSTR "yes"
-	WNL
-	BRA Code.Bloc.4
-Code.Bloc.4:
 	BRA Code.Bloc.1
-Code.Bloc.6:
-	WSTR "no"
-	WNL
-	BRA Code.Bloc.4
 Code.Bloc.1:
 	HALT
 ; error messages

@@ -1,16 +1,19 @@
 package fr.ensimag.deca.opti;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.CodeGenBackend;
 import fr.ensimag.deca.tree.AbstractInst;
 import fr.ensimag.deca.tree.IfThenElse;
 import fr.ensimag.deca.tree.ListInst;
 import fr.ensimag.deca.tree.While;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlFlowGraph extends Graph {
     private final DecacCompiler compiler;
     private final ListInst instructions;
+    private List<AbstractCodeBloc> codeGenDoneBlocs;
 
     public ControlFlowGraph(DecacCompiler compiler, ListInst instructions) {
         super();
@@ -26,9 +29,9 @@ public class ControlFlowGraph extends Graph {
         for (AbstractInst instruction : instructionsList) {
             if ((instruction instanceof IfThenElse) || (instruction instanceof While)) {
                 BranchCodeBloc branchCodeBloc = new BranchCodeBloc(requestId());
-                for (AbstractInst inst : currentBloc.getInstructions().getList()) {
-                    branchCodeBloc.addInstruction(inst);
-                }
+//                for (AbstractInst inst : currentBloc.getInstructions().getList()) {
+//                    branchCodeBloc.addInstruction(inst);
+//                }
                 addArc(new Arc(currentBloc, branchCodeBloc));
 
                 if (instruction instanceof While) {
@@ -94,12 +97,32 @@ public class ControlFlowGraph extends Graph {
         CFGRecursion(instructionsList, getStartBloc(), getStopBloc());
     }
 
+    public void addDoneBloc(AbstractCodeBloc bloc) {
+        codeGenDoneBlocs.add(bloc);
+    }
+
+    public List<AbstractCodeBloc> getDoneBlocs() {
+        return codeGenDoneBlocs;
+    }
+
     public void codeGen() {
-//        AbstractCodeBloc bloc = getStartBloc();
-//        while (bloc != getStopBloc()) {
-//            System.out.println(bloc);
-//            bloc.getInstructions().codeGenListInst(compiler);
-//            bloc = bloc.outArcs.get(0).getStop();
-//        }
+        AbstractCodeBloc startBloc = getStartBloc();
+        codeGenDoneBlocs = new ArrayList<>();
+        codeGenDoneBlocs.add(getStartBloc());
+        codeGenDoneBlocs.add(getStopBloc());
+
+        startBloc.codeGen(this);
+
+        getStopBloc().codeGen(this);
+
+        getBackend().writeInstructions();
+    }
+
+    public DecacCompiler getCompiler() {
+        return compiler;
+    }
+
+    public CodeGenBackend getBackend() {
+        return compiler.getCodeGenBackend();
     }
 }

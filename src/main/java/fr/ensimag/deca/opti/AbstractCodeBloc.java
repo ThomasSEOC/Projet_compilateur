@@ -2,6 +2,7 @@ package fr.ensimag.deca.opti;
 
 import fr.ensimag.deca.tree.AbstractInst;
 import fr.ensimag.deca.tree.ListInst;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,5 +46,14 @@ abstract class AbstractCodeBloc {
 
     public List<Arc> getOutArcs() {
         return outArcs;
+    }
+
+    public void codeGen(ControlFlowGraph graph) {
+        // add bloc label
+        graph.getBackend().addLabel(new Label("Code.Bloc." + getId()));
+
+        // generate code for instructions of this bloc
+        ListInst instructions = getInstructions();
+        instructions.codeGenListInst(graph.getCompiler());
     }
 }
