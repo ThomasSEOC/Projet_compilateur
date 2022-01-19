@@ -1,0 +1,50 @@
+`> [7, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [7, 0] Main
+      +> ListDeclVar [List with 7 elements]
+      |  []> [8, 8] DeclVar
+      |  ||  +> [8, 4] Identifier (int)
+      |  ||  +> [8, 8] Identifier (a)
+      |  ||  `> [8, 8] Initialization
+      |  ||     `> [8, 12] Int (2)
+      |  []> [9, 8] DeclVar
+      |  ||  +> [9, 4] Identifier (int)
+      |  ||  +> [9, 8] Identifier (b)
+      |  ||  `> [9, 8] Initialization
+      |  ||     `> [9, 12] Int (3)
+      |  []> [10, 8] DeclVar
+      |  ||  +> [10, 4] Identifier (int)
+      |  ||  +> [10, 8] Identifier (c)
+      |  ||  `> [10, 8] Initialization
+      |  ||     `> [10, 12] Plus
+      |  ||        +> [10, 12] Identifier (a)
+      |  ||        `> [10, 14] Identifier (b)
+      |  []> [11, 8] DeclVar
+      |  ||  +> [11, 4] Identifier (int)
+      |  ||  +> [11, 8] Identifier (d)
+      |  ||  `> [11, 8] Initialization
+      |  ||     `> [11, 12] Minus
+      |  ||        +> [11, 12] Identifier (b)
+      |  ||        `> [11, 14] Identifier (a)
+      |  []> [12, 10] DeclVar
+      |  ||  +> [12, 4] Identifier (float)
+      |  ||  +> [12, 10] Identifier (e)
+      |  ||  `> [12, 10] Initialization
+      |  ||     `> [12, 14] Divide
+      |  ||        +> [12, 14] Identifier (b)
+      |  ||        `> [12, 16] Identifier (a)
+      |  []> [13, 10] DeclVar
+      |  ||  +> [13, 4] Identifier (float)
+      |  ||  +> [13, 10] Identifier (f)
+      |  ||  `> [13, 10] Initialization
+      |  ||     `> [13, 14] Modulo
+      |  ||        +> [13, 14] Identifier (b)
+      |  ||        `> [13, 16] Identifier (a)
+      |  []> [14, 10] DeclVar
+      |      +> [14, 4] Identifier (float)
+      |      +> [14, 10] Identifier (g)
+      |      `> [14, 10] Initialization
+      |         `> [14, 14] Multiply
+      |            +> [14, 14] Identifier (b)
+      |            `> [14, 16] Identifier (a)
+      `> ListInst [List with 0 elements]
