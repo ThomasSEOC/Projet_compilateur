@@ -13,12 +13,7 @@ import java.util.Iterator;
  */
 public class ListDeclField extends TreeList<AbstractDeclField> {
 
-    void verifyListField(DecacCompiler compiler) throws ContextualError {
-        Iterator<AbstractDeclField> it = this.iterator();
-        while (it.hasNext()) {
-            it.next().verifyDeclField(compiler);
-        }
-    }
+
     
     @Override
     public void decompile(IndentPrintStream s) {

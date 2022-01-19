@@ -12,13 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
-    
-    void verifyListField(DecacCompiler compiler) throws ContextualError {
-        Iterator<AbstractDeclField> it = this.iterator();
-        while (it.hasNext()) {
-            it.next().verifyDeclField(compiler);
-        }
-    }
+
     
     @Override
     public void decompile(IndentPrintStream s) {

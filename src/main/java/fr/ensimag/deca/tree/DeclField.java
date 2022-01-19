@@ -29,11 +29,6 @@ public class DeclField extends AbstractDeclField{
     @Override
     protected void verifyDeclField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 	  // check type
-        type.verifyType(compiler);
-        if (type.getType().isVoid()) {
-            throw new ContextualError("Var must not be void", getLocation());
-        }
-
 	//ajouter la deuxième condition (2.5) p.82
 	throw new UnsupportedOperationException("not yet implemented");
     }
