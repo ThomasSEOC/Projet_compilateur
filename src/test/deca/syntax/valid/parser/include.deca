@@ -1,0 +1,8 @@
+// Description:
+//    test des includes
+//
+// Historique:
+//    cree le 18/01/2022
+
+
+#include "appel_include.deca"
