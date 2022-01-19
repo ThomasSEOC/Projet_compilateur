@@ -1,0 +1,12 @@
+// Description:
+//    Programme affichant des textes de deux manières différentes et de types différents 
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 17/01/2022
+{
+println("Hello");
+print(1, 2.2);
+}

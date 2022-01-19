@@ -1,0 +1,38 @@
+; start main program
+; Main program
+	TSTO #0
+	BOV stack_overflow_error
+	ADDSP #0
+; Beginning of main instructions:
+	LOAD #0x1.8p0, R2
+	ADD #0x1.333334p0, R2	; Operation Plus
+	LOAD R2, R1
+	WFLOAT
+	WNL
+	LOAD #0x1.4p1, R2
+	SUB #0x1.333334p0, R2	; Operation Minus
+	LOAD R2, R1
+	WFLOAT
+	WNL
+	LOAD #0x1.2p2, R2
+	DIV #0x1.0cccccp1, R2	; Operation Division
+	LOAD R2, R1
+	WFLOAT
+	WNL
+	LOAD #0x1.79999ap2, R2
+	MUL #0x1.d9999ap1, R2	; Operation Multiply
+	LOAD R2, R1
+	WFLOAT
+	WNL
+	LOAD #0x1.8p0, R2
+	ADD #0x1.333334p0, R2	; Operation Plus
+	LOAD R2, R1
+	WFLOATX
+	WNL
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

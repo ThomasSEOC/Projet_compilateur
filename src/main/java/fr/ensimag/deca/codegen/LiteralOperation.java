@@ -7,18 +7,37 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+/**
+ * class responsible for literal operations
+ */
 public class LiteralOperation extends AbstractOperation {
 
+    /**
+     * constructor for {@link LiteralOperation}
+     * @param backend global code generation backend
+     * @param expression expression related to operation
+     */
     public LiteralOperation(CodeGenBackend backend, AbstractExpr expression) {
         super(backend, expression);
     }
 
+    /**
+     * method called to generate code for literal usage
+     */
     @Override
     public void doOperation() {
+        // separate according to literal type
         if (getExpression() instanceof IntLiteral) {
+            // cast to IntLiteral
             IntLiteral expr = (IntLiteral) getExpression();
+
+            // request integer immediate virtual register
             VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(expr.getValue()));
+
+            // set data type
             r.setInt();
+
+            // push to operation stack
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
         else if (getExpression() instanceof FloatLiteral) {
@@ -33,43 +52,51 @@ public class LiteralOperation extends AbstractOperation {
             r.setInt();
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
-        else if (getExpression() instanceof StringLiteral) {
-            StringLiteral expr = (StringLiteral) getExpression();
-            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateString(expr.getValue()));
-            getCodeGenBackEnd().getContextManager().operationStackPush(r);
-        }
+//        else if (getExpression() instanceof StringLiteral) {
+//            StringLiteral expr = (StringLiteral) getExpression();
+//            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateString(expr.getValue()));
+//            getCodeGenBackEnd().getContextManager().operationStackPush(r);
+//        }
     }
 
+    /**
+     * method called to generate code form literal print
+     */
     @Override
     public void print() {
+        // separate according to literal type
         if (getExpression() instanceof IntLiteral) {
+            // cast to IntLiteral
             IntLiteral expr = (IntLiteral) getExpression();
-            getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new ImmediateInteger(expr.getValue()), GPRegister.getR(1)));
-            getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+
+            // load value into R1 and print it
+            getCodeGenBackEnd().addInstruction(new LOAD(new ImmediateInteger(expr.getValue()), GPRegister.getR(1)));
+            getCodeGenBackEnd().addInstruction(new WINT());
         }
         else if (getExpression() instanceof FloatLiteral) {
             FloatLiteral expr = (FloatLiteral) getExpression();
-            getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(new ImmediateFloat(expr.getValue()), GPRegister.getR(1)));
+            getCodeGenBackEnd().addInstruction(new LOAD(new ImmediateFloat(expr.getValue()), GPRegister.getR(1)));
 
             if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+                getCodeGenBackEnd().addInstruction(new WFLOATX());
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+                getCodeGenBackEnd().addInstruction(new WFLOAT());
             }
         }
-        else if (getExpression() instanceof BooleanLiteral) {
-            BooleanLiteral expr = (BooleanLiteral) getExpression();
-            if (expr.getValue()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString("True")));
-            }
-            else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString("False")));
-            }
-        }
+//        else if (getExpression() instanceof BooleanLiteral) {
+//            BooleanLiteral expr = (BooleanLiteral) getExpression();
+//            if (expr.getValue()) {
+//                getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString("True")));
+//            }
+//            else {
+//                getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString("False")));
+//            }
+//        }
         else if (getExpression() instanceof StringLiteral) {
             StringLiteral expr = (StringLiteral) getExpression();
-            getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString(expr.getValue())));
+            String toDisplay = expr.getValue().substring(1, expr.getValue().length()-1);
+            getCodeGenBackEnd().addInstruction(new WSTR(new ImmediateString(toDisplay)));
         }
     }
 

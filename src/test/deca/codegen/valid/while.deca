@@ -1,0 +1,7 @@
+{
+    int x = 1;
+    while (x < 5) {
+        println("et un tour de plus");
+        x = x + 1;
+    }
+}

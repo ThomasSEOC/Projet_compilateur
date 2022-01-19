@@ -1,9 +1,7 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -13,91 +11,98 @@ import fr.ensimag.ima.pseudocode.instructions.*;
  * @date 10/01/2022
  */
 public class BinaryArithmOperation extends AbstractBinaryOperation {
-    //instanceof
-
-
     /**
      * Constructor of BinaryArithmOperation
      *
-     * @param codegenbackend, expression
+     * @param codegenbackend global codegen backend
+     * @param expression expression related to current operation
      */
     public BinaryArithmOperation (CodeGenBackend codegenbackend, AbstractExpr expression){
         super(codegenbackend, expression);
     }
 
-
     /**
-     * Main class doing the operation
-     *
-     * @param
+     * Method called to generate code for binary arithmetic operation
      */
     @Override
     public void doOperation (){
-
-//        VirtualRegister r1 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
-//        VirtualRegister r2 = this.getCodeGenBackEnd().getContextManager().requestNewRegister();
-
-        // récursion
+        // cast expression to AbstractBinaryExpr
         AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
+
+        // generate code for left and right operands
         AbstractExpr[] ops = {expr.getLeftOperand(), expr.getRightOperand()};
         this.ListCodeGen(ops);
-        VirtualRegister r2 = getCodeGenBackEnd().getContextManager().operationStackPop();
-        VirtualRegister r1 = getCodeGenBackEnd().getContextManager().operationStackPop();
 
+        // pop result out of operation stack
+        VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
+        VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
+
+        // get correct operand
+        lOp.requestPhysicalRegister();
+
+        // separate code generation according to arithmetic operation
         if (this.getExpression() instanceof Plus){
-            getCodeGenBackEnd().getCompiler().addInstruction(new ADD(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Plus"));
+            getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Plus");
+            rOp.destroy();
+            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
-
-        if (this.getExpression() instanceof Minus){
-            // invert register
-            VirtualRegister temp = r1;
-            r1 = r2;
-            r2 = temp;
-            getCodeGenBackEnd().getCompiler().addInstruction(new SUB(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Minus"));
+        else if (this.getExpression() instanceof Minus){
+            getCodeGenBackEnd().addInstruction(new SUB(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Minus");
+            rOp.destroy();
+            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
-
-        if (this.getExpression() instanceof Multiply){
-            getCodeGenBackEnd().getCompiler().addInstruction(new MUL(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Multiply"));
+        else if (this.getExpression() instanceof Multiply){
+            getCodeGenBackEnd().addInstruction(new MUL(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Multiply");
+            rOp.destroy();
+            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
         }
-
-        if (this.getExpression() instanceof Divide){
-            VirtualRegister temp = r1;
-            r1 = r2;
-            r2 = temp;
-            getCodeGenBackEnd().getCompiler().addInstruction(new QUO(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
-        }
-
-        if (this.getExpression() instanceof Modulo){
-            VirtualRegister temp = r1;
-            r1 = r2;
-            r2 = temp;
-            getCodeGenBackEnd().getCompiler().addInstruction(new REM(r1.getDVal(), r2.requestPhysicalRegister()), String.format("Operation Divide"));
-        }
-
-        r1.destroy();
-        this.getCodeGenBackEnd().getContextManager().operationStackPush(r2);
-    }
-
-    @Override
-    public void print() {
-        //doOperation();
-
-        VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
-
-        getCodeGenBackEnd().getCompiler().addInstruction(new LOAD(r.getDVal(), GPRegister.getR(1)));
-
-        if (r.getIsFloat()) {
-            if (getCodeGenBackEnd().getPrintHex()) {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+        else if (this.getExpression() instanceof Divide){
+            if (lOp.getIsFloat() || rOp.getIsFloat()) {
+                getCodeGenBackEnd().addInstruction(new DIV(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Division");
             }
             else {
-                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+                getCodeGenBackEnd().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Quotient");
+            }
+            rOp.destroy();
+            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+        }
+        else if (this.getExpression() instanceof Modulo){
+            getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Remainder");
+            rOp.destroy();
+            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+        }
+        else {
+            throw new UnsupportedOperationException("unknown arithmetic operation");
+        }
+    }
+
+    /**
+     * method called to generate code to print result of binary arithmetic operation
+     */
+    @Override
+    public void print() {
+        doOperation();
+
+        // get result
+        VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
+
+        // move result to R1
+        getCodeGenBackEnd().addInstruction(new LOAD(r.getDVal(), GPRegister.getR(1)));
+
+        // use appropriate write instruction according to type and Hex
+        if (r.getIsFloat()) {
+            if (getCodeGenBackEnd().getPrintHex()) {
+                getCodeGenBackEnd().addInstruction(new WFLOATX());
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new WFLOAT());
             }
         }
         else {
-            getCodeGenBackEnd().getCompiler().addInstruction(new WINT());
+            getCodeGenBackEnd().addInstruction(new WINT());
         }
 
+        // free used register
         r.destroy();
     }
 

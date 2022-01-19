@@ -1,0 +1,14 @@
+// Description:
+//    Programme testant les opérateurs binaires booléens.
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 17/01/2022
+{
+true || false;
+true && true;
+true == true;
+true != false;
+}

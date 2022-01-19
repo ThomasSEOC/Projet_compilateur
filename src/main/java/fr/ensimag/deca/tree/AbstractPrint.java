@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+//import com.sun.imageio.plugins.common.SubImageInputStream;
+import fr.ensimag.deca.codegen.IdentifierRead;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.FloatType;
 import fr.ensimag.deca.context.IntType;
@@ -11,6 +13,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.mockito.internal.creation.SuspendMethod;
+
 import java.util.Iterator;
 
 /**
@@ -40,17 +44,17 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-	Type typeExpr;
-	Iterator<AbstractExpr> it = arguments.iterator();
-	while (it.hasNext()) {
-	    AbstractExpr expr = it.next();    
-	    typeExpr = expr.getType();
-	    if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()){
-		 throw new ContextualError("print(" + expr + ") : " + expr + " is not a boolean", getLocation());
-	    }
-	}
-    }
 
+        //On parcourt l'ensemble des expressions pour toutes les vérifier
+        Iterator<AbstractExpr> it = arguments.iterator();
+        while (it.hasNext()) {
+            Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);
+            //On vérifie si le type de l'expression étudiée est compatible avec print ou println
+            if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()) {
+                throw new ContextualError("What is printed needs to be either an int, a float or a string", getLocation());
+            }
+        }
+    }
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         compiler.getCodeGenBackend().setPrintHex(getPrintHex());
@@ -60,7 +64,7 @@ public abstract class AbstractPrint extends AbstractInst {
         }
     }
 
-    private boolean getPrintHex() {
+    protected boolean getPrintHex() {
         return printHex;
     }
 

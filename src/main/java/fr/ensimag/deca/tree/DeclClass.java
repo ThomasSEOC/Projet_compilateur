@@ -61,10 +61,12 @@ public class DeclClass extends AbstractDeclClass {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not yet supported");
+        nameClass.prettyPrint(s,prefix,false);
+        superClass.prettyPrint(s,prefix,false);
+        methods.prettyPrint(s,prefix,false);
+        field.prettyPrint(s,prefix,true);
     }
 
     @Override
@@ -72,4 +74,8 @@ public class DeclClass extends AbstractDeclClass {
         throw new UnsupportedOperationException("Not yet supported");
     }
 
+    @Override
+    protected void codeGenDeclare(DecacCompiler compiler) {
+        compiler.getCodeGenBackend().getClassManager().addClass(nameClass, superClass, methods, field);
+    }
 }

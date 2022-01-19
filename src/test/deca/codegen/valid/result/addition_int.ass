@@ -1,0 +1,27 @@
+; start main program
+; Main program
+	TSTO #0
+	BOV stack_overflow_error
+	ADDSP #0
+; Beginning of main instructions:
+	WSTR " 1 + 1 = "
+	LOAD #1, R2
+	ADD #1, R2	; Operation Plus
+	LOAD R2, R1
+	WINT
+	WNL
+	WSTR " 1 + -2 = "
+	LOAD #2, R2
+	OPP R2, R2
+	LOAD #1, R3
+	ADD R2, R3	; Operation Plus
+	LOAD R3, R1
+	WINT
+	WNL
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

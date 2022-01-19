@@ -23,23 +23,20 @@ import java.util.Map;
  * @date 01/01/2022
  */
 public class EnvironmentExp {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
 
-    private Map<Symbol, ExpDefinition> dico = new HashMap<Symbol, ExpDefinition>();
+    //Dictionnaire associant un symbole avec sa définition
+    private Map<Symbol, Definition> dico = new HashMap<Symbol, Definition>();
 
     EnvironmentExp parentEnvironment; //Superclass
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
-        //permet de conserver la hiérarchie
+        //Permet de conserver la hiérarchie
         this.parentEnvironment = parentEnvironment;
     }
 
     public static class DoubleDefException extends Exception {
-	
         private static final long serialVersionUID = -2733379901827316441L;
-	public DoubleDefException(String message) {
+	    public DoubleDefException(String message) {
 	    super(message);
 	}
     }
@@ -48,17 +45,23 @@ public class EnvironmentExp {
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    public ExpDefinition get(Symbol key) {
+    //On implémente une fonction qui vérifie récursivement si le symbole recherché
+    // est dans le dictionnaire courant ou dans les parents de celui-ci
+    public Definition get(Symbol key) {
+        //Première condition d'arrêt : le symbole est dans le dictionnaire étudié
         if (dico.containsKey(key)) {
             return (dico.get(key));
         }
 
-	//Condition d'arrêt
+	    //Deuxième condition d'arrêt : le dictionnaire étudié n'a pas de parent.
+        //Le symbole recherché n'a donc pas de définition dans le dictionnaire
+        // courant ou ses parents
         if (parentEnvironment == null){
             return null;
         }
-	
-        return parentEnvironment.get(key); //On choisit une fonction récursive
+
+        //Récursion
+        return parentEnvironment.get(key);
     }
 
     /**
@@ -76,13 +79,12 @@ public class EnvironmentExp {
      *             if the symbol is already defined at the "current" dictionary
      *
      */
-    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
+    public void declare(Symbol name, Definition def) throws DoubleDefException {
 	if (dico.containsKey(name)) {
 	    throw new DoubleDefException("Arleady defined");
 	}
 	
         dico.put(name, def);
-        return;
     }
 
 }

@@ -8,8 +8,8 @@
 //    cree le 01/01/2022
 
 {
-        println("Hello");
-        println("world\n");
-               println("Hello\n");  //       println("world\n");
+        //println("Hello");
+        println("world");
+               println("Hello");  //       println("world\n");
 
 }

@@ -32,7 +32,6 @@ public class DeclParam extends AbstractDeclParam{
         type.decompile(s);
         s.print(" ");
         name.decompile(s);
-        s.println("");
     }
 
     @Override
@@ -47,4 +46,8 @@ public class DeclParam extends AbstractDeclParam{
         type.prettyPrint(s, prefix, false);
         name.prettyPrint(s, prefix, true);
     }
+
+    public AbstractIdentifier getType() { return type; }
+
+    public AbstractIdentifier getName() { return name; }
 }

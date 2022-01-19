@@ -1,0 +1,58 @@
+// Description:
+//   Equals , NotEquals, Greater, GreaterOrEquals, Lower , LowerOrEquals
+//
+// Resultats:
+//    rien
+//
+// Historique:
+//    cree le 01/01/2022
+
+
+{
+    int i = 1;
+    int j = 1;
+    float f = 0.1;
+    float g = 0.1;
+
+
+/* Identifier only */
+    // Equals
+    if (i == j) { }       // int and int
+    if (i == f) { }       // int and float
+    if (f == i) { }       // float and int
+    if (f == f) { }       // float and float
+
+    // NotEquals
+    if (i != j) { }       // int and int
+    if (i != f) { }       // int and float
+    if (f != i) { }       // float and int
+    if (f != f) { }       // float and float
+
+    // GreaterOrEquals
+    if (i >= j) { }       // int and int
+    if (i >= f) { }       // int and float
+    if (f >= i) { }       // float and int
+    if (f >= f) { }       // float and float
+
+    // LowerOrEquals
+    if (i <= j) { }       // int and int
+    if (i <= f) { }       // int and float
+    if (f <= i) { }       // float and int
+    if (f <= f) { }       // float and float
+
+    // Greater
+    if (i > j) { }       // int and int
+    if (i > f) { }       // int and float
+    if (f > i) { }       // float and int
+    if (f > f) { }       // float and float
+
+    // Lower
+    if (i < j) { }       // int and int
+    if (i < f) { }       // int and float
+    if (f < i) { }       // float and int
+    if (f < f) { }       // float and float
+
+    // Minus
+
+    f = - g;
+}

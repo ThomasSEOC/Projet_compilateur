@@ -54,7 +54,7 @@ WS  :   ( ESPACE | FORMAT)
 fragment LETTER :    ('a'..'z' | 'A'..'Z'); // lettres
 fragment DIGIT:    '0' .. '9'; // chiffres
 IDENT:               (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
-//IDF:                 ('a' .. 'z' | 'A' .. 'Z')+; // identificateur
+
 
 //Symboles spéciaux :
 LT:                  '<'; // comparateur 'inférieur à'
@@ -88,7 +88,7 @@ INT:                 '0' | POSITIVE_DIGIT DIGIT*;
 fragment NUM:        DIGIT+;
 fragment SIGN:       (PLUS | MINUS | EPS);
 fragment EXP:        ('E' | 'e') SIGN NUM;
-fragment DEC:        NUM DOT NUM; // a voir si ca marche, sinon NUM ',' NUM
+fragment DEC:        NUM DOT NUM;
 fragment FLOATDEC:   (DEC | DEC EXP)('F' | 'f' | EPS);
 fragment DIGITHEX:   (DIGIT | 'A'..'F' | 'a'..'f');
 fragment NUMHEX:     DIGITHEX+;
@@ -98,14 +98,19 @@ FLOAT :              (FLOATDEC | FLOATHEX);
 //Chaines de caractère :
 fragment STRING_CAR: ~('"' | '\\' | '\n' ); //caractère d'une chaine de caractères
 STRING:              '"' (STRING_CAR | '\\"' | '\\\\')* '"'; //chaine de caractère
-MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"'; //chaine de caractère sur plusieurs lignes
-
+MULTI_LINE_STRING:   '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+ /*
+ {
+     String s = getText();
+     setText(s.substring(1,s.length()-1).replace("\\\","\"").replace("\\\\","\\"));
+ }; //chaine de caractère sur plusieurs lignes//chaine de caractère sur plusieurs lignes
+*/
 
 //Commentaires :
 COMMENT:             '//' .*? (EOL|EOF)
                      { skip();};
 
-MULTI_LINE_COMMENT:  '/*' .*? '*/'  
+MULTI_LINE_COMMENT:  '/*' .*? '*/'
                      { skip();};
 
 
@@ -113,8 +118,3 @@ MULTI_LINE_COMMENT:  '/*' .*? '*/'
 //Inclusion de fichier
 fragment FILENAME:   (LETTER | DIGIT | DOT | MINUS | '_')+;
 INCLUDE:             '#include' (' ')* '"' FILENAME '"';
-
-
-//UNKNOWN:            .;
-
-

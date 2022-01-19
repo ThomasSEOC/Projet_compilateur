@@ -1,0 +1,13 @@
+//Test simple sur des additions d'entiers
+//----------
+//Résultat:
+// 1 + 1 = 2
+// 1 + -2 = -1
+//----------
+//Historique:
+//Créé le 13.01.2022
+
+{
+println (" 1 + 1 = ", (1+1));
+println (" 1 + -2 = ", (1 + (-2)));
+}

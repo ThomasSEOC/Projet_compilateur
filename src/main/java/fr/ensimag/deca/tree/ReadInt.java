@@ -1,10 +1,9 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.codegen.BinaryBoolOperation;
+import fr.ensimag.deca.codegen.ReadIntOperation;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -18,7 +17,12 @@ public class ReadInt extends AbstractReadExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        setType(new IntType(compiler.getSymbolTable().create("readInt")));
+        Type type = getType();
+        if (type.isInt()) {
+            return type;
+        }
+        throw new ContextualError("Must be an int", getLocation());
     }
 
 
@@ -37,4 +41,15 @@ public class ReadInt extends AbstractReadExpr {
         // leaf node => nothing to do
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        ReadIntOperation operator = new ReadIntOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        ReadIntOperation operator = new ReadIntOperation(compiler.getCodeGenBackend(), this);
+        operator.print();
+    }
 }

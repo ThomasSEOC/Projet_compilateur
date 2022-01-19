@@ -1,0 +1,15 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//   Affectation possible
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   float a;
+   int b;
+
+   a = b;
+}

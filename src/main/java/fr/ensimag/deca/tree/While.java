@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.whileStatement;
+import fr.ensimag.deca.codegen.WhileStatement;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -37,7 +37,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        whileStatement statement = new whileStatement(compiler.getCodeGenBackend(), this);
+        WhileStatement statement = new WhileStatement(compiler.getCodeGenBackend(), this);
         statement.createStatement();
     }
 
@@ -45,10 +45,8 @@ public class While extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-	Type typeCondition = condition.getType();
-	if (!typeCondition.isBoolean()) {
-	    throw new ContextualError("while(" + condition + ") : " + condition + " is not a boolean", getLocation());
-	}
+        this.condition.verifyCondition(compiler, localEnv, currentClass);
+        this.body.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 
     @Override

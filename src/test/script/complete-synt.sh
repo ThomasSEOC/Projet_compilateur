@@ -30,7 +30,7 @@ then
     RES=$(test_synt "$i" 2>&1 | diff - "$LIS")
     if [ "$RES" != "" ]
     then
-      echo "-> ERROR"
+      echo "-> ERROR : $RES"
       RESULT=0
     else
       echo "-> OK"
@@ -59,13 +59,13 @@ then
     fi
   fi
   done
-
-  if [ "$RESULT" = 0 ]
-  then
-    exit 1
-  else
-    exit 0
-  fi
 else
   echo "AUCUN TEST TROUVE"
+fi
+
+if [ "$RESULT" = 0 ]
+then
+  exit 1
+else
+  exit 0
 fi

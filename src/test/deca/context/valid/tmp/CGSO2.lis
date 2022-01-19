@@ -1,0 +1,82 @@
+`> [1, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [1, 0] Main
+      +> ListDeclVar [List with 2 elements]
+      |  []> [2, 5] DeclVar
+      |  ||  +> [2, 0] Identifier (bool)
+      |  ||  +> [2, 5] Identifier (t)
+      |  ||  `> [2, 5] Initialization
+      |  ||     `> [2, 9] BooleanLiteral (true)
+      |  []> [3, 5] DeclVar
+      |      +> [3, 0] Identifier (bool)
+      |      +> [3, 5] Identifier (f)
+      |      `> [3, 5] Initialization
+      |         `> [3, 9] BooleanLiteral (false)
+      `> [4, 0] ListInst [List with 1 elements]
+         []> [4, 0] IfThenElse
+             +> [4, 4] Identifier (t)
+             +> [23, 4] ListInst [List with 5 elements]
+             |  []> [5, 4] IfThenElse
+             |  ||  +> [5, 10] Or
+             |  ||  |  +> [5, 8] Identifier (f)
+             |  ||  |  `> [5, 13] And
+             |  ||  |     +> [5, 14] Identifier (t)
+             |  ||  |     `> [5, 19] Identifier (f)
+             |  ||  +> [6, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [6, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [6, 17] StringLiteral ("erreur programme")
+             |  ||  `> ListInst [List with 0 elements]
+             |  []> [8, 4] IfThenElse
+             |  ||  +> [8, 10] Or
+             |  ||  |  +> [8, 8] Identifier (t)
+             |  ||  |  `> [8, 13] Identifier (f)
+             |  ||  +> [9, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [9, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [9, 16] StringLiteral ("1")
+             |  ||  `> [12, 8] ListInst [List with 1 elements]
+             |  ||     []> [12, 8] Println
+             |  ||         `> ListExpr [List with 1 elements]
+             |  ||            []> [12, 17] StringLiteral ("erreur")
+             |  []> [17, 4] IfThenElse
+             |  ||  +> [14, 8] NotEquals
+             |  ||  |  +> [14, 8] Identifier (t)
+             |  ||  |  `> [14, 13] Identifier (f)
+             |  ||  +> [15, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [15, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [15, 16] StringLiteral (" 2")
+             |  ||  `> ListInst [List with 1 elements]
+             |  ||     []> IfThenElse
+             |  ||         +> [17, 13] BooleanLiteral (true)
+             |  ||         +> [18, 8] ListInst [List with 1 elements]
+             |  ||         |  []> [18, 8] Println
+             |  ||         |      `> ListExpr [List with 1 elements]
+             |  ||         |         []> [18, 17] StringLiteral ("erreur")
+             |  ||         `> ListInst [List with 0 elements]
+             |  []> [20, 4] IfThenElse
+             |  ||  +> [20, 8] Not
+             |  ||  |  `> [20, 9] Identifier (f)
+             |  ||  +> [21, 8] ListInst [List with 1 elements]
+             |  ||  |  []> [21, 8] Println
+             |  ||  |      `> ListExpr [List with 1 elements]
+             |  ||  |         []> [21, 16] StringLiteral ("  3")
+             |  ||  `> ListInst [List with 0 elements]
+             |  []> [26, 4] IfThenElse
+             |      +> [23, 8] Identifier (f)
+             |      +> [24, 8] ListInst [List with 1 elements]
+             |      |  []> [24, 8] Println
+             |      |      `> ListExpr [List with 1 elements]
+             |      |         []> [24, 17] StringLiteral ("erreur")
+             |      `> ListInst [List with 1 elements]
+             |         []> IfThenElse
+             |             +> [26, 13] Equals
+             |             |  +> [26, 13] Identifier (t)
+             |             |  `> [26, 18] BooleanLiteral (true)
+             |             +> [27, 8] ListInst [List with 1 elements]
+             |             |  []> [27, 8] Println
+             |             |      `> ListExpr [List with 1 elements]
+             |             |         []> [27, 16] StringLiteral ("   Soleil!")
+             |             `> ListInst [List with 0 elements]
+             `> ListInst [List with 0 elements]

@@ -16,8 +16,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclClass c : getList()) {
+            s.print("{");
             c.decompile(s);
-            s.println();
+            s.println("}");
         }
     }
 
@@ -44,5 +45,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-
+    public void codeGenDeclare(DecacCompiler compiler) {
+        for (AbstractDeclClass declClass : getList()) {
+            declClass.codeGenDeclare(compiler);
+        }
+    }
 }

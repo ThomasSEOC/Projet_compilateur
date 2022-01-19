@@ -23,7 +23,11 @@ public class Return extends AbstractExpr{
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+	Type type = getType();
+	if (!type.isVoid()) {
+	    return type;
+	}
+	throw new ContextualError("Must not be void", getLocation());
     }
 
 
@@ -31,7 +35,7 @@ public class Return extends AbstractExpr{
     public void decompile(IndentPrintStream s) {
         s.print("return ");
         returnExpr.decompile(s);
-        s.print(";");
+        //s.print(";");
     }
 
     @Override

@@ -22,6 +22,8 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
 
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
                                 ClassDefinition currentClass) throws ContextualError {
+	throw new UnsupportedOperationException("not yet implemented");
+    
     }
 
 

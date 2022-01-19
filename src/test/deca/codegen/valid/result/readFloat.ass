@@ -1,0 +1,25 @@
+; start main program
+; Main program
+	TSTO #1
+	BOV stack_overflow_error
+	ADDSP #1
+	RFLOAT
+	LOAD R1, R2
+	STORE R2, 1(GB)
+; Beginning of main instructions:
+	LOAD 1(GB), R1
+	WFLOAT
+	WNL
+	RFLOAT
+	WFLOAT
+	WNL
+	RFLOAT
+	WFLOATX
+	WNL
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

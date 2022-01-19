@@ -1,0 +1,3 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:33) - verify Main: start
+./src/test/deca/context/invalid/print_boolean.deca:13:4: What is printed needs to be either an int, a float or a string

@@ -1,0 +1,41 @@
+//Test sans objet
+//Test simple sur des comparaisons de booléens
+//----------
+//Résultat:
+//1 2 3
+//Soleil!
+//----------
+//Historique:
+//Créé le 12.01.2022
+
+
+{
+boolean t = true;
+boolean f = false;
+if (t){
+    if (f || (t && f)){
+        println ("erreur programme");
+        }
+    if (t || f){
+        println("1");
+        }
+    else {
+        println ("erreur");
+        }
+    if (t != f){
+        println(" 2");
+        }
+    else if (true){
+        println ("erreur");
+        }
+    if (!f){
+        println("  3");
+        }
+    if (f){
+        println ("erreur");
+        }
+    else if (t == true){
+        println("   Soleil!");
+        }
+    }
+}
