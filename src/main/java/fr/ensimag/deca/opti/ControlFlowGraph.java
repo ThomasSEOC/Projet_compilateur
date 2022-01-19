@@ -19,13 +19,11 @@ public class ControlFlowGraph extends Graph {
         createCFG();
     }
 
-    private void createCFG() {
-        List<AbstractInst> instructionsList = instructions.getList();
-//        List<AbstractInst> currentInstructionsList = new ArrayList<>();
+    private void CFGRecursion(List<AbstractInst> instructionsList, AbstractCodeBloc inCodeBloc, AbstractCodeBloc outCodeBloc) {
         AbstractCodeBloc currentBloc = new LinearCodeBloc(requestId());
-        addArc(new Arc(getStartBloc(), currentBloc));
-        for (int i = 0; i < instructions.size(); i++) {
-            AbstractInst instruction = instructionsList.get(i);
+        addArc(new Arc(inCodeBloc, currentBloc));
+
+        for (AbstractInst instruction : instructionsList) {
             if ((instruction instanceof IfThenElse) || (instruction instanceof While)) {
                 BranchCodeBloc branchCodeBloc = new BranchCodeBloc(requestId());
                 for (AbstractInst inst : currentBloc.getInstructions().getList()) {
@@ -36,53 +34,64 @@ public class ControlFlowGraph extends Graph {
                 if (instruction instanceof While) {
                     While whileInstruction = (While) instruction;
                     branchCodeBloc.setCondition(whileInstruction.getCondition());
-                    LinearCodeBloc bodyCodeBloc = new LinearCodeBloc(requestId());
-                    for (AbstractInst inst : whileInstruction.getBody().getList()) {
-                        bodyCodeBloc.addInstruction(inst);
-                    }
-                    branchCodeBloc.setThenBloc(bodyCodeBloc);
-                    addArc(new Arc(branchCodeBloc, bodyCodeBloc));
-                    addArc(new Arc(bodyCodeBloc, branchCodeBloc));
+//                    LinearCodeBloc bodyCodeBloc = new LinearCodeBloc(requestId());
+//                    for (AbstractInst inst : whileInstruction.getBody().getList()) {
+//                        bodyCodeBloc.addInstruction(inst);
+//                    }
+//                    branchCodeBloc.setThenBloc(bodyCodeBloc);
+//                    addArc(new Arc(branchCodeBloc, bodyCodeBloc));
+//                    addArc(new Arc(bodyCodeBloc, branchCodeBloc));
+
+                    CFGRecursion(whileInstruction.getBody().getList(), branchCodeBloc, branchCodeBloc);
+                    branchCodeBloc.setThenBloc(branchCodeBloc.getOutArcs().get(0).getStop());
+
                     LinearCodeBloc nextCurrentBloc = new LinearCodeBloc(requestId());
                     branchCodeBloc.setElseBloc(nextCurrentBloc);
                     addArc(new Arc(branchCodeBloc, nextCurrentBloc));
 
                     currentBloc = nextCurrentBloc;
-                }
-                else {
+                } else {
                     IfThenElse ifThenElseInstruction = (IfThenElse) instruction;
 
                     branchCodeBloc.setCondition(ifThenElseInstruction.getCondition());
 
-                    LinearCodeBloc thenCodeBloc = new LinearCodeBloc(requestId());
-                    for (AbstractInst inst : ifThenElseInstruction.getThenBranch().getList()) {
-                        thenCodeBloc.addInstruction(inst);
-                    }
-                    branchCodeBloc.setThenBloc(thenCodeBloc);
-                    addArc(new Arc(branchCodeBloc, thenCodeBloc));
-
-                    LinearCodeBloc elseCodeBloc = new LinearCodeBloc(requestId());
-                    for (AbstractInst inst : ifThenElseInstruction.getElseBranch().getList()) {
-                        elseCodeBloc.addInstruction(inst);
-                    }
-                    branchCodeBloc.setElseBloc(elseCodeBloc);
-                    addArc(new Arc(branchCodeBloc, elseCodeBloc));
-
                     LinearCodeBloc nextCurrentBloc = new LinearCodeBloc(requestId());
-                    addArc(new Arc(thenCodeBloc, nextCurrentBloc));
-                    addArc(new Arc(elseCodeBloc, nextCurrentBloc));
+
+//                    LinearCodeBloc thenCodeBloc = new LinearCodeBloc(requestId());
+//                    for (AbstractInst inst : ifThenElseInstruction.getThenBranch().getList()) {
+//                        thenCodeBloc.addInstruction(inst);
+//                    }
+//                    branchCodeBloc.setThenBloc(thenCodeBloc);
+//                    addArc(new Arc(branchCodeBloc, thenCodeBloc));
+                    CFGRecursion(ifThenElseInstruction.getThenBranch().getList(), branchCodeBloc, nextCurrentBloc);
+                    branchCodeBloc.setThenBloc(branchCodeBloc.getOutArcs().get(0).getStop());
+
+//                    LinearCodeBloc elseCodeBloc = new LinearCodeBloc(requestId());
+//                    for (AbstractInst inst : ifThenElseInstruction.getElseBranch().getList()) {
+//                        elseCodeBloc.addInstruction(inst);
+//                    }
+//                    branchCodeBloc.setElseBloc(elseCodeBloc);
+//                    addArc(new Arc(branchCodeBloc, elseCodeBloc));
+
+                    CFGRecursion(ifThenElseInstruction.getElseBranch().getList(), branchCodeBloc, nextCurrentBloc);
+                    branchCodeBloc.setElseBloc(branchCodeBloc.getOutArcs().get(1).getStop());
 
                     currentBloc = nextCurrentBloc;
                 }
-            }
-            else {
+            } else {
                 currentBloc.addInstruction(instruction);
             }
         }
 
         addCodeBloc(currentBloc);
 
-        addArc(new Arc(currentBloc, getStopBloc()));
+        addArc(new Arc(currentBloc, outCodeBloc));
+    }
+
+    private void createCFG() {
+        List<AbstractInst> instructionsList = instructions.getList();
+
+        CFGRecursion(instructionsList, getStartBloc(), getStopBloc());
     }
 
     public void codeGen() {

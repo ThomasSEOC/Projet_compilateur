@@ -27,6 +27,10 @@ abstract class Graph {
         }
     }
 
+    protected void replaceCodeBloc(AbstractCodeBloc oldCodeBloc, AbstractCodeBloc newCodeBloc) {
+
+    }
+
     protected boolean checkGraph() {
         if ((start == null) || (stop == null)) {
             return false;
