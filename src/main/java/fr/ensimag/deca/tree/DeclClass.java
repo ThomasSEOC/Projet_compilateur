@@ -1,15 +1,14 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
+import java.util.*;
+
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -55,12 +54,19 @@ public class DeclClass extends AbstractDeclClass {
         // verifies the existence of superClass
         superClass.verifyType(compiler);
 
-        // creates and put the ClassTypeclassType = new ClassType(nameClass.getName(), getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
+        // creates and put the ClassType
+        classType = new ClassType(nameClass.getName(), getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
         classDefinition = classType.getDefinition();
 
         // Definition and type of the class
         nameClass.setDefinition(classDefinition);
         nameClass.setType(classType);
+
+        // Add the envTypePredef in the localEnv
+        //classDefinition.getMembers().getDico() = compiler.getTypesPredef().getDico().clone();
+        // classDefinition.getMembers().getDico().putAll(compiler.getTypesPredef().getDico());
+
+
 
         // put in the dictionary
         try {
@@ -71,14 +77,13 @@ public class DeclClass extends AbstractDeclClass {
         }
 
 
+
     }
 
     @Override
-    protected void verifyClassMembers(DecacCompiler compiler)
-            throws ContextualError {
-        methods.verifyListDeclMethod(compiler, classDefinition.getMembers(), classDefinition);
-
-
+    protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
+        field.verifyListDeclField(compiler, classDefinition.getMembers(), classDefinition);
+        //methods.verifyListDeclMethod(compiler, classDefinition.getMembers(), classDefinition);
     }
     
     @Override
