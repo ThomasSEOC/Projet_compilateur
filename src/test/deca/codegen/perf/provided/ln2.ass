@@ -1,0 +1,95 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	LOAD #0x0.0p0, R2
+	STORE R2, 1(GB)
+	LOAD #0x1.0p0, R2
+	STORE R2, 2(GB)
+	LOAD #0x1.0p0, R2
+	OPP R2, R2
+	STORE R2, 3(GB)
+	LOAD #0x1.6fc2ecp-1, R2
+	STORE R2, 4(GB)
+Code.Bloc.0:
+Code.Bloc.2:
+Code.Bloc.3:
+	LOAD 2(GB), R2
+	LOAD 1(GB), R3
+	ADD #0x1.0p-23, R3	; Operation Plus
+	CMP R3, R2
+	BLT Code.Bloc.9
+Code.Bloc.4:
+	LOAD 1(GB), R2
+	LOAD 2(GB), R3
+	ADD R3, R2	; Operation Plus
+	DIV #0x1.0p1, R2	; Operation Division
+	STORE R2, 5(GB)
+	LOAD 5(GB), R2
+	LOAD 5(GB), R3
+	LOAD 5(GB), R4
+	LOAD 5(GB), R5
+	LOAD 5(GB), R6
+	LOAD 5(GB), R7
+	LOAD 5(GB), R8
+	LOAD #0x1.0p0, R9
+	DIV #0x1.3bp12, R9	; Operation Division
+	MUL R9, R8	; Operation Multiply
+	LOAD #0x1.0p0, R9
+	DIV #0x1.68p9, R9	; Operation Division
+	ADD R9, R8	; Operation Plus
+	MUL R8, R7	; Operation Multiply
+	LOAD #0x1.0p0, R8
+	DIV #0x1.ep6, R8	; Operation Division
+	ADD R8, R7	; Operation Plus
+	MUL R7, R6	; Operation Multiply
+	LOAD #0x1.0p0, R7
+	DIV #0x1.8p4, R7	; Operation Division
+	ADD R7, R6	; Operation Plus
+	MUL R6, R5	; Operation Multiply
+	LOAD #0x1.0p0, R6
+	DIV #0x1.8p2, R6	; Operation Division
+	ADD R6, R5	; Operation Plus
+	MUL R5, R4	; Operation Multiply
+	LOAD #0x1.0p0, R5
+	DIV #0x1.0p1, R5	; Operation Division
+	ADD R5, R4	; Operation Plus
+	MUL R4, R3	; Operation Multiply
+	ADD #0x1.0p0, R3	; Operation Plus
+	MUL R3, R2	; Operation Multiply
+	LOAD #1, R3
+	FLOAT R3, R3
+	SUB R3, R2	; Operation Minus
+	STORE R2, 6(GB)
+Code.Bloc.5:
+	LOAD 6(GB), R2
+	CMP #0x0.0p0, R2
+	BLE Code.Bloc.8
+Code.Bloc.7:
+	LOAD 5(GB), R2
+	STORE R2, 2(GB)
+	LOAD 6(GB), R2
+	STORE R2, 4(GB)
+Code.Bloc.6:
+	BRA Code.Bloc.3
+Code.Bloc.8:
+	LOAD 5(GB), R2
+	STORE R2, 1(GB)
+	LOAD 6(GB), R2
+	STORE R2, 3(GB)
+	BRA Code.Bloc.6
+Code.Bloc.9:
+	LOAD 1(GB), R1
+	WFLOAT
+	WSTR " = "
+	LOAD 1(GB), R1
+	WFLOATX
+	WNL
+	BRA Code.Bloc.1
+Code.Bloc.1:
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

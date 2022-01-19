@@ -20,6 +20,9 @@ public class BranchCodeBloc extends AbstractCodeBloc {
 
     @Override
     public void codeGen(ControlFlowGraph graph) {
+        // add bloc label
+        graph.getBackend().addLabel(new Label("Code.Bloc." + getId()));
+
         super.codeGen(graph);
 
         // push labels true and false conditions branch stack

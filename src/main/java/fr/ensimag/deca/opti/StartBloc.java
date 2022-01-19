@@ -16,6 +16,9 @@ public class StartBloc extends AbstractCodeBloc {
 
     @Override
     public void codeGen(ControlFlowGraph graph) {
+        // add bloc label
+        graph.getBackend().addLabel(new Label("Code.Bloc." + getId()));
+
         super.codeGen(graph);
 
 //        graph.getBackend().addInstruction(new BRA(new Label("Code.Bloc." + getOutArcs().get(0).getStop().getId())));
