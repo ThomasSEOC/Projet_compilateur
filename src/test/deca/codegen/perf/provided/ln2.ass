@@ -10,15 +10,13 @@
 	LOAD #0x1.6fc2ecp-1, R2
 	STORE R2, 4(GB)
 ; Beginning of main instructions:
-Code.Bloc.0:
-Code.Bloc.2:
-Code.Bloc.3:
+while_1_start:
 	LOAD 2(GB), R2
 	LOAD 1(GB), R3
 	ADD #0x1.0p-23, R3	; Operation Plus
 	CMP R3, R2
-	BLT Code.Bloc.9
-Code.Bloc.4:
+	BLT while_1_end
+while_1_body:
 	LOAD 1(GB), R2
 	LOAD 2(GB), R3
 	ADD R3, R2	; Operation Plus
@@ -60,32 +58,29 @@ Code.Bloc.4:
 	FLOAT R3, R3
 	SUB R3, R2	; Operation Minus
 	STORE R2, 6(GB)
-Code.Bloc.5:
 	LOAD 6(GB), R2
 	CMP #0x0.0p0, R2
-	BLE Code.Bloc.8
-Code.Bloc.7:
+	BLE if_1_else
+if_1_then:
 	LOAD 5(GB), R2
 	STORE R2, 2(GB)
 	LOAD 6(GB), R2
 	STORE R2, 4(GB)
-Code.Bloc.6:
-	BRA Code.Bloc.3
-Code.Bloc.8:
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
 	LOAD 5(GB), R2
 	STORE R2, 1(GB)
 	LOAD 6(GB), R2
 	STORE R2, 3(GB)
-	BRA Code.Bloc.6
-Code.Bloc.9:
+if_1_end:
+	BRA while_1_start
+while_1_end:
 	LOAD 1(GB), R1
 	WFLOAT
 	WSTR " = "
 	LOAD 1(GB), R1
 	WFLOATX
 	WNL
-	BRA Code.Bloc.1
-Code.Bloc.1:
 	HALT
 ; error messages
 stack_overflow_error:

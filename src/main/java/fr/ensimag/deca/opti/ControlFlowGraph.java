@@ -105,6 +105,10 @@ public class ControlFlowGraph extends Graph {
         return codeGenDoneBlocs;
     }
 
+    public void clearDoneBlocs() {
+        codeGenDoneBlocs = new ArrayList<>();
+    }
+
     public void codeGen() {
         AbstractCodeBloc startBloc = getStartBloc();
         codeGenDoneBlocs = new ArrayList<>();

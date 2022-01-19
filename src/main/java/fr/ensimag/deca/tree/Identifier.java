@@ -12,6 +12,7 @@ import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.opti.SSAVariable;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
@@ -29,6 +30,11 @@ import org.apache.log4j.Logger;
  * @date 01/01/2022
  */
 public class Identifier extends AbstractIdentifier {
+    private SSAVariable ssaVariable;
+
+    public void setSsaVariable(SSAVariable ssaVariable) { this.ssaVariable = ssaVariable; }
+
+    public SSAVariable getSsaVariable() { return ssaVariable; }
     
     @Override
     protected void checkDecoration() {

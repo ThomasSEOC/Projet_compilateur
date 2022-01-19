@@ -1,20 +1,24 @@
 package fr.ensimag.deca.opti;
 
 import fr.ensimag.deca.tree.AbstractInst;
+import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.ListInst;
-import fr.ensimag.ima.pseudocode.Label;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 abstract class AbstractCodeBloc {
     private int id;
     protected ListInst instructions;
+    protected List<InstructionIdentifiers> instructionIdentifiers;
     protected List<Arc> inArcs;
     protected List<Arc> outArcs;
 
     public AbstractCodeBloc(int id) {
         this.instructions = new ListInst();
+        this.instructionIdentifiers = new ArrayList<>();
         this.inArcs = new ArrayList<>();
         this.outArcs = new ArrayList<>();
         this.id = id;
@@ -28,8 +32,27 @@ abstract class AbstractCodeBloc {
         return instructions;
     }
 
+    public List<InstructionIdentifiers> getInstructionIdentifiersList() {
+        return instructionIdentifiers;
+    }
+
+    public Set<String> getUsedVariables() {
+        Set<String> usedVariables = new HashSet<>();
+        for (InstructionIdentifiers identifiers : instructionIdentifiers) {
+            if ((identifiers.getWriteIdentifier() != null)) {
+                usedVariables.add(identifiers.getWriteIdentifier().getName().getName());
+            }
+
+            for (Identifier readIdentifier : identifiers.getReadIdentifiers()) {
+                usedVariables.add(readIdentifier.getName().getName());
+            }
+        }
+        return usedVariables;
+    }
+
     public void addInstruction(AbstractInst instruction) {
         instructions.add(instruction);
+        instructionIdentifiers.add(new InstructionIdentifiers(instruction));
     }
 
     public void addInArc(Arc arc) {

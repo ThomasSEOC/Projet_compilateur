@@ -216,6 +216,17 @@ public class CodeGenBackend {
         addVariable(name, 1);
     }
 
+    public Set<String> getVariables() {
+        // if local context exists
+        if (localVariables.size() != 0) {
+            return localVariables.peek().keySet();
+        }
+        // add to global variables
+        else {
+            return globalVariables.keySet();
+        }
+    }
+
     public void addParam(String name, int offset) {
         localVariables.peek().put(name, offset);
     }
