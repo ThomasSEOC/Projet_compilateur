@@ -1,6 +1,0 @@
-INCLUDE: [@0,123:173='#include "monfichier.super_cool-qui....en--__jette"',<51>,11:0]
-SEMI: [@1,174:174=';',<38>,11:51]
-INCLUDE: [@2,177:233='#include           "mon_autre_Fichier_Qui.En-Jette-Moins"',<51>,13:0]
-SEMI: [@3,234:234=';',<38>,13:57]
-INCLUDE: [@4,237:288='#include"mon_autre-auTRE_Fichier_Qui.En-Jette-Moins"',<51>,15:0]
-SEMI: [@5,289:289=';',<38>,15:52]
