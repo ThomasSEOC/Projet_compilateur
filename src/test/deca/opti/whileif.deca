@@ -1,0 +1,16 @@
+// Boucle while avec condition if
+
+// Date: 19.01.2022
+
+{
+int a = 0;
+while (a < 10){
+    if (a == 5){
+        println ("a a pris la valeur 5");
+        }
+    else{
+        println ("a != 5");
+        }
+    a = a + 1;
+    }
+}
