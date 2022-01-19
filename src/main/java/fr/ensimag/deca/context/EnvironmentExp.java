@@ -34,6 +34,10 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
     }
 
+    public Map<Symbol, ExpDefinition> getDico() {
+        return dico;
+    }
+
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
 	    public DoubleDefException(String message) {
