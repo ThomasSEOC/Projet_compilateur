@@ -28,9 +28,35 @@ public class DeclField extends AbstractDeclField{
 
     @Override
     protected void verifyDeclField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-	  // check type
-	//ajouter la deuxième condition (2.5) p.82
-	throw new UnsupportedOperationException("not yet implemented");
+
+        // verify that the type is not a void
+        type.verifyType(compiler);
+        if (type.getType().isVoid()) {
+            throw new ContextualError("This field must not be void type", getLocation());
+        }
+
+        // check if the field is already defined in the current and the superclass
+        ClassDefinition iterClass = currentClass;
+        while (iterClass != null) {
+            if (currentClass.getMembers().get(field.getName()) != null) {
+                throw new ContextualError("This field is already defined", getLocation());
+            }
+            iterClass = iterClass.getSuperClass();
+        }
+
+        // Put the field in the localEnv
+        try {
+            field.setDefinition(new FieldDefinition(type.getType(), getLocation(), visibility, currentClass, currentClass.getNumberOfFields()));
+            localEnv.declare(field.getName(), field.getFieldDefinition());
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("This field is already defined", getLocation());
+        }
+        field.verifyExpr(compiler, localEnv, currentClass);
+
+        // check initialization
+        init.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
+
+
     }
 
     @Override
