@@ -1,0 +1,50 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	LOAD #42, R2
+	STORE R2, 1(GB)
+	LOAD #0, R2
+	STORE R2, 2(GB)
+Code.Bloc.0:
+Code.Bloc.2:
+Code.Bloc.3:
+	LOAD 1(GB), R2
+	CMP #1, R2
+	BEQ Code.Bloc.9
+Code.Bloc.4:
+Code.Bloc.5:
+	LOAD 1(GB), R2
+	REM #2, R2	; Operation Remainder
+	CMP #0, R2
+	BNE Code.Bloc.8
+Code.Bloc.7:
+	LOAD 1(GB), R2
+	QUO #2, R2	; Operation Quotient
+	STORE R2, 1(GB)
+Code.Bloc.6:
+	LOAD 2(GB), R2
+	ADD #1, R2	; Operation Plus
+	STORE R2, 2(GB)
+	BRA Code.Bloc.3
+Code.Bloc.8:
+	LOAD 1(GB), R2
+	LOAD #2, R3
+	MUL R2, R3	; Operation Multiply
+	LOAD 1(GB), R4
+	ADD R4, R3	; Operation Plus
+	ADD #1, R3	; Operation Plus
+	STORE R3, 1(GB)
+	BRA Code.Bloc.6
+Code.Bloc.9:
+	LOAD 2(GB), R1
+	WINT
+	WNL
+	BRA Code.Bloc.1
+Code.Bloc.1:
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

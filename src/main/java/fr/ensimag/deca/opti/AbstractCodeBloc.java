@@ -49,9 +49,6 @@ abstract class AbstractCodeBloc {
     }
 
     public void codeGen(ControlFlowGraph graph) {
-        // add bloc label
-        graph.getBackend().addLabel(new Label("Code.Bloc." + getId()));
-
         // generate code for instructions of this bloc
         ListInst instructions = getInstructions();
         instructions.codeGenListInst(graph.getCompiler());

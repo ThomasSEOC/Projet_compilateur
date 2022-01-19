@@ -10,15 +10,20 @@ public class LinearCodeBloc extends AbstractCodeBloc {
 
     @Override
     public void codeGen(ControlFlowGraph graph) {
+        // add bloc label
+        graph.getBackend().addLabel(new Label("Code.Bloc." + getId()));
+
         super.codeGen(graph);
 
-        graph.getBackend().addInstruction(new BRA(new Label("Code.Bloc." + getOutArcs().get(0).getStop().getId())));
 
         // normally only 1 out arc
         AbstractCodeBloc nextBloc = getOutArcs().get(0).getStop();
         if (!(graph.getDoneBlocs().contains(nextBloc))) {
             graph.addDoneBloc(nextBloc);
             nextBloc.codeGen(graph);
+        }
+        else {
+            graph.getBackend().addInstruction(new BRA(new Label("Code.Bloc." + getOutArcs().get(0).getStop().getId())));
         }
 
     }
