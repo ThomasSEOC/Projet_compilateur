@@ -24,8 +24,9 @@ public class EnvironmentType {
      * symbol is undefined.
      */
     public TypeDefinition get(Symbol key) {
-	return (dico.get(key));
+	    return (dico.get(key));
     }
+
 
     /**
      * Add the definition def associated to the symbol name in the environment.
@@ -35,8 +36,11 @@ public class EnvironmentType {
      * @param def
      *            Definition of the symbol
      */
-    public void declare(Symbol name, TypeDefinition def) {
-	dico.put(name, def);
+    public void declare(Symbol name, TypeDefinition def) throws EnvironmentExp.DoubleDefException {
+        if (dico.containsKey(name)) {
+            throw new EnvironmentExp.DoubleDefException("Arleady defined");
+        }
+	    dico.put(name, def);
     }
 
 }

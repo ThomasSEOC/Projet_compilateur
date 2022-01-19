@@ -23,7 +23,9 @@ public class DeclMethod extends AbstractDeclMethod{
         this.body = body;
     }
 
-
+    protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        
+    }
 
 
     @Override
@@ -52,11 +54,6 @@ public class DeclMethod extends AbstractDeclMethod{
         params.iter(f);
         body.iter(f);
     }
-
-    @Override
-    protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError{}
-
 
 
 }

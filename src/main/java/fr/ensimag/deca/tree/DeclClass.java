@@ -4,7 +4,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -21,6 +23,8 @@ public class DeclClass extends AbstractDeclClass {
     private AbstractIdentifier superClass;
     private ListDeclMethod methods;
     private ListDeclField field;
+    private ClassType classType;
+    private ClassDefinition classDefinition;
 
     public DeclClass(AbstractIdentifier nameClass, AbstractIdentifier superClass, ListDeclMethod methods, ListDeclField field){
         Validate.notNull(nameClass);
@@ -51,23 +55,30 @@ public class DeclClass extends AbstractDeclClass {
         // verifies the existence of superClass
         superClass.verifyType(compiler);
 
-        // creates and put the ClassType
-        ClassType classType = new ClassType(nameClass.getName(), getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
-        ClassDefinition classDefinition = classType.getDefinition();
+        // creates and put the ClassTypeclassType = new ClassType(nameClass.getName(), getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
+        classDefinition = classType.getDefinition();
 
         // Definition and type of the class
         nameClass.setDefinition(classDefinition);
         nameClass.setType(classType);
 
         // put in the dictionary
-        compiler.getTypesPredef().declare(nameClass.getName(), classDefinition);
+        try {
+            compiler.getTypesPredef().declare(nameClass.getName(), classDefinition);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            System.out.println("Object : " + e);
+            System.exit(1);
+        }
+
+
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
+        methods.verifyListDeclMethod(compiler, classDefinition.getMembers(), classDefinition);
 
-        throw new UnsupportedOperationException("not yet implemented");
+
     }
     
     @Override

@@ -82,7 +82,7 @@ public class DecacCompiler {
 	    TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
         // Definition for the class Object
-
+        
         ClassType object =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
         ClassDefinition objDef = object.getDefinition();
         //Identifier ObjId = new Identifier(symbolTable.getMap().get("Object"));
@@ -90,7 +90,6 @@ public class DecacCompiler {
         //ObjId.setDefinition(objDef);
         //DeclClass classObject = DeclClass(ObjId, null, methods, field);
 
-        
         // Declare in the envTypePredef
         try {
             envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
