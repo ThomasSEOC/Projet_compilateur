@@ -37,40 +37,154 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
         VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
-        // get correct operand
-        lOp.requestPhysicalRegister();
-
+	bool opti = getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize();
+	
         // separate code generation according to arithmetic operation
         if (this.getExpression() instanceof Plus){
-            getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Plus");
-            rOp.destroy();
-            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
-        }
+
+	    if ((lOp.getDVal() instanceof ImmediateInteger) && (rOp.getDVal() instanceof ImmediateInteger) && opti) {
+		ImmediateInteger op1 = (ImmediateInteger) lOp.getDVal();
+		ImmediateInteger op2 = (ImmediateInteger) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateInteger resultImm = new ImmediateInteger(op1.getValue() + op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+		
+	    else if ((lOp.getDVal() instanceof ImmediateFloat) && (rOp.getDVal() instanceof ImmediateFloat) && opti) {
+		ImmediateFloat op1 = (ImmediateFloat) lOp.getDVal();
+		ImmediateFloat op2 = (ImmediateFloat) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateFloat resultImm = new ImmediateFloat(op1.getValue() + op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+	    
+	    else {
+		// get correct operand
+		lOp.requestPhysicalRegister();
+		getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.getDVal()), "Operation Plus");
+		rOp.destroy();
+		this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+	    }
+	}
+	
         else if (this.getExpression() instanceof Minus){
-            getCodeGenBackEnd().addInstruction(new SUB(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Minus");
-            rOp.destroy();
-            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
-        }
+
+	    if ((lOp.getDVal() instanceof ImmediateInteger) && (rOp.getDVal() instanceof ImmediateInteger) && opti) {
+		ImmediateInteger op1 = (ImmediateInteger) lOp.getDVal();
+		ImmediateInteger op2 = (ImmediateInteger) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateInteger resultImm = new ImmediateInteger(op1.getValue() - op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+	    
+	    else if ((lOp.getDVal() instanceof ImmediateFloat) && (rOp.getDVal() instanceof ImmediateFloat) && opti) {
+		ImmediateFloat op1 = (ImmediateFloat) lOp.getDVal();
+		ImmediateFloat op2 = (ImmediateFloat) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateFloat resultImm = new ImmediateFloat(op1.getValue() - op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+		
+	    else {
+		// get correct operand
+		lOp.requestPhysicalRegister();
+		getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.getDVal()), "Operation Minus");
+		rOp.destroy();
+		this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+	    }
+	}
+	
         else if (this.getExpression() instanceof Multiply){
-            getCodeGenBackEnd().addInstruction(new MUL(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Multiply");
-            rOp.destroy();
-            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
-        }
-        else if (this.getExpression() instanceof Divide){
-            if (lOp.getIsFloat() || rOp.getIsFloat()) {
-                getCodeGenBackEnd().addInstruction(new DIV(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Division");
-            }
-            else {
+	    
+	    if ((lOp.getDVal() instanceof ImmediateInteger) && (rOp.getDVal() instanceof ImmediateInteger) && opti) {
+		ImmediateInteger op1 = (ImmediateInteger) lOp.getDVal();
+		ImmediateInteger op2 = (ImmediateInteger) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateInteger resultImm = new ImmediateInteger(op1.getValue() * op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+	    
+	    else if ((lOp.getDVal() instanceof ImmediateFloat) && (rOp.getDVal() instanceof ImmediateFloat) && opti) {
+		ImmediateFloat op1 = (ImmediateFloat) lOp.getDVal();
+		ImmediateFloat op2 = (ImmediateFloat) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateFloat resultImm = new ImmediateFloat(op1.getValue() * op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+		
+	    else {
+		// get correct operand
+		lOp.requestPhysicalRegister();
+		getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.getDVal()), "Operation Multiply");
+		rOp.destroy();
+		this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+	    }
+	}
+	    
+	else if (this.getExpression() instanceof Divide){
+	    
+	    if ((lOp.getDVal() instanceof ImmediateInteger) && (rOp.getDVal() instanceof ImmediateInteger) && opti) {
+		ImmediateInteger op1 = (ImmediateInteger) lOp.getDVal();
+		ImmediateInteger op2 = (ImmediateInteger) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateInteger resultImm = new ImmediateInteger(op1.getValue() / op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+		
+	    else if ((lOp.getDVal() instanceof ImmediateFloat) && (rOp.getDVal() instanceof ImmediateFloat) && opti) {
+		ImmediateFloat op1 = (ImmediateFloat) lOp.getDVal();
+		ImmediateFloat op2 = (ImmediateFloat) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateFloat resultImm = new ImmediateFloat(op1.getValue() / op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+	    
+	    else {
+		// get correct operand
+		if (lOp.getIsFloat() || rOp.getIsFloat()) {
+		    getCodeGenBackEnd().addInstruction(new DIV(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Division");
+		}
+		else {
                 getCodeGenBackEnd().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Quotient");
-            }
-            rOp.destroy();
-            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
-        }
-        else if (this.getExpression() instanceof Modulo){
-            getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Remainder");
-            rOp.destroy();
-            this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
-        }
+		}
+		rOp.destroy();
+		this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+	    }
+	}
+	else if (this.getExpression() instanceof Modulo){
+
+	    if ((lOp.getDVal() instanceof ImmediateInteger) && (rOp.getDVal() instanceof ImmediateInteger) && opti) {
+		ImmediateInteger op1 = (ImmediateInteger) lOp.getDVal();
+		ImmediateInteger op2 = (ImmediateInteger) rOp.getDVal();
+		rOp.destroy();
+		lOp.destroy();
+		ImmediateInteger resultImm = new ImmediateInteger(op1.getValue() % op2.getValue());
+		VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
+		getCodeGenBackEnd().getContextManager().operationStackPush(result);
+	    }
+
+	    else{
+		getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Remainder");
+		rOp.destroy();
+		this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+	    }
+	    
         else {
             throw new UnsupportedOperationException("unknown arithmetic operation");
         }
