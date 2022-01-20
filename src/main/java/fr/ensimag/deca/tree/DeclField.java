@@ -37,6 +37,20 @@ public class DeclField extends AbstractDeclField{
             throw new ContextualError("This field must not be void type", getLocation());
         }
 
+        // check if the name is a Predefined type
+        EnvironmentType envTypesPredef = compiler.getTypesPredef();
+        SymbolTable.Symbol realSymbol = field.getName();
+        if (envTypesPredef.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a predefined type, can't be a field name", getLocation());
+        }
+
+        // check if the name is a class
+        EnvironmentType envTypes = compiler.getTypes();
+
+        if (envTypes.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a class name defined at "+
+                    envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a field name", getLocation());
+        }
         // check if the field is already defined in the current and the superclass
         Map<SymbolTable.Symbol, ExpDefinition> dico = localEnv.getDico();
         ClassDefinition iterClass = currentClass;
@@ -53,7 +67,7 @@ public class DeclField extends AbstractDeclField{
             field.setDefinition(new FieldDefinition(type.getType(), getLocation(), visibility, currentClass, currentClass.getNumberOfFields()));
             localEnv.declare(field.getName(), field.getFieldDefinition());
         } catch (DoubleDefException e) {
-            throw new ContextualError("This field is already defined at " + dico.get(field.getName()), getLocation());
+            throw new ContextualError("This field is already defined at " + dico.get(field.getName()).getLocation(), getLocation());
         }
         field.verifyExpr(compiler, localEnv, currentClass);
 

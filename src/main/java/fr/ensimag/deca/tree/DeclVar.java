@@ -60,6 +60,14 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError(realSymbol + " is a predefined type, can't be a variable name", getLocation());
         }
 
+        // check if the name is a class name
+        EnvironmentType envTypes = compiler.getTypes();
+
+        if (envTypes.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a class name defined at "+
+                    envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a variable name", getLocation());
+        }
+
         // check initialization
         initialization.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
 
@@ -68,7 +76,8 @@ public class DeclVar extends AbstractDeclVar {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
         } catch (DoubleDefException e) {
-                throw new ContextualError("Var is already defined", getLocation());
+                throw new ContextualError(realSymbol + " is already defined at " +
+                        localEnv.get(realSymbol).getLocation(), getLocation());
             }
     }
 

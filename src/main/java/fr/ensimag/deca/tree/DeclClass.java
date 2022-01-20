@@ -64,13 +64,6 @@ public class DeclClass extends AbstractDeclClass {
         nameClass.setDefinition(classDefinition);
         nameClass.setType(classType);
 
-        // Add the envTypePredef in the localEnv
-        //classDefinition.getMembers().getDico() = new  HashMap<SymbolTable.Symbol, ExpDefinition>();
-        //compiler.getTypes().cloneMapExp(classDefinition.getMembers().getDico());
-        //classDefinition.getMembers().getDico() =  ( HashMap<SymbolTable.Symbol, ExpDefinition>)(((HashMap<SymbolTable.Symbol, TypeDefinition>)compiler.getTypesPredef().getDico()).clone());
-        // classDefinition.getMembers().getDico().putAll(compiler.getTypesPredef().getDico());
-
-
         // put in the dictionary
         Map<SymbolTable.Symbol, TypeDefinition> dico = compiler.getTypes().getDico();
         try {
@@ -80,13 +73,12 @@ public class DeclClass extends AbstractDeclClass {
         }
 
 
-
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
         field.verifyListDeclField(compiler, classDefinition.getMembers(), classDefinition);
-        //methods.verifyListDeclMethod(compiler, classDefinition.getMembers(), classDefinition);
+        methods.verifyListDeclMethod(compiler, classDefinition.getMembers(), classDefinition);
     }
     
     @Override
