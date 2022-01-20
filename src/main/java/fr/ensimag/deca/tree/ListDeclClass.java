@@ -39,12 +39,12 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * Pass 2 of [SyntaxeContextuelle]
      */
     public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify listClassMember: start");
+        //LOG.debug("verify listClassMember: start");
         Iterator<AbstractDeclClass> it = this.iterator();
         while (it.hasNext()) {
             it.next().verifyClassMembers(compiler);
         }
-	LOG.debug("verify listClassMember: end");
+	//LOG.debug("verify listClassMember: end");
     }
     
     /**

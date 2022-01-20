@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 import fr.ensimag.deca.tools.SymbolTable;
 import java.util.HashMap;
 import fr.ensimag.deca.context.*;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+import fr.ensimag.deca.context.DoubleDefException;
 
 
 /**
@@ -129,8 +129,6 @@ public class DecacCompiler {
             System.exit(1);
         }
 
-        //envType.getDico() = new HashMap<SymbolTable.Symbol, TypeDefinition>(envTypesPredef.getDico());
-       // envType.getDico() = (HashMap<SymbolTable.Symbol, TypeDefinition>)(((HashMap<SymbolTable.Symbol, TypeDefinition>)envTypesPredef.getDico()).clone());
     }
 
 

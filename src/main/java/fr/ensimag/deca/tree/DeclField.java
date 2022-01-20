@@ -44,19 +44,19 @@ public class DeclField extends AbstractDeclField{
             iterClass = iterClass.getSuperClass();
         }
 
+
         // Put the field in the localEnv
         try {
             field.setDefinition(new FieldDefinition(type.getType(), getLocation(), visibility, currentClass, currentClass.getNumberOfFields()));
             localEnv.declare(field.getName(), field.getFieldDefinition());
-        } catch (EnvironmentExp.DoubleDefException e) {
+        } catch (DoubleDefException e) {
             throw new ContextualError("This field is already defined", getLocation());
         }
         field.verifyExpr(compiler, localEnv, currentClass);
 
+
         // check initialization
         init.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
-
-
     }
 
     @Override

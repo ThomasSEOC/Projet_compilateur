@@ -4,7 +4,6 @@ import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.codegen.VirtualRegister;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -68,9 +67,9 @@ public class DeclVar extends AbstractDeclVar {
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
-	} catch (DoubleDefException e) {
-            throw new ContextualError("Var is already defined", getLocation());
-        }
+        } catch (DoubleDefException e) {
+                throw new ContextualError("Var is already defined", getLocation());
+            }
     }
 
     
