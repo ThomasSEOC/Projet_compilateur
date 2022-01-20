@@ -1,5 +1,6 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
@@ -165,6 +166,17 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
         else {
 			throw new UnsupportedOperationException("unknown arithmetic operation");
 		}
+	}
+
+	@Override
+	public Constant getConstant() {
+		// cast expression to AbstractBinaryExpr
+		AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
+
+		Constant cLOp = expr.getLeftOperand().getConstant();
+		Constant cROp = expr.getRightOperand().getConstant();
+
+		return null;
 	}
 
 	/**
