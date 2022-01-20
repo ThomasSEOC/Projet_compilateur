@@ -1,5 +1,7 @@
 package fr.ensimag.deca.opti;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 

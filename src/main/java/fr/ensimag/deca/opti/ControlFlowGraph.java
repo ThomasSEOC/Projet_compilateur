@@ -7,6 +7,9 @@ import fr.ensimag.deca.tree.IfThenElse;
 import fr.ensimag.deca.tree.ListInst;
 import fr.ensimag.deca.tree.While;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,5 +139,22 @@ public class ControlFlowGraph extends Graph {
 
     public CodeGenBackend getBackend() {
         return compiler.getCodeGenBackend();
+    }
+
+    public void createDotGraph() throws IOException {
+        String destFile = compiler.getSource().toString().replaceFirst("[.][^.]+$", "") + ".dot";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
+        writer.write("digraph {\n");
+
+        for (Arc arc : getArcs()) {
+            writer.write("\t");
+            writer.write("" + arc.getStart().getId());
+            writer.write(" -> ");
+            writer.write("" + arc.getStop().getId());
+            writer.write(";\n");
+        }
+
+        writer.write("}");
+        writer.close();
     }
 }

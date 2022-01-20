@@ -4,6 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.opti.ControlFlowGraph;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
+import java.io.IOException;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -52,6 +54,12 @@ public class Main extends AbstractMain {
             // create control flow graph;
             ControlFlowGraph graph = new ControlFlowGraph(compiler, insts);
             System.out.println(graph);
+            try {
+                graph.createDotGraph();
+            }
+            catch (IOException ex) {
+                System.out.println("IO error while creating ");
+            }
             graph.codeGen();
         }
         else {

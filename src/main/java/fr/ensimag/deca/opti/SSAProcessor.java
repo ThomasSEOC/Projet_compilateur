@@ -71,13 +71,14 @@ public class SSAProcessor {
         if (writeIdentifier != null) {
             String name = writeIdentifier.getName().getName();
             lastVariablesIds.replace(name, lastVariablesIds.get(name)+1);
+
             SSAVariable newVariable = new SSAVariable(name, lastVariablesIds.get(name));
+
             localSSA.replace(name, newVariable);
             usages.put(newVariable, new HashSet<>());
             usages.get(newVariable).add(identifiers);
 
             writeIdentifier.setSsaVariable(newVariable);
-//            System.out.println(localSSA.get(name));
         }
     }
 
