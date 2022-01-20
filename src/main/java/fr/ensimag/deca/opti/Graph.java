@@ -95,7 +95,15 @@ abstract class Graph {
         for (Arc arc : arcs) {
             sb.append("\t").append(arc.toString()).append("\n");
         }
-        sb.append("}");
+        sb.append("}\n\n");
+
+        sb.append("BLOCS INSTRUCTIONS SSA VARIABLES :\n");
+        sb.append("{ \n");
+        for (AbstractCodeBloc bloc : blocs) {
+            sb.append("\t").append(bloc.toString()).append("\n");
+            sb.append("\t").append(bloc.instructionstoString());
+        }
+        sb.append("}\n");
 
         return sb.toString();
     }

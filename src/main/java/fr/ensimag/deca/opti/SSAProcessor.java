@@ -131,7 +131,8 @@ public class SSAProcessor {
                 AbstractCodeBloc toPushBloc = bloc.getOutArcs().get(i).getStop();
                 if (!graph.getDoneBlocs().contains(toPushBloc)) {
                     toProcessBlocs.push(toPushBloc);
-                    localSSAs.push(localSSA);
+                    Map<String, SSAVariable> copy = new HashMap<>(localSSA);
+                    localSSAs.push(copy);
                 }
             }
         }

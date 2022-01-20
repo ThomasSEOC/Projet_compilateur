@@ -76,4 +76,15 @@ abstract class AbstractCodeBloc {
         ListInst instructions = getInstructions();
         instructions.codeGenListInst(graph.getCompiler());
     }
+
+    public String instructionstoString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{ \n\t");
+        for (InstructionIdentifiers identifiers : instructionIdentifiers ) {
+            sb.append("\t").append(identifiers.toString());
+        }
+        sb.append("\t}\n");
+
+        return sb.toString();
+    }
 }

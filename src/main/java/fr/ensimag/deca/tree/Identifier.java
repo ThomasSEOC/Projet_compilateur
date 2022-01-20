@@ -12,6 +12,7 @@ import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.opti.InstructionIdentifiers;
 import fr.ensimag.deca.opti.SSAVariable;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -252,5 +253,10 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenPrint(DecacCompiler compiler) {
         IdentifierRead operator = new IdentifierRead(compiler.getCodeGenBackend(), this);
         operator.print();
+    }
+
+    @Override
+    public void searchIdentifiers(InstructionIdentifiers instructionIdentifiers) {
+        instructionIdentifiers.addReadIdentifer(this);
     }
 }

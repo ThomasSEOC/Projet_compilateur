@@ -41,4 +41,29 @@ public class InstructionIdentifiers {
     public void setWriteIdentifier(Identifier identifier) {
         writeIdentifier = identifier;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (writeIdentifier != null) {
+            sb.append("Write: ");
+            sb.append(writeIdentifier.getSsaVariable().getName());
+            sb.append("#");
+            sb.append(writeIdentifier.getSsaVariable().getId()).append("; ");
+        }
+        else {
+            sb.append("Write: null; ");
+        }
+
+        sb.append("Read: [");
+        for (Identifier ident : readIdentifiers) {
+            sb.append(ident.getSsaVariable().getName());
+            sb.append("#");
+            sb.append(ident.getSsaVariable().getId());
+            sb.append(", ");
+        }
+        sb.append("]\n");
+
+        return sb.toString();
+    }
 }

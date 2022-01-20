@@ -6,6 +6,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.InstructionIdentifiers;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -49,4 +50,12 @@ public class Assign extends AbstractBinaryExpr {
         return "=";
     }
 
+    @Override
+    public void searchIdentifiers(InstructionIdentifiers instructionIdentifiers) {
+        if (getLeftOperand() instanceof Identifier) {
+            instructionIdentifiers.setWriteIdentifier((Identifier) getLeftOperand());
+        }
+
+        getRightOperand().searchIdentifiers(instructionIdentifiers);
+    }
 }
