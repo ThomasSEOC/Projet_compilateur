@@ -1,0 +1,2 @@
+Afr.ensimag.deca.context.EnvironmentExp$DoubleDefException: A is arleady defined at [1, 0]
+./src/test/deca/context/invalid/class_double_defined.deca:2:0:  

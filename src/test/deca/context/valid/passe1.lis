@@ -1,9 +1,5 @@
-DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:30) - verify listClass: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:35) - verify listClass: end
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:42) - verify listClassMember: start
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:47) - verify listClassMember: end
-DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify program: end
 `> [1, 0] Program
    +> ListDeclClass [List with 2 elements]
    |  []> [1, 0] DeclClass
@@ -12,17 +8,17 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
    |  ||  +> Identifier (Object)
    |  ||  |  definition: type (builtin), type=Object
    |  ||  +> ListDeclMethod [List with 0 elements]
-   |  ||  `> [2, 18] ListDeclField [List with 1 elements]
-   |  ||     []> [2, 18] DeclField
-   |  ||         +> [2, 14] Identifier (int)
+   |  ||  `> [2, 8] ListDeclField [List with 1 elements]
+   |  ||     []> [2, 8] DeclField
+   |  ||         +> [2, 4] Identifier (int)
    |  ||         |  definition: type (builtin), type=int
-   |  ||         +> [2, 18] Identifier (x)
-   |  ||         |  definition: field defined at [2, 18], type=int
+   |  ||         +> [2, 8] Identifier (x)
+   |  ||         |  definition: field defined at [2, 8], type=int
    |  ||         `> NoInitialization
-   |  []> [3, 0] DeclClass
-   |      +> [3, 6] Identifier (B)
-   |      |  definition: type defined at [3, 0], type=B
-   |      +> [3, 8] Identifier (A)
+   |  []> [4, 0] DeclClass
+   |      +> [4, 6] Identifier (B)
+   |      |  definition: type defined at [4, 0], type=B
+   |      +> [4, 8] Identifier (A)
    |      |  definition: type defined at [1, 0], type=A
    |      +> ListDeclMethod [List with 0 elements]
    |      `> ListDeclField [List with 0 elements]

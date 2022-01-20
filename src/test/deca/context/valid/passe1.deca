@@ -1,3 +1,8 @@
 class A {
-    protected int x;}
+    int x;
+ }
 class B extends A {}
+
+
+//{ int x;
+// int int;}
