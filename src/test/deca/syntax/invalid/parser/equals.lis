@@ -1,0 +1,1 @@
+./src/test/deca/syntax/invalid/parser/equals.deca:6:4: mismatched input '=' expecting {'if', 'true', 'false', 'new', 'null', 'readInt', 'readFloat', 'print', 'println', 'printx', 'printlnx', 'return', 'this', 'while', IDENT, '-', '(', '}', '!', ';', INT, FLOAT, STRING}
