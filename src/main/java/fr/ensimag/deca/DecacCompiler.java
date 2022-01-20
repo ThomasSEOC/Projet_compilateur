@@ -43,6 +43,7 @@ public class DecacCompiler {
 
     private EnvironmentType envTypesPredef = new EnvironmentType();    
     private EnvironmentExp envExpPredef = new EnvironmentExp(null);
+    private EnvironmentType envTypes = new EnvironmentType();
     
     // Getters
     public EnvironmentType getTypesPredef() {
@@ -51,8 +52,9 @@ public class DecacCompiler {
     public EnvironmentExp getExpPredef(){
         return envExpPredef;
     }
-
-
+    public EnvironmentType getTypes() {
+        return envTypes;
+    }
     
     /**
      * Portable newline character.
@@ -82,7 +84,6 @@ public class DecacCompiler {
 	    TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
         // Definition for the class Object
-        
         ClassType object =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
         ClassDefinition objDef = object.getDefinition();
         //Identifier ObjId = new Identifier(symbolTable.getMap().get("Object"));
@@ -93,36 +94,46 @@ public class DecacCompiler {
         // Declare in the envTypePredef
         try {
             envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
+            envTypes.declare(symbolTable.getSymbol("void"), voidDef);
         } catch (DoubleDefException e) {
             System.out.println("void : " + e);
             System.exit(1);
         }
         try {
             envTypesPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
+            envTypes.declare(symbolTable.getSymbol("boolean"), booleanDef);
         } catch (DoubleDefException e) {
             System.out.println("boolean : " + e);
             System.exit(1);
         }
         try {
             envTypesPredef.declare(symbolTable.getSymbol("float"), floatDef);
+            envTypes.declare(symbolTable.getSymbol("float"), floatDef);
         } catch (DoubleDefException e) {
             System.out.println("float : " + e);
             System.exit(1);
         }
         try {
             envTypesPredef.declare(symbolTable.getSymbol("int"), intDef);
+            envTypes.declare(symbolTable.getSymbol("int"), intDef);
+
         } catch (DoubleDefException e) {
             System.out.println("int : " + e);
             System.exit(1);
         }
         try {
             envTypesPredef.declare(symbolTable.getSymbol(("Object")), objDef);
+            envTypes.declare(symbolTable.getSymbol(("Object")), objDef);
         } catch (DoubleDefException e) {
             System.out.println("Object : " + e);
             System.exit(1);
         }
 
+        //envType.getDico() = new HashMap<SymbolTable.Symbol, TypeDefinition>(envTypesPredef.getDico());
+       // envType.getDico() = (HashMap<SymbolTable.Symbol, TypeDefinition>)(((HashMap<SymbolTable.Symbol, TypeDefinition>)envTypesPredef.getDico()).clone());
     }
+
+
 
 
     public SymbolTable getSymbolTable(){

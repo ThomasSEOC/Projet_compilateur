@@ -1,5 +1,6 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.util.HashMap;
@@ -31,6 +32,14 @@ public class EnvironmentType {
         return dico;
     }
 
+
+    public void cloneMapExp (Map<Symbol, ExpDefinition> dicoRecep) {
+        dicoRecep = (HashMap<SymbolTable.Symbol, ExpDefinition>)(((HashMap<SymbolTable.Symbol, TypeDefinition>)dico).clone());
+    }
+
+    public HashMap<SymbolTable.Symbol, TypeDefinition> cloneMapType () {
+        return ((HashMap<SymbolTable.Symbol, TypeDefinition>)(((HashMap<SymbolTable.Symbol, TypeDefinition>)dico).clone()));
+    }
     /**
      * Add the definition def associated to the symbol name in the environment.
      * 
@@ -41,7 +50,8 @@ public class EnvironmentType {
      */
     public void declare(Symbol name, TypeDefinition def) throws EnvironmentExp.DoubleDefException {
         if (dico.containsKey(name)) {
-            throw new EnvironmentExp.DoubleDefException("Arleady defined");
+            throw new EnvironmentExp.DoubleDefException(name + " is arleady defined at " + dico.get(name).getLocation(), def.getLocation());
+
         }
 	    dico.put(name, def);
     }

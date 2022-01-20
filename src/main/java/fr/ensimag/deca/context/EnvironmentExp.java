@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.Location;
+import fr.ensimag.deca.tree.LocationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +40,10 @@ public class EnvironmentExp {
         return dico;
     }
 
-    public static class DoubleDefException extends Exception {
-        private static final long serialVersionUID = -2733379901827316441L;
-	    public DoubleDefException(String message) {
-	    super(message);
+    public static class DoubleDefException extends LocationException {
+        private static final long serialVersionUID = -8122514996569278575L; //-2733379901827316441L;
+        public DoubleDefException(String message, Location location) {
+                super(message, location);
 	}
     }
 
@@ -52,7 +54,7 @@ public class EnvironmentExp {
     //On implémente une fonction qui vérifie récursivement si le symbole recherché
     // est dans le dictionnaire courant ou dans les parents de celui-ci
     public Definition get(Symbol key) {
-        //Première condition d'arrêt : le symbole est dans le dictionnaire étudié
+        // Symbol already in the dictionary
         if (dico.containsKey(key)) {
             return (dico.get(key));
         }
@@ -85,7 +87,7 @@ public class EnvironmentExp {
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
 	if (dico.containsKey(name)) {
-	    throw new DoubleDefException("Arleady defined");
+	    throw new DoubleDefException(name + " is arleady defined", dico.get(name).getLocation());
 	}
 	
         dico.put(name, def);
