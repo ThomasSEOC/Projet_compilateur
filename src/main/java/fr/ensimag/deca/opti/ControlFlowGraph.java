@@ -2,10 +2,7 @@ package fr.ensimag.deca.opti;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CodeGenBackend;
-import fr.ensimag.deca.tree.AbstractInst;
-import fr.ensimag.deca.tree.IfThenElse;
-import fr.ensimag.deca.tree.ListInst;
-import fr.ensimag.deca.tree.While;
+import fr.ensimag.deca.tree.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -16,21 +13,41 @@ import java.util.List;
 public class ControlFlowGraph extends Graph {
     private final DecacCompiler compiler;
     private final ListInst instructions;
+    private ListDeclVar variables;
     private List<AbstractCodeBloc> codeGenDoneBlocs;
-    private SSAProcessor ssaProcessor;
+    private final SSAProcessor ssaProcessor;
+    private final ConstantPropagator constantPropagator;
 
-    public ControlFlowGraph(DecacCompiler compiler, ListInst instructions) {
+    public ControlFlowGraph(DecacCompiler compiler, ListDeclVar variables, ListInst instructions) {
         super();
+        this.variables = variables;
         this.instructions = instructions;
         this.compiler = compiler;
+
         createCFG();
+
         this.ssaProcessor = new SSAProcessor(this);
         ssaProcessor.process();
+
+        this.constantPropagator = new ConstantPropagator(this);
+        constantPropagator.process();
+    }
+
+    public void setDeclVariables(ListDeclVar variables) {
+        this.variables = variables;
+    }
+
+    public ListDeclVar getDeclVariables() {
+        return variables;
     }
 
     @Override
     public SSAProcessor getSsaProcessor() {
         return ssaProcessor;
+    }
+
+    public ConstantPropagator getConstantPropagator() {
+        return constantPropagator;
     }
 
     private void CFGRecursion(List<AbstractInst> instructionsList, AbstractCodeBloc inCodeBloc, AbstractCodeBloc outCodeBloc) {

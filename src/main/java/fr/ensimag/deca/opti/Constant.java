@@ -21,12 +21,16 @@ public class Constant {
     
     public Constant(boolean value) {
         isBool = true;
-	isFloat = false;
-	valueBoolean = value;
+        isFloat = false;
+        valueBool = value;
     }
 
     public boolean getIsFloat() {
         return isFloat;
+    }
+
+    public boolean getIsBoolean() {
+        return isBool;
     }
 
     public int getValueInt() {
@@ -35,5 +39,9 @@ public class Constant {
 
     public float getValueFloat() {
         return valueFloat;
+    }
+
+    public boolean getValueBoolean() {
+        return valueBool;
     }
 }

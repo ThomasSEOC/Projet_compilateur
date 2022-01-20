@@ -1,6 +1,9 @@
 package fr.ensimag.deca.opti;
 
+import fr.ensimag.deca.tree.AbstractDeclVar;
+import fr.ensimag.deca.tree.DeclVar;
 import fr.ensimag.deca.tree.Identifier;
+import fr.ensimag.deca.tree.Initialization;
 
 import java.util.*;
 
@@ -18,13 +21,17 @@ public class SSAProcessor {
         this.waitingFusionCodeBlocs = new HashMap<>();
         this.merges = new HashMap<>();
 
-        for (String variableName : graph.getBackend().getVariables()) {
-            lastVariablesIds.put(variableName, 1);
-        }
+//        for (String variableName : graph.getBackend().getVariables()) {
+//            lastVariablesIds.put(variableName, 1);
+//        }
     }
 
     public Set<String> getVariablesNames() {
         return lastVariablesIds.keySet();
+    }
+
+    public Set<InstructionIdentifiers> getInstructionIdentifiers(SSAVariable variable) {
+        return usages.get(variable);
     }
 
     private void startMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
@@ -115,21 +122,47 @@ public class SSAProcessor {
         graph.addDoneBloc(bloc);
     }
 
+    private Map<String,SSAVariable> processDeclVar() {
+        Map<String,SSAVariable> initSSA = new HashMap<>();
+        for (AbstractDeclVar var : graph.getDeclVariables().getList()) {
+            DeclVar variable = (DeclVar) var;
+            lastVariablesIds.put(variable.getVarName().getName().getName(), 1);
+
+            Identifier lIdentifier = (Identifier) variable.getVarName();
+            SSAVariable ssaVariable = new SSAVariable(lIdentifier.getName().getName(), 1);
+            lIdentifier.setSsaVariable(ssaVariable);
+
+            initSSA.put(lIdentifier.getName().getName(), ssaVariable);
+            usages.put(ssaVariable, new HashSet<>());
+            merges.put(lIdentifier.getName().getName(), new HashSet<>());
+
+            if (variable.getInitialization() instanceof Initialization) {
+                Initialization initialization = (Initialization) variable.getInitialization();
+                InstructionIdentifiers identifiers = new InstructionIdentifiers(initialization.getExpression());
+                processInstructionIdentifiers(identifiers, initSSA);
+            }
+        }
+        return initSSA;
+    }
+
     public void process() {
+        Map<String,SSAVariable> initSSA = processDeclVar();
+
         graph.clearDoneBlocs();
         graph.addDoneBloc(graph.getStopBloc());
 
         Stack<AbstractCodeBloc> toProcessBlocs = new Stack<>();
         Stack<Map<String,SSAVariable>> localSSAs = new Stack<>();
         toProcessBlocs.push(graph.getStartBloc());
-        localSSAs.push(new HashMap<>());
+        localSSAs.push(initSSA);
 
-        for (String variableName : graph.getBackend().getVariables()) {
-            SSAVariable variable = new SSAVariable(variableName, 1);
-            localSSAs.peek().put(variableName, variable);
-            usages.put(variable, new HashSet<>());
-            merges.put(variableName, new HashSet<>());
-        }
+//        localSSAs.push(new HashMap<>());
+//        for (String variableName : graph.getBackend().getVariables()) {
+//            SSAVariable variable = new SSAVariable(variableName, 1);
+//            localSSAs.peek().put(variableName, variable);
+//            usages.put(variable, new HashSet<>());
+//            merges.put(variableName, new HashSet<>());
+//        }
 
         while (toProcessBlocs.size() > 0) {
             AbstractCodeBloc bloc = toProcessBlocs.pop();

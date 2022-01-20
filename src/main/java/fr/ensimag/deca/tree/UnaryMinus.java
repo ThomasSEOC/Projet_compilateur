@@ -57,7 +57,8 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    public Constant getConstant() {
-
+    public Constant getConstant(DecacCompiler compiler) {
+        UnaryMinusOperation operator = new UnaryMinusOperation(compiler.getCodeGenBackend(), this);
+        return operator.getConstant(compiler);
     }
 }

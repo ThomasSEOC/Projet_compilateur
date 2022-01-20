@@ -1,5 +1,6 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -169,12 +170,12 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 	}
 
 	@Override
-	public Constant getConstant() {
+	public Constant getConstant(DecacCompiler compiler) {
 		// cast expression to AbstractBinaryExpr
 		AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
 
-		Constant cLOp = expr.getLeftOperand().getConstant();
-		Constant cROp = expr.getRightOperand().getConstant();
+		Constant cLOp = expr.getLeftOperand().getConstant(compiler);
+		Constant cROp = expr.getRightOperand().getConstant(compiler);
 		if (cLOp == null || cROp == null) {
 		    return null;
 		}

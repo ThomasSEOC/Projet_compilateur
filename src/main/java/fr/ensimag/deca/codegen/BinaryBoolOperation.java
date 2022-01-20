@@ -1,5 +1,7 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -139,83 +141,83 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
     }
 
     @Override
-    Constant getConstant() {
-		// cast expression to AbstractBinaryExpr
-		AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
+    public Constant getConstant(DecacCompiler compiler) {
+        // cast expression to AbstractBinaryExpr
+        AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
 
-		Constant cLOp = expr.getLeftOperand().getConstant();
-		Constant cROp = expr.getRightOperand().getConstant();
-				
-		if (cLOp == null || cROp == null) {
-		    return null;
-		}
+        Constant cLOp = expr.getLeftOperand().getConstant(compiler);
+        Constant cROp = expr.getRightOperand().getConstant(compiler);
 
-		Constant result;
+        if (cLOp == null || cROp == null) {
+            return null;
+        }
 
-		if (cLOp.getIsFloat()) {
-		    float op1 = cLOp.getValueFloat();
-		    float op2 = cROp.getValueFloat();
-		    
-		    if (this.getExpression() instanceof Greater) {
-			return new Constant(op1 > op2);
-		    }
-		    else if (this.getExpression() instanceof GreaterOrEqual) {
-			return new Constant(op1 >= op2);
-		    }
-		    else if (this.getExpression() instanceof Lower) {
-			return new Constant(op1 < op2);
-		    }
-		    else if (this.getExpression() instanceof LowerOrEqual) {
-			return new Constant(op1 <= op2);
-		    }
-		    else if (this.getExpression() instanceof Equals) {
-			return new Constant(op1 == op2);
-		    }
-		    else if (this.getExpression() instanceof NotEquals) {
-			return new Constant(op1 != op2);
-		    }
-		    
-		}
-		else {
-		    if (cLOp.getIsBool()) {
-			boolean op1 = cLOp.getValueBool();
-			boolean op2 = cROp.getValueBool();
+        Constant result;
 
-			if (this.getExpression() instanceof Equals) {
-			    return new Constant(op1 == op2);
-			}
-			else if (this.getExpression() instanceof NotEquals) {
-			    return new Constant(op1 != op2);
-			}
-		    }
-		    else {
-			int op1 = cLOp.getValueFloat();
-			int op2 = cROp.getValueFloat();
-		    
-			if (this.getExpression() instanceof Greater) {
-			    return new Constant(op1 > op2);
-			}
-			else if (this.getExpression() instanceof GreaterOrEqual) {
-			    return new Constant(op1 >= op2);
-			}
-			else if (this.getExpression() instanceof Lower) {
-			    return new Constant(op1 < op2);
-			}
-			else if (this.getExpression() instanceof LowerOrEqual) {
-			    return new Constant(op1 <= op2);
-			}
-			else if (this.getExpression() instanceof Equals) {
-			    return new Constant(op1 == op2);
-			}
-			else if (this.getExpression() instanceof NotEquals) {
-			    return new Constant(op1 != op2);
-			}
-		    }
-		}
-		return null;
-		
+        if (cLOp.getIsFloat()) {
+            float op1 = cLOp.getValueFloat();
+            float op2 = cROp.getValueFloat();
+
+            if (this.getExpression() instanceof Greater) {
+                return new Constant(op1 > op2);
+            }
+            else if (this.getExpression() instanceof GreaterOrEqual) {
+                return new Constant(op1 >= op2);
+            }
+            else if (this.getExpression() instanceof Lower) {
+                return new Constant(op1 < op2);
+            }
+            else if (this.getExpression() instanceof LowerOrEqual) {
+                return new Constant(op1 <= op2);
+            }
+            else if (this.getExpression() instanceof Equals) {
+                return new Constant(op1 == op2);
+            }
+            else if (this.getExpression() instanceof NotEquals) {
+                return new Constant(op1 != op2);
+            }
+
+        }
+        else {
+            if (cLOp.getIsBoolean()) {
+                boolean op1 = cLOp.getValueBoolean();
+                boolean op2 = cROp.getValueBoolean();
+
+                if (this.getExpression() instanceof Equals) {
+                    return new Constant(op1 == op2);
+                }
+                else if (this.getExpression() instanceof NotEquals) {
+                    return new Constant(op1 != op2);
+                }
+            }
+            else {
+                int op1 = cLOp.getValueInt();
+                int op2 = cROp.getValueInt();
+
+                if (this.getExpression() instanceof Greater) {
+                    return new Constant(op1 > op2);
+                }
+                else if (this.getExpression() instanceof GreaterOrEqual) {
+                    return new Constant(op1 >= op2);
+                }
+                else if (this.getExpression() instanceof Lower) {
+                    return new Constant(op1 < op2);
+                }
+                else if (this.getExpression() instanceof LowerOrEqual) {
+                    return new Constant(op1 <= op2);
+                }
+                else if (this.getExpression() instanceof Equals) {
+                    return new Constant(op1 == op2);
+                }
+                else if (this.getExpression() instanceof NotEquals) {
+                    return new Constant(op1 != op2);
+                }
+            }
+        }
+        return null;
+
     }
-		    
+
     /**
      * method called to generate code for printing result of binary boolean operation
      * pretty useless method

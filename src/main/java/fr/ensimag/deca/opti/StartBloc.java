@@ -4,6 +4,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 public class StartBloc extends AbstractCodeBloc {
+
     public StartBloc(int id) {
         super(id);
     }

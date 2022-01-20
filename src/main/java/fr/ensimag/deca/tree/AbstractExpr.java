@@ -36,7 +36,7 @@ public abstract class AbstractExpr extends AbstractInst {
         return false;
     }
 
-    public Constant getConstant() {
+    public Constant getConstant(DecacCompiler compiler) {
         return null;
     }
 

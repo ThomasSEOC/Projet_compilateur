@@ -34,6 +34,10 @@ public class InstructionIdentifiers {
         instruction.searchIdentifiers(this);
     }
 
+    public AbstractInst getInstruction() {
+        return instruction;
+    }
+
     public void addReadIdentifer(Identifier identifier) {
         readIdentifiers.add(identifier);
     }

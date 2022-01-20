@@ -73,7 +73,7 @@ public class BooleanLiteral extends AbstractExpr {
     }*/
 
     @Override
-    public Constant getConstant() {
+    public Constant getConstant(DecacCompiler compiler) {
         return new Constant(value);
     }
 }

@@ -67,8 +67,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     }
 
     @Override
-    public Constant getConstant() {
-        BinaryBoolOperation operator = new BinaryBoolOperation(compiler, this);
-        return operator.getConstant();
+    public Constant getConstant(DecacCompiler compiler) {
+        BinaryBoolOperation operator = new BinaryBoolOperation(compiler.getCodeGenBackend(), this);
+        return operator.getConstant(compiler);
     }
 }
