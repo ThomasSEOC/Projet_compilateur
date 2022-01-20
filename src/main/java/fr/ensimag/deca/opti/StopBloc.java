@@ -1,6 +1,7 @@
 package fr.ensimag.deca.opti;
 
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.HALT;
 
 public class StopBloc extends AbstractCodeBloc {
     public StopBloc(int id) {
@@ -16,6 +17,8 @@ public class StopBloc extends AbstractCodeBloc {
     public void codeGen(ControlFlowGraph graph) {
         // add bloc label
         graph.getBackend().addLabel(new Label("Code.Bloc." + getId()));
+
+        graph.getBackend().addInstruction(new HALT());
 
         super.codeGen(graph);
     }

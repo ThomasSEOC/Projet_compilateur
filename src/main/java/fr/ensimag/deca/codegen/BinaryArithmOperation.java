@@ -4,6 +4,7 @@ import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -39,8 +40,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 		VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 		VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
-		boolean opti = false;
-//		boolean opti = getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize();
+		boolean opti = getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize();
 
 		// separate code generation according to arithmetic operation
 		if (this.getExpression() instanceof Plus) {
@@ -64,7 +64,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			} else {
 				// get correct operand
 				lOp.requestPhysicalRegister();
-				getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.getDVal()), "Operation Plus");
+				getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Operation Plus");
 				rOp.destroy();
 				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
@@ -89,7 +89,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			} else {
 				// get correct operand
 				lOp.requestPhysicalRegister();
-				getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.getDVal()), "Operation Minus");
+				getCodeGenBackEnd().addInstruction(new SUB(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Operation Minus");
 				rOp.destroy();
 				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
@@ -114,7 +114,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			} else {
 				// get correct operand
 				lOp.requestPhysicalRegister();
-				getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), lOp.getDVal()), "Operation Multiply");
+				getCodeGenBackEnd().addInstruction(new MUL(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Operation Multiply");
 				rOp.destroy();
 				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
@@ -161,10 +161,9 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				rOp.destroy();
 				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
-	    
-        else{
-				throw new UnsupportedOperationException("unknown arithmetic operation");
-			}
+		}
+        else {
+			throw new UnsupportedOperationException("unknown arithmetic operation");
 		}
 	}
 
