@@ -29,9 +29,7 @@ public abstract class AbstractClassObject {
 
     abstract public int getMethodOffset(AbstractDeclMethod abstractMethod);
 
-    public AbstractIdentifier getClassName() {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    abstract public AbstractIdentifier getClassName();
 
     protected void setVTableOffset(int VTableOffset) {
         this.VTableOffset = VTableOffset;

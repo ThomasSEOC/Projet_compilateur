@@ -32,7 +32,8 @@ public class ErrorsManager {
      * add assembly for error handlers, must be called after main code generation
      */
     public void addErrors() {
-        backend.getCompiler().addComment("error messages");
+        backend.getCompiler().addComment("###############################################################");
+        backend.getCompiler().addComment("ERRORS");
         addSTackOverflowError();
 
         if (isDereferencementNullLabelUsed) {

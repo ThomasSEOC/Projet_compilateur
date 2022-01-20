@@ -7,6 +7,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.IOException;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.HALT;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import fr.ensimag.deca.context.*;
@@ -46,6 +48,7 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
+
         declVariables.codeGenListDeclVar(compiler);
 
         compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
@@ -70,6 +73,15 @@ public class Main extends AbstractMain {
 //
 //        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
 //
+        // end of the program
+//        compiler.getCodeGenBackend().addInstruction(new HALT());
+//
+//        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
+//
+//        compiler.getCodeGenBackend().addCommentFirst("start main program");
+//        compiler.getCodeGenBackend().addCommentFirst("###############################################################");
+//
+//        compiler.getCodeGenBackend().writeInstructions();
     }
     
     @Override

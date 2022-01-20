@@ -5,6 +5,7 @@ import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -203,6 +204,11 @@ public class ClassObject extends AbstractClassObject {
 
         // recursion
         return getClassManager().getClassObject(getSuperClass()).getMethodOffset(abstractMethod);
+    }
+
+    @Override
+    public AbstractIdentifier getClassName() {
+        return nameClass;
     }
 
     public void createObjectCodeGen() {

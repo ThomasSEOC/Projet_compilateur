@@ -9,12 +9,12 @@ import java.util.*;
 public class ClassManager {
     private final CodeGenBackend backend;
     private List<AbstractClassObject> classList;
-    private Map<AbstractIdentifier, AbstractClassObject> classMap;
-    private int vtableOffset;
+    private final Map<AbstractIdentifier, AbstractClassObject> classMap;
+    private int vtableOffset = 0;
 
     public ClassManager(CodeGenBackend backend) {
         this.backend = backend;
-        vtableOffset = 0;
+        vtableOffset = 1;
         classList = new ArrayList<>();
         classMap = new HashMap<AbstractIdentifier, AbstractClassObject>();
         classList.add(new DefaultObject(this));
@@ -29,9 +29,9 @@ public class ClassManager {
     }
 
     public void addClass(AbstractIdentifier nameClass, AbstractIdentifier superClass, ListDeclMethod methods, ListDeclField fields) {
-        ClassObject classDefinition = new ClassObject(this, nameClass, superClass, methods, fields);
-        classList.add(classDefinition);
-        classMap.put(nameClass, classDefinition);
+        ClassObject classObject = new ClassObject(this, nameClass, superClass, methods, fields);
+        classList.add(classObject);
+        classMap.put(nameClass, classObject);
     }
 
     public AbstractClassObject getClassObject(AbstractIdentifier nameClass) {
@@ -89,20 +89,24 @@ public class ClassManager {
     public void VTableCodeGen() {
         List<List<AbstractClassObject>> orderedClassList = orderClassObjects();
 
+        backend.getCompiler().addComment("VTABLE INIT");
+
         for (List<AbstractClassObject> stage : orderedClassList) {
             for (AbstractClassObject classObject : stage) {
-                backend.getCompiler().addComment("init vtable for " + classObject.getClassName().getName() + " object");
                 classObject.VTableCodeGen(vtableOffset);
                 vtableOffset += classObject.getVTableSize();
             }
         }
+
+        backend.writeInstructions();
     }
 
     public void methodsCodeGen() {
-        backend.getCompiler().addComment("code for methods");
+        backend.getCompiler().addComment("METHODS");
         for (AbstractClassObject classObject : classList) {
             classObject.methodsCodeGen();
         }
+        backend.writeInstructions();
     }
 
     public void instanceOfCodeGen(AbstractClassObject targetObject) {

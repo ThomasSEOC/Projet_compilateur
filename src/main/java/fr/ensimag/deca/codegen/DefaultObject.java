@@ -2,7 +2,9 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractDeclMethod;
+import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.deca.tree.DeclMethod;
+import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -19,13 +21,14 @@ public class DefaultObject extends AbstractClassObject {
 
     private void codeObjectEqualsCodeGen() {
         DecacCompiler compiler = getClassManager().getBackend().getCompiler();
+        compiler.getCodeGenBackend().addComment("Code for methods of default object :");
         compiler.getCodeGenBackend().addComment("Code for default equals method");
         compiler.getCodeGenBackend().addLabel(codeObjectEquals);
 
         // first parameter is current Object address
         // second parameter is other object address
-        compiler.getCodeGenBackend().addInstruction(new TSTO(2));
-        compiler.getCodeGenBackend().addInstruction(new BOV(compiler.getCodeGenBackend().getErrorsManager().getStackOverflowLabel()));
+//        compiler.getCodeGenBackend().addInstruction(new TSTO(2));
+//        compiler.getCodeGenBackend().addInstruction(new BOV(compiler.getCodeGenBackend().getErrorsManager().getStackOverflowLabel()));
         compiler.getCodeGenBackend().addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
         compiler.getCodeGenBackend().addInstruction(new CMP(new RegisterOffset(-3, Register.LB), GPRegister.getR(0)));
         compiler.getCodeGenBackend().addInstruction(new SEQ(GPRegister.getR(0)));
@@ -64,8 +67,6 @@ public class DefaultObject extends AbstractClassObject {
     public void methodsCodeGen() {
         codeObjectEqualsCodeGen();
     }
-
-
 
     @Override
     public void callMethod(AbstractDeclMethod abstractMethod) {
@@ -116,5 +117,10 @@ public class DefaultObject extends AbstractClassObject {
         else {
             throw new UnsupportedOperationException("error method doesn't exists");
         }
+    }
+
+    @Override
+    public AbstractIdentifier getClassName() {
+        return new Identifier(getClassManager().getBackend().getCompiler().getSymbolTable().create("Object"));
     }
 }
