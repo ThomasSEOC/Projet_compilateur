@@ -53,14 +53,14 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
 
-
         // verifies the existence of superClass
         superClass.verifyType(compiler);
 
-        classType = new ClassType(nameClass.getName(), getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
-        classDefinition = classType.getDefinition();
-
         // Definition and type of the class
+        SymbolTable.Symbol classSymbol = nameClass.getName();
+
+        classType = new ClassType(classSymbol, getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
+        classDefinition = classType.getDefinition();
         nameClass.setDefinition(classDefinition);
         nameClass.setType(classType);
 
@@ -71,16 +71,12 @@ public class DeclClass extends AbstractDeclClass {
         // classDefinition.getMembers().getDico().putAll(compiler.getTypesPredef().getDico());
 
 
-
         // put in the dictionary
+        Map<SymbolTable.Symbol, TypeDefinition> dico = compiler.getTypes().getDico();
         try {
             compiler.getTypes().declare(nameClass.getName(), classDefinition);
-        } catch (EnvironmentExp.DoubleDefException e) {
-            System.out.println(nameClass.getName().getName() + e);
-            throw new ContextualError(" ", getLocation());
-            //System.exit(1);
-
-
+        } catch (DoubleDefException e) {
+            throw new ContextualError(classSymbol.getName() + " is already defined at " + dico.get(classSymbol).getLocation() , getLocation());
         }
 
 
