@@ -7,6 +7,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
@@ -55,4 +56,8 @@ public class UnaryMinus extends AbstractUnaryExpr {
         return "-";
     }
 
+    @Override
+    public Constant getConstant() {
+
+    }
 }

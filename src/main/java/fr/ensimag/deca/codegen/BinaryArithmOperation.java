@@ -178,51 +178,55 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 		if (cLOp == null || cROp == null) {
 		    return null;
 		}
-
-		Constant result;
 		
 		if (cLOp.getIsFloat()) {
 		    float op1 = cLOp.getValueFloat();
 		    float op2 = cROp.getValueFloat();
 		    
 		    if (this.getExpression() instanceof Plus) {
-			float resultFloat = op1 + op2;
+				float resultFloat = op1 + op2;
+				return new Constant(resultFloat);
 		    }
 		    else if (this.getExpression() instanceof Minus) {
-			float resultFloat = op1 - op2;
+				float resultFloat = op1 - op2;
+				return new Constant(resultFloat);
 		    }
 		    else if (this.getExpression() instanceof Multiply) {
-			float resultFloat = op1 * op2;
+				float resultFloat = op1 * op2;
+				return new Constant(resultFloat);
 		    }
 		    else if (this.getExpression() instanceof Divide) {
-			float resultFloat = op1 / op2;
+				float resultFloat = op1 / op2;
+				return new Constant(resultFloat);
 		    }
-
-		    result = new Constant(resultFloat);
 		}
 		else {
-		    int op1 = cLOp.getValueFloat();
-		    int op2 = cROp.getValueFloat();
+		    int op1 = cLOp.getValueInt();
+		    int op2 = cROp.getValueInt();
 
 		    if (this.getExpression() instanceof Plus) {
-			int resultInt = op1 + op2;
+				int resultInt = op1 + op2;
+				return new Constant(resultInt);
 		    }
 		    else if (this.getExpression() instanceof Minus) {
-			int resultInt = op1 - op2;
+				int resultInt = op1 - op2;
+				return new Constant(resultInt);
 		    }
 		    else if (this.getExpression() instanceof Multiply) {
-			float resultInt = op1 * op2;
+				int resultInt = op1 * op2;
+				return new Constant(resultInt);
 		    }
 		    else if (this.getExpression() instanceof Divide) {
-			float resultInt = op1 / op2;
+				int resultInt = op1 / op2;
+				return new Constant(resultInt);
 		    }
 		    else if (this.getExpression() instanceof Modulo) {
-			float resultInt = op1 % op2;
+				int resultInt = op1 % op2;
+				return new Constant(resultInt);
 		    }
-		    
-		    result = new Constant(resultInt);
 		}
-		return result;
+
+		return null;
 	}
 		
     

@@ -1,11 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.BinaryBoolOperation;
+import fr.ensimag.deca.codegen.UnaryMinusOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.Constant;
 
 /**
  *
@@ -62,5 +64,11 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         BinaryBoolOperation operator = new BinaryBoolOperation(compiler.getCodeGenBackend(), this);
         operator.doOperation();
+    }
+
+    @Override
+    public Constant getConstant() {
+        BinaryBoolOperation operator = new BinaryBoolOperation(compiler, this);
+        return operator.getConstant();
     }
 }
