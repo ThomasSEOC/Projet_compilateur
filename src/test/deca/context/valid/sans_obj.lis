@@ -12,7 +12,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       +> ListDeclVar [List with 2 elements]
       |  []> [14, 4] DeclVar
       |  ||  +> [14, 0] Identifier (int)
-      |  ||  |  definition: type (builtin), type=int
+      |  ||  |  definition: type[builtin], type=int
       |  ||  +> [14, 4] Identifier (a)
       |  ||  |  definition: variable defined at [14, 4], type=int
       |  ||  `> [14, 4] Initialization
@@ -20,7 +20,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       |  ||        type: int
       |  []> [15, 6] DeclVar
       |      +> [15, 0] Identifier (float)
-      |      |  definition: type (builtin), type=float
+      |      |  definition: type[builtin], type=float
       |      +> [15, 6] Identifier (b)
       |      |  definition: variable defined at [15, 6], type=float
       |      `> [15, 6] Initialization

@@ -12,13 +12,13 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       +> ListDeclVar [List with 2 elements]
       |  []> [11, 9] DeclVar
       |  ||  +> [11, 3] Identifier (float)
-      |  ||  |  definition: type (builtin), type=float
+      |  ||  |  definition: type[builtin], type=float
       |  ||  +> [11, 9] Identifier (a)
       |  ||  |  definition: variable defined at [11, 9], type=float
       |  ||  `> [11, 9] NoInitialization
       |  []> [12, 7] DeclVar
       |      +> [12, 3] Identifier (int)
-      |      |  definition: type (builtin), type=int
+      |      |  definition: type[builtin], type=int
       |      +> [12, 7] Identifier (b)
       |      |  definition: variable defined at [12, 7], type=int
       |      `> [12, 7] NoInitialization

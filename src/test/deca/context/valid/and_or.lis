@@ -12,7 +12,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       +> ListDeclVar [List with 4 elements]
       |  []> [12, 12] DeclVar
       |  ||  +> [12, 4] Identifier (boolean)
-      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  |  definition: type[builtin], type=boolean
       |  ||  +> [12, 12] Identifier (f)
       |  ||  |  definition: variable defined at [12, 12], type=boolean
       |  ||  `> [12, 12] Initialization
@@ -20,7 +20,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       |  ||        type: boolean
       |  []> [13, 12] DeclVar
       |  ||  +> [13, 4] Identifier (boolean)
-      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  |  definition: type[builtin], type=boolean
       |  ||  +> [13, 12] Identifier (t)
       |  ||  |  definition: variable defined at [13, 12], type=boolean
       |  ||  `> [13, 12] Initialization
@@ -28,7 +28,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       |  ||        type: boolean
       |  []> [14, 12] DeclVar
       |  ||  +> [14, 4] Identifier (boolean)
-      |  ||  |  definition: type (builtin), type=boolean
+      |  ||  |  definition: type[builtin], type=boolean
       |  ||  +> [14, 12] Identifier (f1)
       |  ||  |  definition: variable defined at [14, 12], type=boolean
       |  ||  `> [14, 12] Initialization
@@ -36,7 +36,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       |  ||        type: boolean
       |  []> [15, 12] DeclVar
       |      +> [15, 4] Identifier (boolean)
-      |      |  definition: type (builtin), type=boolean
+      |      |  definition: type[builtin], type=boolean
       |      +> [15, 12] Identifier (t1)
       |      |  definition: variable defined at [15, 12], type=boolean
       |      `> [15, 12] Initialization

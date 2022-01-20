@@ -10,12 +10,12 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
    |  ||  +> [1, 6] Identifier (A)
    |  ||  |  definition: type defined at [1, 0], type=A
    |  ||  +> Identifier (Object)
-   |  ||  |  definition: type (builtin), type=Object
+   |  ||  |  definition: type[builtin], type=Object
    |  ||  +> ListDeclMethod [List with 0 elements]
    |  ||  `> [2, 18] ListDeclField [List with 1 elements]
    |  ||     []> [2, 18] DeclField
    |  ||         +> [2, 14] Identifier (int)
-   |  ||         |  definition: type (builtin), type=int
+   |  ||         |  definition: type[builtin], type=int
    |  ||         +> [2, 18] Identifier (x)
    |  ||         |  definition: field defined at [2, 18], type=int
    |  ||         `> NoInitialization

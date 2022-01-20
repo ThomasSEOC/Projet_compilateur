@@ -31,13 +31,19 @@ public class TestEnvironmentExp {
     @Test
     public void testVarDef() throws DoubleDefException {
 	EnvironmentExp env0 = new EnvironmentExp(null);
+	EnvironmentType env1 = new EnvironmentType();
+	TypeDefinition defInt = new TypeDefinition(new IntType(integer), Location.BUILTIN);
 	VariableDefinition defNumber = new VariableDefinition(new IntType(integer), new Location(0,0,"test.deca"));
 	try {
 	    env0.declare(number, defNumber);
+	    env1.declare(integer, defInt);
 	} catch (DoubleDefException e) {
 	    System.out.println(number + " : " + e);
 	    System.exit(1);
 	}
+	//Recherche du symbole int dans l'environnement de niveau 0
+	System.out.println(integer + " " + env1.get(integer)); //Doit afficher number et int
+    
 	//Recherche du symbole nombre dans l'environnement de niveau 0
 	System.out.println(number.toString() + env0.get(number).toString()); //Doit afficher number et int
     }

@@ -12,7 +12,7 @@ DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify progr
       +> ListDeclVar [List with 1 elements]
       |  []> [5, 14] DeclVar
       |      +> [5, 8] Identifier (float)
-      |      |  definition: type (builtin), type=float
+      |      |  definition: type[builtin], type=float
       |      +> [5, 14] Identifier (f)
       |      |  definition: variable defined at [5, 14], type=float
       |      `> [5, 14] Initialization
