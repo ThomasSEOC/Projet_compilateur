@@ -3,9 +3,11 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
+import java.util.Map;
 
 public class DeclField extends AbstractDeclField{
 
@@ -36,10 +38,11 @@ public class DeclField extends AbstractDeclField{
         }
 
         // check if the field is already defined in the current and the superclass
+        Map<SymbolTable.Symbol, ExpDefinition> dico = localEnv.getDico();
         ClassDefinition iterClass = currentClass;
         while (iterClass != null) {
             if (currentClass.getMembers().get(field.getName()) != null) {
-                throw new ContextualError("This field is already defined", getLocation());
+                throw new ContextualError("This field is already defined at " + dico.get(field.getName()), getLocation());
             }
             iterClass = iterClass.getSuperClass();
         }
@@ -50,7 +53,7 @@ public class DeclField extends AbstractDeclField{
             field.setDefinition(new FieldDefinition(type.getType(), getLocation(), visibility, currentClass, currentClass.getNumberOfFields()));
             localEnv.declare(field.getName(), field.getFieldDefinition());
         } catch (DoubleDefException e) {
-            throw new ContextualError("This field is already defined", getLocation());
+            throw new ContextualError("This field is already defined at " + dico.get(field.getName()), getLocation());
         }
         field.verifyExpr(compiler, localEnv, currentClass);
 
