@@ -25,6 +25,11 @@ public class ControlFlowGraph extends Graph {
         ssaProcessor.process();
     }
 
+    @Override
+    public SSAProcessor getSsaProcessor() {
+        return ssaProcessor;
+    }
+
     private void CFGRecursion(List<AbstractInst> instructionsList, AbstractCodeBloc inCodeBloc, AbstractCodeBloc outCodeBloc) {
         AbstractCodeBloc currentBloc = new LinearCodeBloc(requestId());
         addArc(new Arc(inCodeBloc, currentBloc));

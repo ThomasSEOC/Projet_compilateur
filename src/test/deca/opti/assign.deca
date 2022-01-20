@@ -1,4 +1,12 @@
 {
     int x = 1;
-    println(x);
+    int y = 1;
+    if (1==1) {
+        x = 2;
+        println(x);
+    }
+    else {
+        x = 3;
+        println(x, y);
+    }
 }

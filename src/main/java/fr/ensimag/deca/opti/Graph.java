@@ -21,6 +21,8 @@ abstract class Graph {
         return nextId++;
     }
 
+    abstract public SSAProcessor getSsaProcessor();
+
     protected void addCodeBloc(AbstractCodeBloc bloc) {
         if (!blocs.contains(bloc) && (bloc != getStartBloc()) && (bloc != getStopBloc())) {
             blocs.add(bloc);
@@ -96,6 +98,17 @@ abstract class Graph {
             sb.append("\t").append(arc.toString()).append("\n");
         }
         sb.append("}\n\n");
+
+        sb.append("DECLARED SSA VARIABLES :\n");
+        sb.append("{ \n");
+        SSAProcessor ssaProcessor = getSsaProcessor();
+        for (String variableName : ssaProcessor.getVariablesNames()) {
+            sb.append("\t");
+            sb.append(variableName);
+            sb.append("#1");
+            sb.append("\n");
+        }
+        sb.append("}\n");
 
         sb.append("BLOCS INSTRUCTIONS SSA VARIABLES :\n");
         sb.append("{ \n");

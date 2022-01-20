@@ -46,13 +46,13 @@ public class InstructionIdentifiers {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (writeIdentifier != null) {
-            sb.append("Write: ");
+            sb.append("\t\tWrite: ");
             sb.append(writeIdentifier.getSsaVariable().getName());
             sb.append("#");
             sb.append(writeIdentifier.getSsaVariable().getId()).append("; ");
         }
         else {
-            sb.append("Write: null; ");
+            sb.append("\t\tWrite: null; ");
         }
 
         sb.append("Read: [");

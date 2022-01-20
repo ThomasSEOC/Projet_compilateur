@@ -22,6 +22,7 @@ public class CodeGenBackend {
     private final Stack<Map<String, Integer>> localVariables;
     private final Stack<Integer> localVariableSize;
     private final Stack<Integer> tempUseStackSize;
+
     private final List<Instruction> instructions;
     private final List<String> instructionsComments;
     private final List<String> comments;

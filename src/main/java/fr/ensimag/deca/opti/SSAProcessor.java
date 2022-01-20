@@ -23,6 +23,10 @@ public class SSAProcessor {
         }
     }
 
+    public Set<String> getVariablesNames() {
+        return lastVariablesIds.keySet();
+    }
+
     private void startMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
         waitingFusionCodeBlocs.put(bloc, new HashMap<>());
 
@@ -69,6 +73,9 @@ public class SSAProcessor {
             localSSA.replace(name, newVariable);
             usages.put(newVariable, new HashSet<>());
             usages.get(newVariable).add(identifiers);
+
+            writeIdentifier.setSsaVariable(newVariable);
+//            System.out.println(localSSA.get(name));
         }
     }
 

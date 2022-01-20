@@ -79,9 +79,9 @@ abstract class AbstractCodeBloc {
 
     public String instructionstoString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{ \n\t");
+        sb.append("{ \n");
         for (InstructionIdentifiers identifiers : instructionIdentifiers ) {
-            sb.append("\t").append(identifiers.toString());
+            sb.append(identifiers.toString());
         }
         sb.append("\t}\n");
 
