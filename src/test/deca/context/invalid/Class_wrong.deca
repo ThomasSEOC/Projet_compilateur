@@ -1,0 +1,24 @@
+// Mauvaise utilisation de méthodes
+
+//Date: 20.01.2022
+
+class A{
+
+    int entier;
+
+    void A (int e){
+        this.entier = e;
+    }
+
+    void action (){
+        this.e = this.e+1;
+    }
+}
+
+{
+A a = new A(4);
+a.action();
+a.action;
+println("ben non");
+}
+

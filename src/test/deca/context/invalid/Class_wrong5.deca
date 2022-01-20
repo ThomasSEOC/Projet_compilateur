@@ -1,0 +1,30 @@
+// Mauvais héritage
+
+// Date: 20.01.2022
+
+class A{
+
+    int entier;
+
+    void A (int e){
+        this.entier = e;
+    }
+
+    void action (){
+        this.e = this.e+1;
+    }
+}
+
+Class B extends A{
+
+    void B (float f){
+        super(f);
+    }
+
+}
+
+{
+B b = new B(1.5);
+b.action();
+println("ben non");
+}
