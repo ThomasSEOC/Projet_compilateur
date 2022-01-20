@@ -175,10 +175,58 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 
 		Constant cLOp = expr.getLeftOperand().getConstant();
 		Constant cROp = expr.getRightOperand().getConstant();
+		if (cLOp == null || cROp == null) {
+		    return null;
+		}
 
-		return null;
+		Constant result;
+		
+		if (cLOp.getIsFloat()) {
+		    float op1 = cLOp.getValueFloat();
+		    float op2 = cROp.getValueFloat();
+		    
+		    if (this.getExpression() instanceof Plus) {
+			float resultFloat = op1 + op2;
+		    }
+		    else if (this.getExpression() instanceof Minus) {
+			float resultFloat = op1 - op2;
+		    }
+		    else if (this.getExpression() instanceof Multiply) {
+			float resultFloat = op1 * op2;
+		    }
+		    else if (this.getExpression() instanceof Divide) {
+			float resultFloat = op1 / op2;
+		    }
+
+		    result = new Constant(resultFloat);
+		}
+		else {
+		    int op1 = cLOp.getValueFloat();
+		    int op2 = cROp.getValueFloat();
+
+		    if (this.getExpression() instanceof Plus) {
+			int resultInt = op1 + op2;
+		    }
+		    else if (this.getExpression() instanceof Minus) {
+			int resultInt = op1 - op2;
+		    }
+		    else if (this.getExpression() instanceof Multiply) {
+			float resultInt = op1 * op2;
+		    }
+		    else if (this.getExpression() instanceof Divide) {
+			float resultInt = op1 / op2;
+		    }
+		    else if (this.getExpression() instanceof Modulo) {
+			float resultInt = op1 % op2;
+		    }
+		    
+		    result = new Constant(resultInt);
+		}
+		return result;
 	}
-
+		
+    
+    
 	/**
 	 * method called to generate code to print result of binary arithmetic operation
 	 */
