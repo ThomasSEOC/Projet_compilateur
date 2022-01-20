@@ -1,0 +1,1 @@
+./src/test/deca/syntax/invalid/parser/manque_parentheses.deca:8:24: missing ')' at ';'

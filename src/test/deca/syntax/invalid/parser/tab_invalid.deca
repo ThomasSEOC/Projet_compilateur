@@ -1,0 +1,8 @@
+// Utilisation invalide d'un tableau
+
+// Date: 20.01.2022
+
+{
+    int tab[3]={1, 2, 3};
+    println(tab[8]);
+}

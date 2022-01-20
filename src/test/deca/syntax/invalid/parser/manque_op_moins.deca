@@ -1,0 +1,7 @@
+// Manque l'opérande à -
+
+// Date: 20.01.2022
+
+{
+int a = 2 -;
+}
