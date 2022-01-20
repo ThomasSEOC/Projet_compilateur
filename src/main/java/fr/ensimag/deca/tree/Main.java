@@ -30,11 +30,11 @@ public class Main extends AbstractMain {
 
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify Main: start");
+        //LOG.debug("verify Main: start");
         declVariables.verifyListDeclVariable(compiler, compiler.getExpPredef(), null);
-        insts.verifyListInst(compiler, compiler.getExpPredef(), null, compiler.getTypesPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
+        insts.verifyListInst(compiler, compiler.getExpPredef(), null, compiler.getTypes().get(compiler.getSymbolTable().getMap().get("void")).getType());
 
-    	LOG.debug("verify Main: end");
+    	//LOG.debug("verify Main: end");
     }
 
     @Override

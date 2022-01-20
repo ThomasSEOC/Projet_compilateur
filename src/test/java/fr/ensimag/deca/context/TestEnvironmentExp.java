@@ -3,7 +3,6 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 
 /**
  * Classe de tests unitaires pour la classe EnvironmentExp.

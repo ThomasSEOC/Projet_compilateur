@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import jdk.internal.misc.ScopedMemoryAccess;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -51,10 +52,11 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
+
+
         // verifies the existence of superClass
         superClass.verifyType(compiler);
 
-        // creates and put the ClassType
         classType = new ClassType(nameClass.getName(), getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
         classDefinition = classType.getDefinition();
 
@@ -63,17 +65,22 @@ public class DeclClass extends AbstractDeclClass {
         nameClass.setType(classType);
 
         // Add the envTypePredef in the localEnv
-        //classDefinition.getMembers().getDico() = compiler.getTypesPredef().getDico().clone();
+        //classDefinition.getMembers().getDico() = new  HashMap<SymbolTable.Symbol, ExpDefinition>();
+        //compiler.getTypes().cloneMapExp(classDefinition.getMembers().getDico());
+        //classDefinition.getMembers().getDico() =  ( HashMap<SymbolTable.Symbol, ExpDefinition>)(((HashMap<SymbolTable.Symbol, TypeDefinition>)compiler.getTypesPredef().getDico()).clone());
         // classDefinition.getMembers().getDico().putAll(compiler.getTypesPredef().getDico());
 
 
 
         // put in the dictionary
         try {
-            compiler.getTypesPredef().declare(nameClass.getName(), classDefinition);
+            compiler.getTypes().declare(nameClass.getName(), classDefinition);
         } catch (EnvironmentExp.DoubleDefException e) {
-            System.out.println("Object : " + e);
-            System.exit(1);
+            System.out.println(nameClass.getName().getName() + e);
+            throw new ContextualError(" ", getLocation());
+            //System.exit(1);
+
+
         }
 
 
