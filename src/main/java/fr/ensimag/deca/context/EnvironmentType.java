@@ -27,10 +27,6 @@ public class EnvironmentType {
 	    return (dico.get(key));
     }
 
-    public Map<Symbol, TypeDefinition> getDico() {
-        return dico;
-    }
-
     /**
      * Add the definition def associated to the symbol name in the environment.
      * 
