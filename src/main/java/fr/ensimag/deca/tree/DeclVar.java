@@ -47,15 +47,24 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
         // check type
         type.verifyType(compiler);
         if (type.getType().isVoid()) {
             throw new ContextualError("Var must not be void", getLocation());
         }
 
+        // check if the name is a Predefined type
+        EnvironmentType envTypesPredef = compiler.getTypesPredef();
+        SymbolTable.Symbol realSymbol = varName.getName();
+        if (envTypesPredef.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a predefined type, can't be a variable name", getLocation());
+        }
+
         // check initialization
         initialization.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
 
+        // put the variable name in the local environment
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
@@ -63,6 +72,7 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Var is already defined", getLocation());
         }
     }
+
     
     @Override
     public void decompile(IndentPrintStream s) {
