@@ -327,6 +327,13 @@ public class CodeGenBackend {
         }
     }
 
+    public void addCommentFirst(String comment) {
+        comments.add(0, comment);
+        labels.add(0, null);
+        instructions.add(0, null);
+        instructionsComments.add(0, null);
+    }
+
     public void addLabel(Label label) {
         labels.add(label);
         instructions.add(null);
@@ -359,6 +366,8 @@ public class CodeGenBackend {
             }
         }
         instructions.clear();
+        instructionsComments.clear();
         comments.clear();
+        labels.clear();
     }
 }
