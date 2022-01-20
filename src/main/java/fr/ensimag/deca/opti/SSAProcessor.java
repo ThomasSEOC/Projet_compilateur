@@ -35,6 +35,8 @@ public class SSAProcessor {
 
             lastVariablesIds.replace(variable, lastVariablesIds.get(variable)+1);
             SSAVariable newVariable = new SSAVariable(variable, lastVariablesIds.get(variable));
+            localSSA.replace(variable, newVariable);
+            usages.put(newVariable, new HashSet<>());
 
             waitingFusionCodeBlocs.get(bloc).put(variable, new SSAMerge(oldVariable, newVariable));
         }
