@@ -63,6 +63,7 @@ public class Program extends AbstractProgram {
         }
 
         // generation of the main program
+        compiler.addComment("###############################################################");
         main.codeGenMain(compiler);
 
         if (classes.size() > 0) {

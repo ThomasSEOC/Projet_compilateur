@@ -101,7 +101,7 @@ public class ClassManager {
 //        }
 
         for (AbstractClassObject classObject : classList) {
-            classObject.VTableCodeGen(vtableOffset);
+            classObject.VTableCodeGen(vtableOffset, true);
             vtableOffset += classObject.getVTableSize();
         }
 

@@ -36,12 +36,14 @@ public class DefaultObject extends AbstractClassObject {
     }
 
     @Override
-    public void VTableCodeGen(int offset) {
-        setVTableOffset(offset);
+    public void VTableCodeGen(int offset, boolean generateSuperPointer) {
         DecacCompiler compiler = getClassManager().getBackend().getCompiler();
-        compiler.getCodeGenBackend().addComment("init vtable for default object");
-        compiler.getCodeGenBackend().addInstruction(new LOAD(new NullOperand(), GPRegister.getR(0)));
-        compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, GPRegister.GB)));
+        if (generateSuperPointer) {
+            setVTableOffset(offset);
+            compiler.getCodeGenBackend().addComment("init vtable for default object");
+            compiler.getCodeGenBackend().addInstruction(new LOAD(new NullOperand(), GPRegister.getR(0)));
+            compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, GPRegister.GB)));
+        }
         compiler.getCodeGenBackend().addInstruction(new LOAD(new LabelOperand(codeObjectEquals), GPRegister.getR(0)));
         compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset + 1, GPRegister.GB)));
     }

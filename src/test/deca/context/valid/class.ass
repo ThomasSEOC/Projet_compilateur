@@ -7,8 +7,11 @@
 	LOAD code.Object.equals, R0
 	STORE R0, 2(GB)
 ; init vtable for A
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
 	LEA 1(GB), R0
 	STORE R0, 3(GB)
+; ###############################################################
 ; EMPTY MAIN
 	HALT
 ; ###############################################################

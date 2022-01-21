@@ -35,17 +35,21 @@ public class ClassObject extends AbstractClassObject {
 
     public ListDeclField getFields() { return fields; }
 
+
+
     @Override
-    public void VTableCodeGen(int offset) {
-        setVTableOffset(offset);
+    public void VTableCodeGen(int offset, boolean generateSuperPointer) {
 
         CodeGenBackend backend = getClassManager().getBackend();
         backend.addComment("init vtable for " + getNameClass().getName().getName());
         AbstractClassObject superObject = getClassManager().getClassObject(superClass);
-//        superObject.VTableCodeGen(offset);
+        superObject.VTableCodeGen(offset, false);
 
-        backend.addInstruction(new LEA(new RegisterOffset(superObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
-        backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, Register.GB)));
+        if (generateSuperPointer) {
+            setVTableOffset(offset);
+            backend.addInstruction(new LEA(new RegisterOffset(superObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
+            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, Register.GB)));
+        }
 
         int i = offset + superObject.getVTableSize();
         for (AbstractDeclMethod method : methods.getList()) {
