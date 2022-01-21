@@ -1,4 +1,9 @@
 ; Main program
+; ###############################################################
+; start main program
+	TSTO #2
+	BOV stack_overflow_error
+	ADDSP #2
 	LOAD #42, R2
 	STORE R2, 1(GB)
 	LOAD #0, R2

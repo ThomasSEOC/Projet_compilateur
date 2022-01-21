@@ -71,18 +71,18 @@ public class Main extends AbstractMain {
             compiler.getCodeGenBackend().writeInstructions();
         }
 
-//
+
 //        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
-//
+
         // end of the program
 //        compiler.getCodeGenBackend().addInstruction(new HALT());
-//
-//        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
-//
-//        compiler.getCodeGenBackend().addCommentFirst("start main program");
-//        compiler.getCodeGenBackend().addCommentFirst("###############################################################");
-//
-//        compiler.getCodeGenBackend().writeInstructions();
+
+        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
+
+        compiler.getCodeGenBackend().addCommentFirst("start main program");
+        compiler.getCodeGenBackend().addCommentFirst("###############################################################");
+
+        compiler.getCodeGenBackend().writeInstructions();
     }
     
     @Override

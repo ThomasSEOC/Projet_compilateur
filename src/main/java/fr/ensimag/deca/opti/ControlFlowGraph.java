@@ -147,7 +147,7 @@ public class ControlFlowGraph extends Graph {
 
         getStopBloc().codeGen(this);
 
-        getBackend().writeInstructions();
+//        getBackend().writeInstructions();
     }
 
     public DecacCompiler getCompiler() {
