@@ -119,6 +119,8 @@ public class ClassManager {
      * generate Vtable creation code
      */
     public void VTableCodeGen() {
+
+
         backend.getCompiler().addComment("VTABLE INIT");
 
 //        List<List<AbstractClassObject>> orderedClassList = orderClassObjects();
@@ -131,7 +133,7 @@ public class ClassManager {
 //        }
 
         for (AbstractClassObject classObject : classList) {
-            classObject.VTableCodeGen(vtableOffset, true);
+            classObject.VTableCodeGen(vtableOffset);
             vtableOffset += classObject.getVTableSize();
         }
 

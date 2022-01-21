@@ -163,6 +163,10 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				ImmediateInteger op2 = (ImmediateInteger) rOp.getDVal();
 				rOp.destroy();
 				lOp.destroy();
+				if (op2.getValue() == 0) {
+					getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+					return;
+				}
 				ImmediateInteger resultImm = new ImmediateInteger(op1.getValue() / op2.getValue());
 				VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
 				getCodeGenBackEnd().getContextManager().operationStackPush(result);
@@ -171,6 +175,10 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				ImmediateFloat op2 = (ImmediateFloat) rOp.getDVal();
 				rOp.destroy();
 				lOp.destroy();
+				if (op2.getValue() == 0.0) {
+					getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+					return;
+				}
 				ImmediateFloat resultImm = new ImmediateFloat(op1.getValue() / op2.getValue());
 				VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
 				getCodeGenBackEnd().getContextManager().operationStackPush(result);
@@ -204,6 +212,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 					} else {
 						getCodeGenBackEnd().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Quotient");
 					}
+					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
 					rOp.destroy();
 					this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 				}
@@ -215,6 +224,10 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				ImmediateInteger op2 = (ImmediateInteger) rOp.getDVal();
 				rOp.destroy();
 				lOp.destroy();
+				if (op2.getValue() == 0) {
+					getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+					return;
+				}
 				ImmediateInteger resultImm = new ImmediateInteger(op1.getValue() % op2.getValue());
 				VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister(resultImm);
 				getCodeGenBackEnd().getContextManager().operationStackPush(result);
@@ -247,6 +260,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				}
 				else {
 					getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "Operation Remainder");
+					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
 					rOp.destroy();
 					this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 				}

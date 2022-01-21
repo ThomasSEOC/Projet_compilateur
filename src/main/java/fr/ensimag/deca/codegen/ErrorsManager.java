@@ -3,7 +3,6 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.HALT;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
@@ -15,13 +14,17 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
  */
 public class ErrorsManager {
     private final CodeGenBackend backend;
+
     private final Label stackOverflowLabel = new Label("stack_overflow_error");
     private final Label dereferencementNullLabel = new Label("dereferencement_null_error");
     private final Label heapOverflowLabel = new Label("heap_overflow_error");
     private final Label wrongInputTypeLabel = new Label("wrong_input_error");
+    private final Label divisionByZeroLabel = new Label("division_by_zero_error");
+
     private boolean isDereferencementNullLabelUsed = false;
     private boolean isHeapOverflowLabelUsed = false;
     private boolean isWrongInputTypeLabelUsed = false;
+    private boolean isdivisionByZeroLabelUsed = false;
 
     /**
      * create Error manager, must only be call once by CodeGenBackend
@@ -47,6 +50,12 @@ public class ErrorsManager {
         }
         if (isHeapOverflowLabelUsed) {
             addHeapOverflowError();
+        }
+        if (isWrongInputTypeLabelUsed) {
+            addWrongInputTypeError();
+        }
+        if (isdivisionByZeroLabelUsed) {
+            addDivisionByZeroError();
         }
     }
 
@@ -76,11 +85,20 @@ public class ErrorsManager {
 
     /**
      * getter for label to which jump in case of wrong user input type
-     * @return wrongInputType
+     * @return wrongInputTypeLabel
      */
     public Label getWrongInputTypeLabel() {
         isWrongInputTypeLabelUsed = true;
         return wrongInputTypeLabel;
+    }
+
+    /**
+     * getter for label to which jump in case of division by zero
+     * @return divisionByZeroLabel
+     */
+    public Label getDivisionByZeroLabel() {
+        isdivisionByZeroLabelUsed = true;
+        return divisionByZeroLabel;
     }
 
     /**
@@ -123,6 +141,17 @@ public class ErrorsManager {
         DecacCompiler compiler = backend.getCompiler();
         compiler.addLabel(wrongInputTypeLabel);
         compiler.addInstruction(new WSTR("Erreur : la valeur entrée est du mauvais type"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+    }
+
+    /**
+     * add assembly code for division by zero error handler
+     */
+    private void addDivisionByZeroError() {
+        DecacCompiler compiler = backend.getCompiler();
+        compiler.addLabel(divisionByZeroLabel);
+        compiler.addInstruction(new WSTR("Erreur : division par 0"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
     }

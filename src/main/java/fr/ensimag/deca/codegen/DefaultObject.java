@@ -8,6 +8,8 @@ import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -47,17 +49,14 @@ public class DefaultObject extends AbstractClassObject {
     /**
      * generate code of VTable creation for default Object
      * @param offset current Vtable offset
-     * @param generateSuperPointer if this condition is set, this method will generate superClass pointer in method table
      */
     @Override
-    public void VTableCodeGen(int offset, boolean generateSuperPointer) {
+    public void VTableCodeGen(int offset) {
         DecacCompiler compiler = getClassManager().getBackend().getCompiler();
-        if (generateSuperPointer) {
-            setVTableOffset(offset);
-            compiler.getCodeGenBackend().addComment("init vtable for default object");
-            compiler.getCodeGenBackend().addInstruction(new LOAD(new NullOperand(), GPRegister.getR(0)));
-            compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, GPRegister.GB)));
-        }
+        setVTableOffset(offset);
+        compiler.getCodeGenBackend().addComment("init vtable for default object");
+        compiler.getCodeGenBackend().addInstruction(new LOAD(new NullOperand(), GPRegister.getR(0)));
+        compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, GPRegister.GB)));
         compiler.getCodeGenBackend().addInstruction(new LOAD(new LabelOperand(codeObjectEquals), GPRegister.getR(0)));
         compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset + 1, GPRegister.GB)));
     }
@@ -73,6 +72,7 @@ public class DefaultObject extends AbstractClassObject {
         backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(1)));
         backend.addInstruction(new LEA(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
         backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, GPRegister.getR(1))));
+        backend.addInstruction(new RTS());
     }
 
     /**
@@ -103,46 +103,46 @@ public class DefaultObject extends AbstractClassObject {
 
     /**
      * generate code for default object method call
-     * @param abstractMethod called method (only equals is accepted)
+     * @param methodName called method (only equals is accepted)
      */
     @Override
-    public void callMethod(AbstractDeclMethod abstractMethod) {
-        DeclMethod method = (DeclMethod) abstractMethod;
-        if (Objects.equals(method.getName().getName().getName(), "equals")) {
-            CodeGenBackend backend = getClassManager().getBackend();
-
-            // use operation stack to get object and params in reverse order
-            int paramsCount = method.getParams().size();
-            Stack<VirtualRegister> params = new Stack<>();
-            for (int i = 0; i < paramsCount; i++) {
-                params.push(backend.getContextManager().operationStackPop());
-            }
-
-            backend.addComment("call method " + method.getName().getName());
-
-            // space reservation
-            backend.addInstruction(new ADDSP(paramsCount+1));
-
-            // check object pointer
-            VirtualRegister objectReference = params.peek();
-            backend.addInstruction(new LOAD(objectReference.requestPhysicalRegister(), GPRegister.getR(0)));
-            backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
-            backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
-
-            // add params
-            for (int i = 0; i < paramsCount; i++) {
-                backend.addInstruction(new STORE(params.pop().requestPhysicalRegister(), new RegisterOffset(-i, Register.SP)));
-            }
-
-            // jump
-            backend.addInstruction(new BSR(new RegisterOffset(1, Register.GB)));
-
-            // free space
-            backend.addInstruction(new SUBSP(paramsCount+1));
-        }
-        else {
-            throw new UnsupportedOperationException("error method doesn't exists");
-        }
+    public void callMethod(String methodName) {
+//        DeclMethod method = (DeclMethod) abstractMethod;
+//        if (Objects.equals(method.getName().getName().getName(), "equals")) {
+//            CodeGenBackend backend = getClassManager().getBackend();
+//
+//            // use operation stack to get object and params in reverse order
+//            int paramsCount = method.getParams().size();
+//            Stack<VirtualRegister> params = new Stack<>();
+//            for (int i = 0; i < paramsCount; i++) {
+//                params.push(backend.getContextManager().operationStackPop());
+//            }
+//
+//            backend.addComment("call method " + method.getName().getName());
+//
+//            // space reservation
+//            backend.addInstruction(new ADDSP(paramsCount+1));
+//
+//            // check object pointer
+//            VirtualRegister objectReference = params.peek();
+//            backend.addInstruction(new LOAD(objectReference.requestPhysicalRegister(), GPRegister.getR(0)));
+//            backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
+//            backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
+//
+//            // add params
+//            for (int i = 0; i < paramsCount; i++) {
+//                backend.addInstruction(new STORE(params.pop().requestPhysicalRegister(), new RegisterOffset(-i, Register.SP)));
+//            }
+//
+//            // jump
+//            backend.addInstruction(new BSR(new RegisterOffset(1, Register.GB)));
+//
+//            // free space
+//            backend.addInstruction(new SUBSP(paramsCount+1));
+//        }
+//        else {
+//            throw new UnsupportedOperationException("error method doesn't exists");
+//        }
     }
 
     /**
@@ -176,5 +176,20 @@ public class DefaultObject extends AbstractClassObject {
     @Override
     public void createObjectCodeGen() {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * create method labels map
+     * @return method labels map
+     */
+    protected Map<String,Label> VTableSearchLabels() {
+        if (methodsLabels == null) {
+            methodsLabels = new HashMap<>();
+            methodsOffsets = new HashMap<>();
+            methodsLabels.put("equals", codeObjectEquals);
+            methodsOffsets.put("equals", 1);
+        }
+
+        return methodsLabels;
     }
 }

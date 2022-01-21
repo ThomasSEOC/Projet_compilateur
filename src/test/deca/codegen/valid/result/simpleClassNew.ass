@@ -7,10 +7,10 @@
 	LOAD code.Object.equals, R0
 	STORE R0, 2(GB)
 ; init vtable for A
-	LOAD code.Object.equals, R0
-	STORE R0, 4(GB)
 	LEA 1(GB), R0
 	STORE R0, 3(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
 ; ###############################################################
 ; ###############################################################
 ; start main program
@@ -36,6 +36,7 @@ Code.Object.Init:
 	LOAD -2(LB), R1
 	LEA 1(GB), R0
 	STORE R0, 0(R1)
+	RTS
 ; equals method
 code.Object.equals:
 	LOAD -2(LB), R0

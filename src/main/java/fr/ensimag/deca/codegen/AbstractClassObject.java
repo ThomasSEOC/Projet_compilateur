@@ -2,6 +2,9 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.AbstractDeclMethod;
 import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.ima.pseudocode.Label;
+
+import java.util.Map;
 
 /**
  * abstract class for deca class representation
@@ -9,6 +12,8 @@ import fr.ensimag.deca.tree.AbstractIdentifier;
 public abstract class AbstractClassObject {
     private final ClassManager classManager;
     private int VTableOffset;
+    protected Map<String,Integer> methodsOffsets = null;
+    protected Map<String,Label> methodsLabels = null;
 
     /**
      * constructor for {@link AbstractClassObject}
@@ -16,6 +21,8 @@ public abstract class AbstractClassObject {
      */
     public AbstractClassObject(ClassManager classManager) {
         this.classManager = classManager;
+//        this.methodsOffsets = new HashMap<>();
+//        this.methodsLabels = new HashMap<>();
     }
 
     /**
@@ -27,11 +34,16 @@ public abstract class AbstractClassObject {
     }
 
     /**
+     * create method labels map
+     * @return method labels map
+     */
+    abstract protected Map<String,Label> VTableSearchLabels();
+
+    /**
      * generate Vtable creation code for current object
      * @param offset current Vtable offset
-     * @param generateSuperPointer if this condition is set, this method will generate superClass pointer in method table
      */
-    abstract public void VTableCodeGen(int offset, boolean generateSuperPointer);
+    abstract public void VTableCodeGen(int offset);
 
     /**
      * generate code for Init method generation
@@ -57,9 +69,9 @@ public abstract class AbstractClassObject {
 
     /**
      * generate code for method call of this object
-     * @param abstractMethod called method
+     * @param methodName called method name
      */
-    abstract public void callMethod(AbstractDeclMethod abstractMethod);
+    abstract public void callMethod(String methodName);
 
     /**
      * getter for method offset in VTable
@@ -94,4 +106,10 @@ public abstract class AbstractClassObject {
      * generate code for object instantiation
      */
     abstract public void createObjectCodeGen();
+
+    /**
+     * getter for method offsets
+     * @return method offsets
+     */
+    public Map<String,Integer> getMethodsOffsets() { return methodsOffsets; }
 }

@@ -5,6 +5,8 @@ import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -64,27 +66,24 @@ public class ClassObject extends AbstractClassObject {
     /**
      * generate Vtable creation code for this represented class
      * @param offset current Vtable offset
-     * @param generateSuperPointer if this condition is set, this method will generate superClass pointer in method table
      */
     @Override
-    public void VTableCodeGen(int offset, boolean generateSuperPointer) {
+    public void VTableCodeGen(int offset) {
+        VTableSearchLabels();
 
         CodeGenBackend backend = getClassManager().getBackend();
         backend.addComment("init vtable for " + getNameClass().getName().getName());
         AbstractClassObject superObject = getClassManager().getClassObject(superClass);
-        superObject.VTableCodeGen(offset, false);
 
-        if (generateSuperPointer) {
-            setVTableOffset(offset);
-            backend.addInstruction(new LEA(new RegisterOffset(superObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
-            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, Register.GB)));
-        }
+        setVTableOffset(offset);
+        backend.addInstruction(new LEA(new RegisterOffset(superObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
+        backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, Register.GB)));
 
-        int i = offset + superObject.getVTableSize();
-        for (AbstractDeclMethod method : methods.getList()) {
-            Label codeLabel = new Label("Code." + nameClass.getName().getName() + "." + method.toString());
+        for (Map.Entry<String, Label> method : methodsLabels.entrySet()) {
+            Label codeLabel = method.getValue();
+            int index = offset + methodsOffsets.get(method.getKey());
             backend.addInstruction(new LOAD(new LabelOperand(codeLabel), GPRegister.getR(0)));
-            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i++, Register.GB)));
+            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(index, Register.GB)));
         }
     }
 
@@ -144,7 +143,7 @@ public class ClassObject extends AbstractClassObject {
     @Override
     public int getVTableSize() {
         // attention si redefinition de equals
-        return methods.size() + getClassManager().getClassObject(superClass).getVTableSize();
+        return methodsLabels.size() + 1;
     }
 
     /**
@@ -227,42 +226,42 @@ public class ClassObject extends AbstractClassObject {
 
     /**
      * generate code for method call
-     * @param abstractMethod called method
+     * @param methodName called method
      */
     @Override
-    public void callMethod(AbstractDeclMethod abstractMethod) {
-        CodeGenBackend backend = getClassManager().getBackend();
-        DeclMethod method = (DeclMethod) abstractMethod;
-
-        // use operation stack to get object and params in reverse order
-        int paramsCount = method.getParams().size();
-        Stack<VirtualRegister> params = new Stack<>();
-        for (int i = 0; i < paramsCount; i++) {
-            params.push(backend.getContextManager().operationStackPop());
-        }
-
-        backend.addComment("call method " + method.getName().getName());
-
-        // space reservation
-        backend.addInstruction(new ADDSP(paramsCount+1));
-
-        // check object pointer
-        VirtualRegister objectReference = params.peek();
-        backend.addInstruction(new LOAD(objectReference.requestPhysicalRegister(), GPRegister.getR(0)));
-        backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
-        backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
-
-        // add params
-        for (int i = 0; i < paramsCount; i++) {
-            backend.addInstruction(new STORE(params.pop().requestPhysicalRegister(), new RegisterOffset(-i, Register.SP)));
-        }
-
-        // jump
-        int offset = getMethodOffset(method);
-        backend.addInstruction(new BSR(new RegisterOffset(offset, GPRegister.getR(0))));
-
-        // free space
-        backend.addInstruction(new SUBSP(paramsCount+1));
+    public void callMethod(String methodName) {
+//        CodeGenBackend backend = getClassManager().getBackend();
+//        DeclMethod method = (DeclMethod) abstractMethod;
+//
+//        // use operation stack to get object and params in reverse order
+//        int paramsCount = method.getParams().size();
+//        Stack<VirtualRegister> params = new Stack<>();
+//        for (int i = 0; i < paramsCount; i++) {
+//            params.push(backend.getContextManager().operationStackPop());
+//        }
+//
+//        backend.addComment("call method " + method.getName().getName());
+//
+//        // space reservation
+//        backend.addInstruction(new ADDSP(paramsCount+1));
+//
+//        // check object pointer
+//        VirtualRegister objectReference = params.peek();
+//        backend.addInstruction(new LOAD(objectReference.requestPhysicalRegister(), GPRegister.getR(0)));
+//        backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
+//        backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
+//
+//        // add params
+//        for (int i = 0; i < paramsCount; i++) {
+//            backend.addInstruction(new STORE(params.pop().requestPhysicalRegister(), new RegisterOffset(-i, Register.SP)));
+//        }
+//
+//        // jump
+//        int offset = getMethodOffset(method);
+//        backend.addInstruction(new BSR(new RegisterOffset(offset, GPRegister.getR(0))));
+//
+//        // free space
+//        backend.addInstruction(new SUBSP(paramsCount+1));
     }
 
     /**
@@ -310,5 +309,31 @@ public class ClassObject extends AbstractClassObject {
         VirtualRegister objectPointer = backend.getContextManager().requestNewRegister();
         backend.addInstruction(new POP(objectPointer.requestPhysicalRegister()));
         backend.getContextManager().operationStackPush(objectPointer);
+    }
+
+    /**
+     * create method labels map
+     * @return method labels map
+     */
+    protected Map<String,Label> VTableSearchLabels() {
+        if (methodsLabels == null) {
+            // copy from super class
+            methodsLabels = new HashMap<>(getClassManager().getClassObject(superClass).VTableSearchLabels());
+            methodsOffsets = new HashMap<>(getClassManager().getClassObject(superClass).getMethodsOffsets());
+
+            for (AbstractDeclMethod abstractMethod : methods.getList()) {
+                DeclMethod method = (DeclMethod) abstractMethod;
+                Label methodLabel = new Label("Code." + nameClass.getName().getName() + "." + method.getName().getName().getName());
+                if (methodsLabels.containsKey(method.getName().getName().getName())) {
+                    methodsLabels.replace(method.getName().getName().getName(), methodLabel);
+                }
+                else {
+                    methodsLabels.put(method.getName().getName().getName(), methodLabel);
+                    methodsOffsets.put(method.getName().getName().getName(), methodsOffsets.size()+1);
+                }
+            }
+        }
+
+        return methodsLabels;
     }
 }
