@@ -25,9 +25,9 @@ public class DeclParam extends AbstractDeclParam {
     }
 
     @Override
-    public void verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv) throws ContextualError {
+    public Type verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Signature signature) throws ContextualError {
         // check type
-        type.verifyType(compiler);
+        Type currentType = type.verifyType(compiler);
         if (type.getType().isVoid()) {
             throw new ContextualError("parameter must not be void", getLocation());
         }
@@ -45,7 +45,19 @@ public class DeclParam extends AbstractDeclParam {
             }
         }
 
-        // put the variable name in the local environment
+        // check if the name is a field or a method name
+        EnvironmentExp classEnv = currentClass.getMembers();
+        if (classEnv.get(realSymbol) != null) {
+            if (classEnv.get(realSymbol).isField()) {
+                throw new ContextualError(realSymbol + " is a field name defined at " +
+                       classEnv.getDico().get(realSymbol).getLocation() + ", can't be a parameter name", getLocation());
+            } else if (classEnv.get(realSymbol).isMethod()){
+                throw new ContextualError(realSymbol + " is a method name defined at " +
+                        classEnv.getDico().get(realSymbol).getLocation() + ", can't be a parameter name", getLocation());
+            }
+        }
+
+        // put the parameter name in the local environment
         try {
             name.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(name.getName(), name.getVariableDefinition());
@@ -53,6 +65,7 @@ public class DeclParam extends AbstractDeclParam {
             throw new ContextualError(realSymbol + " is already defined at " +
                     localEnv.get(realSymbol).getLocation(), getLocation());
         }
+        return(currentType);
 
 }
 
