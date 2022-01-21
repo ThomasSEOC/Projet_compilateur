@@ -65,7 +65,6 @@ public class Main extends AbstractMain {
         else {
             insts.codeGenListInst(compiler);
             compiler.getCodeGenBackend().addInstruction(new HALT());
-            compiler.getCodeGenBackend().writeInstructions();
         }
 
 
@@ -75,6 +74,8 @@ public class Main extends AbstractMain {
 //        compiler.getCodeGenBackend().addInstruction(new HALT());
 
         compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
+
+//        compiler.getCodeGenBackend().writeInstructions();
 
         compiler.getCodeGenBackend().addCommentFirst("start main program");
         compiler.getCodeGenBackend().addCommentFirst("###############################################################");

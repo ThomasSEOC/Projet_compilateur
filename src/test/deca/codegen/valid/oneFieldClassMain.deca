@@ -1,0 +1,9 @@
+class A {
+    int x = 1;
+    int y;
+    float z = 2.5 + 3;
+}
+
+{
+    println("salut");
+}

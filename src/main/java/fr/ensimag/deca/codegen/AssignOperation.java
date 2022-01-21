@@ -58,7 +58,7 @@ public class AssignOperation extends AbstractOperation {
 
             // generate address where to store result
             Identifier identifier = (Identifier) expr.getLeftOperand();
-            DAddr addr = null;
+            DAddr addr;
             if (identifier.getDefinition() instanceof FieldDefinition) {
                 addr = identifier.getFieldDefinition().getOperand();
             }
