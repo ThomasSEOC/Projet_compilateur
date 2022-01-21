@@ -3,6 +3,7 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.HALT;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
@@ -17,8 +18,10 @@ public class ErrorsManager {
     private final Label stackOverflowLabel = new Label("stack_overflow_error");
     private final Label dereferencementNullLabel = new Label("dereferencement_null_error");
     private final Label heapOverflowLabel = new Label("heap_overflow_error");
+    private final Label wrongInputTypeLabel = new Label("wrong_input_error");
     private boolean isDereferencementNullLabelUsed = false;
     private boolean isHeapOverflowLabelUsed = false;
+    private boolean isWrongInputTypeLabelUsed = false;
 
     /**
      * create Error manager, must only be call once by CodeGenBackend
@@ -72,6 +75,15 @@ public class ErrorsManager {
     }
 
     /**
+     * getter for label to which jump in case of wrong user input type
+     * @return wrongInputType
+     */
+    public Label getWrongInputTypeLabel() {
+        isWrongInputTypeLabelUsed = true;
+        return wrongInputTypeLabel;
+    }
+
+    /**
      * add assembly code for stack overflow error handler
      */
     private void addSTackOverflowError() {
@@ -100,6 +112,17 @@ public class ErrorsManager {
         DecacCompiler compiler = backend.getCompiler();
         compiler.addLabel(heapOverflowLabel);
         compiler.addInstruction(new WSTR("Erreur : le tas est plein"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+    }
+
+    /**
+     * add assembly code for wrong input value type error handler
+     */
+    private void addWrongInputTypeError() {
+        DecacCompiler compiler = backend.getCompiler();
+        compiler.addLabel(wrongInputTypeLabel);
+        compiler.addInstruction(new WSTR("Erreur : la valeur entrée est du mauvais type"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
     }

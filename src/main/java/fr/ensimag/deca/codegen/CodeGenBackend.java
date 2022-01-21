@@ -300,8 +300,15 @@ public class CodeGenBackend {
      */
     public ContextManager getContextManager(){ return contextManagers.peek(); }
 
+    /**
+     * getter for classManager
+     * @return current class manager
+     */
     public ClassManager getClassManager() { return classManager; }
 
+    /**
+     * create a new method context
+     */
     public void createContext() {
         localVariableSize.push(0);
         localVariables.push(new HashMap<>());
@@ -309,6 +316,9 @@ public class CodeGenBackend {
         contextManagers.push(new ContextManager(this));
     }
 
+    /**
+     * pop method context
+     */
     public void popContext() {
         localVariableSize.pop();
         localVariables.pop();
@@ -316,6 +326,10 @@ public class CodeGenBackend {
         contextManagers.pop().destroy();
     }
 
+    /**
+     * add instruction to backend buffer
+     * @param instruction to add
+     */
     public void addInstruction(Instruction instruction) {
         instructions.add(instruction);
         instructionsComments.add(null);
@@ -323,6 +337,11 @@ public class CodeGenBackend {
         labels.add(null);
     }
 
+    /**
+     * add commented instruction to backend buffer
+     * @param instruction to add
+     * @param comment to add
+     */
     public void addInstruction(Instruction instruction, String comment) {
         instructions.add(instruction);
         instructionsComments.add(comment);
@@ -330,6 +349,11 @@ public class CodeGenBackend {
         labels.add(null);
     }
 
+    /**
+     * add instruction to beginning of backend buffer
+     * @param instructionsArray instructions to add
+     * @param commentsArray comments to add
+     */
     public void addInstructionFirst(List<Instruction> instructionsArray, List<String> commentsArray) {
         for (int i = instructionsArray.size() - 1; i >= 0; i--) {
             instructions.add(0, instructionsArray.get(i));
@@ -339,6 +363,10 @@ public class CodeGenBackend {
         }
     }
 
+    /**
+     * add comment to beginning to backend buffer
+     * @param comment to add
+     */
     public void addCommentFirst(String comment) {
         comments.add(0, comment);
         labels.add(0, null);
@@ -346,6 +374,10 @@ public class CodeGenBackend {
         instructionsComments.add(0, null);
     }
 
+    /**
+     * add label to backend buffer
+     * @param label to add
+     */
     public void addLabel(Label label) {
         labels.add(label);
         instructions.add(null);
@@ -353,6 +385,10 @@ public class CodeGenBackend {
         comments.add(null);
     }
 
+    /**
+     * add comment to backend buffer
+     * @param comment to add
+     */
     public void addComment(String comment) {
         comments.add(comment);
         instructions.add(null);
@@ -360,6 +396,9 @@ public class CodeGenBackend {
         labels.add(null);
     }
 
+    /**
+     * copy backend buffer to destination file
+     */
     public void writeInstructions() {
         for (int i = 0; i < instructions.size(); i++) {
             if (instructions.get(i) != null) {
