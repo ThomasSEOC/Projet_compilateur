@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.NewOperator;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.commons.lang.Validate;
@@ -30,6 +31,10 @@ public class New extends AbstractExpr{
 
     }
 
+    public AbstractIdentifier getClassType() {
+        return type;
+    }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -49,6 +54,9 @@ public class New extends AbstractExpr{
         type.prettyPrint(s,prefix,true);
     }
 
-
-
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        NewOperator operator = new NewOperator(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
 }

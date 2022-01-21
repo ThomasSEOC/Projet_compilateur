@@ -6,12 +6,19 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.*;
 
+/**
+ * Class responsible for Classes management and code generation
+ */
 public class ClassManager {
     private final CodeGenBackend backend;
-    private List<AbstractClassObject> classList;
+    private final List<AbstractClassObject> classList;
     private final Map<String, AbstractClassObject> classMap;
-    private int vtableOffset = 0;
+    private int vtableOffset;
 
+    /**
+     * constructor for ClassManager
+     * @param backend global code generation backend
+     */
     public ClassManager(CodeGenBackend backend) {
         this.backend = backend;
         vtableOffset = 1;
@@ -21,73 +28,96 @@ public class ClassManager {
         classMap.put("Object", classList.get(0));
     }
 
+    /**
+     * getter for backend
+     * @return code generation backend
+     */
     public CodeGenBackend getBackend() {
         return backend;
     }
 
+    /**
+     * getter for VTableOffset
+     * @return Vtable genration current offset
+     */
     public int getVtableOffset() {
         return vtableOffset;
     }
 
+    /**
+     * add class to class manager
+     * @param nameClass class to add
+     * @param superClass super class
+     * @param methods methods for class to add
+     * @param fields fields for class to add
+     */
     public void addClass(AbstractIdentifier nameClass, AbstractIdentifier superClass, ListDeclMethod methods, ListDeclField fields) {
         ClassObject classObject = new ClassObject(this, nameClass, superClass, methods, fields);
         classList.add(classObject);
         classMap.put(nameClass.getName().getName(), classObject);
     }
 
+    /**
+     * get AbstractClassObject related to nameClass
+     * @param nameClass class Identifier
+     * @return class object corresponding to nameClass
+     */
     public AbstractClassObject getClassObject(AbstractIdentifier nameClass) {
         return classMap.get(nameClass.getName().getName());
     }
 
-    private List<List<AbstractClassObject>> orderClassObjects() {
-        // need to optimize
+//    private List<List<AbstractClassObject>> orderClassObjects() {
+//        // need to optimize
+//
+//        List<AbstractClassObject> done = new ArrayList<>();
+//        List<List<AbstractClassObject>> list = new ArrayList<>();
+//
+//        // first element is default object
+//        List<AbstractClassObject> currentObjects = new ArrayList<>();
+//        AbstractClassObject defaultObject = classList.remove(0);
+//        currentObjects.add(defaultObject);
+//        list.add(currentObjects);
+//        done.add(defaultObject);
+//
+//        while (classList.size() > 0) {
+//            List<AbstractClassObject> lastObjects = currentObjects;
+//            currentObjects = new ArrayList<>();
+//            List<AbstractClassObject> toRemove = new ArrayList<>();
+//            for (AbstractClassObject abstractClassObject : classList) {
+//                ClassObject classObject = (ClassObject) abstractClassObject;
+//                AbstractIdentifier superClassIdentifier = classObject.getSuperClass();
+//
+//                boolean found = false;
+//                int i = 0;
+//                while ((i < lastObjects.size()) && (!found)) {
+//                    if (lastObjects.get(i).getClassName() == superClassIdentifier) {
+//                        found = true;
+//                    }
+//                    i++;
+//                }
+//
+//                if (found) {
+//                    currentObjects.add(abstractClassObject);
+//                    done.add(abstractClassObject);
+//                    toRemove.add(abstractClassObject);
+//                }
+//            }
+//
+//            for (AbstractClassObject AbstractClassObject : toRemove) {
+//                classList.remove(AbstractClassObject);
+//            }
+//
+//            list.add(currentObjects);
+//        }
+//
+//        classList = done;
+//
+//        return list;
+//    }
 
-        List<AbstractClassObject> done = new ArrayList<>();
-        List<List<AbstractClassObject>> list = new ArrayList<>();
-
-        // first element is default object
-        List<AbstractClassObject> currentObjects = new ArrayList<>();
-        AbstractClassObject defaultObject = classList.remove(0);
-        currentObjects.add(defaultObject);
-        list.add(currentObjects);
-        done.add(defaultObject);
-
-        while (classList.size() > 0) {
-            List<AbstractClassObject> lastObjects = currentObjects;
-            currentObjects = new ArrayList<>();
-            List<AbstractClassObject> toRemove = new ArrayList<>();
-            for (AbstractClassObject abstractClassObject : classList) {
-                ClassObject classObject = (ClassObject) abstractClassObject;
-                AbstractIdentifier superClassIdentifier = classObject.getSuperClass();
-
-                boolean found = false;
-                int i = 0;
-                while ((i < lastObjects.size()) && (!found)) {
-                    if (lastObjects.get(i).getClassName() == superClassIdentifier) {
-                        found = true;
-                    }
-                    i++;
-                }
-
-                if (found) {
-                    currentObjects.add(abstractClassObject);
-                    done.add(abstractClassObject);
-                    toRemove.add(abstractClassObject);
-                }
-            }
-
-            for (AbstractClassObject AbstractClassObject : toRemove) {
-                classList.remove(AbstractClassObject);
-            }
-
-            list.add(currentObjects);
-        }
-
-        classList = done;
-
-        return list;
-    }
-
+    /**
+     * generate Vtable creation code
+     */
     public void VTableCodeGen() {
         backend.getCompiler().addComment("VTABLE INIT");
 
@@ -108,6 +138,9 @@ public class ClassManager {
         backend.writeInstructions();
     }
 
+    /**
+     * generate code methods
+     */
     public void methodsCodeGen() {
         backend.getCompiler().addComment("METHODS");
         for (AbstractClassObject classObject : classList) {
@@ -115,6 +148,8 @@ public class ClassManager {
         }
         backend.writeInstructions();
     }
+
+    // ####################################################################################
 
     public void instanceOfCodeGen(AbstractClassObject targetObject) {
         // version primitive non fonctionnelle

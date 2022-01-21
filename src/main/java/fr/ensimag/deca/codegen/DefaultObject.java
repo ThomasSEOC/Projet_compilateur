@@ -130,4 +130,9 @@ public class DefaultObject extends AbstractClassObject {
     public AbstractIdentifier getClassName() {
         return new Identifier(getClassManager().getBackend().getCompiler().getSymbolTable().create("Object"));
     }
+
+    @Override
+    public void createObjectCodeGen() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

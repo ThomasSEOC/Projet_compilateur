@@ -78,6 +78,8 @@ public class ClassObject extends AbstractClassObject {
         Fields fieldsManager = new Fields(this);
         fieldsManager.codeGenDecl();
 
+        backend.addInstruction(new RTS());
+
 //        for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
 //            backend.addComment("code for fields initialization");
 //            backend.createContext();
@@ -229,6 +231,7 @@ public class ClassObject extends AbstractClassObject {
         return nameClass;
     }
 
+    @Override
     public void createObjectCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
         backend.addComment("create instance of class " + getNameClass().getName().getName());
@@ -238,5 +241,6 @@ public class ClassObject extends AbstractClassObject {
         backend.addInstruction(new BSR(new Label("Code." + getNameClass().getName().getName() + ".Init")));
         VirtualRegister objectPointer = backend.getContextManager().requestNewRegister();
         backend.addInstruction(new POP(objectPointer.requestPhysicalRegister()));
+        backend.getContextManager().operationStackPush(objectPointer);
     }
 }

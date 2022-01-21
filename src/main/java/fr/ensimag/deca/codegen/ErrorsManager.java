@@ -15,7 +15,7 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 public class ErrorsManager {
     private final CodeGenBackend backend;
     private final Label stackOverflowLabel = new Label("stack_overflow_error");
-    private final Label dereferencementNullLabel = new Label("dereferencement.null");
+    private final Label dereferencementNullLabel = new Label("dereferencement_null_error");
     private final Label heapOverflowLabel = new Label("heap_overflow_error");
     private boolean isDereferencementNullLabelUsed = false;
     private boolean isHeapOverflowLabelUsed = false;
@@ -38,6 +38,10 @@ public class ErrorsManager {
 
         if (isDereferencementNullLabelUsed) {
             addDereferencementNullError();
+        }
+
+        if (isHeapOverflowLabelUsed) {
+            addHeapOverflowError();
         }
     }
 
@@ -78,7 +82,7 @@ public class ErrorsManager {
 
     private void addHeapOverflowError() {
         DecacCompiler compiler = backend.getCompiler();
-        compiler.addLabel(dereferencementNullLabel);
+        compiler.addLabel(heapOverflowLabel);
         compiler.addInstruction(new WSTR("Erreur : le tas est plein"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
