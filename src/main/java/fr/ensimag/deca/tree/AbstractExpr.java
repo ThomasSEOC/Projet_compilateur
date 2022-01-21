@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -103,10 +104,22 @@ public abstract class AbstractExpr extends AbstractInst {
             return convFloat;
         }
 
-        if (type.sameType(expectedType)) {
+        if (type.sameType(expectedType) && !expectedType.isClass()) {
             return this;
+	}
+	
+	if (type.isClass()) {
+	    ClassType classType= (ClassType) type;
+	    ClassDefinition typeClassDef = classType.getDefinition();
+	    while (typeClassDef != null) {
+		System.out.println(typeClassDef.getType());
+		if (typeClassDef.getType() == expectedType){
+		    return this;
+		}
+		System.out.println(typeClassDef.getSuperClass());
+		typeClassDef = typeClassDef.getSuperClass();
 	    }
-
+	}
 	    //Il va falloir rajouter le cas des sous-types avec les objets
 
     	throw new ContextualError(expectedType + " is expected", getLocation());
