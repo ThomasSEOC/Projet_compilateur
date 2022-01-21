@@ -1,5 +1,6 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -57,7 +58,13 @@ public class AssignOperation extends AbstractOperation {
 
             // generate address where to store result
             Identifier identifier = (Identifier) expr.getLeftOperand();
-            DAddr addr = identifier.getVariableDefinition().getOperand();
+            DAddr addr = null;
+            if (identifier.getDefinition() instanceof FieldDefinition) {
+                addr = identifier.getFieldDefinition().getOperand();
+            }
+            else {
+                addr = identifier.getVariableDefinition().getOperand();
+            }
 
             // store result
             getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), addr));

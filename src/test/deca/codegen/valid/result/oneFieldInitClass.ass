@@ -35,8 +35,8 @@ Code.A.Init:
 	LEA 3(GB), R0
 	STORE R0, 0(R2)
 ; init A.x
-	LOAD #0, R0
-	STORE R0, 1(R2)
+	LOAD #1, R3
+	STORE R3, 1(R2)
 ; ###############################################################
 ; ERRORS
 stack_overflow_error:

@@ -25,8 +25,9 @@ public class Fields {
             DeclField field = (DeclField) abstractField;
             backend.addComment("init " + object.getNameClass().getName().getName() + "." + field.getField().getName().getName());
             if (field.getInit() instanceof Initialization) {
+                field.getField().getFieldDefinition().setOperand(new RegisterOffset(offset, objectStructurePointer.requestPhysicalRegister()));
+
                 // use assign
-                // risque de bug
                 Assign assign = new Assign(field.getField(), ((Initialization) field.getInit()).getExpression());
                 AssignOperation operator = new AssignOperation(object.getClassManager().getBackend(), assign);
                 operator.doOperation();
@@ -44,7 +45,7 @@ public class Fields {
     }
 
     public void codeGenDecl() {
-        codeGencDeclRecur(object, 0);
+        codeGencDeclRecur(object, 1);
 
         CodeGenBackend backend = object.getClassManager().getBackend();
 
