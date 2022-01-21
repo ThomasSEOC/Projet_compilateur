@@ -60,10 +60,10 @@ public class DeclVar extends AbstractDeclVar {
         if (typeDef != null){
             if (typeDef.isClass()){
                 throw new ContextualError(realSymbol + " is a class name defined at "+
-                        envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a method name", getLocation());
+                        envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a var name", getLocation());
             }
             else {
-                throw new ContextualError(realSymbol + " is a predefined type, can't be a methode name", getLocation());
+                throw new ContextualError(realSymbol + " is a predefined type, can't be a var name", getLocation());
             }
         }
 
