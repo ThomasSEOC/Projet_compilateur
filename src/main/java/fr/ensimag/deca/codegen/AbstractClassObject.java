@@ -17,7 +17,7 @@ public abstract class AbstractClassObject {
 
     abstract public void VTableCodeGen(int offset, boolean generateSuperPointer);
 
-    abstract public void StructureInitCodeGen();
+    abstract public void structureInitCodeGen();
 
     abstract public int getVTableSize();
 

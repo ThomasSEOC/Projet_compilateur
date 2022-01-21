@@ -38,10 +38,10 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         }
     }
 
-    public void codeGenDecl(ClassManager classManager, AbstractClassObject object, int offset) {
-        if (object instanceof ClassObject) {
-            Fields fields = new Fields((ClassObject) object);
-            fields.codeGenDecl(offset);
-        }
-    }
+//    public void codeGenDecl(ClassManager classManager, AbstractClassObject object, int offset) {
+//        if (object instanceof ClassObject) {
+//            Fields fields = new Fields((ClassObject) object);
+//            fields.codeGenDecl(offset);
+//        }
+//    }
 }

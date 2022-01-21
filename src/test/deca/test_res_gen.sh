@@ -138,7 +138,7 @@ case "$FILENAME" in
          if [ "$keep" = "y" ]
          then
            #decac "./src/test/deca/codegen/valid/$FILENAME" 1> "./src/test/deca/codegen/valid/$ASS" 2> "./src/test/deca/codegen/valid/$ASS"
-           mv "./src/test/deca/codegen/valid/$ASS" "./src/test/deca/codegen/valid/result/$ASS"
+           cp "./src/test/deca/codegen/valid/$ASS" "./src/test/deca/codegen/valid/result/$ASS"
            echo "-> Le fichier ass correctement généré"
          else
            echo "-> Abandon"

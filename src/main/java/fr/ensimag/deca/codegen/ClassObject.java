@@ -60,35 +60,47 @@ public class ClassObject extends AbstractClassObject {
     }
 
     @Override
-    public void StructureInitCodeGen() {
+    public void structureInitCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
-        AbstractClassObject superObject = getClassManager().getClassObject(superClass);
-        backend.getCompiler().addComment("Code for init of " + getNameClass().getName().getName());
-        for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
-            backend.addLabel(new Label("Code." + getNameClass().getName().getName() + ".Init"));
-            backend.addComment("code for fields initialization");
-            backend.createContext();
+        backend.addComment("Code for init of " + getNameClass().getName().getName());
 
-            // get address of method table object
-            backend.addInstruction(new LEA(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
-            // get object pointer
-            VirtualRegister objectStructurePointer = backend.getContextManager().requestNewRegister();
-            backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), objectStructurePointer.requestPhysicalRegister()));
-            // set first word as pointer to object method table entry
-            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, objectStructurePointer.requestPhysicalRegister())));
+        backend.addLabel(new Label("Code." + getNameClass().getName().getName() + ".Init"));
+        // get object pointer
+        VirtualRegister objectStructurePointer = backend.getContextManager().requestNewRegister();
+        backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), objectStructurePointer.requestPhysicalRegister()));
+        // get address of method table object
+        backend.addInstruction(new LEA(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
+        // set first word as pointer to object method table entry
+        backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0,  objectStructurePointer.requestPhysicalRegister())));
 
-            backend.getContextManager().operationStackPush(objectStructurePointer);
-            fields.codeGenDecl(getClassManager(), this, superObject.getStructureSize());
+        backend.getContextManager().operationStackPush(objectStructurePointer);
 
-            // recursion mais pas vraiment
-            backend.addInstruction(new PUSH(objectStructurePointer.requestPhysicalRegister()));
-            backend.addInstruction(new BSR(new Label("Code." + getSuperClass().getName().getName() + ".Init")));
-            backend.addInstruction(new SUBSP(-1));
+        Fields fieldsManager = new Fields(this);
+        fieldsManager.codeGenDecl();
 
-            backend.getStartupManager().generateStartupCode();
-            backend.writeInstructions();
-            backend.popContext();
-        }
+//        for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
+//            backend.addComment("code for fields initialization");
+//            backend.createContext();
+
+//            // get address of method table object
+//            backend.addInstruction(new LEA(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
+//            //VirtualRegister objectStructurePointer = backend.getContextManager().requestNewRegister();
+//            backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(1)));
+//            // set first word as pointer to object method table entry
+//            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, GPRegister.getR(1))));
+
+//            backend.getContextManager().operationStackPush(objectStructurePointer);
+//            fields.codeGenDecl(getClassManager(), this, superObject.getStructureSize());
+//
+//            // recursion mais pas vraiment
+//            backend.addInstruction(new PUSH(objectStructurePointer.requestPhysicalRegister()));
+//            backend.addInstruction(new BSR(new Label("Code." + getSuperClass().getName().getName() + ".Init")));
+//            backend.addInstruction(new SUBSP(-1));
+//
+//            backend.getStartupManager().generateStartupCode();
+//            backend.writeInstructions();
+//            backend.popContext();
+//        }
     }
 
     @Override
@@ -105,7 +117,8 @@ public class ClassObject extends AbstractClassObject {
     @Override
     public void methodsCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
-        backend.getCompiler().addComment("Code for methods of " + getNameClass().getName().getName());
+        backend.addComment("Code for methods of " + getNameClass().getName().getName());
+        structureInitCodeGen();
         for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
             DeclMethod method = (DeclMethod) abstractMethod;
             backend.addLabel(new Label("Code." + getNameClass().getName().getName() + "." + method.getName().getName()));

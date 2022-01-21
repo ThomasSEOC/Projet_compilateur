@@ -20,19 +20,18 @@ public class DefaultObject extends AbstractClassObject {
     }
 
     private void codeObjectEqualsCodeGen() {
-        DecacCompiler compiler = getClassManager().getBackend().getCompiler();
-        compiler.getCodeGenBackend().addComment("Code for methods of default object :");
-        compiler.getCodeGenBackend().addComment("Code for default equals method");
-        compiler.getCodeGenBackend().addLabel(codeObjectEquals);
+        CodeGenBackend backend = getClassManager().getBackend();
+        backend.addComment("equals method");
+        backend.addLabel(codeObjectEquals);
 
         // first parameter is current Object address
         // second parameter is other object address
 //        compiler.getCodeGenBackend().addInstruction(new TSTO(2));
 //        compiler.getCodeGenBackend().addInstruction(new BOV(compiler.getCodeGenBackend().getErrorsManager().getStackOverflowLabel()));
-        compiler.getCodeGenBackend().addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
-        compiler.getCodeGenBackend().addInstruction(new CMP(new RegisterOffset(-3, Register.LB), GPRegister.getR(0)));
-        compiler.getCodeGenBackend().addInstruction(new SEQ(GPRegister.getR(0)));
-        compiler.getCodeGenBackend().addInstruction(new RTS());
+        backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
+        backend.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), GPRegister.getR(0)));
+        backend.addInstruction(new SEQ(GPRegister.getR(0)));
+        backend.addInstruction(new RTS());
     }
 
     @Override
@@ -49,10 +48,13 @@ public class DefaultObject extends AbstractClassObject {
     }
 
     @Override
-    public void StructureInitCodeGen() {
-//        DecacCompiler compiler = getClassManager().getBackend().getCompiler();
-//        compiler.getCodeGenBackend().addInstruction(new LOAD(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
-//        compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, GPRegister.LB)));
+    public void structureInitCodeGen() {
+        CodeGenBackend backend = getClassManager().getBackend();
+        backend.addComment("structure init");
+        backend.addLabel(new Label("Code.Object.Init"));
+        backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(1)));
+        backend.addInstruction(new LEA(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
+        backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, GPRegister.getR(1))));
     }
 
     @Override
@@ -67,6 +69,9 @@ public class DefaultObject extends AbstractClassObject {
 
     @Override
     public void methodsCodeGen() {
+        CodeGenBackend backend = getClassManager().getBackend();
+        backend.addComment("Code for methods of Object :");
+        structureInitCodeGen();
         codeObjectEqualsCodeGen();
     }
 

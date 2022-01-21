@@ -12,12 +12,15 @@ public class Fields {
         this.object = object;
     }
 
-    public void codeGenDecl(int offset) {
+    private int codeGencDeclRecur(ClassObject object, int offset) {
         CodeGenBackend backend = object.getClassManager().getBackend();
 
-        VirtualRegister objectStructurePointer = object.getClassManager().getBackend().getContextManager().operationStackPop();
+        AbstractClassObject superObject = object.getClassManager().getClassObject(object.getSuperClass());
+        if (!(superObject instanceof DefaultObject)) {
+            offset = codeGencDeclRecur((ClassObject) superObject, offset);
+        }
 
-        int i = offset;
+        VirtualRegister objectStructurePointer = backend.getContextManager().operationStackPop();
         for (AbstractDeclField abstractField : object.getFields().getList()) {
             DeclField field = (DeclField) abstractField;
             backend.addComment("init " + object.getNameClass().getName().getName() + "." + field.getField().getName().getName());
@@ -31,10 +34,21 @@ public class Fields {
             else {
                 // copy 0 to field
                 backend.addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
-                backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i, objectStructurePointer.requestPhysicalRegister())));
+                backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, objectStructurePointer.requestPhysicalRegister())));
             }
-            i++;
+            offset++;
         }
+        backend.getContextManager().operationStackPush(objectStructurePointer);
+
+        return offset;
+    }
+
+    public void codeGenDecl() {
+        codeGencDeclRecur(object, 0);
+
+        CodeGenBackend backend = object.getClassManager().getBackend();
+
+        VirtualRegister objectStructurePointer = backend.getContextManager().operationStackPop();
 
         objectStructurePointer.destroy();
     }
