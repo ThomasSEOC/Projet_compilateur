@@ -252,7 +252,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				}
 			}
 		}
-        else {
+		else {
 			throw new UnsupportedOperationException("unknown arithmetic operation");
 		}
 	}
@@ -265,61 +265,61 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 		Constant cLOp = expr.getLeftOperand().getConstant(compiler);
 		Constant cROp = expr.getRightOperand().getConstant(compiler);
 		if (cLOp == null || cROp == null) {
-		    return null;
+			return null;
 		}
-		
+
 		if (cLOp.getIsFloat()) {
-		    float op1 = cLOp.getValueFloat();
-		    float op2 = cROp.getValueFloat();
-		    
-		    if (this.getExpression() instanceof Plus) {
+			float op1 = cLOp.getValueFloat();
+			float op2 = cROp.getValueFloat();
+
+			if (this.getExpression() instanceof Plus) {
 				float resultFloat = op1 + op2;
 				return new Constant(resultFloat);
-		    }
-		    else if (this.getExpression() instanceof Minus) {
+			}
+			else if (this.getExpression() instanceof Minus) {
 				float resultFloat = op1 - op2;
 				return new Constant(resultFloat);
-		    }
-		    else if (this.getExpression() instanceof Multiply) {
+			}
+			else if (this.getExpression() instanceof Multiply) {
 				float resultFloat = op1 * op2;
 				return new Constant(resultFloat);
-		    }
-		    else if (this.getExpression() instanceof Divide) {
+			}
+			else if (this.getExpression() instanceof Divide) {
 				float resultFloat = op1 / op2;
 				return new Constant(resultFloat);
-		    }
+			}
 		}
 		else {
-		    int op1 = cLOp.getValueInt();
-		    int op2 = cROp.getValueInt();
+			int op1 = cLOp.getValueInt();
+			int op2 = cROp.getValueInt();
 
-		    if (this.getExpression() instanceof Plus) {
+			if (this.getExpression() instanceof Plus) {
 				int resultInt = op1 + op2;
 				return new Constant(resultInt);
-		    }
-		    else if (this.getExpression() instanceof Minus) {
+			}
+			else if (this.getExpression() instanceof Minus) {
 				int resultInt = op1 - op2;
 				return new Constant(resultInt);
-		    }
-		    else if (this.getExpression() instanceof Multiply) {
+			}
+			else if (this.getExpression() instanceof Multiply) {
 				int resultInt = op1 * op2;
 				return new Constant(resultInt);
-		    }
-		    else if (this.getExpression() instanceof Divide) {
+			}
+			else if (this.getExpression() instanceof Divide) {
 				int resultInt = op1 / op2;
 				return new Constant(resultInt);
-		    }
-		    else if (this.getExpression() instanceof Modulo) {
+			}
+			else if (this.getExpression() instanceof Modulo) {
 				int resultInt = op1 % op2;
 				return new Constant(resultInt);
-		    }
+			}
 		}
 
 		return null;
 	}
-		
-    
-    
+
+
+
 	/**
 	 * method called to generate code to print result of binary arithmetic operation
 	 */

@@ -36,6 +36,8 @@ public class ConversionOperation extends AbstractOperation {
             // convert it
             getCodeGenBackEnd().addInstruction(new FLOAT(r.requestPhysicalRegister(), r.requestPhysicalRegister()));
 
+            r.setFloat();
+
             // push result to operation stack
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
