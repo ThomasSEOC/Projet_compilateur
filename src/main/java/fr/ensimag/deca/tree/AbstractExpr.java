@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
@@ -33,6 +34,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     boolean isImplicit() {
         return false;
+    }
+
+    public Constant getConstant(DecacCompiler compiler) {
+        return null;
     }
 
     /**

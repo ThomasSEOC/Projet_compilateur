@@ -2,7 +2,10 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.opti.ControlFlowGraph;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
+import java.io.IOException;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.instructions.HALT;
@@ -49,10 +52,30 @@ public class Main extends AbstractMain {
         declVariables.codeGenListDeclVar(compiler);
 
         compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
-        insts.codeGenListInst(compiler);
+
+        if (compiler.getCompilerOptions().getOptimize()) {
+            // create control flow graph;
+            ControlFlowGraph graph = new ControlFlowGraph(compiler, declVariables, insts);
+            System.out.println(graph);
+            try {
+                graph.createDotGraph();
+            }
+            catch (IOException ex) {
+                System.out.println("IO error while creating ");
+            }
+            graph.codeGen();
+        }
+        else {
+            insts.codeGenListInst(compiler);
+            compiler.getCodeGenBackend().addInstruction(new HALT());
+            compiler.getCodeGenBackend().writeInstructions();
+        }
+
+
+//        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
 
         // end of the program
-        compiler.getCodeGenBackend().addInstruction(new HALT());
+//        compiler.getCodeGenBackend().addInstruction(new HALT());
 
         compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
 

@@ -1,0 +1,23 @@
+// L'appel du super() n'est pas correct
+
+// Date: 19.01.2022
+
+class Etrange{
+
+    boolean b;
+
+    void Etrange (boolean b){
+        this.b = b;
+    }
+
+}
+
+class Strange extends Etrange{
+
+    boolean b2;
+
+    void Strange (boolean b, boolean b2){
+        super (b, b2);
+    }
+}
+

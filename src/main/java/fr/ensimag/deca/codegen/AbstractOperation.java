@@ -1,5 +1,8 @@
 package fr.ensimag.deca.codegen;
 
+import com.sun.org.apache.bcel.internal.Const;
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.ListInst;
 
@@ -72,4 +75,7 @@ public abstract class AbstractOperation {
         return this.codegenbackend;
     }
 
+    public Constant getConstant(DecacCompiler compiler) {
+        return null;
+    }
 }

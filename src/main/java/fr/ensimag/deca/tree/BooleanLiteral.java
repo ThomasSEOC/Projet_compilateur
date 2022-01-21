@@ -4,6 +4,7 @@ import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.codegen.LiteralOperation;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -71,4 +72,8 @@ public class BooleanLiteral extends AbstractExpr {
         operator.doOperation();
     }*/
 
+    @Override
+    public Constant getConstant(DecacCompiler compiler) {
+        return new Constant(value);
+    }
 }

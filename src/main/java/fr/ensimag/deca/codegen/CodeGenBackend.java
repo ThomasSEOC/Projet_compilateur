@@ -22,6 +22,7 @@ public class CodeGenBackend {
     private final Stack<Map<String, Integer>> localVariables;
     private final Stack<Integer> localVariableSize;
     private final Stack<Integer> tempUseStackSize;
+
     private final List<Instruction> instructions;
     private final List<String> instructionsComments;
     private final List<String> comments;
@@ -214,6 +215,17 @@ public class CodeGenBackend {
      */
     public void addVariable(String name) {
         addVariable(name, 1);
+    }
+
+    public Set<String> getVariables() {
+        // if local context exists
+        if (localVariables.size() != 0) {
+            return localVariables.peek().keySet();
+        }
+        // add to global variables
+        else {
+            return globalVariables.keySet();
+        }
     }
 
     public void addParam(String name, int offset) {

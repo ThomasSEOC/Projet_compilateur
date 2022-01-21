@@ -7,6 +7,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.Constant;
 
 /**
  *
@@ -59,5 +60,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         BinaryBoolOperation operator = new BinaryBoolOperation(compiler.getCodeGenBackend(), this);
         operator.doOperation();
+    }
+
+    @Override
+    public Constant getConstant(DecacCompiler compiler) {
+        BinaryBoolOperation operator = new BinaryBoolOperation(compiler.getCodeGenBackend(), this);
+        return operator.getConstant(compiler);
     }
 }

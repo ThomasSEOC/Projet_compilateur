@@ -12,15 +12,14 @@ import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.opti.Constant;
+import fr.ensimag.deca.opti.InstructionIdentifiers;
+import fr.ensimag.deca.opti.SSAVariable;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -29,7 +28,26 @@ import org.apache.log4j.Logger;
  * @date 01/01/2022
  */
 public class Identifier extends AbstractIdentifier {
-    
+    private SSAVariable ssaVariable;
+    private Constant constant = null;
+
+    public void setSsaVariable(SSAVariable ssaVariable) { this.ssaVariable = ssaVariable; }
+
+    public SSAVariable getSsaVariable() { return ssaVariable; }
+
+    public void setConstant(Constant constant) {
+        this.constant = constant;
+    }
+
+    public Constant getConstant() {
+        return constant;
+    }
+
+    @Override
+    public Constant getConstant(DecacCompiler compiler) {
+        return constant;
+    }
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -246,5 +264,10 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenPrint(DecacCompiler compiler) {
         IdentifierRead operator = new IdentifierRead(compiler.getCodeGenBackend(), this);
         operator.print();
+    }
+
+    @Override
+    public void searchIdentifiers(InstructionIdentifiers instructionIdentifiers) {
+        instructionIdentifiers.addReadIdentifer(this);
     }
 }

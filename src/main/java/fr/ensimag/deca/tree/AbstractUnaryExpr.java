@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.opti.InstructionIdentifiers;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -39,4 +40,8 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         operand.prettyPrint(s, prefix, true);
     }
 
+    @Override
+    public void searchIdentifiers(InstructionIdentifiers instructionIdentifiers) {
+        getOperand().searchIdentifiers(instructionIdentifiers);
+    }
 }

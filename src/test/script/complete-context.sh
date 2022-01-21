@@ -41,7 +41,7 @@ else
   echo "AUCUN TEST TROUVE"
 fi
 
-echo "TESTS CONTEXT VALIDES :"
+echo "TESTS CONTEXT INVALIDES :"
 if [ "$(ls ./src/test/deca/context/invalid/)" != "" ]
 then
   for i in ./src/test/deca/context/invalid/*.deca
