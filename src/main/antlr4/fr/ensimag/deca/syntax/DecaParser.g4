@@ -79,7 +79,6 @@ decl_var_set[ListDeclVar l]
 
 list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
-        assert($dv1.tree != null);
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
             $l.add($dv2.tree);
@@ -92,7 +91,6 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         AbstractInitialization init = new NoInitialization();
         }
     : i=ident {
-        assert($i.tree != null);
         }
       (EQUALS e=expr {
         init = new Initialization($e.tree);
@@ -249,7 +247,7 @@ and_expr returns[AbstractExpr tree]
             setLocation($tree,$e.start);
         }
     |  e1=and_expr AND e2=eq_neq_expr {
-            assert($e1.tree != null);                         
+            assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new And($e1.tree,$e2.tree);
             setLocation($tree,$AND);
@@ -340,7 +338,7 @@ mult_expr returns[AbstractExpr tree]
             setLocation($tree,$e.start);
         }
     | e1=mult_expr TIMES e2=unary_expr {
-            assert($e1.tree != null);                                         
+            assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Multiply($e1.tree,$e2.tree);
             setLocation($tree,$TIMES);
@@ -352,7 +350,7 @@ mult_expr returns[AbstractExpr tree]
             setLocation($tree,$SLASH);
         }
     | e1=mult_expr PERCENT e2=unary_expr {
-            assert($e1.tree != null);                                                                          
+            assert($e1.tree != null);
             assert($e2.tree != null);
             $tree = new Modulo($e1.tree,$e2.tree);
             setLocation($tree,$PERCENT);
@@ -385,7 +383,6 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
-            setLocation($tree,$DOT);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
@@ -580,7 +577,7 @@ decl_field[Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
         }
       (EQUALS e=expr {
             initField = new Initialization($e.tree);
-            setLocation($tree,$EQUALS);
+            setLocation(initField,$EQUALS);
         }
       )? {
             $tree = new DeclField($v,$t,$i.tree,initField);
