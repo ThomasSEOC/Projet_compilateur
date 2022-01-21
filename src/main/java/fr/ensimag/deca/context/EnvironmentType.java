@@ -1,5 +1,6 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.util.HashMap;
@@ -27,6 +28,10 @@ public class EnvironmentType {
 	    return (dico.get(key));
     }
 
+    public Map<Symbol, TypeDefinition> getDico() {
+        return dico;
+    }
+
     /**
      * Add the definition def associated to the symbol name in the environment.
      * 
@@ -35,9 +40,9 @@ public class EnvironmentType {
      * @param def
      *            Definition of the symbol
      */
-    public void declare(Symbol name, TypeDefinition def) throws EnvironmentExp.DoubleDefException {
+    public void declare(Symbol name, TypeDefinition def) throws DoubleDefException {
         if (dico.containsKey(name)) {
-            throw new EnvironmentExp.DoubleDefException("Arleady defined");
+            throw new DoubleDefException(name + " is already defined", dico.get(name).getLocation());
         }
 	    dico.put(name, def);
     }

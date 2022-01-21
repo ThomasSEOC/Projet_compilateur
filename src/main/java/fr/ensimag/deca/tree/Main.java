@@ -9,12 +9,13 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.instructions.HALT;
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import fr.ensimag.deca.context.*;
 import java.util.Map;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
 
 /**
  * @author gl54
@@ -25,8 +26,7 @@ public class Main extends AbstractMain {
     
     private ListDeclVar declVariables;
     private ListInst insts;
-    public Main(ListDeclVar declVariables,
-            ListInst insts) {
+    public Main(ListDeclVar declVariables, ListInst insts) {
         Validate.notNull(declVariables);
         Validate.notNull(insts);
         this.declVariables = declVariables;
@@ -35,11 +35,11 @@ public class Main extends AbstractMain {
 
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("verify Main: start");
+        //LOG.debug("verify Main: start");
+        SymbolTable.Symbol voidSymbol =  compiler.getSymbolTable().getMap().get("void");
         declVariables.verifyListDeclVariable(compiler, compiler.getExpPredef(), null);
-        insts.verifyListInst(compiler, compiler.getExpPredef(), null, compiler.getTypesPredef().get(compiler.getSymbolTable().getMap().get("void")).getType());
-
-    	LOG.debug("verify Main: end");
+        insts.verifyListInst(compiler, compiler.getExpPredef(), null, compiler.getTypes().get(voidSymbol).getType());
+    	//LOG.debug("verify Main: end");
     }
 
     @Override

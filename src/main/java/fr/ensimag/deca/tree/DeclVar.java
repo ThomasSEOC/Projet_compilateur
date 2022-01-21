@@ -4,7 +4,6 @@ import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.codegen.VirtualRegister;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -47,22 +46,41 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
         // check type
         type.verifyType(compiler);
         if (type.getType().isVoid()) {
             throw new ContextualError("Var must not be void", getLocation());
         }
 
+        // check if the name is a Predefined type
+        EnvironmentType envTypesPredef = compiler.getTypesPredef();
+        SymbolTable.Symbol realSymbol = varName.getName();
+        if (envTypesPredef.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a predefined type, can't be a variable name", getLocation());
+        }
+
+        // check if the name is a class name
+        EnvironmentType envTypes = compiler.getTypes();
+
+        if (envTypes.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a class name defined at "+
+                    envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a variable name", getLocation());
+        }
+
         // check initialization
         initialization.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
 
+        // put the variable name in the local environment
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
-	} catch (DoubleDefException e) {
-            throw new ContextualError("Var is already defined", getLocation());
-        }
+        } catch (DoubleDefException e) {
+                throw new ContextualError(realSymbol + " is already defined at " +
+                        localEnv.get(realSymbol).getLocation(), getLocation());
+            }
     }
+
     
     @Override
     public void decompile(IndentPrintStream s) {

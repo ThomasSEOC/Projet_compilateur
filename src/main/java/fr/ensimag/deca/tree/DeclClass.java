@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import jdk.internal.misc.ScopedMemoryAccess;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -51,31 +52,25 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
+
         // verifies the existence of superClass
         superClass.verifyType(compiler);
 
-        // creates and put the ClassType
-        classType = new ClassType(nameClass.getName(), getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
-        classDefinition = classType.getDefinition();
-
         // Definition and type of the class
+        SymbolTable.Symbol classSymbol = nameClass.getName();
+
+        classType = new ClassType(classSymbol, getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
+        classDefinition = classType.getDefinition();
         nameClass.setDefinition(classDefinition);
         nameClass.setType(classType);
 
-        // Add the envTypePredef in the localEnv
-        //classDefinition.getMembers().getDico() = compiler.getTypesPredef().getDico().clone();
-        // classDefinition.getMembers().getDico().putAll(compiler.getTypesPredef().getDico());
-
-
-
         // put in the dictionary
+        Map<SymbolTable.Symbol, TypeDefinition> dico = compiler.getTypes().getDico();
         try {
-            compiler.getTypesPredef().declare(nameClass.getName(), classDefinition);
-        } catch (EnvironmentExp.DoubleDefException e) {
-            System.out.println("Object : " + e);
-            System.exit(1);
+            compiler.getTypes().declare(nameClass.getName(), classDefinition);
+        } catch (DoubleDefException e) {
+            throw new ContextualError(classSymbol.getName() + " is already defined at " + dico.get(classSymbol).getLocation() , getLocation());
         }
-
 
 
     }
@@ -83,7 +78,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
         field.verifyListDeclField(compiler, classDefinition.getMembers(), classDefinition);
-        //methods.verifyListDeclMethod(compiler, classDefinition.getMembers(), classDefinition);
+        methods.verifyListDeclMethod(compiler, classDefinition.getMembers(), classDefinition);
     }
     
     @Override

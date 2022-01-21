@@ -3,7 +3,6 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.Mockito;
@@ -15,10 +14,9 @@ import static org.mockito.Mockito.*;
  *
  * @author gl54
  * @date 10/01/2022
- */ 
+ */
 
 public class TestEnvironmentExp {
-    
     EnvironmentExp env0 = new EnvironmentExp(null);
     SymbolTable table = new SymbolTable();
     Symbol vrai =  table.create("true");
@@ -111,5 +109,4 @@ public class TestEnvironmentExp {
 	    System.out.println(number + " : " + e);
 	}
     }
-
 }

@@ -211,9 +211,10 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
 
         // Get and set the definition of the symbol
-        EnvironmentType envTypes = compiler.getTypesPredef();
+        EnvironmentType envTypes = compiler.getTypes();
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
         TypeDefinition typeDef = envTypes.get(realSymbol);
+
 
         // If the identifier is not previously defined
         if (typeDef == null) {
