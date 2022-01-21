@@ -34,12 +34,14 @@ public class ErrorsManager {
     public void addErrors() {
         backend.getCompiler().addComment("###############################################################");
         backend.getCompiler().addComment("ERRORS");
+
+        // this error is always present
         addSTackOverflowError();
 
+        // these errors are only added if needed
         if (isDereferencementNullLabelUsed) {
             addDereferencementNullError();
         }
-
         if (isHeapOverflowLabelUsed) {
             addHeapOverflowError();
         }
@@ -51,11 +53,19 @@ public class ErrorsManager {
      */
     public Label getStackOverflowLabel() { return stackOverflowLabel; }
 
+    /**
+     * getter for label to which jump in case of null pointer exception
+     * @return dereferencementNullLabel
+     */
     public Label getDereferencementNullLabel() {
         isDereferencementNullLabelUsed = true;
         return dereferencementNullLabel;
     }
 
+    /**
+     * getter for label to which jump in case of heap overflow
+     * @return heapOverflowLabel
+     */
     public Label getHeapOverflowLabel() {
         isHeapOverflowLabelUsed = true;
         return heapOverflowLabel;
@@ -72,6 +82,9 @@ public class ErrorsManager {
         compiler.addInstruction(new ERROR());
     }
 
+    /**
+     * add assembly code for null pointer exception handler
+     */
     private void addDereferencementNullError() {
         DecacCompiler compiler = backend.getCompiler();
         compiler.addLabel(dereferencementNullLabel);
@@ -80,6 +93,9 @@ public class ErrorsManager {
         compiler.addInstruction(new ERROR());
     }
 
+    /**
+     * add assembly code for heap overflow error handler
+     */
     private void addHeapOverflowError() {
         DecacCompiler compiler = backend.getCompiler();
         compiler.addLabel(heapOverflowLabel);

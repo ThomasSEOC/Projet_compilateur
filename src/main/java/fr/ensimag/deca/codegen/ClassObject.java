@@ -5,16 +5,26 @@ import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Stack;
 
+/**
+ * class responsible for non default Object representation
+ */
 public class ClassObject extends AbstractClassObject {
     private final AbstractIdentifier nameClass;
     private final AbstractIdentifier superClass;
     private final ListDeclMethod methods;
     private final ListDeclField fields;
 
+    /**
+     * constructor for class ClassObject
+     * @param classManager code generation class manager
+     * @param nameClass class identifier
+     * @param superClass super class identifier
+     * @param methods methods related to this class
+     * @param fields fields related to this class
+     */
     public ClassObject(ClassManager classManager, AbstractIdentifier nameClass, AbstractIdentifier superClass, ListDeclMethod methods, ListDeclField fields) {
         super(classManager);
         this.nameClass = nameClass;
@@ -23,20 +33,39 @@ public class ClassObject extends AbstractClassObject {
         this.fields = fields;
     }
 
+    /**
+     * getter for class identifier
+     * @return identifier of represented class
+     */
     public AbstractIdentifier getNameClass() {
         return nameClass;
     }
 
+    /**
+     * getter for super class identifier
+     * @return identifier of super class
+     */
     public AbstractIdentifier getSuperClass() {
         return superClass;
     }
 
+    /**
+     * getter for methods of this class
+     * @return list of methods related to this represented class
+     */
     public ListDeclMethod getMethods() { return methods; }
 
+    /**
+     * getter for field of this class
+     * @return list of fields related to this represented class
+     */
     public ListDeclField getFields() { return fields; }
 
-
-
+    /**
+     * generate Vtable creation code for this represented class
+     * @param offset current Vtable offset
+     * @param generateSuperPointer if this condition is set, this method will generate superClass pointer in method table
+     */
     @Override
     public void VTableCodeGen(int offset, boolean generateSuperPointer) {
 
@@ -59,6 +88,9 @@ public class ClassObject extends AbstractClassObject {
         }
     }
 
+    /**
+     * generate code for structure init code
+     */
     @Override
     public void structureInitCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
@@ -105,17 +137,28 @@ public class ClassObject extends AbstractClassObject {
 //        }
     }
 
+    /**
+     * getter for Vtable size
+     * @return occupied memory size on VTable for this represented class
+     */
     @Override
     public int getVTableSize() {
         // attention si redefinition de equals
         return methods.size() + getClassManager().getClassObject(superClass).getVTableSize();
     }
 
+    /**
+     * getter for structure size
+     * @return occupied memory size by structure when class is instantiated
+     */
     @Override
     public int getStructureSize() {
         return fields.size() + getClassManager().getClassObject(superClass).getStructureSize();
     }
 
+    /**
+     * generate code for methods of the represented class
+     */
     @Override
     public void methodsCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
@@ -141,6 +184,10 @@ public class ClassObject extends AbstractClassObject {
         }
     }
 
+    /**
+     * generate code for field selectiob
+     * @param objectVariableString string representing class instance
+     */
     public void select(String objectVariableString) {
         DecacCompiler compiler = getClassManager().getBackend().getCompiler();
 
@@ -158,6 +205,11 @@ public class ClassObject extends AbstractClassObject {
         getClassManager().getBackend().getContextManager().operationStackPush(register);
     }
 
+    /**
+     * getter for offset of the specified field
+     * @param fieldName string corresponding to specified field
+     * @return offset to apply to the class instance structure
+     */
     public int getFieldOffset(String fieldName) {
         AbstractClassObject superObject = getClassManager().getClassObject(superClass);
 
@@ -173,6 +225,10 @@ public class ClassObject extends AbstractClassObject {
         return ((ClassObject)superObject).getFieldOffset(fieldName);
     }
 
+    /**
+     * generate code for method call
+     * @param abstractMethod called method
+     */
     @Override
     public void callMethod(AbstractDeclMethod abstractMethod) {
         CodeGenBackend backend = getClassManager().getBackend();
@@ -209,6 +265,11 @@ public class ClassObject extends AbstractClassObject {
         backend.addInstruction(new SUBSP(paramsCount+1));
     }
 
+    /**
+     * getter for specified method offset
+     * @param abstractMethod called method
+     * @return offset from class object base in VTable
+     */
     @Override
     public int getMethodOffset(AbstractDeclMethod abstractMethod) {
         DeclMethod method = (DeclMethod) abstractMethod;
@@ -226,11 +287,18 @@ public class ClassObject extends AbstractClassObject {
         return getClassManager().getClassObject(getSuperClass()).getMethodOffset(abstractMethod);
     }
 
+    /**
+     * getter for className
+     * @return identifier related to the represented class
+     */
     @Override
     public AbstractIdentifier getClassName() {
         return nameClass;
     }
 
+    /**
+     * generate code for object instantiation
+     */
     @Override
     public void createObjectCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();

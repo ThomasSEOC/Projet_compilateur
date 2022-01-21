@@ -34,6 +34,10 @@ public class ListInst extends TreeList<AbstractInst> {
         }
     }
 
+    /**
+     * generate code for this list of instructions
+     * @param compiler global compiler
+     */
     public void codeGenListInst(DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
             i.codeGenInst(compiler);

@@ -11,14 +11,24 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import java.util.Objects;
 import java.util.Stack;
 
+/**
+ * class responsible for default Object representation
+ */
 public class DefaultObject extends AbstractClassObject {
     private final Label codeObjectEquals;
 
+    /**
+     * constructor for DefaultObject
+     * @param classManager code generation class manager
+     */
     public DefaultObject(ClassManager classManager) {
         super(classManager);
         codeObjectEquals = new Label("code.Object.equals");
     }
 
+    /**
+     * generate code for default equals method
+     */
     private void codeObjectEqualsCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
         backend.addComment("equals method");
@@ -34,6 +44,11 @@ public class DefaultObject extends AbstractClassObject {
         backend.addInstruction(new RTS());
     }
 
+    /**
+     * generate code of VTable creation for default Object
+     * @param offset current Vtable offset
+     * @param generateSuperPointer if this condition is set, this method will generate superClass pointer in method table
+     */
     @Override
     public void VTableCodeGen(int offset, boolean generateSuperPointer) {
         DecacCompiler compiler = getClassManager().getBackend().getCompiler();
@@ -47,6 +62,9 @@ public class DefaultObject extends AbstractClassObject {
         compiler.getCodeGenBackend().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset + 1, GPRegister.GB)));
     }
 
+    /**
+     * generation code for default Object structure initialization
+     */
     @Override
     public void structureInitCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
@@ -57,11 +75,19 @@ public class DefaultObject extends AbstractClassObject {
         backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, GPRegister.getR(1))));
     }
 
+    /**
+     * getter for VTable size
+     * @return occupied VTable memory by default Object
+     */
     @Override
     public int getVTableSize() {
         return 2;
     }
 
+    /**
+     * getter for default Object instance structure size
+     * @return occupied memory space by default Object instance structure
+     */
     @Override
     public int getStructureSize() {
         return 1;
@@ -75,6 +101,10 @@ public class DefaultObject extends AbstractClassObject {
         codeObjectEqualsCodeGen();
     }
 
+    /**
+     * generate code for default object method call
+     * @param abstractMethod called method (only equals is accepted)
+     */
     @Override
     public void callMethod(AbstractDeclMethod abstractMethod) {
         DeclMethod method = (DeclMethod) abstractMethod;
@@ -115,6 +145,11 @@ public class DefaultObject extends AbstractClassObject {
         }
     }
 
+    /**
+     * getter for offset in method table for specified method
+     * @param abstractMethod called method
+     * @return offset from default Object pointer base in VTable
+     */
     @Override
     public int getMethodOffset(AbstractDeclMethod abstractMethod) {
         DeclMethod method = (DeclMethod) abstractMethod;
@@ -126,11 +161,18 @@ public class DefaultObject extends AbstractClassObject {
         }
     }
 
+    /**
+     * getter for className
+     * @return identifier corresponding to default Object
+     */
     @Override
     public AbstractIdentifier getClassName() {
         return new Identifier(getClassManager().getBackend().getCompiler().getSymbolTable().create("Object"));
     }
 
+    /**
+     * generate code for default Object instantiation
+     */
     @Override
     public void createObjectCodeGen() {
         throw new UnsupportedOperationException("not yet implemented");

@@ -5,13 +5,26 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
+/**
+ * class responsible for deca class field handling
+ */
 public class Fields {
     private final ClassObject object;
 
+    /**
+     * constructor for Fields
+     * @param object related AbstractClassObject
+     */
     public Fields(ClassObject object) {
         this.object = object;
     }
 
+    /**
+     * generate code for field declaration recursively
+     * @param object related object
+     * @param offset current offset in instance structure
+     * @return new offset after field initialization
+     */
     private int codeGencDeclRecur(ClassObject object, int offset) {
         CodeGenBackend backend = object.getClassManager().getBackend();
 
@@ -44,6 +57,9 @@ public class Fields {
         return offset;
     }
 
+    /**
+     * generate code for field instantiation when instantiating a class
+     */
     public void codeGenDecl() {
         codeGencDeclRecur(object, 1);
 
@@ -54,6 +70,10 @@ public class Fields {
         objectStructurePointer.destroy();
     }
 
+    /**
+     * generate code for field assign
+     * @param fieldName string representing field
+     */
     public void codeGenAssign(String fieldName) {
         // risque de bug
         int offset = object.getFieldOffset(fieldName);
@@ -67,6 +87,10 @@ public class Fields {
         addressRegister.destroy();
     }
 
+    /**
+     * generate code for field read
+     * @param fieldName string representing field
+     */
     public void codeGenRead(String fieldName) {
         int offset = object.getFieldOffset(fieldName);
 
