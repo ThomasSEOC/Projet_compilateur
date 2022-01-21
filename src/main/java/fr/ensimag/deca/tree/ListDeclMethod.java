@@ -1,10 +1,14 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ClassManager;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.log4j.Logger;
+
+import java.util.Iterator;
 
 /**
  *
@@ -13,6 +17,16 @@ import org.apache.log4j.Logger;
  */
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
+    public void verifyListDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        Iterator<AbstractDeclMethod> it = this.iterator();
+        while (it.hasNext()) {
+            it.next().verifyDeclMethod(compiler, localEnv, currentClass);
+            currentClass.incNumberOfMethods();
+        }
+    }
+
+    
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclMethod c : getList()) {

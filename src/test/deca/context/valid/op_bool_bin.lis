@@ -1,0 +1,37 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:30) - verify listClass: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:35) - verify listClass: end
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:42) - verify listClassMember: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:47) - verify listClassMember: end
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:33) - verify Main: start
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:37) - verify Main: end
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:44) - verify program: end
+`> [9, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [9, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [13, 0] ListInst [List with 4 elements]
+         []> [10, 0] Or
+         ||  type: boolean
+         ||  +> [10, 0] BooleanLiteral (true)
+         ||  |  type: boolean
+         ||  `> [10, 8] BooleanLiteral (false)
+         ||     type: boolean
+         []> [11, 0] And
+         ||  type: boolean
+         ||  +> [11, 0] BooleanLiteral (true)
+         ||  |  type: boolean
+         ||  `> [11, 8] BooleanLiteral (true)
+         ||     type: boolean
+         []> [12, 0] Equals
+         ||  type: boolean
+         ||  +> [12, 0] BooleanLiteral (true)
+         ||  |  type: boolean
+         ||  `> [12, 8] BooleanLiteral (true)
+         ||     type: boolean
+         []> [13, 0] NotEquals
+             type: boolean
+             +> [13, 0] BooleanLiteral (true)
+             |  type: boolean
+             `> [13, 8] BooleanLiteral (false)
+                type: boolean

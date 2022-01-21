@@ -23,6 +23,11 @@ public class DeclMethod extends AbstractDeclMethod{
         this.body = body;
     }
 
+    protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        
+    }
+
+
     @Override
     public void decompile(IndentPrintStream s){
         type.decompile(s);
@@ -49,11 +54,6 @@ public class DeclMethod extends AbstractDeclMethod{
         params.iter(f);
         body.iter(f);
     }
-
-    @Override
-    protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError{}
-
 
 
     public AbstractIdentifier getType() { return type; }

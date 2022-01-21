@@ -14,7 +14,7 @@ public abstract class Definition {
         String res;
         res = getNature();
         if (location == Location.BUILTIN) {
-            res += " (builtin)";
+            res += location.toString();
         } else {
             res += " defined at " + location;
         }

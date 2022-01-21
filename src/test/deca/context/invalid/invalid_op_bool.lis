@@ -1,0 +1,7 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:30) - verify listClass: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:35) - verify listClass: end
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:42) - verify listClassMember: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:47) - verify listClassMember: end
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:33) - verify Main: start
+./src/test/deca/context/invalid/invalid_op_bool.deca:2:0: Both binary boolean operators need to be a boolean

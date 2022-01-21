@@ -189,14 +189,17 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // Obligé de récupérer le vrai symbole
+
+        // Get and set the definition of the symbol
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
         Definition def = localEnv.get(realSymbol);
         setDefinition(def);
+
+        // Set the type or return an error if the identifier is not previously defined
         if (def != null) {
-            setType(def.getType());
-            return def.getType();
-        }
+                setType(def.getType());
+                return def.getType();
+            }
         throw new ContextualError(name + " n'est pas défini", getLocation());
     }
 
@@ -206,17 +209,23 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-	    EnvironmentExp localEnv = compiler.getEnvPredef();
-	    try {
-		Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-		  Type type = localEnv.get(realSymbol).getType();
-	  
-		 setType(type);
-        setDefinition(new TypeDefinition(type, getLocation()));
+
+        // Get and set the definition of the symbol
+        EnvironmentType envTypes = compiler.getTypesPredef();
+        Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
+        TypeDefinition typeDef = envTypes.get(realSymbol);
+
+        // If the identifier is not previously defined
+        if (typeDef == null) {
+                throw new ContextualError(name + " is not a type", getLocation());
+            }
+
+        // Set
+        Type type = typeDef.getType();
+        setType(type);
+        setDefinition(new TypeDefinition(typeDef.getType(), typeDef.getLocation()));
+
         return type;
-	    } catch (NullPointerException e) {
-		throw new ContextualError(name + " is not a type", getLocation());
-	    }
     }
     
     
