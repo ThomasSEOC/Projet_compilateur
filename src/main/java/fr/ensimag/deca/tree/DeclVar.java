@@ -53,19 +53,18 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Var must not be void", getLocation());
         }
 
-        // check if the name is a Predefined type
-        EnvironmentType envTypesPredef = compiler.getTypesPredef();
-        SymbolTable.Symbol realSymbol = varName.getName();
-        if (envTypesPredef.get(realSymbol) != null){
-            throw new ContextualError(realSymbol + " is a predefined type, can't be a variable name", getLocation());
-        }
-
-        // check if the name is a class name
+        // check if the name is a Predefined type or a class
         EnvironmentType envTypes = compiler.getTypes();
-
-        if (envTypes.get(realSymbol) != null){
-            throw new ContextualError(realSymbol + " is a class name defined at "+
-                    envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a variable name", getLocation());
+        SymbolTable.Symbol realSymbol = varName.getName();
+        TypeDefinition typeDef =  envTypes.get(realSymbol);
+        if (typeDef != null){
+            if (typeDef.isClass()){
+                throw new ContextualError(realSymbol + " is a class name defined at "+
+                        envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a var name", getLocation());
+            }
+            else {
+                throw new ContextualError(realSymbol + " is a predefined type, can't be a var name", getLocation());
+            }
         }
 
         // check initialization
