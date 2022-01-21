@@ -1,1 +1,4 @@
+OBRACE: [@0,59:59='{',<35>,5:0]
+IDENT: [@1,65:67='int',<22>,6:4]
+IDENT: [@2,69:71='tab',<22>,6:8]
 ./src/test/deca/syntax/invalid/lexer/tab_invalid.deca:6:11: token recognition error at: '['
