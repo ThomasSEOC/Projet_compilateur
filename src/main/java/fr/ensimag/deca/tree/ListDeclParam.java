@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+import java.util.Iterator;
+
 /**
  *
  * @author gl54
@@ -22,9 +24,12 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
 
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
                                 ClassDefinition currentClass) throws ContextualError {
-	throw new UnsupportedOperationException("not yet implemented");
-    
-    }
+        Iterator<AbstractDeclParam> it = this.iterator();
+        while (it.hasNext()) {
+            AbstractDeclParam var = it.next();
+            var.verifyDeclParam(compiler, localEnv);
 
+        }
+    }
 
 }
