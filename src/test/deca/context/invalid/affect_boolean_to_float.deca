@@ -1,0 +1,16 @@
+// Description:
+//    Affectation et typage
+//
+// Resultats:
+//    Ligne 15: Affectation de types incompatibles.
+// 
+// Historique:
+//    cree le 01/01/2022
+
+{
+   float a;
+   boolean b;
+
+   // Doit etre refuse.
+   a = b;
+}

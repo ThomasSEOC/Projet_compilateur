@@ -4,8 +4,7 @@ import fr.ensimag.deca.codegen.CodeGenBackend;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.deca.tree.AbstractProgram;
-import fr.ensimag.deca.tree.LocationException;
+import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 
 import java.io.File;
@@ -19,9 +18,7 @@ import org.apache.log4j.Logger;
 import fr.ensimag.deca.tools.SymbolTable;
 import java.util.HashMap;
 import fr.ensimag.deca.context.*;
-import fr.ensimag.deca.tree.Location;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
-
+import fr.ensimag.deca.context.DoubleDefException;
 
 
 /**
@@ -42,25 +39,22 @@ import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
-    
-    
-
-    /**
-     * Symbols
-     */
     private SymbolTable symbolTable = new SymbolTable();
 
-    /**
-     * Types
-     */
-    //    private HashMap<String, Type> typeTable = new HashMap<String, Type>();
-
-    private EnvironmentExp envPredef = new EnvironmentExp(null);    
-
-    public EnvironmentExp getEnvPredef() {
-	    return envPredef;
+    private EnvironmentType envTypesPredef = new EnvironmentType();    
+    private EnvironmentExp envExpPredef = new EnvironmentExp(null);
+    private EnvironmentType envTypes = new EnvironmentType();
+    
+    // Getters
+    public EnvironmentType getTypesPredef() {
+	    return envTypesPredef;
     }
-					  
+    public EnvironmentExp getExpPredef(){
+        return envExpPredef;
+    }
+    public EnvironmentType getTypes() {
+        return envTypes;
+    }
     
     /**
      * Portable newline character.
@@ -74,66 +68,75 @@ public class DecacCompiler {
         this.source = source;
         this.codeGenBackend = new CodeGenBackend(this);
 
-        /**
-         * Predefined symbols
-         */
+
+        // symbols predefined
         symbolTable.create("void");
-
-        //typeTable.put("void", new VoidType(symbolTable.getMap().get("void")));
-        TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
-
         symbolTable.create("boolean");
-        //typeTable.put("boolean", new BooleanType(symbolTable.getMap().get("boolean")));
-        TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
-
         symbolTable.create("float");
-        //typeTable.put("float", new FloatType(symbolTable.getMap().get("float")));
-        TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
-
         symbolTable.create("int");
-        //typeTable.put("int", new IntType(symbolTable.getMap().get("int")));
-        TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
-
-        try {
-            envPredef.declare(symbolTable.getSymbol("void"), voidDef);
-        } catch (DoubleDefException e) {
-            System.out.println("void : " +e);
-            System.exit(1);
-        }
-        try {
-            envPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
-        } catch (DoubleDefException e) {
-            System.out.println("boolean : " +e);
-            System.exit(1);
-        }
-        try {
-            envPredef.declare(symbolTable.getSymbol("float"), floatDef);
-        } catch (DoubleDefException e) {
-            System.out.println("void : " +e);
-            System.exit(1);
-        }
-        try {
-            envPredef.declare(symbolTable.getSymbol("int"), intDef);
-        } catch (DoubleDefException e) {
-            System.out.println("void : " +e);
-            System.exit(1);
-        }
-
-
         symbolTable.create("Object");
+        symbolTable.create("equals");
 
+        // Definitions of the predef types
+	    TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
+        TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
+        TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
+	    TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
 
-	
+        // Definition for the class Object
+        ClassType object =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
+        ClassDefinition objDef = object.getDefinition();
+        //Identifier ObjId = new Identifier(symbolTable.getMap().get("Object"));
+        //ObjId.setType(object);
+        //ObjId.setDefinition(objDef);
+        //DeclClass classObject = DeclClass(ObjId, null, methods, field);
+
+        // Declare in the envTypePredef
+        try {
+            envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
+            envTypes.declare(symbolTable.getSymbol("void"), voidDef);
+        } catch (DoubleDefException e) {
+            System.out.println("void : " + e);
+            System.exit(1);
+        }
+        try {
+            envTypesPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
+            envTypes.declare(symbolTable.getSymbol("boolean"), booleanDef);
+        } catch (DoubleDefException e) {
+            System.out.println("boolean : " + e);
+            System.exit(1);
+        }
+        try {
+            envTypesPredef.declare(symbolTable.getSymbol("float"), floatDef);
+            envTypes.declare(symbolTable.getSymbol("float"), floatDef);
+        } catch (DoubleDefException e) {
+            System.out.println("float : " + e);
+            System.exit(1);
+        }
+        try {
+            envTypesPredef.declare(symbolTable.getSymbol("int"), intDef);
+            envTypes.declare(symbolTable.getSymbol("int"), intDef);
+
+        } catch (DoubleDefException e) {
+            System.out.println("int : " + e);
+            System.exit(1);
+        }
+        try {
+            envTypesPredef.declare(symbolTable.getSymbol(("Object")), objDef);
+            envTypes.declare(symbolTable.getSymbol(("Object")), objDef);
+        } catch (DoubleDefException e) {
+            System.out.println("Object : " + e);
+            System.exit(1);
+        }
+
     }
+
+
 
 
     public SymbolTable getSymbolTable(){
         return symbolTable;
     }
-
-    // public HashMap<String, Type> getTypeTable() {
-    // 	return typeTable;
-    // }
 
     /**
      * Source file associated with this compiler instance.
@@ -303,31 +306,35 @@ public class DecacCompiler {
             return true;
         }
 
+        if (compilerOptions.getCompilerStages() == CompilerOptions.PARSE_ONLY) {
+            System.out.println(prog.decompile());
+            return false;
+        }
+
         assert(prog.checkAllLocations());
-        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_ONLY) {
-            prog.verifyProgram(this);
-            assert(prog.checkAllDecorations());
+        prog.verifyProgram(this);
+        assert(prog.checkAllDecorations());
+
+        if (compilerOptions.getCompilerStages() == CompilerOptions.PARSE_AND_VERIF) {
+            return false;
         }
 
+        prog.codeGenProgram(this);
+        addComment("end main program");
+        LOG.debug("Generated assembly code:" + nl + program.display());
+        LOG.info("Output file assembly file is: " + destName);
 
-        if (compilerOptions.getCompilerStages() != CompilerOptions.PARSE_AND_VERIF) {
-            prog.codeGenProgram(this);
-            addComment("end main program");
-            LOG.debug("Generated assembly code:" + nl + program.display());
-            LOG.info("Output file assembly file is: " + destName);
-
-            FileOutputStream fstream = null;
-            try {
-                fstream = new FileOutputStream(destName);
-            } catch (FileNotFoundException e) {
-                throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
-            }
-
-            LOG.info("Writing assembler file ...");
-
-            program.display(new PrintStream(fstream));
-            LOG.info("Compilation of " + sourceName + " successful.");
+        FileOutputStream fstream = null;
+        try {
+            fstream = new FileOutputStream(destName);
+        } catch (FileNotFoundException e) {
+            throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
+
+        LOG.info("Writing assembler file ...");
+
+        program.display(new PrintStream(fstream));
+        LOG.info("Compilation of " + sourceName + " successful.");
 
         return false;
     }

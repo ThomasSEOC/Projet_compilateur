@@ -7,6 +7,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  *
@@ -22,12 +23,14 @@ public class Not extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-	AbstractExpr op = getOperand();
-	Type typeOperand = op.getType();
-	if (typeOperand.isBoolean()) {
-	    return typeOperand;
-	}
-    throw new ContextualError("not(" + op + ") : " + op + " is not a boolean",getLocation());
+        AbstractExpr op = getOperand();
+        op.verifyExpr(compiler, localEnv, currentClass);
+        Type typeOperand = op.getType();
+        if (typeOperand.isBoolean()) {
+            setType(typeOperand);
+            return typeOperand;
+        }
+        throw new ContextualError("Not operand needs to be a boolean",getLocation());
     }
 
     @Override
@@ -39,5 +42,12 @@ public class Not extends AbstractUnaryExpr {
     @Override
     protected String getOperatorName() {
         return "!";
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print("!(");
+        getOperand().decompile(s);
+        s.print(")");
     }
 }

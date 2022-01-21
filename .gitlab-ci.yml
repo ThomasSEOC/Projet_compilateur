@@ -18,8 +18,12 @@ test:
   stage: test
   script:
     - source /home/gl/.bashrc
-    - mvn clean verify
-#    - mvn -Djacoco.skip=false -Dmaven.test.failure.ignore clean verify
+#    - mvn clean verify
+    - mvn -Djacoco.skip=false clean verify
+    - cat target/site/index.html
+  artifacts:
+    paths:
+      - target/site/index.html
   only:
     - dev
     - master

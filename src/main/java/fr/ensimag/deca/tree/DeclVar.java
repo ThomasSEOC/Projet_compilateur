@@ -1,9 +1,9 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.codegen.VirtualRegister;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -46,33 +46,49 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
         // check type
         type.verifyType(compiler);
         if (type.getType().isVoid()) {
             throw new ContextualError("Var must not be void", getLocation());
         }
 
+        // check if the name is a Predefined type
+        EnvironmentType envTypesPredef = compiler.getTypesPredef();
+        SymbolTable.Symbol realSymbol = varName.getName();
+        if (envTypesPredef.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a predefined type, can't be a variable name", getLocation());
+        }
+
+        // check if the name is a class name
+        EnvironmentType envTypes = compiler.getTypes();
+
+        if (envTypes.get(realSymbol) != null){
+            throw new ContextualError(realSymbol + " is a class name defined at "+
+                    envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a variable name", getLocation());
+        }
+
         // check initialization
         initialization.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
 
+        // put the variable name in the local environment
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
-//            compiler.getSymbolTable().getSymbol(varName.getName().getName())
-//            System.out.println(varName.getName());
-//            localEnv.declare(varName.getName(), type.getExpDefinition());
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
-
-            //System.out.println(compiler.getSymbolTable().getSymbol(varName.getName().getName()));
         } catch (DoubleDefException e) {
-            throw new ContextualError("Var is already defined", getLocation());
-//            System.out.println(varName.getName() + " : " + e);
-//            System.exit(1);
-        }
+                throw new ContextualError(realSymbol + " is already defined at " +
+                        localEnv.get(realSymbol).getLocation(), getLocation());
+            }
     }
+
     
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(type.getName().getName());
+        s.print(" ");
+        s.print(varName.getName().getName());
+        initialization.decompile(s);
+        s.println(";");
     }
 
     @Override
@@ -101,10 +117,15 @@ public class DeclVar extends AbstractDeclVar {
         // init variable if initialization
         if (initialization instanceof Initialization) {
             Initialization init = (Initialization) initialization;
-            init.getExpression().codeGenInst(compiler);
-            VirtualRegister result = compiler.getCodeGenBackend().getContextManager().operationStackPop();
-            compiler.addInstruction(new STORE(result.requestPhysicalRegister(), varName.getVariableDefinition().getOperand()));
-            result.destroy();
+
+            // create an Assign
+            Assign expr = new Assign(varName, init.getExpression());
+            AssignOperation operator = new AssignOperation(compiler.getCodeGenBackend(), expr);
+            operator.doOperation();
+//            init.getExpression().codeGenInst(compiler);
+//            VirtualRegister result = compiler.getCodeGenBackend().getContextManager().operationStackPop();
+//            compiler.addInstruction(new STORE(result.requestPhysicalRegister(), varName.getVariableDefinition().getOperand()));
+//            result.destroy();
         }
     }
 }

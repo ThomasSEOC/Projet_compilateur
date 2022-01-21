@@ -1,0 +1,5 @@
+{
+    float x = 1 + 2.5;
+    println(x);
+
+}

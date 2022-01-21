@@ -16,7 +16,7 @@ float b = 4;
 while (a < 4){
     a = a + /*float*/1.5;
     b = b + 1;
-    print ("ici, /*float*/a vaut" + a);
+    print ("ici, /*float*/a vaut", a);
     }
 return b;
 }

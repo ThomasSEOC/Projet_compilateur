@@ -1,0 +1,13 @@
+// Description:
+//    Programme testant While.
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 17/01/2022
+{
+while (true){
+1+1;
+}
+}

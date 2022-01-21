@@ -2,7 +2,7 @@
 //    Programme minimaliste pour tester manuellement
 
 {
-        int x = 1;
+        float f = (1<2);
         //println(8/2);
         //println(16%3);
         //println(1+3);

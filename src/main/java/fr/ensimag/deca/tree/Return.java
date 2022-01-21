@@ -35,7 +35,7 @@ public class Return extends AbstractExpr{
     public void decompile(IndentPrintStream s) {
         s.print("return ");
         returnExpr.decompile(s);
-        s.print(";");
+        //s.print(";");
     }
 
     @Override

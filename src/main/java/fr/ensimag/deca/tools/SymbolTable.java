@@ -28,7 +28,6 @@ public class SymbolTable {
      */
     public Symbol create(String name) {
 
-        //throw new UnsupportedOperationException("Symbol creation");
         if(!(map.containsKey(name))){
             Symbol val = new Symbol(name);
             map.put(name,val);

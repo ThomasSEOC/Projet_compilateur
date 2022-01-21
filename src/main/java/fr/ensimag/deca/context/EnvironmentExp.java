@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.Location;
+import fr.ensimag.deca.tree.LocationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,43 +25,40 @@ import java.util.Map;
  * @date 01/01/2022
  */
 public class EnvironmentExp {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
-
-    private Map<Symbol, Definition> dico = new HashMap<Symbol, Definition>();
 
     EnvironmentExp parentEnvironment; //Superclass
-    
+
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
-        //permet de conserver la hiérarchie
         this.parentEnvironment = parentEnvironment;
     }
 
-    public static class DoubleDefException extends Exception {
-	
-        private static final long serialVersionUID = -2733379901827316441L;
-	public DoubleDefException(String message) {
-	    super(message);
-	}
+    private Map<Symbol, ExpDefinition> dico = new HashMap<Symbol, ExpDefinition>();
+
+    public Map<Symbol, ExpDefinition> getDico() {
+        return dico;
     }
+
 
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
     public Definition get(Symbol key) {
+
+        // Symbol already in the dictionary
         if (dico.containsKey(key)) {
             return (dico.get(key));
         }
-
-	//Condition d'arrêt
+        // If the dictionary doesn't have any parent
         if (parentEnvironment == null){
             return null;
         }
-	
-        return parentEnvironment.get(key); //On choisit une fonction récursive
+
+        //Recursion : search the symbol in the parent dictionary
+        return parentEnvironment.get(key);
     }
+
+
 
     /**
      * Add the definition def associated to the symbol name in the environment.
@@ -76,11 +75,10 @@ public class EnvironmentExp {
      *             if the symbol is already defined at the "current" dictionary
      *
      */
-    public void declare(Symbol name, Definition def) throws DoubleDefException {
+    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
 	if (dico.containsKey(name)) {
-	    throw new DoubleDefException("Arleady defined");
+	    throw new DoubleDefException(name + " is already defined", dico.get(name).getLocation());
 	}
-	
         dico.put(name, def);
     }
 

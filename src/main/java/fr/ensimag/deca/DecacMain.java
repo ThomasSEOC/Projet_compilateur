@@ -29,10 +29,10 @@ public class DecacMain {
         }
         if (options.getPrintBanner() == BANNER_OK) {
             System.out.println("EQUIPE GL54 : ");
-            System.out.println(" - Wang Caroline");
-            System.out.println(" - Ho-Sun Jules");
-            System.out.println(" - Falgaryrac Loïc");
-            System.out.println(" - Dijs Thomas");
+            System.out.println(" - WANG Caroline");
+            System.out.println(" - HO-SUN Jules");
+            System.out.println(" - FALGARYRAC Loïc");
+            System.out.println(" - DIJS Thomas");
             System.out.println(" - Noiry Sylvain");
             System.exit(0);
         }

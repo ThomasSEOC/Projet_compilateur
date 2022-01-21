@@ -36,13 +36,12 @@ public class Initialization extends AbstractInitialization {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         expression = expression.verifyRValue(compiler, localEnv, currentClass, t);
-
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" = " + expression.decompile());
     }
 
     @Override

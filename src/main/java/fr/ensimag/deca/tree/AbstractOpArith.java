@@ -24,40 +24,44 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
 		AbstractExpr lOp = getLeftOperand();
 		AbstractExpr rOp = getRightOperand();
-//		lOp.verifyExpr(compiler, localEnv, currentClass);
-//		rOp.verifyExpr(compiler, localEnv, currentClass);
-//		Type typeLOp = lOp.getType();
-//		Type typeROp = rOp.getType();
 		Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
 		Type typeROp = rOp.verifyExpr(compiler, localEnv, currentClass);
-		if ((typeLOp.isInt() || typeLOp.isFloat()) && (typeROp.isInt() || typeROp.isFloat())) { // vérifie que les deux opérandes sont soit des int soit des float
-			setType(typeLOp);
-			if (typeLOp.isInt() && typeROp.isInt()) {
-				return typeLOp; //si les 2 sont des int, retourne int
-			}
-
-			else if (typeLOp.isFloat() && typeROp.isFloat()) {
-				return typeLOp; //si l'opérande de gauche est un flottant, retourne un flottant
-			}
-			else if (typeLOp.isFloat() && typeROp.isInt()) {
-				setRightOperand(new ConvFloat(getRightOperand()));
+		// If the operands are int or float : 4 cases
+		if (typeLOp.isInt()) {
+			// Both are int
+			if (typeROp.isInt()) {
+				setType(typeLOp);
 				return typeLOp;
 			}
-			else {
+
+			// Right operand is int, left one is float
+			else if (typeROp.isFloat()){
+				setType(typeROp);
 				setLeftOperand(new ConvFloat(getLeftOperand()));
+				getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 				return typeROp;
 			}
-
-			//return typeROp; //si les opérandes ne sont pas toutes les deux des int et que l'opérande de gauche n'est pas un float, alors celle de droite l'est
 		}
-
+		else if (typeLOp.isFloat()) {
+			// Right operand is float, left one is int
+			if (typeROp.isInt()) {
+				setType(typeLOp);
+				setRightOperand(new ConvFloat(getRightOperand()));
+				getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+				return typeLOp;
+			}
+			// Both are float
+			else if (typeROp.isFloat()) {
+				setType(typeLOp);
+				return typeLOp;
+			}
+		}
 		throw new ContextualError("Both binary arithmetic operators need to be either an int or a float", getLocation());
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
-        operator.doOperation();
         operator.print();
     }
 }
