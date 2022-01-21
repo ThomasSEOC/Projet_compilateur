@@ -381,8 +381,7 @@ select_expr returns[AbstractExpr tree]
             setLocation($tree,$e.start);
         }
     | e1=select_expr DOT i=ident {
-            assert($e1.tree != null);
-            assert($i.tree != null);
+
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
@@ -392,6 +391,8 @@ select_expr returns[AbstractExpr tree]
 
         }
         | /* epsilon */ {
+            assert($e1.tree != null);
+            assert($i.tree != null);
             $tree = new Selection($e1.tree,$i.tree);
             setLocation($tree,$e1.start);
         }
