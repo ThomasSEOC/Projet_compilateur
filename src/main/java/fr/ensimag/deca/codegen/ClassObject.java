@@ -39,18 +39,19 @@ public class ClassObject extends AbstractClassObject {
     public void VTableCodeGen(int offset) {
         setVTableOffset(offset);
 
-        DecacCompiler compiler = getClassManager().getBackend().getCompiler();
+        CodeGenBackend backend = getClassManager().getBackend();
+        backend.addComment("init vtable for " + getNameClass().getName().getName());
         AbstractClassObject superObject = getClassManager().getClassObject(superClass);
-        superObject.VTableCodeGen(offset);
+//        superObject.VTableCodeGen(offset);
 
-        compiler.addInstruction(new LEA(new RegisterOffset(superObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
-        compiler.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, Register.GB)));
+        backend.addInstruction(new LEA(new RegisterOffset(superObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
+        backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, Register.GB)));
 
         int i = offset + superObject.getVTableSize();
         for (AbstractDeclMethod method : methods.getList()) {
             Label codeLabel = new Label("Code." + nameClass.getName().getName() + "." + method.toString());
-            compiler.addInstruction(new LOAD(new LabelOperand(codeLabel), GPRegister.getR(0)));
-            compiler.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i++, Register.GB)));
+            backend.addInstruction(new LOAD(new LabelOperand(codeLabel), GPRegister.getR(0)));
+            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(i++, Register.GB)));
         }
     }
 
@@ -104,7 +105,7 @@ public class ClassObject extends AbstractClassObject {
         for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
             DeclMethod method = (DeclMethod) abstractMethod;
             backend.addLabel(new Label("Code." + getNameClass().getName().getName() + "." + method.getName().getName()));
-            backend.addComment("code for " + method.getName().getName().getName());
+            backend.addComment(method.getName().getName().getName());
             backend.createContext();
 
             // add params

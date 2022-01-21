@@ -9,15 +9,16 @@ import java.util.*;
 public class ClassManager {
     private final CodeGenBackend backend;
     private List<AbstractClassObject> classList;
-    private final Map<AbstractIdentifier, AbstractClassObject> classMap;
+    private final Map<String, AbstractClassObject> classMap;
     private int vtableOffset = 0;
 
     public ClassManager(CodeGenBackend backend) {
         this.backend = backend;
         vtableOffset = 1;
         classList = new ArrayList<>();
-        classMap = new HashMap<AbstractIdentifier, AbstractClassObject>();
+        classMap = new HashMap<>();
         classList.add(new DefaultObject(this));
+        classMap.put("Object", classList.get(0));
     }
 
     public CodeGenBackend getBackend() {
@@ -31,11 +32,11 @@ public class ClassManager {
     public void addClass(AbstractIdentifier nameClass, AbstractIdentifier superClass, ListDeclMethod methods, ListDeclField fields) {
         ClassObject classObject = new ClassObject(this, nameClass, superClass, methods, fields);
         classList.add(classObject);
-        classMap.put(nameClass, classObject);
+        classMap.put(nameClass.getName().getName(), classObject);
     }
 
     public AbstractClassObject getClassObject(AbstractIdentifier nameClass) {
-        return classMap.get(nameClass);
+        return classMap.get(nameClass.getName().getName());
     }
 
     private List<List<AbstractClassObject>> orderClassObjects() {
@@ -45,7 +46,7 @@ public class ClassManager {
         List<List<AbstractClassObject>> list = new ArrayList<>();
 
         // first element is default object
-        List<AbstractClassObject> currentObjects = new ArrayList<AbstractClassObject>();
+        List<AbstractClassObject> currentObjects = new ArrayList<>();
         AbstractClassObject defaultObject = classList.remove(0);
         currentObjects.add(defaultObject);
         list.add(currentObjects);
@@ -65,6 +66,7 @@ public class ClassManager {
                     if (lastObjects.get(i).getClassName() == superClassIdentifier) {
                         found = true;
                     }
+                    i++;
                 }
 
                 if (found) {
@@ -87,15 +89,20 @@ public class ClassManager {
     }
 
     public void VTableCodeGen() {
-        List<List<AbstractClassObject>> orderedClassList = orderClassObjects();
-
         backend.getCompiler().addComment("VTABLE INIT");
 
-        for (List<AbstractClassObject> stage : orderedClassList) {
-            for (AbstractClassObject classObject : stage) {
-                classObject.VTableCodeGen(vtableOffset);
-                vtableOffset += classObject.getVTableSize();
-            }
+//        List<List<AbstractClassObject>> orderedClassList = orderClassObjects();
+//
+//        for (List<AbstractClassObject> stage : orderedClassList) {
+//            for (AbstractClassObject classObject : stage) {
+//                classObject.VTableCodeGen(vtableOffset);
+//                vtableOffset += classObject.getVTableSize();
+//            }
+//        }
+
+        for (AbstractClassObject classObject : classList) {
+            classObject.VTableCodeGen(vtableOffset);
+            vtableOffset += classObject.getVTableSize();
         }
 
         backend.writeInstructions();

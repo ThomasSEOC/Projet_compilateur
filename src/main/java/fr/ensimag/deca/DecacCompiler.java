@@ -302,9 +302,9 @@ public class DecacCompiler {
             return false;
         }
 
-        assert(prog.checkAllLocations());
+//        assert(prog.checkAllLocations());
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+//        assert(prog.checkAllDecorations());
 
         if (compilerOptions.getCompilerStages() == CompilerOptions.PARSE_AND_VERIF) {
             return false;
