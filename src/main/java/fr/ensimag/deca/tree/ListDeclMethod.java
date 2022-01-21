@@ -22,11 +22,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         Iterator<AbstractDeclMethod> it = this.iterator();
         while (it.hasNext()) {
             it.next().verifyDeclMethod(compiler, localEnv, currentClass);
-            currentClass.incNumberOfMethods();
         }
     }
 
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclMethod c : getList()) {
