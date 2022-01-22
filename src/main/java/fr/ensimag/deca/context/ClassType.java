@@ -62,7 +62,6 @@ public class ClassType extends Type {
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {
         //On vérifie que ClassType sous-classe de potentialSuperClass:
-	// (c'est pas moi qui ai fait ce commentaire)
 	ClassDefinition classDef = definition;
 	while (classDef != null) {
 	    if (classDef.getType() == potentialSuperClass) {

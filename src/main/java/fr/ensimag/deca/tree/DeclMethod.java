@@ -49,7 +49,7 @@ public class DeclMethod extends AbstractDeclMethod{
 
         // Check if we need to override the method that already exists in super class
         ClassDefinition superClass = currentClass.getSuperClass();
-        if (superClass != null){
+	if (superClass != null){
             ExpDefinition superDef = (ExpDefinition) superClass.getMembers().get(realSymbol);
             // if the name is already in the envExp of the super class
             if (superDef != null){
@@ -76,7 +76,7 @@ public class DeclMethod extends AbstractDeclMethod{
                 }
             }
             else {
-                currentDef = new MethodDefinition(currentType, getLocation(), ((MethodDefinition) currentDef).getSignature(), currentClass.incNumberOfMethods());
+                currentDef = new MethodDefinition(currentType, getLocation(), signature, currentClass.incNumberOfMethods());
             }
         }
         // Put the method in the localEnv
