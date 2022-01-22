@@ -8,7 +8,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
+//import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -108,20 +108,24 @@ public abstract class AbstractExpr extends AbstractInst {
             return this;
 	}
 	
-	if (type.isClass()) {
-	    ClassType classType= (ClassType) type;
-	    ClassDefinition typeClassDef = classType.getDefinition();
-	    while (typeClassDef != null) {
-		System.out.println(typeClassDef.getType());
-		if (typeClassDef.getType() == expectedType){
-		    return this;
-		}
-		System.out.println(typeClassDef.getSuperClass());
-		typeClassDef = typeClassDef.getSuperClass();
+	if (expectedType.isClass() && type.isClassOrNull()) {
+	    if (type.isNull()) {
+		return this;
+	    }
+
+	    ClassType classType = (ClassType) type;
+	    ClassType expectedClassType = (ClassType) expectedType;
+	    //while (typeClassDef != null) {
+	    //if (typeClassDef.getType() == expectedType){
+	    //	    return this;
+	    //	}
+	    //	typeClassDef = typeClassDef.getSuperClass();
+	    //}
+	    if (classType.isSubClassOf(expectedClassType)) {
+		return this;
 	    }
 	}
-	    //Il va falloir rajouter le cas des sous-types avec les objets
-
+	    
     	throw new ContextualError(expectedType + " is expected", getLocation());
     }
     

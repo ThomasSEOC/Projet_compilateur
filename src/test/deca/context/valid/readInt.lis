@@ -1,14 +1,10 @@
-DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
-DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:33) - verify Main: start
-DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:40) - verify Main: end
-DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41) - verify program: end
 `> [1, 0] Program
    +> ListDeclClass [List with 0 elements]
    `> [1, 0] Main
       +> ListDeclVar [List with 1 elements]
       |  []> [2, 8] DeclVar
       |      +> [2, 4] Identifier (int)
-      |      |  definition: type defined at [2, 4], type=int
+      |      |  definition: type (builtin)[builtin], type=int
       |      +> [2, 8] Identifier (x)
       |      |  definition: variable defined at [2, 8], type=int
       |      `> [2, 8] Initialization

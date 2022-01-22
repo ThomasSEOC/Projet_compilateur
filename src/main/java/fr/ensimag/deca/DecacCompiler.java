@@ -16,7 +16,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
 import fr.ensimag.deca.tools.SymbolTable;
-import java.util.HashMap;
+//import java.util.HashMap;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.context.DoubleDefException;
 
@@ -82,6 +82,7 @@ public class DecacCompiler {
         TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
         TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
 	    TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
+	    
 
         // Definition for the class Object
         ClassType object =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
@@ -91,6 +92,9 @@ public class DecacCompiler {
         //ObjId.setDefinition(objDef);
         //DeclClass classObject = DeclClass(ObjId, null, methods, field);
 
+	//DeclMethod equals = new DeclMethod
+	
+	
         // Declare in the envTypePredef
         try {
             envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);

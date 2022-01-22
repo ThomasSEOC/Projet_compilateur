@@ -1,0 +1,15 @@
+`> [9, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [9, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [10, 0] ListInst [List with 1 elements]
+         []> [10, 0] While
+             +> [10, 7] BooleanLiteral (true)
+             |  type: boolean
+             `> [11, 0] ListInst [List with 1 elements]
+                []> [11, 0] Plus
+                    type: int
+                    +> [11, 0] Int (1)
+                    |  type: int
+                    `> [11, 2] Int (1)
+                       type: int

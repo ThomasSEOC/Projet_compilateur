@@ -4,7 +4,6 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
-import jdk.internal.misc.ScopedMemoryAccess;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -58,8 +57,7 @@ public class DeclClass extends AbstractDeclClass {
 
         // Definition and type of the class
         SymbolTable.Symbol classSymbol = nameClass.getName();
-
-        classType = new ClassType(classSymbol, getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
+        classType = new ClassType(classSymbol, getLocation(), (ClassDefinition) compiler.getTypes().get(superClass.getName()));
         classDefinition = classType.getDefinition();
         nameClass.setDefinition(classDefinition);
         nameClass.setType(classType);

@@ -1,17 +1,15 @@
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:42) - verify listClassMember: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:47) - verify listClassMember: end
 `> [1, 0] Program
    +> ListDeclClass [List with 2 elements]
    |  []> [1, 0] DeclClass
    |  ||  +> [1, 6] Identifier (A)
    |  ||  |  definition: type defined at [1, 0], type=A
    |  ||  +> Identifier (Object)
-   |  ||  |  definition: type (builtin), type=Object
+   |  ||  |  definition: type (builtin)[builtin], type=Object
    |  ||  +> ListDeclMethod [List with 0 elements]
    |  ||  `> [2, 8] ListDeclField [List with 1 elements]
    |  ||     []> [2, 8] DeclField
    |  ||         +> [2, 4] Identifier (int)
-   |  ||         |  definition: type (builtin), type=int
+   |  ||         |  definition: type (builtin)[builtin], type=int
    |  ||         +> [2, 8] Identifier (x)
    |  ||         |  definition: field defined at [2, 8], type=int
    |  ||         `> NoInitialization

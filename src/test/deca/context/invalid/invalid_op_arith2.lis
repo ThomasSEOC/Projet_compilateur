@@ -1,0 +1,1 @@
+./src/test/deca/context/invalid/invalid_op_arith2.deca:2:0: Both binary arithmetic operators need to be either an int or a float
