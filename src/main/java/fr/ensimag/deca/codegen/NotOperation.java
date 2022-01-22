@@ -1,6 +1,11 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 /**
  * class responsible for not operation
@@ -21,6 +26,27 @@ public class NotOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
+
+        Constant constant = null;
+        if (opti) {
+            constant = getConstant(getCodeGenBackEnd().getCompiler());
+        }
+
+        if (constant != null) {
+            if (constant.getValueBoolean()) {
+                if (getCodeGenBackEnd().getBranchCondition()) {
+                    getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                }
+            }
+            else {
+                if (!getCodeGenBackEnd().getBranchCondition()) {
+                    getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                }
+            }
+            return;
+        }
+
         // cast to Not
         Not expr = (Not) getExpression();
 
@@ -74,4 +100,16 @@ public class NotOperation extends AbstractOperation {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    public Constant getConstant(DecacCompiler compiler) {
+        // cast to Not
+        Not expr = (Not) getExpression();
+
+        Constant constant = expr.getOperand().getConstant(compiler);
+        if (constant != null) {
+            return new Constant(!constant.getValueBoolean());
+        }
+
+        return null;
+    }
 }

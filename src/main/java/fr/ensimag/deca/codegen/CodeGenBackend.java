@@ -53,7 +53,7 @@ public class CodeGenBackend {
         globalVariables = new HashMap<>();
         localVariables = new Stack<>();
         localVariableSize = new Stack<>();
-        tempUseStackSize = new Stack();
+        tempUseStackSize = new Stack<>();
         instructions = new ArrayList<>();
         comments = new ArrayList<>();
         instructionsComments = new ArrayList<>();
