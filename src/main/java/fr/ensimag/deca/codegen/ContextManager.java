@@ -45,13 +45,18 @@ public class ContextManager {
         // save register at beginning
         List<Instruction> savingInstructions = new ArrayList<>();
         List<String> savingComments = new ArrayList<>();
+        int toSaveCount = 0;
         for (int i = 0; i < 16; i++) {
             if (toSavePhysicalRegisters[i]) {
                 savingInstructions.add(new PUSH(GPRegister.getR(i)));
                 savingComments.add(String.format("save R%d", i));
+                toSaveCount++;
             }
         }
         backend.addInstructionFirst(savingInstructions, savingComments);
+        backend.addCommentFirst("context save");
+
+        backend.getStartupManager().generateStartupCode(toSaveCount);
 
         // if SP has an offset, remove it
         if (stackOffset != 0) {
@@ -59,6 +64,7 @@ public class ContextManager {
         }
 
         // restore registers at the end
+        backend.addComment("context restore");
         for (int i = 0; i < 16; i++) {
             if (toSavePhysicalRegisters[i]) {
                 backend.addInstruction(new POP(GPRegister.getR(i)), String.format("restore R%d", i));

@@ -16,7 +16,6 @@
 ; start main program
 	TSTO #0
 	BOV stack_overflow_error
-	ADDSP #0
 ; Beginning of main instructions:
 	WSTR "salut"
 	WNL
@@ -39,6 +38,13 @@ code.Object.equals:
 ; Code for methods of A
 ; Code for init of A
 Code.A.Init:
+	TSTO #3
+	BOV stack_overflow_error
+; context save
+	PUSH R2	; save R2
+	PUSH R3	; save R3
+	PUSH R4	; save R4
+; store VTable pointer
 	LOAD -2(LB), R2
 	LEA 3(GB), R0
 	STORE R0, 0(R2)
@@ -54,6 +60,10 @@ Code.A.Init:
 	LOAD #0x1.4p1, R4
 	ADD R3, R4	; Operation Plus
 	STORE R4, 3(R2)
+; context restore
+	POP R2	; restore R2
+	POP R3	; restore R3
+	POP R4	; restore R4
 	RTS
 ; ###############################################################
 ; ERRORS

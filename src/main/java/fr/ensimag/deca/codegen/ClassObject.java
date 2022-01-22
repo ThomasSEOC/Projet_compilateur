@@ -96,6 +96,13 @@ public class ClassObject extends AbstractClassObject {
         backend.addComment("Code for init of " + getNameClass().getName().getName());
 
         backend.addLabel(new Label("Code." + getNameClass().getName().getName() + ".Init"));
+
+        backend.writeInstructions();
+
+        backend.createContext();
+
+        backend.addComment("store VTable pointer");
+
         // get object pointer
         VirtualRegister objectStructurePointer = backend.getContextManager().requestNewRegister();
         backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), objectStructurePointer.requestPhysicalRegister()));
@@ -111,7 +118,8 @@ public class ClassObject extends AbstractClassObject {
         VirtualRegister returnedObjectStructurePointer = backend.getContextManager().operationStackPop();
         returnedObjectStructurePointer.destroy();
 
-        backend.addInstruction(new RTS());
+        backend.popContext();
+
 
 //        for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
 //            backend.addComment("code for fields initialization");
@@ -179,8 +187,7 @@ public class ClassObject extends AbstractClassObject {
             }
 
             method.getBody().codeGen(backend.getCompiler());
-            backend.getStartupManager().generateStartupCode();
-            backend.writeInstructions();
+
             backend.popContext();
         }
     }

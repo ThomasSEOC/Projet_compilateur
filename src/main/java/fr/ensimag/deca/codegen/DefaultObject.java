@@ -98,6 +98,8 @@ public class DefaultObject extends AbstractClassObject {
         backend.addComment("Code for methods of Object :");
         structureInitCodeGen();
         codeObjectEqualsCodeGen();
+
+        backend.writeInstructions();
     }
 
     /**
