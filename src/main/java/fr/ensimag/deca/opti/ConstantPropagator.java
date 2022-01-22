@@ -30,8 +30,7 @@ public class ConstantPropagator {
                             Identifier leftOperand = (Identifier) assign.getLeftOperand();
                             constants.put(leftOperand.getSsaVariable(), constant);
                             toProcess.add(leftOperand.getSsaVariable());
-                            Set<InstructionIdentifiers> usages = graph.getSsaProcessor().getInstructionIdentifiers(leftOperand.getSsaVariable());
-                            usages.removeIf(identifiers -> identifiers.getWriteIdentifier() == leftOperand);
+                            graph.getSsaProcessor().removeIdentifier(leftOperand.getSsaVariable(), leftOperand);
                         }
                         else {
                             newListInst.add(instruction);
@@ -56,12 +55,14 @@ public class ConstantPropagator {
 
             if (variable.getInitialization() instanceof NoInitialization) {
                 newListDeclVar.add(variable);
+                deletedSSAVariables.put(variable.getVarName().getName().getName(), 1);
             }
             else {
                 Initialization initialization = (Initialization) variable.getInitialization();
                 Constant constant = initialization.getExpression().getConstant(graph.getCompiler());
                 if (constant == null) {
                     newListDeclVar.add(variable);
+                    deletedSSAVariables.put(variable.getVarName().getName().getName(), 0);
                 }
                 else {
                     Identifier variableIdentifier = (Identifier) variable.getVarName();
@@ -75,6 +76,7 @@ public class ConstantPropagator {
                     else {
                         newListDeclVar.add(new DeclVar(variable.getType(), variable.getVarName(), new NoInitialization()));
                     }
+                    deletedSSAVariables.put(variable.getVarName().getName().getName(), 1);
                 }
 
             }
@@ -94,17 +96,12 @@ public class ConstantPropagator {
             Constant constant = constants.remove(toDelete);
             Set<InstructionIdentifiers> usages = graph.getSsaProcessor().getInstructionIdentifiers(toDelete);
 
-            if (!deletedSSAVariables.containsKey(toDelete.getName())) {
-                deletedSSAVariables.put(toDelete.getName(), 1);
-            }
-            else {
-                deletedSSAVariables.replace(toDelete.getName(), deletedSSAVariables.get(toDelete.getName()) + 1);
-            }
+            deletedSSAVariables.replace(toDelete.getName(), deletedSSAVariables.get(toDelete.getName()) + 1);
 
             for (InstructionIdentifiers identifiers : usages) {
-                for (Identifier identifer : identifiers.getReadIdentifiers()) {
-                    if (identifer.getSsaVariable().equals(toDelete)) {
-                        identifer.setConstant(constant);
+                for (Identifier identifier : identifiers.getReadIdentifiers()) {
+                    if (identifier.getSsaVariable().equals(toDelete)) {
+                        identifier.setConstant(constant);
                     }
                 }
 
@@ -114,9 +111,9 @@ public class ConstantPropagator {
                     Constant nextConstant = assign.getRightOperand().getConstant(graph.getCompiler());
                     if ((nextConstant != null) && (assign.getLeftOperand() instanceof Identifier)) {
                         Identifier variableIdentifier = (Identifier) assign.getLeftOperand();
-                        constants.put(variableIdentifier.getSsaVariable(), constant);
+                        constants.put(variableIdentifier.getSsaVariable(), nextConstant);
                         toProcess.add(variableIdentifier.getSsaVariable());
-                        usages.removeIf(ident -> ident.getWriteIdentifier() == variableIdentifier);
+                        graph.getSsaProcessor().removeIdentifier(variableIdentifier.getSsaVariable(), variableIdentifier);
                         instruction.setUseless();
                     }
                 }
@@ -148,6 +145,8 @@ public class ConstantPropagator {
         for (AbstractDeclVar var : graph.getDeclVariables().getList()) {
             String varName = ((DeclVar) var).getVarName().getName().getName();
             if (deletedSSAVariables.containsKey(varName)) {
+//                System.out.println(deletedSSAVariables.get(varName));
+//                System.out.println(graph.getSsaProcessor().getSSAVariablesCount(varName));
                 if (deletedSSAVariables.get(varName) != graph.getSsaProcessor().getSSAVariablesCount(varName)) {
                     newListDeclVar.add(var);
                 }

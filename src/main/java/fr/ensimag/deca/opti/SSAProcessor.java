@@ -42,6 +42,10 @@ public class SSAProcessor {
         return usages.get(variable);
     }
 
+    public void removeIdentifier(SSAVariable variable, Identifier identifier) {
+        usages.get(variable).removeIf(ident -> ident.getWriteIdentifier() == identifier);
+    }
+
     private void startMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
         waitingFusionCodeBlocs.put(bloc, new HashMap<>());
 
