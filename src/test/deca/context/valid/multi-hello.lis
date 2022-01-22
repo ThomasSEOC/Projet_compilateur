@@ -1,17 +1,19 @@
-`> [10, 0] Program
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+`> (10, 0) Program
    +> ListDeclClass [List with 0 elements]
-   `> [10, 0] Main
+   `> (10, 0) Main
       +> ListDeclVar [List with 0 elements]
-      `> [13, 15] ListInst [List with 3 elements]
-         []> [11, 8] Println
+      `> (13, 15) ListInst [List with 3 elements]
+         []> (11, 8) Println
          ||  `> ListExpr [List with 1 elements]
-         ||     []> [11, 16] StringLiteral ("Hello")
+         ||     []> (11, 16) StringLiteral ("Hello")
          ||         type: string
-         []> [12, 8] Println
+         []> (12, 8) Println
          ||  `> ListExpr [List with 1 elements]
-         ||     []> [12, 16] StringLiteral ("world")
+         ||     []> (12, 16) StringLiteral ("world")
          ||         type: string
-         []> [13, 15] Println
+         []> (13, 15) Println
              `> ListExpr [List with 1 elements]
-                []> [13, 23] StringLiteral ("Hello")
+                []> (13, 23) StringLiteral ("Hello")
                     type: string

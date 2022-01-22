@@ -1,22 +1,24 @@
-`> [1, 0] Program
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+`> (1, 0) Program
    +> ListDeclClass [List with 1 elements]
-   |  []> [1, 0] DeclClass
-   |      +> [1, 6] Identifier (A)
-   |      |  definition: type defined at [1, 0], type=A
+   |  []> (1, 0) DeclClass
+   |      +> (1, 6) Identifier (A)
+   |      |  definition: type defined at (1, 0), type=A
    |      +> Identifier (Object)
-   |      |  definition: type (builtin)[builtin], type=Object
+   |      |  definition: type(builtin), type=Object
    |      +> ListDeclMethod [List with 0 elements]
    |      `> ListDeclField [List with 0 elements]
-   `> [2, 0] Main
+   `> (2, 0) Main
       +> ListDeclVar [List with 1 elements]
-      |  []> [2, 3] DeclVar
-      |      +> [2, 1] Identifier (A)
-      |      |  definition: type defined at [1, 0], type=A
-      |      +> [2, 3] Identifier (a)
-      |      |  definition: variable defined at [2, 3], type=A
-      |      `> [2, 3] Initialization
-      |         `> [2, 7] New
+      |  []> (2, 3) DeclVar
+      |      +> (2, 1) Identifier (A)
+      |      |  definition: type defined at (1, 0), type=A
+      |      +> (2, 3) Identifier (a)
+      |      |  definition: variable defined at (2, 3), type=A
+      |      `> (2, 3) Initialization
+      |         `> (2, 7) New
       |            type: A
-      |            `> [2, 11] Identifier (A)
-      |               definition: type defined at [1, 0], type=A
+      |            `> (2, 11) Identifier (A)
+      |               definition: type defined at (1, 0), type=A
       `> ListInst [List with 0 elements]

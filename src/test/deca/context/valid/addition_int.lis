@@ -1,27 +1,29 @@
-`> [10, 0] Program
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+`> (10, 0) Program
    +> ListDeclClass [List with 0 elements]
-   `> [10, 0] Main
+   `> (10, 0) Main
       +> ListDeclVar [List with 0 elements]
-      `> [12, 0] ListInst [List with 2 elements]
-         []> [11, 0] Println
+      `> (12, 0) ListInst [List with 2 elements]
+         []> (11, 0) Println
          ||  `> ListExpr [List with 2 elements]
-         ||     []> [11, 9] StringLiteral (" 1 + 1 = ")
+         ||     []> (11, 9) StringLiteral (" 1 + 1 = ")
          ||     ||  type: string
-         ||     []> [11, 22] Plus
+         ||     []> (11, 22) Plus
          ||         type: int
-         ||         +> [11, 23] Int (1)
+         ||         +> (11, 23) Int (1)
          ||         |  type: int
-         ||         `> [11, 25] Int (1)
+         ||         `> (11, 25) Int (1)
          ||            type: int
-         []> [12, 0] Println
+         []> (12, 0) Println
              `> ListExpr [List with 2 elements]
-                []> [12, 9] StringLiteral (" 1 + -2 = ")
+                []> (12, 9) StringLiteral (" 1 + -2 = ")
                 ||  type: string
-                []> [12, 23] Plus
+                []> (12, 23) Plus
                     type: int
-                    +> [12, 24] Int (1)
+                    +> (12, 24) Int (1)
                     |  type: int
-                    `> [12, 28] UnaryMinus
+                    `> (12, 28) UnaryMinus
                        type: int
-                       `> [12, 30] Int (2)
+                       `> (12, 30) Int (2)
                           type: int

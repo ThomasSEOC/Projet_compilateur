@@ -1,53 +1,7 @@
-`> (1, 0) Program
-   +> ListDeclClass [List with 1 elements]
-   |  []> (1, 0) DeclClass
-   |      +> (1, 6) Identifier (A)
-   |      |  definition: type defined at (1, 0), type=A
-   |      +> Identifier (Object)
-   |      |  definition: type(builtin), type=Object
-   |      +> ListDeclMethod [List with 3 elements]
-   |      |  []> (3, 4) DeclMethod
-   |      |  ||  +> (3, 4) Identifier (void)
-   |      |  ||  |  definition: type(builtin), type=void
-   |      |  ||  +> (3, 9) Identifier (setX)
-   |      |  ||  +> (3, 14) ListDeclParam [List with 1 elements]
-   |      |  ||  |  []> (3, 14) DeclParam
-   |      |  ||  |      +> (3, 14) Identifier (int)
-   |      |  ||  |      `> (3, 18) Identifier (x)
-   |      |  ||  `> MethodBody
-   |      |  ||     +> ListDeclVar [List with 0 elements]
-   |      |  ||     `> (4, 8) ListInst [List with 1 elements]
-   |      |  ||        []> (4, 8) Assign
-   |      |  ||            +> (4, 8) Selection
-   |      |  ||            |  +> (4, 8) This
-   |      |  ||            |  `> (4, 13) Identifier (x)
-   |      |  ||            `> (4, 17) Identifier (x)
-   |      |  []> (6, 4) DeclMethod
-   |      |  ||  +> (6, 4) Identifier (int)
-   |      |  ||  |  definition: type(builtin), type=int
-   |      |  ||  +> (6, 8) Identifier (getX)
-   |      |  ||  +> ListDeclParam [List with 0 elements]
-   |      |  ||  `> MethodBody
-   |      |  ||     +> ListDeclVar [List with 0 elements]
-   |      |  ||     `> (7, 8) ListInst [List with 1 elements]
-   |      |  ||        []> (7, 15) Return
-   |      |  ||            `> (7, 15) Identifier (x)
-   |      |  []> (9, 4) DeclMethod
-   |      |      +> (9, 4) Identifier (void)
-   |      |      |  definition: type(builtin), type=void
-   |      |      +> (9, 9) Identifier (init)
-   |      |      +> ListDeclParam [List with 0 elements]
-   |      |      `> MethodBody
-   |      |         +> ListDeclVar [List with 0 elements]
-   |      |         `> (10, 8) ListInst [List with 1 elements]
-   |      |            []> (10, 8) Assign
-   |      |                +> (10, 8) Identifier (x)
-   |      |                `> (10, 12) Int (0)
-   |      `> (2, 18) ListDeclField [List with 1 elements]
-   |         []> (2, 18) DeclField
-   |             +> (2, 14) Identifier (int)
-   |             |  definition: type(builtin), type=int
-   |             +> (2, 18) Identifier (x)
-   |             |  definition: field defined at (2, 18), type=int
-   |             `> NoInitialization
-   `> EmptyMain
+Exception in thread "main" java.lang.NullPointerException
+	at fr.ensimag.deca.tree.DeclMethod.verifyDeclMethod(DeclMethod.java:79)
+	at fr.ensimag.deca.tree.ListDeclMethod.verifyListDeclMethod(ListDeclMethod.java:24)
+	at fr.ensimag.deca.tree.DeclClass.verifyClassMembers(DeclClass.java:79)
+	at fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:45)
+	at fr.ensimag.deca.tree.Program.verifyProgram(Program.java:41)
+	at fr.ensimag.deca.context.ManualTestContext.main(ManualTestContext.java:35)
