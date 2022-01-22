@@ -1,0 +1,14 @@
+; Main program
+; ###############################################################
+; ###############################################################
+; start main program
+; Beginning of main instructions:
+Code.Bloc.2:
+	LOAD #1, R1
+	WINT
+	WNL
+Code.Bloc.1:
+	HALT
+; ###############################################################
+; ERRORS
+; end main program

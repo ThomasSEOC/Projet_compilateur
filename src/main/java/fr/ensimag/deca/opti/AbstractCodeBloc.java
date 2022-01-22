@@ -32,6 +32,10 @@ abstract class AbstractCodeBloc {
         return instructions;
     }
 
+    public void setInstructions(ListInst instructions) {
+        this.instructions = instructions;
+    }
+
     public List<InstructionIdentifiers> getInstructionIdentifiersList() {
         return instructionIdentifiers;
     }

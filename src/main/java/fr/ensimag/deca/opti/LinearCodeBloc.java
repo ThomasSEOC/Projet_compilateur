@@ -23,7 +23,9 @@ public class LinearCodeBloc extends AbstractCodeBloc {
             nextBloc.codeGen(graph);
         }
         else {
-            graph.getBackend().addInstruction(new BRA(new Label("Code.Bloc." + getOutArcs().get(0).getStop().getId())));
+            if (!(nextBloc instanceof StopBloc)) {
+                graph.getBackend().addInstruction(new BRA(new Label("Code.Bloc." + getOutArcs().get(0).getStop().getId())));
+            }
         }
 
     }

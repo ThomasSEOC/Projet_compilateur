@@ -21,6 +21,10 @@ public class SSAMerge {
         operands.add(variable);
     }
 
+    public void removeOperand(SSAVariable variable) {
+        operands.remove(variable);
+    }
+
     public SSAVariable getResult() {
         return result;
     }
