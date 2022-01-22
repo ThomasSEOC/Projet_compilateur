@@ -49,13 +49,15 @@ public class Main extends AbstractMain {
         if (compiler.getCompilerOptions().getOptimize() == 2) {
             // create control flow graph;
             ControlFlowGraph graph = new ControlFlowGraph(compiler, declVariables, insts);
-//            System.out.println(graph);
-//            try {
-//                graph.createDotGraph();
-//            }
-//            catch (IOException ex) {
-//                System.out.println("IO error while creating ");
-//            }
+
+            LOG.debug(graph);
+            if (compiler.getCompilerOptions().getCreateGraphFile()) {
+                try {
+                    graph.createDotGraph();
+                } catch (IOException ex) {
+                    System.out.println("IO error while creating ");
+                }
+            }
             graph.codeGen();
         }
         else {
