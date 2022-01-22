@@ -37,7 +37,17 @@ then
   if [ -f "$REF_IMA" ]
   then
     echo "TEST: $i"
-    decac "$i" || exit 1
+    if [ "$#" = 1 ]
+    then
+      if [ "$1" = "-O" ]
+      then
+        decac -O "$i" || exit 1
+      else
+        decac "$i" || exit 1
+      fi
+    else
+      decac "$i" || exit 1
+    fi
     ima "$ASS" 2>"$IMA" 1>"$IMA"
     RES=$(diff "$REF_IMA" "$IMA")
     if [ "$RES" != "" ]

@@ -67,6 +67,7 @@ public class VirtualRegister {
         type = IMMEDIAT_INT;
         this.contextManager = contextManager;
         this.immediateInteger = immediate;
+        setInt();
     }
 
     /**
@@ -78,6 +79,7 @@ public class VirtualRegister {
         type = IMMEDIAT_FLOAT;
         this.contextManager = contextManager;
         this.immediateFloat = immediate;
+        setFloat();
     }
 
     /**

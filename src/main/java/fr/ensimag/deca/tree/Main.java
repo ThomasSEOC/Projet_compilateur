@@ -53,13 +53,13 @@ public class Main extends AbstractMain {
         if (compiler.getCompilerOptions().getOptimize()) {
             // create control flow graph;
             ControlFlowGraph graph = new ControlFlowGraph(compiler, declVariables, insts);
-            System.out.println(graph);
-            try {
-                graph.createDotGraph();
-            }
-            catch (IOException ex) {
-                System.out.println("IO error while creating ");
-            }
+//            System.out.println(graph);
+//            try {
+//                graph.createDotGraph();
+//            }
+//            catch (IOException ex) {
+//                System.out.println("IO error while creating ");
+//            }
             graph.codeGen();
         }
         else {

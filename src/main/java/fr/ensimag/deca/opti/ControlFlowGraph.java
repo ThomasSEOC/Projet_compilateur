@@ -30,7 +30,7 @@ public class ControlFlowGraph extends Graph {
         ssaProcessor.process();
 
         this.constantPropagator = new ConstantPropagator(this);
-        constantPropagator.process();
+        //constantPropagator.process();
     }
 
     public void setDeclVariables(ListDeclVar variables) {
