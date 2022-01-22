@@ -23,7 +23,7 @@
 	PUSH R0
 	BSR Code.A.Init
 	POP R2
-	STORE R2, 1(GB)
+	STORE R2, 5(GB)
 ; Beginning of main instructions:
 	WSTR "salut"
 	WNL

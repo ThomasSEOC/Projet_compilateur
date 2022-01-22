@@ -75,7 +75,6 @@ public class AssignOperation extends AbstractOperation {
         else {
             // generate code for right operand
             AbstractExpr[] listExprs = {expr.getRightOperand()};
-            System.out.println(expr.getRightOperand());
             this.ListCodeGen(listExprs);
 
             // get result of right operand computation

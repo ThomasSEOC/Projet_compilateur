@@ -245,7 +245,7 @@ public class CodeGenBackend {
             }
         }
         // search in global context
-        return globalVariables.get(name);
+        return classManager.getVtableOffset() + globalVariables.get(name) - 1;
     }
 
     public RegisterOffset getVariableRegisterOffset(String name) {
@@ -256,7 +256,7 @@ public class CodeGenBackend {
             }
         }
         // search in global context
-        return new RegisterOffset(globalVariables.get(name), Register.GB);
+        return new RegisterOffset(classManager.getVtableOffset() + globalVariables.get(name) - 1, Register.GB);
     }
 
     /**

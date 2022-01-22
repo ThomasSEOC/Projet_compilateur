@@ -11,8 +11,34 @@
 	STORE R0, 3(GB)
 	LOAD code.Object.equals, R0
 	STORE R0, 4(GB)
+; init vtable for B
+	LEA 3(GB), R0
+	STORE R0, 5(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 6(GB)
 ; ###############################################################
-; EMPTY MAIN
+; ###############################################################
+; start main program
+	TSTO #2
+	BOV stack_overflow_error
+	ADDSP #2
+; create instance of class A
+	NEW #2, R0
+	BOV heap_overflow_error
+	PUSH R0
+	BSR Code.A.Init
+	POP R2
+	STORE R2, 7(GB)
+; create instance of class B
+	NEW #3, R0
+	BOV heap_overflow_error
+	PUSH R0
+	BSR Code.B.Init
+	POP R2
+	STORE R2, 8(GB)
+; Beginning of main instructions:
+	WSTR "salut"
+	WNL
 	HALT
 ; ###############################################################
 ; METHODS
@@ -36,13 +62,30 @@ Code.A.Init:
 	LEA 3(GB), R0
 	STORE R0, 0(R2)
 ; init A.x
-	LOAD #0, R0
-	STORE R0, 1(R2)
+	LOAD #1, R3
+	STORE R3, 1(R2)
+	RTS
+; Code for methods of B
+; Code for init of B
+Code.B.Init:
+	LOAD -2(LB), R2
+	LEA 5(GB), R0
+	STORE R0, 0(R2)
+; init A.x
+	LOAD #1, R3
+	STORE R3, 1(R2)
+; init B.y
+	LOAD #2, R3
+	STORE R3, 2(R2)
 	RTS
 ; ###############################################################
 ; ERRORS
 stack_overflow_error:
 	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+heap_overflow_error:
+	WSTR "Erreur : le tas est plein"
 	WNL
 	ERROR
 ; end main program
