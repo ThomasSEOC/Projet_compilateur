@@ -30,7 +30,7 @@ public class DeclMethod extends AbstractDeclMethod{
         name.decompile(s);
         s.print("(");
         params.decompile(s);
-        s.print(")");
+        s.println(")");
         body.decompile(s);
     }
 

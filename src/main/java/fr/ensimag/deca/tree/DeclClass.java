@@ -16,10 +16,10 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
 
-    private AbstractIdentifier nameClass;
-    private AbstractIdentifier superClass;
-    private ListDeclMethod methods;
-    private ListDeclField field;
+    final private AbstractIdentifier nameClass;
+    final private AbstractIdentifier superClass;
+    final private ListDeclMethod methods;
+    final private ListDeclField field;
 
     public DeclClass(AbstractIdentifier nameClass, AbstractIdentifier superClass, ListDeclMethod methods, ListDeclField field){
         Validate.notNull(nameClass);
@@ -35,12 +35,13 @@ public class DeclClass extends AbstractDeclClass {
     public void decompile(IndentPrintStream s) {
         s.print("class ");
         nameClass.decompile(s);
-        s.print(" extends");
+        s.print(" extends ");
         superClass.decompile(s);
         s.println("{");
         s.indent();
-        methods.decompile(s);
         field.decompile(s);
+        s.println("");
+        methods.decompile(s);
         s.unindent();
         s.println("}");
     }
