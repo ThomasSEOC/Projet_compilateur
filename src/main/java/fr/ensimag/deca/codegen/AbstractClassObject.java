@@ -68,12 +68,6 @@ public abstract class AbstractClassObject {
     abstract public void methodsCodeGen();
 
     /**
-     * generate code for method call of this object
-     * @param methodName called method name
-     */
-    abstract public void callMethod(String methodName);
-
-    /**
      * getter for method offset in VTable
      * @param abstractMethod called method
      * @return offset for this method

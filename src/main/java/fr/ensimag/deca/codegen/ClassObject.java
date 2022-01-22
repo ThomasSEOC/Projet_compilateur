@@ -225,46 +225,6 @@ public class ClassObject extends AbstractClassObject {
     }
 
     /**
-     * generate code for method call
-     * @param methodName called method
-     */
-    @Override
-    public void callMethod(String methodName) {
-//        CodeGenBackend backend = getClassManager().getBackend();
-//        DeclMethod method = (DeclMethod) abstractMethod;
-//
-//        // use operation stack to get object and params in reverse order
-//        int paramsCount = method.getParams().size();
-//        Stack<VirtualRegister> params = new Stack<>();
-//        for (int i = 0; i < paramsCount; i++) {
-//            params.push(backend.getContextManager().operationStackPop());
-//        }
-//
-//        backend.addComment("call method " + method.getName().getName());
-//
-//        // space reservation
-//        backend.addInstruction(new ADDSP(paramsCount+1));
-//
-//        // check object pointer
-//        VirtualRegister objectReference = params.peek();
-//        backend.addInstruction(new LOAD(objectReference.requestPhysicalRegister(), GPRegister.getR(0)));
-//        backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
-//        backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
-//
-//        // add params
-//        for (int i = 0; i < paramsCount; i++) {
-//            backend.addInstruction(new STORE(params.pop().requestPhysicalRegister(), new RegisterOffset(-i, Register.SP)));
-//        }
-//
-//        // jump
-//        int offset = getMethodOffset(method);
-//        backend.addInstruction(new BSR(new RegisterOffset(offset, GPRegister.getR(0))));
-//
-//        // free space
-//        backend.addInstruction(new SUBSP(paramsCount+1));
-    }
-
-    /**
      * getter for specified method offset
      * @param abstractMethod called method
      * @return offset from class object base in VTable

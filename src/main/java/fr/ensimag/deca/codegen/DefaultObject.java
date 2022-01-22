@@ -102,50 +102,6 @@ public class DefaultObject extends AbstractClassObject {
     }
 
     /**
-     * generate code for default object method call
-     * @param methodName called method (only equals is accepted)
-     */
-    @Override
-    public void callMethod(String methodName) {
-//        DeclMethod method = (DeclMethod) abstractMethod;
-//        if (Objects.equals(method.getName().getName().getName(), "equals")) {
-//            CodeGenBackend backend = getClassManager().getBackend();
-//
-//            // use operation stack to get object and params in reverse order
-//            int paramsCount = method.getParams().size();
-//            Stack<VirtualRegister> params = new Stack<>();
-//            for (int i = 0; i < paramsCount; i++) {
-//                params.push(backend.getContextManager().operationStackPop());
-//            }
-//
-//            backend.addComment("call method " + method.getName().getName());
-//
-//            // space reservation
-//            backend.addInstruction(new ADDSP(paramsCount+1));
-//
-//            // check object pointer
-//            VirtualRegister objectReference = params.peek();
-//            backend.addInstruction(new LOAD(objectReference.requestPhysicalRegister(), GPRegister.getR(0)));
-//            backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
-//            backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
-//
-//            // add params
-//            for (int i = 0; i < paramsCount; i++) {
-//                backend.addInstruction(new STORE(params.pop().requestPhysicalRegister(), new RegisterOffset(-i, Register.SP)));
-//            }
-//
-//            // jump
-//            backend.addInstruction(new BSR(new RegisterOffset(1, Register.GB)));
-//
-//            // free space
-//            backend.addInstruction(new SUBSP(paramsCount+1));
-//        }
-//        else {
-//            throw new UnsupportedOperationException("error method doesn't exists");
-//        }
-    }
-
-    /**
      * getter for offset in method table for specified method
      * @param abstractMethod called method
      * @return offset from default Object pointer base in VTable

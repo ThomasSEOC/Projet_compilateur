@@ -14,6 +14,7 @@ public class ClassManager {
     private final List<AbstractClassObject> classList;
     private final Map<String, AbstractClassObject> classMap;
     private int vtableOffset;
+    private boolean isInstanceofUsed = false;
 
     /**
      * constructor for ClassManager
@@ -64,6 +65,10 @@ public class ClassManager {
      */
     public AbstractClassObject getClassObject(AbstractIdentifier nameClass) {
         return classMap.get(nameClass.getName().getName());
+    }
+
+    public AbstractClassObject getClassObject(String nameClass) {
+        return classMap.get(nameClass);
     }
 
 //    private List<List<AbstractClassObject>> orderClassObjects() {
@@ -148,22 +153,28 @@ public class ClassManager {
         for (AbstractClassObject classObject : classList) {
             classObject.methodsCodeGen();
         }
+        if (isInstanceofUsed) {
+            instanceOfCodeGen();
+        }
         backend.writeInstructions();
+    }
+
+    public void setInstanceofUsed() {
+        isInstanceofUsed = true;
     }
 
     // ####################################################################################
 
-    public void instanceOfCodeGen(AbstractClassObject targetObject) {
-        // version primitive non fonctionnelle
-        Label start = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_start");
-        Label endSucess = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_sucess");
-        Label endFailure = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_failure");
-        Label end = new Label("InstanceOf" + targetObject.getClassName().getName().getName() + "_end");
+    public void instanceOfCodeGen() {
+        Label start = new Label("InstanceOf_start");
+        Label endSucess = new Label("InstanceOf_sucess");
+        Label endFailure = new Label("InstanceOf_failure");
 
-        backend.addComment("instance of " + targetObject.getClassName().getName().getName());
-        backend.addInstruction(new LEA(new RegisterOffset(targetObject.getVTableOffset(), Register.GB), GPRegister.getR(0)));
-        VirtualRegister object = backend.getContextManager().operationStackPop();
-        backend.addInstruction(new LOAD(object.requestPhysicalRegister(), GPRegister.getR(1)));
+        backend.addLabel(new Label("Code.InstanceOf"));
+
+        backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(1)));
+        backend.addInstruction(new LOAD(new RegisterOffset(-3, Register.LB), GPRegister.getR(0)));
+
         backend.addLabel(start);
         backend.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(0)), GPRegister.getR(1)));
         backend.addInstruction(new CMP(GPRegister.getR(0), GPRegister.getR(1)));
@@ -172,16 +183,13 @@ public class ClassManager {
         backend.addInstruction(new BEQ(endFailure));
         backend.addInstruction(new BRA(start));
 
-        // pas sûr
-        object.destroy();
-
-        VirtualRegister result = backend.getContextManager().requestNewRegister();
         backend.addLabel(endSucess);
-        backend.addInstruction(new LOAD(new ImmediateInteger(1), result.requestPhysicalRegister()));
-        backend.addInstruction(new BRA(end));
+        backend.addInstruction(new LOAD(new ImmediateInteger(1), GPRegister.getR(0)));
+        backend.addInstruction(new RTS());
+
         backend.addLabel(endFailure);
-        backend.addInstruction(new LOAD(new ImmediateInteger(0), result.requestPhysicalRegister()));
-        backend.addLabel(end);
+        backend.addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
+        backend.addInstruction(new RTS());
     }
 
     public void destroyObjectCodeGen() {

@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.MethodCallOperation;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -26,6 +27,17 @@ public class MethodCall extends AbstractExpr{
         this.listExpr = listExpr;
     }
 
+    public AbstractExpr getExpr() {
+        return expr;
+    }
+
+    public AbstractIdentifier getIdent() {
+        return ident;
+    }
+
+    public ListExpr getListExpr() {
+        return listExpr;
+    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
@@ -55,5 +67,18 @@ public class MethodCall extends AbstractExpr{
         expr.iter(f);
         ident.iter(f);
         listExpr.iter(f);
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        MethodCallOperation operator = new MethodCallOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+        operator.print();
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        MethodCallOperation operator = new MethodCallOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
     }
 }
