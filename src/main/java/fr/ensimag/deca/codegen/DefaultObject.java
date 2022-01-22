@@ -11,7 +11,6 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Stack;
 
 /**
  * class responsible for default Object representation
@@ -132,6 +131,11 @@ public class DefaultObject extends AbstractClassObject {
     @Override
     public void createObjectCodeGen() {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    public void codeGenFieldDecl() {
+        // nothing
     }
 
     /**

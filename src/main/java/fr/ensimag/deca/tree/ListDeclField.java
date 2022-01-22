@@ -1,15 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.AbstractClassObject;
-import fr.ensimag.deca.codegen.ClassManager;
-import fr.ensimag.deca.codegen.ClassObject;
-import fr.ensimag.deca.codegen.Fields;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import org.apache.log4j.Logger;
+
 import java.util.Iterator;
 
 /**

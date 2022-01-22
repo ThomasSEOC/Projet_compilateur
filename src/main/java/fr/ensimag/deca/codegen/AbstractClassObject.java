@@ -106,4 +106,9 @@ public abstract class AbstractClassObject {
      * @return method offsets
      */
     public Map<String,Integer> getMethodsOffsets() { return methodsOffsets; }
+
+    /**
+     * generate code for field instantiation when instantiating a class
+     */
+    abstract public void codeGenFieldDecl();
 }

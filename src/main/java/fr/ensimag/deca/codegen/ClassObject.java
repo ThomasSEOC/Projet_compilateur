@@ -106,8 +106,10 @@ public class ClassObject extends AbstractClassObject {
 
         backend.getContextManager().operationStackPush(objectStructurePointer);
 
-        Fields fieldsManager = new Fields(this);
-        fieldsManager.codeGenDecl();
+        codeGenFieldDecl();
+
+        VirtualRegister returnedObjectStructurePointer = backend.getContextManager().operationStackPop();
+        returnedObjectStructurePointer.destroy();
 
         backend.addInstruction(new RTS());
 
@@ -181,27 +183,6 @@ public class ClassObject extends AbstractClassObject {
             backend.writeInstructions();
             backend.popContext();
         }
-    }
-
-    /**
-     * generate code for field selectiob
-     * @param objectVariableString string representing class instance
-     */
-    public void select(String objectVariableString) {
-        DecacCompiler compiler = getClassManager().getBackend().getCompiler();
-
-        // get register offset
-        RegisterOffset registerOffset = getClassManager().getBackend().getVariableRegisterOffset(objectVariableString);
-
-        // request new virtual register
-        VirtualRegister register = getClassManager().getBackend().getContextManager().requestNewRegister();
-
-        // check null pointer
-        compiler.getCodeGenBackend().addInstruction(new LOAD(registerOffset, register.requestPhysicalRegister()));
-        compiler.getCodeGenBackend().addInstruction(new CMP(new NullOperand(), register.requestPhysicalRegister()));
-        compiler.getCodeGenBackend().addInstruction(new BEQ(getClassManager().getBackend().getErrorsManager().getDereferencementNullLabel()));
-
-        getClassManager().getBackend().getContextManager().operationStackPush(register);
     }
 
     /**
@@ -295,5 +276,38 @@ public class ClassObject extends AbstractClassObject {
         }
 
         return methodsLabels;
+    }
+
+    /**
+     * generate code for field instantiation when instantiating a class
+     */
+    public void codeGenFieldDecl() {
+        CodeGenBackend backend = getClassManager().getBackend();
+
+        AbstractClassObject superObject = getClassManager().getClassObject(superClass);
+        superObject.codeGenFieldDecl();
+
+        VirtualRegister objectStructurePointer = backend.getContextManager().operationStackPop();
+
+        int offset = superObject.getStructureSize();
+        for (AbstractDeclField abstractField : getFields().getList()) {
+            DeclField field = (DeclField) abstractField;
+            backend.addComment("init " + getNameClass().getName().getName() + "." + field.getField().getName().getName());
+            if (field.getInit() instanceof Initialization) {
+                field.getField().getFieldDefinition().setOperand(new RegisterOffset(offset, objectStructurePointer.requestPhysicalRegister()));
+
+                // use assign
+                Assign assign = new Assign(field.getField(), ((Initialization) field.getInit()).getExpression());
+                AssignOperation operator = new AssignOperation(getClassManager().getBackend(), assign);
+                operator.doOperation();
+            }
+            else {
+                // copy 0 to field
+                backend.addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
+                backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(offset, objectStructurePointer.requestPhysicalRegister())));
+            }
+            offset++;
+        }
+        backend.getContextManager().operationStackPush(objectStructurePointer);
     }
 }
