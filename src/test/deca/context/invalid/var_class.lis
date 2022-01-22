@@ -1,0 +1,1 @@
+./src/test/deca/context/invalid/var_class.deca:4:4: A is a class name defined at [1, 0], can't be a var name

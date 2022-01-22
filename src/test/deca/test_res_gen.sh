@@ -123,21 +123,41 @@ case "$FILENAME" in
       ;;
     *"src/test/deca/codegen/valid"*)
        ASS="${FILENAME%.*}.ass"
+       echo -n "est-ce ce que vous voulez aussi générer un fichier ass ? y/n : "
+       read generate_ASS
        rm "./src/test/deca/codegen/valid/$ASS" 2> /dev/null
        RES=$(decac "./src/test/deca/codegen/valid/$FILENAME" 2>&1)
-       echo "le debug du test est : "
-       echo "$RES"
-       echo "le fichier assembleur généré est : "
-       cat "./src/test/deca/codegen/valid/$ASS"
+       if [ "$generate_ASS" = "y" ]
+       then
+         echo "le fichier ASS du test est : "
+         echo "$RES"
+         echo "le fichier assembleur généré est : "
+         cat "./src/test/deca/codegen/valid/$ASS"
+         echo -n "est-ce que cela vous convient ? y/n : "
+         read keep
+         if [ "$keep" = "y" ]
+         then
+           #decac "./src/test/deca/codegen/valid/$FILENAME" 1> "./src/test/deca/codegen/valid/$ASS" 2> "./src/test/deca/codegen/valid/$ASS"
+           cp "./src/test/deca/codegen/valid/$ASS" "./src/test/deca/codegen/valid/result/$ASS"
+           echo "-> Le fichier ass correctement généré"
+         else
+           echo "-> Abandon"
+           rm "./src/test/deca/codegen/valid/$ASS" 2> /dev/null
+           exit 0
+         fi
+       fi
+       RES_IMA=$(ima "./src/test/deca/codegen/valid/$ASS" 2>&1)
+       echo "le resultat ima pour ce test est : "
+       echo "$RES_IMA"
        echo -n "est-ce que cela vous convient ? y/n : "
        read keep
-       if [ $keep = "y" ]
+       if [ "$keep" = "y" ]
        then
-         #decac "./src/test/deca/codegen/valid/$FILENAME" 1> "./src/test/deca/codegen/valid/$ASS" 2> "./src/test/deca/codegen/valid/$ASS"
-         mv "./src/test/deca/codegen/valid/$ASS" "./src/test/deca/codegen/valid/result/$ASS"
-         echo "-> Le fichier ass correctement généré"
+        IMA="${FILENAME%.*}.ima"
+        echo "$RES_IMA" > "./src/test/deca/codegen/valid/result/$IMA"
+        echo "-> le fichier IMA a été correctement généré"
        else
-         echo "-> Abandon"
+        echo "-> abandon"
        fi
        rm "./src/test/deca/codegen/valid/$ASS" 2> /dev/null
       ;;

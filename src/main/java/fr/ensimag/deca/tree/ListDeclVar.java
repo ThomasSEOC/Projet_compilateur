@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import java.util.Iterator;
+import java.util.HashMap;
 
 /**
  * List of declarations (e.g. int x; float y,z).

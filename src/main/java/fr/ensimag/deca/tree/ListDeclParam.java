@@ -4,7 +4,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Signature;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
+import java.util.Iterator;
 
 /**
  *
@@ -20,11 +24,18 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         }
     }
 
-    void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
+    Signature verifyListDeclParam (DecacCompiler compiler, EnvironmentExp localEnv,
                                 ClassDefinition currentClass) throws ContextualError {
-	throw new UnsupportedOperationException("not yet implemented");
-    
-    }
+        Iterator<AbstractDeclParam> it = this.iterator();
+        Signature signature = new Signature();
+        Type type;
+        while (it.hasNext()) {
+            AbstractDeclParam param = it.next();
+            type = param.verifyDeclParam(compiler, localEnv, currentClass, signature);
+            signature.add(type);
+        }
+        return signature;
 
+    }
 
 }

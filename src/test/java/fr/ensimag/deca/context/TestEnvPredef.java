@@ -11,7 +11,7 @@ public class TestEnvPredef {
     @Test
     public void testEnvPredef() throws ContextualError {
         DecacCompiler compiler = new DecacCompiler(new CompilerOptions(), null);
-        EnvironmentExp envPredef = compiler.getEnvPredef();
+        EnvironmentExp envPredef = compiler.getExpPredef();
         System.out.println(envPredef);
     }
 }

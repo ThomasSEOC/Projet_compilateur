@@ -30,10 +30,14 @@ public class ListInst extends TreeList<AbstractInst> {
             throws ContextualError {
         Iterator<AbstractInst> it = this.iterator();
         while (it.hasNext()) {
-            it.next().verifyInst(compiler, localEnv, currentClass, returnType);
+	    it.next().verifyInst(compiler, localEnv, currentClass, returnType);
         }
     }
 
+    /**
+     * generate code for this list of instructions
+     * @param compiler global compiler
+     */
     public void codeGenListInst(DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
             i.codeGenInst(compiler);

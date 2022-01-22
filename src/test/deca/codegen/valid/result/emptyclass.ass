@@ -1,0 +1,33 @@
+; Main program
+; ###############################################################
+; VTABLE INIT
+; init vtable for default object
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; init vtable for A
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+; ###############################################################
+; EMPTY MAIN
+	HALT
+; ###############################################################
+; METHODS
+; Code for methods of A
+; Code for methods of default object :
+; Code for default equals method
+code.Object.equals:
+	LOAD -2(LB), R0
+	CMP -3(LB), R0
+	SEQ R0
+	RTS
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

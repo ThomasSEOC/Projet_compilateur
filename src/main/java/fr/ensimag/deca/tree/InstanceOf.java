@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.InstanceofOperation;
+import fr.ensimag.deca.codegen.MethodCallOperation;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -22,6 +24,13 @@ public class InstanceOf extends AbstractExpr{
         this.type = type;
     }
 
+    public AbstractExpr getObjectE() {
+        return e;
+    }
+
+    public AbstractIdentifier getTargetType() {
+        return type;
+    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
@@ -48,5 +57,18 @@ public class InstanceOf extends AbstractExpr{
     protected void iterChildren(TreeFunction f) {
         e.iter(f);
         type.iter(f);
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        InstanceofOperation operator = new InstanceofOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+        operator.print();
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        InstanceofOperation operator = new InstanceofOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
     }
 }

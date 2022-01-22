@@ -1,6 +1,8 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.Location;
+import fr.ensimag.deca.tree.LocationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,45 +26,39 @@ import java.util.Map;
  */
 public class EnvironmentExp {
 
-    //Dictionnaire associant un symbole avec sa définition
-    private Map<Symbol, Definition> dico = new HashMap<Symbol, Definition>();
-
     EnvironmentExp parentEnvironment; //Superclass
-    
+
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
-        //Permet de conserver la hiérarchie
         this.parentEnvironment = parentEnvironment;
     }
 
-    public static class DoubleDefException extends Exception {
-        private static final long serialVersionUID = -2733379901827316441L;
-	    public DoubleDefException(String message) {
-	    super(message);
-	}
+    private Map<Symbol, ExpDefinition> dico = new HashMap<Symbol, ExpDefinition>();
+
+    public Map<Symbol, ExpDefinition> getDico() {
+        return dico;
     }
+
 
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    //On implémente une fonction qui vérifie récursivement si le symbole recherché
-    // est dans le dictionnaire courant ou dans les parents de celui-ci
     public Definition get(Symbol key) {
-        //Première condition d'arrêt : le symbole est dans le dictionnaire étudié
+
+        // Symbol already in the dictionary
         if (dico.containsKey(key)) {
             return (dico.get(key));
         }
-
-	    //Deuxième condition d'arrêt : le dictionnaire étudié n'a pas de parent.
-        //Le symbole recherché n'a donc pas de définition dans le dictionnaire
-        // courant ou ses parents
+        // If the dictionary doesn't have any parent
         if (parentEnvironment == null){
             return null;
         }
 
-        //Récursion
+        //Recursion : search the symbol in the parent dictionary
         return parentEnvironment.get(key);
     }
+
+
 
     /**
      * Add the definition def associated to the symbol name in the environment.
@@ -79,11 +75,10 @@ public class EnvironmentExp {
      *             if the symbol is already defined at the "current" dictionary
      *
      */
-    public void declare(Symbol name, Definition def) throws DoubleDefException {
+    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
 	if (dico.containsKey(name)) {
-	    throw new DoubleDefException("Arleady defined");
+	    throw new DoubleDefException(name + " is already defined", dico.get(name).getLocation());
 	}
-	
         dico.put(name, def);
     }
 

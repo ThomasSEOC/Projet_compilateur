@@ -24,24 +24,26 @@ public class StartupManager {
         this.backend = backend;
     }
 
-    /**
-     * method responsible for main block stack check and initialisation, must be called after main block code generation
-     */
-    public void generateStartupCode() {
+    public void generateStartupCode(int contextSaveSpace) {
         // check stack overflow
         List<Instruction> instructions = new ArrayList<>();
         List<String> comments = new ArrayList<>();
-        instructions.add(new TSTO(backend.getMaxStackSize()));
+        instructions.add(new TSTO(contextSaveSpace + backend.getMaxStackSize()));
         instructions.add(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
-        instructions.add(new ADDSP(backend.getContextDataSize()));
+        if (backend.getContextDataSize() > 0) {
+            instructions.add(new ADDSP(backend.getContextDataSize()));
+        }
         comments.add(null);
         comments.add(null);
         comments.add(null);
 
         backend.addInstructionFirst(instructions, comments);
+    }
 
-//        compiler.addFirst(new ADDSP(backend.getMaxStackSize()));
-//        compiler.addFirst(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
-//        compiler.addFirst(new TSTO(backend.getMaxGlobalVAriablesSize()));
+    /**
+     * method responsible for main block stack check and initialisation, must be called after main block code generation
+     */
+    public void generateStartupCode() {
+        generateStartupCode(0);
     }
 }

@@ -3,9 +3,11 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
+import java.util.Map;
 
 public class DeclField extends AbstractDeclField{
 
@@ -34,6 +36,49 @@ public class DeclField extends AbstractDeclField{
     @Override
     protected void verifyDeclField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 
+        // verify that the type is not a void
+        type.verifyType(compiler);
+        if (type.getType().isVoid()) {
+            throw new ContextualError("This field must not be void type", getLocation());
+        }
+
+        // check if the name is a Predefined type or a class
+        EnvironmentType envTypes = compiler.getTypes();
+        SymbolTable.Symbol realSymbol = field.getName();
+        TypeDefinition typeDef =  envTypes.get(realSymbol);
+        if (typeDef != null){
+            if (typeDef.isClass()){
+                throw new ContextualError(realSymbol + " is a class name defined at "+
+                        envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a field name", getLocation());
+            }
+            else {
+                throw new ContextualError(realSymbol + " is a predefined type, can't be a field name", getLocation());
+            }
+        }
+
+        // check if the field is already defined in the current and the superclass
+        Map<SymbolTable.Symbol, ExpDefinition> dico = localEnv.getDico();
+        ClassDefinition iterClass = currentClass;
+        while (iterClass != null) {
+            if (currentClass.getMembers().get(field.getName()) != null) {
+                throw new ContextualError("This field is already defined at " + dico.get(field.getName()), getLocation());
+            }
+            iterClass = iterClass.getSuperClass();
+        }
+
+
+        // Put the field in the localEnv
+        try {
+            field.setDefinition(new FieldDefinition(type.getType(), getLocation(), visibility, currentClass, currentClass.getNumberOfFields()));
+            localEnv.declare(field.getName(), field.getFieldDefinition());
+        } catch (DoubleDefException e) {
+            throw new ContextualError("This field is already defined at " + dico.get(field.getName()).getLocation(), getLocation());
+        }
+        field.verifyExpr(compiler, localEnv, currentClass);
+
+
+        // check initialization
+        init.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
     }
 
     @Override

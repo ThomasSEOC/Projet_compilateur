@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.NewOperator;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.commons.lang.Validate;
@@ -19,7 +20,19 @@ public class New extends AbstractExpr{
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type newType = type.verifyType(compiler);
+        //verifyType checks if type is a type
+
+        if (newType.isClass()) {
+            setType(newType);
+            return newType;
+        }
+        throw new ContextualError(type.getName() + " is not a class", getLocation());
+
+    }
+
+    public AbstractIdentifier getClassType() {
+        return type;
     }
 
 
@@ -41,6 +54,9 @@ public class New extends AbstractExpr{
         type.prettyPrint(s,prefix,true);
     }
 
-
-
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        NewOperator operator = new NewOperator(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+    }
 }

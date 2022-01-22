@@ -32,7 +32,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
 	//On vérifie si les opérandes sont soit des int soit des float
         if ((typeLOp.isInt() || typeLOp.isFloat()) && (typeROp.isInt() || typeROp.isFloat())) {
-	    //Si l'une desdeux opérenades est un int alors que l'autre est un
+	    //Si l'une desdeux opérandes est un int alors que l'autre est un
 	    // float, on la convertit en ConvFloat
             if ((typeLOp.isInt() && typeROp.isFloat())) {
                 ConvFloat convFloat = new ConvFloat(this.getLeftOperand());

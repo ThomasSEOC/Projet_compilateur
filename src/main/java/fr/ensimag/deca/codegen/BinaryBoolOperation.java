@@ -15,7 +15,7 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 public class BinaryBoolOperation  extends AbstractBinaryOperation{
 
     /**
-     * Constructor pf class BinaryBoolOperation
+     * Constructor for class BinaryBoolOperation
      *
      * @param codegenbackend global codegen backend
      * @param expression expression related to current operation

@@ -4,7 +4,6 @@ import fr.ensimag.deca.codegen.AssignOperation;
 import fr.ensimag.deca.codegen.VirtualRegister;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -47,22 +46,40 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
         // check type
         type.verifyType(compiler);
         if (type.getType().isVoid()) {
             throw new ContextualError("Var must not be void", getLocation());
         }
 
+        // check if the name is a Predefined type or a class
+        EnvironmentType envTypes = compiler.getTypes();
+        SymbolTable.Symbol realSymbol = varName.getName();
+        TypeDefinition typeDef =  envTypes.get(realSymbol);
+        if (typeDef != null){
+            if (typeDef.isClass()){
+                throw new ContextualError(realSymbol + " is a class name defined at "+
+                        envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a var name", getLocation());
+            }
+            else {
+                throw new ContextualError(realSymbol + " is a predefined type, can't be a var name", getLocation());
+            }
+        }
+
         // check initialization
         initialization.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
 
+        // put the variable name in the local environment
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
         } catch (DoubleDefException e) {
-            throw new ContextualError("Var is already defined", getLocation());
-        }
+                throw new ContextualError(realSymbol + " is already defined at " +
+                        localEnv.get(realSymbol).getLocation(), getLocation());
+            }
     }
+
     
     @Override
     public void decompile(IndentPrintStream s) {
@@ -91,10 +108,10 @@ public class DeclVar extends AbstractDeclVar {
     public void codeGenDeclVar(DecacCompiler compiler) {
         // declare variable to backend
         compiler.getCodeGenBackend().addVariable(varName.getName().getName());
-        int offset = compiler.getCodeGenBackend().getVariableOffset(varName.getName().getName());
+        RegisterOffset registerOffset = compiler.getCodeGenBackend().getVariableRegisterOffset(varName.getName().getName());
 
         // set address operand
-        varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.GB));
+        varName.getVariableDefinition().setOperand(registerOffset);
 
         // init variable if initialization
         if (initialization instanceof Initialization) {

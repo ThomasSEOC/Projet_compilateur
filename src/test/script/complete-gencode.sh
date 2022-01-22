@@ -19,72 +19,81 @@ PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
 
 RESULT=1
 
-echo "TESTS DE CODEGEN VALIDES :"
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;36m'
+YELLOW='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${BLUE}TESTS DE CODEGEN VALIDES :${NC}"
 if [ "$(ls -p ./src/test/deca/codegen/valid/ | grep -v /)" != "" ]
 then
   for i in ./src/test/deca/codegen/valid/*.deca
   do
   FILENAME=$(basename -- $i)
-  REF_ASS="./src/test/deca/codegen/valid/result/${FILENAME%.*}.ass"
+  REF_IMA="./src/test/deca/codegen/valid/result/${FILENAME%.*}.ima"
   ASS="${i%.*}.ass"
-  if [ -f "$REF_ASS" ]
+  IMA="${i%.*}.ima"
+  if [ -f "$REF_IMA" ]
   then
-    decac "$i" || exit 1
     echo "TEST: $i"
-    RES=$(diff "$REF_ASS" "$ASS")
+    decac "$i" || exit 1
+    ima "$ASS" 2>"$IMA" 1>"$IMA"
+    RES=$(diff "$REF_IMA" "$IMA")
     if [ "$RES" != "" ]
     then
-      echo "-> ERROR"
-      echo "$RES"
+      echo -e "${RED}-> ERROR${NC}"
+      echo -e "${YELLOW}$RES${NC}"
       RESULT=0
     else
-      echo "-> OK"
+      echo -e "${GREEN}-> OK${NC}"
     fi
     rm -f "$ASS" 2>/dev/null
+    rm -f "$IMA" 2>/dev/null
 #  else
     #  echo "Fichier .ass non généré."
     #  exit 1
   fi
   done
 else
-  echo "AUCUN TEST TROUVE"
+  echo -e "${BLUE}AUCUN TEST TROUVE${NC}"
 fi
 
-echo "TESTS DE CODEGEN PERF :"
-if [ "$(ls -p ./src/test/deca/codegen/perf/ | grep -v /)" != "" ]
-then
-  for i in ./src/test/deca/codegen/perf/*.deca
-    do
-    FILENAME=$(basename -- $i)
-    REF_ASS="./src/test/deca/codegen/perf/result/${FILENAME%.*}.ass"
-    ASS="${i%.*}.ass"
-    if [ -f "$REF_ASS" ]
-    then
-      decac "$i" || exit 1
-      echo "TEST: $i"
-      RES=$(diff "$REF_ASS" "$ASS")
-      if [ "$RES" != "" ]
-      then
-        echo "-> ERROR"
-        echo "$RES"
-        RESULT=0
-      else
-        echo "-> OK"
-      fi
-      rm -f "$ASS" 2>/dev/null
-  #  else
-      #  echo "Fichier .ass non généré."
-      #  exit 1
-    fi
-    done
-else
-  echo "AUCUN TEST TROUVE"
-fi
-
-if [ "$RESULT" = 0 ]
-then
-  exit 1
-else
-  exit 0
-fi
+#echo -e "${BLUE}TESTS DE CODEGEN PERF :${NC}"
+#if [ "$(ls -p ./src/test/deca/codegen/perf/ | grep -v /)" != "" ]
+#then
+#  for i in ./src/test/deca/codegen/perf/*.deca
+#    do
+#    FILENAME=$(basename -- $i)
+#    REF_ASS="./src/test/deca/codegen/perf/result/${FILENAME%.*}.ass"
+#    ASS="${i%.*}.ass"
+#    if [ -f "$REF_ASS" ]
+#    then
+#      decac "$i" || exit 1
+#      echo "TEST: $i"
+#      RES=$(diff "$REF_ASS" "$ASS")
+#      if [ "$RES" != "" ]
+#      then
+#        echo "-> ERROR"
+#        echo "$RES"
+#        RESULT=0
+#      else
+#        echo "-> OK"
+#      fi
+#      rm -f "$ASS" 2>/dev/null
+#  #  else
+#      #  echo "Fichier .ass non généré."
+#      #  exit 1
+#    fi
+#    done
+#else
+#  echo "AUCUN TEST TROUVE"
+#fi
+#
+#if [ "$RESULT" = 0 ]
+#then
+#  exit 1
+#else
+#  exit 0
+#fi
 
