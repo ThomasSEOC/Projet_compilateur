@@ -83,7 +83,7 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.methods.verifyListDeclMethodBody(compiler, classDefinition.getMembers(), classDefinition);
     }
 
 
@@ -97,7 +97,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        nameClass.iterChildren(f);
+        superClass.iterChildren(f);
+        methods.iterChildren(f);
+        field.iterChildren(f);
     }
 
 }

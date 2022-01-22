@@ -88,11 +88,18 @@ public class DeclField extends AbstractDeclField{
         init.decompile(s);
     }
 
+     //void prettyPrintField(PrintStream s, String prefix, boolean last) {
+
+    //}
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
+        s.print(prefix);
+        s.print("[visibility=" + visibility + "] ");
         type.prettyPrint(s,prefix,false);
         field.prettyPrint(s,prefix,false);
         init.prettyPrint(s,prefix,true);
+
+
     }
 
     @Override
