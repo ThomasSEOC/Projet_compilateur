@@ -1,1 +1,24 @@
-./src/test/deca/context/valid/fields.deca:4:8: This field is already defined at field defined at [2, 8], type=int
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+`> (1, 0) Program
+   +> ListDeclClass [List with 1 elements]
+   |  []> (1, 0) DeclClass
+   |      +> (1, 6) Identifier (A)
+   |      |  definition: type defined at (1, 0), type=A
+   |      +> Identifier (Object)
+   |      |  definition: type(builtin), type=Object
+   |      +> ListDeclMethod [List with 0 elements]
+   |      `> (3, 8) ListDeclField [List with 2 elements]
+   |         []> (2, 8) DeclField
+   |         ||  [visibility=PUBLIC]    |         ||  +> (2, 4) Identifier (int)
+   |         ||  |  definition: type(builtin), type=int
+   |         ||  +> (2, 8) Identifier (x)
+   |         ||  |  definition: field defined at (2, 8), type=int
+   |         ||  `> NoInitialization
+   |         []> (3, 8) DeclField
+   |             [visibility=PUBLIC]    |             +> (3, 4) Identifier (int)
+   |             |  definition: type(builtin), type=int
+   |             +> (3, 8) Identifier (y)
+   |             |  definition: field defined at (3, 8), type=int
+   |             `> NoInitialization
+   `> EmptyMain

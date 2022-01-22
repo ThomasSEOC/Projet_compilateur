@@ -90,6 +90,16 @@ public class DeclMethod extends AbstractDeclMethod{
 
     }
 
+    protected void verifyDeclMethodBody(DecacCompiler compiler,
+                                        EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        EnvironmentType envTypes = compiler.getTypes();
+        SymbolTable.Symbol realSymbol = name.getName();
+        TypeDefinition typeDef =  envTypes.get(realSymbol);
+        Type currentType = type.verifyType(compiler);
+        body.verifyMethodBody(compiler, localEnv, currentClass, currentType);
+    }
+
 
     @Override
     public void decompile(IndentPrintStream s){

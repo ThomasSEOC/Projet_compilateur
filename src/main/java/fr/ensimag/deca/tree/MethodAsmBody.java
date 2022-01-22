@@ -9,11 +9,17 @@ import java.io.PrintStream;
 
 public class MethodAsmBody extends AbstractMethodBody{
 
+
     final private StringLiteral code;
 
     public MethodAsmBody(StringLiteral code){
         Validate.notNull(code);
         this.code = code;
+    }
+
+    protected void verifyMethodBody(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType)
+            throws ContextualError{
+        // nothing
     }
 
     @Override
