@@ -30,6 +30,10 @@ public class SSAProcessor {
         return lastVariablesIds.keySet();
     }
 
+    public Map<String, Set<SSAMerge>> getMerges() {
+        return merges;
+    }
+
     public Set<InstructionIdentifiers> getInstructionIdentifiers(SSAVariable variable) {
         return usages.get(variable);
     }

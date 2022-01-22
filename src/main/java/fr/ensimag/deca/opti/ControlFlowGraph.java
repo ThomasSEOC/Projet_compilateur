@@ -30,7 +30,7 @@ public class ControlFlowGraph extends Graph {
         ssaProcessor.process();
 
         this.constantPropagator = new ConstantPropagator(this);
-        //constantPropagator.process();
+        constantPropagator.process();
     }
 
     public void setDeclVariables(ListDeclVar variables) {
@@ -142,6 +142,9 @@ public class ControlFlowGraph extends Graph {
         codeGenDoneBlocs = new ArrayList<>();
         codeGenDoneBlocs.add(getStartBloc());
         codeGenDoneBlocs.add(getStopBloc());
+
+        variables.codeGenListDeclVar(compiler);
+        compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
 
         startBloc.codeGen(this);
 

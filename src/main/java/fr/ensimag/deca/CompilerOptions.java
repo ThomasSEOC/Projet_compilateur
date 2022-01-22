@@ -53,7 +53,7 @@ public class CompilerOptions {
 
     public int getCompilerStages() { return compilerStages; }
 
-    public boolean getOptimize() { return optimize; }
+    public int getOptimize() { return optimize; }
 
     private int debug = 0;
     private boolean parallel = false;
@@ -62,7 +62,7 @@ public class CompilerOptions {
     private int compilerStages = 3;
     private boolean noCheck = false;
     private int registersCount = 16;
-    private boolean optimize = false;
+    private int optimize = 0;
     
     public void parseArgs(String[] args) throws CLIException {
         // A FAIRE : parcourir args pour positionner les options correctement.
@@ -118,8 +118,14 @@ public class CompilerOptions {
                     parallel = true;
                     break;
                 // parallel
-                case "-O":
-                    optimize = true;
+                case "-O0":
+                    optimize = 0;
+                    break;
+                case "-O1":
+                    optimize = 1;
+                    break;
+                case "-O2":
+                    optimize = 2;
                     break;
                 default:
                     // ce doit être un fichier

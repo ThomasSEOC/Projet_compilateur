@@ -39,12 +39,7 @@ then
     echo "TEST: $i"
     if [ "$#" = 1 ]
     then
-      if [ "$1" = "-O" ]
-      then
-        decac -O "$i" || exit 1
-      else
-        decac "$i" || exit 1
-      fi
+      decac "$1" "$i" || exit 1
     else
       decac "$i" || exit 1
     fi

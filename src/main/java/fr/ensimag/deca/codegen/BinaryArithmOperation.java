@@ -47,7 +47,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 		VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 		VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
-		boolean opti = getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize();
+		boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
 
 		// separate code generation according to arithmetic operation
 		if (this.getExpression() instanceof Plus) {

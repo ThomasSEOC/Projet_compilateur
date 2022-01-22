@@ -23,16 +23,28 @@ public class ConstantPropagator {
             if (variable.getInitialization() instanceof NoInitialization) {
                 newListDeclVar.add(variable);
             }
+            else {
+                Initialization initialization = (Initialization) variable.getInitialization();
+                Constant constant = initialization.getExpression().getConstant(graph.getCompiler());
+                if (constant == null) {
+                    newListDeclVar.add(variable);
+                }
+                else {
+                    Identifier variableIdentifier = (Identifier) variable.getVarName();
+                    constants.put(variableIdentifier.getSsaVariable(), constant);
+                    toProcess.add(variableIdentifier.getSsaVariable());
 
-            Initialization initialization = (Initialization) variable.getInitialization();
-            Constant constant = initialization.getExpression().getConstant(graph.getCompiler());
-            if (constant == null) {
-                newListDeclVar.add(variable);
+                    Map<String, Set<SSAMerge>> merges = graph.getSsaProcessor().getMerges();
+                    if (merges.containsKey(variable.getVarName().getName().getName())) {
+                        newListDeclVar.add(variable);
+                    }
+                    else {
+                        newListDeclVar.add(new DeclVar(variable.getType(), variable.getVarName(), new NoInitialization()));
+                    }
+                }
+
             }
 
-            Identifier variableIdentifier = (Identifier) variable.getVarName();
-            constants.put(variableIdentifier.getSsaVariable(), constant);
-            toProcess.add(variableIdentifier.getSsaVariable());
         }
         graph.setDeclVariables(newListDeclVar);
     }

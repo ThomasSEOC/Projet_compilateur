@@ -46,11 +46,7 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
 
-        declVariables.codeGenListDeclVar(compiler);
-
-        compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
-
-        if (compiler.getCompilerOptions().getOptimize()) {
+        if (compiler.getCompilerOptions().getOptimize() == 2) {
             // create control flow graph;
             ControlFlowGraph graph = new ControlFlowGraph(compiler, declVariables, insts);
 //            System.out.println(graph);
@@ -63,6 +59,8 @@ public class Main extends AbstractMain {
             graph.codeGen();
         }
         else {
+            declVariables.codeGenListDeclVar(compiler);
+            compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
             insts.codeGenListInst(compiler);
             compiler.getCodeGenBackend().addInstruction(new HALT());
         }
