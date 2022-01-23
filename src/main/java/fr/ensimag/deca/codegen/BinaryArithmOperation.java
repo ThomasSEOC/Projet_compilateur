@@ -6,13 +6,10 @@ import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class making binary arithmetical operations
@@ -39,13 +36,12 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 		// cast expression to AbstractBinaryExpr
 		AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
 
+		// compute constant if opti is enabled and if it's possible
 		boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
-
 		Constant constant = null;
 		if (opti) {
 			constant = getConstant(getCodeGenBackEnd().getCompiler());
 		}
-
 		if (constant != null) {
 			VirtualRegister result;
 			if (constant.getIsFloat()) {

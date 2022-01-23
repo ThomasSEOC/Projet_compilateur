@@ -21,8 +21,6 @@ public abstract class AbstractClassObject {
      */
     public AbstractClassObject(ClassManager classManager) {
         this.classManager = classManager;
-//        this.methodsOffsets = new HashMap<>();
-//        this.methodsLabels = new HashMap<>();
     }
 
     /**
