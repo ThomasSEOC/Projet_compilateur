@@ -168,7 +168,7 @@ public class ClassObject extends AbstractClassObject {
             ListDeclParam params = method.getParams();
             for (int i = 0; i < params.size(); i++) {
                 DeclParam param = (DeclParam) params.getList().get(i);
-                backend.addParam(param.getName().getName().getName(), -2 - i);
+                backend.addParam(param.getName().getName().getName(), -3 - i);
             }
 
             method.getBody().codeGen(backend.getCompiler());
