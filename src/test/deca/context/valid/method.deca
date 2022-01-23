@@ -9,6 +9,7 @@ class A {
 }
 
 {
-A.setX(1);
-println(A.getX());
+A a = new A();
+a.setX(1);
+println(a.getX());
 }

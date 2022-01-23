@@ -1,0 +1,33 @@
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+`> [1, 0] Program
+   +> ListDeclClass [List with 1 elements]
+   |  []> [1, 0] DeclClass
+   |      +> [1, 6] Identifier (A)
+   |      |  definition: type defined at [1, 0], type=A
+   |      +> Identifier (Object)
+   |      |  definition: type(builtin), type=Object
+   |      +> ListDeclMethod [List with 1 elements]
+   |      |  []> [3, 0] DeclMethod
+   |      |      +> [3, 0] Identifier (void)
+   |      |      |  definition: type(builtin), type=void
+   |      |      +> [3, 5] Identifier (method)
+   |      |      |  definition: method defined at [3, 0], type=void
+   |      |      +> ListDeclParam [List with 0 elements]
+   |      |      `> [3, 14] MethodBody
+   |      |         +> ListDeclVar [List with 0 elements]
+   |      |         `> [4, 0] ListInst [List with 1 elements]
+   |      |            []> [4, 0] Assign
+   |      |                type: int
+   |      |                +> [4, 0] Identifier (x)
+   |      |                |  definition: field defined at [2, 4], type=int
+   |      |                `> [4, 2] Int (3)
+   |      |                   type: int
+   |      `> [2, 4] ListDeclField [List with 1 elements]
+   |         []> [2, 4] [visibility=PUBLIC] DeclField
+   |             +> [2, 0] Identifier (int)
+   |             |  definition: type(builtin), type=int
+   |             +> [2, 4] Identifier (x)
+   |             |  definition: field defined at [2, 4], type=int
+   |             `> NoInitialization
+   `> EmptyMain
