@@ -3,8 +3,10 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Selection;
+import fr.ensimag.deca.tree.This;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -16,11 +18,14 @@ public class FieldSelectOperation extends AbstractOperation {
 
     private void selectVariable() {
         Selection selection = (Selection) getExpression();
-        String variableName = ((Identifier)selection.getExpr()).getName().getName();
-
-        RegisterOffset variablePointer = getCodeGenBackEnd().getVariableRegisterOffset(variableName);
-
-        getCodeGenBackEnd().addInstruction(new LOAD(variablePointer, GPRegister.getR(0)));
+        if (selection.getExpr() instanceof Identifier) {
+            String variableName = ((Identifier)selection.getExpr()).getName().getName();
+            RegisterOffset variablePointer = getCodeGenBackEnd().getVariableRegisterOffset(variableName);
+            getCodeGenBackEnd().addInstruction(new LOAD(variablePointer, GPRegister.getR(0)));
+        }
+        else if (selection.getExpr() instanceof This) {
+            getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
+        }
 
         // check null pointer
         if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
@@ -31,12 +36,16 @@ public class FieldSelectOperation extends AbstractOperation {
 
     private int getOffset() {
         Selection selection = (Selection) getExpression();
-        String className = selection.getExpr().getType().toString();
         String field = selection.getFieldIdent().getName().getName();
-
-        ClassObject object = (ClassObject) getCodeGenBackEnd().getClassManager().getClassObject(className);
-
-        return object.getFieldOffset(field);
+        if (selection.getExpr() instanceof Identifier) {
+            String className = selection.getExpr().getType().toString();
+            ClassObject object = (ClassObject) getCodeGenBackEnd().getClassManager().getClassObject(className);
+            return object.getFieldOffset(field);
+        }
+        else {
+            ClassObject object = getCodeGenBackEnd().getClassManager().getCurrentObject();
+            return object.getFieldOffset(field);
+        }
     }
 
     public void write() {
