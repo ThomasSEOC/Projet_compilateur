@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -8,7 +9,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
+//import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -98,8 +99,7 @@ public abstract class AbstractExpr extends AbstractInst {
             throws ContextualError {
 
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
-
-        //Si l'expression est de type int et que le type attendu est float,
+	    //Si l'expression est de type int et que le type attendu est float,
         // on la convertit en ConvFloat
         if (type.isInt() && expectedType.isFloat()) {
             AbstractExpr convFloat = new ConvFloat(this);
@@ -108,12 +108,28 @@ public abstract class AbstractExpr extends AbstractInst {
             return convFloat;
         }
 
-        if (type.sameType(expectedType)) {
+        if (type.sameType(expectedType) && !expectedType.isClass()) {
             return this;
+	}
+	
+	if (expectedType.isClass() && type.isClassOrNull()) {
+	    if (type.isNull()) {
+		return this;
 	    }
 
-	    //Il va falloir rajouter le cas des sous-types avec les objets
-
+	    ClassType classType = (ClassType) type;
+	    ClassType expectedClassType = (ClassType) expectedType;
+	    //while (typeClassDef != null) {
+	    //if (typeClassDef.getType() == expectedType){
+	    //	    return this;
+	    //	}
+	    //	typeClassDef = typeClassDef.getSuperClass();
+	    //}
+	    if (classType.isSubClassOf(expectedClassType)) {
+		return this;
+	    }
+	}
+	    
     	throw new ContextualError(expectedType + " is expected", getLocation());
     }
     

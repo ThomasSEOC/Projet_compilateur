@@ -33,7 +33,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 				setType(typeLOp);
 				return typeLOp;
 			}
-			// Right operand is int, left one is float
 			else if (typeROp.isFloat()){
 				setType(typeROp);
 				setLeftOperand(new ConvFloat(getLeftOperand()));
@@ -59,7 +58,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 		}
 
 		else if (typeLOp.isFloat()) {
-			// Right operand is float, left one is int
+			// Left operand is float, right one is int
 			if (typeROp.isInt()) {
 				setType(typeLOp);
 				setRightOperand(new ConvFloat(getRightOperand()));

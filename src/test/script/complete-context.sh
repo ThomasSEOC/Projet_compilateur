@@ -48,7 +48,11 @@ else
   echo -e "${YELLOW}AUCUN TEST TROUVE${NC}"
 fi
 
+<<<<<<< HEAD
 echo -e "${BLUE}TESTS CONTEXT INVALIDES :${NC}"
+=======
+echo "TESTS CONTEXT INVALIDES :"
+>>>>>>> context
 if [ "$(ls ./src/test/deca/context/invalid/)" != "" ]
 then
   for i in ./src/test/deca/context/invalid/*.deca

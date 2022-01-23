@@ -38,12 +38,16 @@ public class EnvironmentExp {
         return dico;
     }
 
+    public void initDico(Map<Symbol, ExpDefinition> dico) {
+        this.dico = dico;
+    }
+
 
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    public Definition get(Symbol key) {
+    public ExpDefinition get(Symbol key) {
 
         // Symbol already in the dictionary
         if (dico.containsKey(key)) {
@@ -79,6 +83,10 @@ public class EnvironmentExp {
 	if (dico.containsKey(name)) {
 	    throw new DoubleDefException(name + " is already defined", dico.get(name).getLocation());
 	}
+        dico.put(name, def);
+    }
+
+    public void declareforce(Symbol name, ExpDefinition def)  {
         dico.put(name, def);
     }
 

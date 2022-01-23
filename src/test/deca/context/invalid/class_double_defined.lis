@@ -1,1 +1,1 @@
-./src/test/deca/context/invalid/class_double_defined.deca:2:0: A is already defined at [1, 0]
+./src/test/deca/context/invalid/class_double_defined.deca:2:0: A is a class already defined at [1, 0]

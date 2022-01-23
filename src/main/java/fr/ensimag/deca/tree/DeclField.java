@@ -44,8 +44,14 @@ public class DeclField extends AbstractDeclField{
 
         // check if the name is a Predefined type or a class
         EnvironmentType envTypes = compiler.getTypes();
+        EnvironmentType envTypesPredef = compiler.getTypesPredef();
         SymbolTable.Symbol realSymbol = field.getName();
         TypeDefinition typeDef =  envTypes.get(realSymbol);
+
+        if (typeDef.isExpression()){
+            throw new ContextualError(realSymbol + " is an Expression can't be a field name", getLocation());
+        }
+
         if (typeDef != null){
             if (typeDef.isClass()){
                 throw new ContextualError(realSymbol + " is a class name defined at "+
@@ -74,12 +80,15 @@ public class DeclField extends AbstractDeclField{
         } catch (DoubleDefException e) {
             throw new ContextualError("This field is already defined at " + dico.get(field.getName()).getLocation(), getLocation());
         }
+
+        // Verify the expression of the field
         field.verifyExpr(compiler, localEnv, currentClass);
 
 
         // check initialization
         init.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
     }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -94,10 +103,49 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
+    String printNodeLine(PrintStream s, String prefix, boolean last,
+                         boolean inlist, String nodeName){
+        s.print(prefix);
+        if (inlist) {
+            s.print("[]>");
+        } else if (last) {
+            s.print("`>");
+        } else {
+            s.print("+>");
+        }
+        if (getLocation() != null) {
+            s.print(" " + getLocation().toString());
+        }
+        s.print(" ");
+        s.print("[visibility=" + visibility + "] ");
+        s.print(nodeName);
+        s.println();
+        String newPrefix;
+        if (last) {
+            if (inlist) {
+                newPrefix = prefix + "    ";
+            } else {
+                newPrefix = prefix + "   ";
+            }
+        } else {
+            if (inlist) {
+                newPrefix = prefix + "||  ";
+            } else {
+                newPrefix = prefix + "|  ";
+            }
+        }
+        prettyPrintType(s, newPrefix);
+        return newPrefix;
+    }
+
+
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s,prefix,false);
         field.prettyPrint(s,prefix,false);
         init.prettyPrint(s,prefix,true);
+
+
     }
 
     @Override

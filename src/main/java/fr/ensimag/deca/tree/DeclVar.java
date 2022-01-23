@@ -49,9 +49,12 @@ public class DeclVar extends AbstractDeclVar {
 
         // check type
         type.verifyType(compiler);
+
+        // Check if it is a void type
         if (type.getType().isVoid()) {
             throw new ContextualError("Var must not be void", getLocation());
         }
+
 
         // check if the name is a Predefined type or a class
         EnvironmentType envTypes = compiler.getTypes();
@@ -74,6 +77,9 @@ public class DeclVar extends AbstractDeclVar {
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
+            if (varName.getVariableDefinition().isExpression()) {
+                throw new ContextualError("Variable name must not be an expression", getLocation());
+            }
         } catch (DoubleDefException e) {
                 throw new ContextualError(realSymbol + " is already defined at " +
                         localEnv.get(realSymbol).getLocation(), getLocation());

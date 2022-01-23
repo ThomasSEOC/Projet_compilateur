@@ -19,6 +19,12 @@ public class MethodBody extends AbstractMethodBody{
         this.vars = vars;
     }
 
+    protected void verifyMethodBody(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type returnType) throws ContextualError {
+        vars.verifyListDeclVariable(compiler, localEnv, currentClass);
+        insts.verifyListInst(compiler, localEnv, currentClass, returnType);
+    }
+
+
     @Override
     public void decompile(IndentPrintStream s){
         s.print("{");

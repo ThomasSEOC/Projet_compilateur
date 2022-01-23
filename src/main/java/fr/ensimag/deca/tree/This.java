@@ -21,7 +21,11 @@ public class This extends AbstractExpr{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        return null;
+        if (currentClass == null) {
+	        throw new ContextualError("Instruction is not in the current class", getLocation());
+	    }
+        setType(compiler.getTypes().get(compiler.getSymbolTable().getSymbol("boolean")).getType());
+        return currentClass.getType();
     }
 
     @Override
@@ -30,7 +34,7 @@ public class This extends AbstractExpr{
         if(!implicite){
             s.print("this");
         }
-
+	
     }
 
     @Override

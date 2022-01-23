@@ -4,7 +4,6 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
-import jdk.internal.misc.ScopedMemoryAccess;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -57,19 +56,24 @@ public class DeclClass extends AbstractDeclClass {
         superClass.verifyType(compiler);
 
         // Definition and type of the class
-        SymbolTable.Symbol classSymbol = nameClass.getName();
-
-        classType = new ClassType(classSymbol, getLocation(), (ClassDefinition) compiler.getExpPredef().get(superClass.getName()));
+        SymbolTable.Symbol realSymbol = nameClass.getName();
+        classType = new ClassType(realSymbol, getLocation(), (ClassDefinition) compiler.getTypes().get(superClass.getName()));
         classDefinition = classType.getDefinition();
         nameClass.setDefinition(classDefinition);
-        nameClass.setType(classType);
 
         // put in the dictionary
-        Map<SymbolTable.Symbol, TypeDefinition> dico = compiler.getTypes().getDico();
+        EnvironmentType envTypes = compiler.getTypes();
         try {
             compiler.getTypes().declare(nameClass.getName(), classDefinition);
+            nameClass.setType(classType);
         } catch (DoubleDefException e) {
-            throw new ContextualError(classSymbol.getName() + " is already defined at " + dico.get(classSymbol).getLocation() , getLocation());
+            // If the name is a Predefined type or an already defined class
+            if (envTypes.get(realSymbol).isClass()){
+                throw new ContextualError(realSymbol  + " is a class already defined at "+
+                        envTypes.getDico().get(realSymbol ).getLocation(), getLocation());
+            } else {
+                throw new ContextualError(realSymbol  + " is a predefined type, can't be a class name", getLocation());
+            }
         }
 
 
@@ -83,7 +87,7 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.methods.verifyListDeclMethodBody(compiler, classDefinition.getMembers(), classDefinition);
     }
 
     @Override
@@ -96,7 +100,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        nameClass.iterChildren(f);
+        superClass.iterChildren(f);
+        methods.iterChildren(f);
+        field.iterChildren(f);
     }
 
     @Override

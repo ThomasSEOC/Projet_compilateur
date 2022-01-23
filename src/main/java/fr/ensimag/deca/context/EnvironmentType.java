@@ -32,6 +32,10 @@ public class EnvironmentType {
         return dico;
     }
 
+
+    public void initDico(Map<Symbol, TypeDefinition> dico) {
+        this.dico = dico;
+    }
     /**
      * Add the definition def associated to the symbol name in the environment.
      * 

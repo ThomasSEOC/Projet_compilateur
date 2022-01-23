@@ -25,7 +25,7 @@ public class Location implements Serializable {
     @Override
     public String toString() {
         if (this == BUILTIN) {
-            return "[builtin]";
+            return "(builtin)";
         } else {
             return "[" + line + ", " + positionInLine + "]";
         }

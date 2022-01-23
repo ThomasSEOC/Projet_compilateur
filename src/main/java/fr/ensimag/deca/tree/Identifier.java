@@ -27,8 +27,7 @@ import org.apache.commons.lang.Validate;
  * @author gl54
  * @date 01/01/2022
  */
-public class Identifier extends AbstractIdentifier {
-    private SSAVariable ssaVariable;
+public class Identifier extends AbstractIdentifier {   private SSAVariable ssaVariable;
     private Constant constant = null;
 
     public void setSsaVariable(SSAVariable ssaVariable) { this.ssaVariable = ssaVariable; }
@@ -63,10 +62,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
+     *
      * @throws DecacInternalError
      *             if the definition is not a class definition.
      */
@@ -85,10 +84,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * MethodDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
+     *
      * @throws DecacInternalError
      *             if the definition is not a method definition.
      */
@@ -107,10 +106,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * FieldDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
+     *
      * @throws DecacInternalError
      *             if the definition is not a field definition.
      */
@@ -129,10 +128,10 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * VariableDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
+     *
      * @throws DecacInternalError
      *             if the definition is not a field definition.
      */
@@ -150,10 +149,10 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
-     * 
+     *
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
+     *
      * @throws DecacInternalError
      *             if the definition is not a field definition.
      */
@@ -188,18 +187,25 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                           ClassDefinition currentClass) throws ContextualError {
 
         // Get and set the definition of the symbol
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-        Definition def = localEnv.get(realSymbol);
-        setDefinition(def);
+        ExpDefinition expDef = localEnv.get(realSymbol);
+        TypeDefinition  typeDef = compiler.getTypes().get(realSymbol);
 
         // Set the type or return an error if the identifier is not previously defined
-        if (def != null) {
-                setType(def.getType());
-                return def.getType();
-            }
+        if (expDef != null) {
+            setType(expDef.getType());
+            setDefinition(expDef);
+            return expDef.getType();
+
+        }
+        if (typeDef!= null) {
+            setType(typeDef.getType());
+            setDefinition(typeDef);
+            return typeDef.getType();
+        }
         throw new ContextualError(name + " n'est pas défini", getLocation());
     }
 
@@ -218,8 +224,8 @@ public class Identifier extends AbstractIdentifier {
 
         // If the identifier is not previously defined
         if (typeDef == null) {
-                throw new ContextualError(name + " is not a type", getLocation());
-            }
+            throw new ContextualError(name + " is not a type", getLocation());
+        }
 
         // Set
         Type type = typeDef.getType();
@@ -228,8 +234,8 @@ public class Identifier extends AbstractIdentifier {
 
         return type;
     }
-    
-    
+
+
     private Definition definition;
 
 
