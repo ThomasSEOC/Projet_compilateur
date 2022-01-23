@@ -3,11 +3,9 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.InstanceofOperation;
 import fr.ensimag.deca.codegen.MethodCallOperation;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -34,7 +32,17 @@ public class InstanceOf extends AbstractExpr{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        return null;
+        Type ClassType =  type.verifyType(compiler);
+        e.verifyExpr(compiler,localEnv,currentClass);
+
+        if (!ClassType.isClass()){
+            throw new ContextualError(e + "Can't cast to a non class Type", getLocation());
+        }
+
+        EnvironmentType envTypes = compiler.getTypes();
+        SymbolTable.Symbol booleanSymbol = compiler.getSymbolTable().getSymbol("boolean");
+        setType(envTypes.get(booleanSymbol).getType());
+        return (envTypes.get(booleanSymbol).getType());
     }
 
     @Override
