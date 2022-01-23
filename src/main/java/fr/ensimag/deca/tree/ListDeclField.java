@@ -17,7 +17,6 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
 
     public void verifyListDeclField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        // Check all the DeclField in the list
         Iterator<AbstractDeclField> it = this.iterator();
         while (it.hasNext()) {
             it.next().verifyDeclField(compiler, localEnv, currentClass);

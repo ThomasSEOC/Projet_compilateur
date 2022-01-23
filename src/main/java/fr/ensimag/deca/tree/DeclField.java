@@ -36,29 +36,29 @@ public class DeclField extends AbstractDeclField{
     @Override
     protected void verifyDeclField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 
-        // verify that the type is not a void
+        SymbolTable.Symbol realSymbol = compiler.getSymbolTable().getSymbol(field.getName().getName());
+        TypeDefinition typeDef =  compiler.getTypes().get(realSymbol);
+
+        // Verify the existence of the type and set it
         type.verifyType(compiler);
+
+        // Verify that the type is not a void
         if (type.getType().isVoid()) {
             throw new ContextualError("This field must not be void type", getLocation());
         }
 
-        // check if the name is a Predefined type or a class
-        EnvironmentType envTypes = compiler.getTypes();
-        EnvironmentType envTypesPredef = compiler.getTypesPredef();
-        SymbolTable.Symbol realSymbol = compiler.getSymbolTable().getSymbol(field.getName().getName());
-        TypeDefinition typeDef =  envTypes.get(realSymbol);
-
+        // Check if the name is a predefined type or a class
         if (typeDef != null && typeDef.isExpression()){
             if (typeDef.isClass()){
                 throw new ContextualError(realSymbol + " is a class name defined at "+
-                        envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a field name", getLocation());
+                        typeDef.getLocation()+ ", can't be a field name", getLocation());
             }
             else {
                 throw new ContextualError(realSymbol + " is a predefined type, can't be a field name", getLocation());
             }
         }
 
-        // check if the field is already defined in the current and the superclass
+        // Check if the field is already defined in the current and the superclass
         Map<SymbolTable.Symbol, ExpDefinition> dico = localEnv.getDico();
         ClassDefinition iterClass = currentClass;
         while (iterClass != null) {
@@ -67,7 +67,6 @@ public class DeclField extends AbstractDeclField{
             }
             iterClass = iterClass.getSuperClass();
         }
-
 
         // Put the field in the localEnv
         try {
@@ -80,8 +79,7 @@ public class DeclField extends AbstractDeclField{
         // Verify the expression of the field
         field.verifyExpr(compiler, localEnv, currentClass);
 
-
-        // check initialization
+        // Check initialization
         init.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
     }
 
@@ -99,6 +97,8 @@ public class DeclField extends AbstractDeclField{
         s.print(";");
     }
 
+
+    // Overrides the method to add the visibility decoration
     @Override
     String printNodeLine(PrintStream s, String prefix, boolean last,
                          boolean inlist, String nodeName){

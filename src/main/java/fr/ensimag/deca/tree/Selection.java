@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.FieldSelectOperation;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -30,6 +31,7 @@ public class Selection extends AbstractLValue{
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 	    Type selectType = expr.verifyExpr(compiler, localEnv, currentClass);
+        SymbolTable.Symbol exprSymbol = selectType.getName();
         ClassDefinition classDef = (ClassDefinition) compiler.getTypes().get(selectType.getName());
 	ClassType selectClass = classDef.getType();
 	FieldDefinition selectField = (FieldDefinition)classDef.getMembers().get(fieldIdent.getName());
@@ -37,6 +39,9 @@ public class Selection extends AbstractLValue{
 	if (selectClass.isNull()) {
 	    throw new ContextualError("Null", getLocation());
 	}
+    if (classDef.isClass()){
+        throw new ContextualError(exprSymbol + " is a className, can't be used as a variable", getLocation());
+    }
     	if (visibility == Visibility.PUBLIC) {
 	    if (selectClass != compiler.getTypes().get(selectClass.getName()).getType()) {
 		throw new ContextualError("Class not defined", getLocation());
