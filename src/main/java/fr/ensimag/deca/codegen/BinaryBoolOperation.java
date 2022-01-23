@@ -113,10 +113,10 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             // classical boolean operation
 
             // generate code for left and right operand
-            operandCodeGen(expr.getLeftOperand());
+            operandCodeGen(expr.getLeftOperand(), true);
             VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
-            operandCodeGen(expr.getRightOperand());
+            operandCodeGen(expr.getRightOperand(), true);
             VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
             // compare registers
