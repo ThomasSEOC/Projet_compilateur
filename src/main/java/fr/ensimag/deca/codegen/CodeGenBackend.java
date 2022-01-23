@@ -1,10 +1,10 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.deca.tree.AbstractDeclField;
+import fr.ensimag.deca.tree.DeclField;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.util.*;
 
@@ -255,6 +255,19 @@ public class CodeGenBackend {
                 return new RegisterOffset(localVariables.peek().get(name), Register.LB);
             }
         }
+
+        // search if fields
+        ClassObject currentObject = classManager.getCurrentObject();
+        if (currentObject != null) {
+            for (AbstractDeclField abstractField : currentObject.getFields().getList()) {
+                DeclField field = (DeclField) abstractField;
+                if (Objects.equals(field.getField().getName().getName(), name)) {
+                    addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
+                    return new RegisterOffset(currentObject.getFieldOffset(name), GPRegister.getR(0));
+                }
+            }
+        }
+
         // search in global context
         return new RegisterOffset(classManager.getVtableOffset() + globalVariables.get(name) - 1, Register.GB);
     }

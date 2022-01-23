@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -8,7 +7,6 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Stack;
 
 /**
  * class responsible for non default Object representation
@@ -119,31 +117,6 @@ public class ClassObject extends AbstractClassObject {
         returnedObjectStructurePointer.destroy();
 
         backend.popContext();
-
-
-//        for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
-//            backend.addComment("code for fields initialization");
-//            backend.createContext();
-
-//            // get address of method table object
-//            backend.addInstruction(new LEA(new RegisterOffset(getVTableOffset(), Register.GB), GPRegister.getR(0)));
-//            //VirtualRegister objectStructurePointer = backend.getContextManager().requestNewRegister();
-//            backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(1)));
-//            // set first word as pointer to object method table entry
-//            backend.addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, GPRegister.getR(1))));
-
-//            backend.getContextManager().operationStackPush(objectStructurePointer);
-//            fields.codeGenDecl(getClassManager(), this, superObject.getStructureSize());
-//
-//            // recursion mais pas vraiment
-//            backend.addInstruction(new PUSH(objectStructurePointer.requestPhysicalRegister()));
-//            backend.addInstruction(new BSR(new Label("Code." + getSuperClass().getName().getName() + ".Init")));
-//            backend.addInstruction(new SUBSP(-1));
-//
-//            backend.getStartupManager().generateStartupCode();
-//            backend.writeInstructions();
-//            backend.popContext();
-//        }
     }
 
     /**
@@ -170,6 +143,8 @@ public class ClassObject extends AbstractClassObject {
      */
     @Override
     public void methodsCodeGen() {
+        getClassManager().setCurrentObject(this);
+
         CodeGenBackend backend = getClassManager().getBackend();
         backend.addComment("Code for methods of " + getNameClass().getName().getName());
         structureInitCodeGen();
@@ -209,6 +184,8 @@ public class ClassObject extends AbstractClassObject {
 
             backend.popContext();
         }
+
+        getClassManager().setCurrentObject(null);
     }
 
     /**
