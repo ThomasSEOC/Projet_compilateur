@@ -18,7 +18,7 @@ class A{
 
 {
 A a = new A();
-a.setE(4);
+a.setE();
 a.action();
 println("ben non");
 }
