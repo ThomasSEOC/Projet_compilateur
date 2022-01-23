@@ -1,22 +1,3 @@
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
-`> (1, 0) Program
-   +> ListDeclClass [List with 1 elements]
-   |  []> (1, 0) DeclClass
-   |      +> (1, 6) Identifier (A)
-   |      |  definition: type defined at (1, 0), type=A
-   |      +> Identifier (Object)
-   |      |  definition: type(builtin), type=Object
-   |      +> ListDeclMethod [List with 0 elements]
-   |      `> ListDeclField [List with 0 elements]
-   `> (2, 0) Main
-      +> ListDeclVar [List with 1 elements]
-      |  []> (3, 2) DeclVar
-      |      +> (3, 0) Identifier (A)
-      |      |  definition: type defined at (1, 0), type=A
-      |      +> (3, 2) Identifier (a)
-      |      |  definition: variable defined at (3, 2), type=A
-      |      `> (3, 2) Initialization
-      |         `> (3, 6) Null
-      |            type: null
-      `> ListInst [List with 0 elements]
+./src/test/deca/context/valid/null_class.deca:3:2: Variable name must not be an expression

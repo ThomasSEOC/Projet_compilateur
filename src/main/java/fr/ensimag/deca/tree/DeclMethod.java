@@ -28,15 +28,19 @@ public class DeclMethod extends AbstractDeclMethod{
     protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
-        // Verifies if the type exists
-        Type currentType = type.verifyType(compiler);
-
-
-        // check if the name is a Predefined type or a class
         EnvironmentType envTypes = compiler.getTypes();
         SymbolTable.Symbol realSymbol = name.getName();
         TypeDefinition typeDef =  envTypes.get(realSymbol);
         ExpDefinition currentDef = (ExpDefinition) currentClass.getMembers().get(realSymbol);
+        ClassDefinition superClass = currentClass.getSuperClass();
+
+        // Verifies if the type exists
+        Type currentType = type.verifyType(compiler);
+
+        // Verify the signature
+        signature = params.verifyListDeclParam(compiler, localEnv, currentClass);
+
+        // check if the name is a Predefined type or a class
         if (typeDef != null){
             if (typeDef.isClass()){
                 throw new ContextualError(realSymbol + " is a class name defined at "+
@@ -48,14 +52,13 @@ public class DeclMethod extends AbstractDeclMethod{
         }
 
         // Check if we need to override the method that already exists in super class
-        ClassDefinition superClass = currentClass.getSuperClass();
-	if (superClass != null){
+        if (superClass != null){
             ExpDefinition superDef = (ExpDefinition) superClass.getMembers().get(realSymbol);
             // if the name is already in the envExp of the super class
             if (superDef != null){
                 // check if the name is a field name
                 if (superDef.isField()) {
-                    throw new ContextualError(realSymbol + " is a field name defined at " +
+                    throw new ContextualError(realSymbol + " is a field name in super class defined at " +
                             superClass.getMembers().getDico().get(realSymbol).getLocation() + ", can't be a method name", getLocation());
                 }
                 // it is a method name
@@ -63,7 +66,6 @@ public class DeclMethod extends AbstractDeclMethod{
                     MethodDefinition superMethod = (MethodDefinition) superDef;
                     MethodDefinition currentMethod = (MethodDefinition) currentDef;
                     Type superType = superDef.getType();
-                    signature = params.verifyListDeclParam(compiler, localEnv, currentClass);
                     if (!superMethod.getSignature().equals(currentMethod.getSignature())) {
                         throw new ContextualError(realSymbol + "  is already defined at " +
                                 superClass.getMembers().getDico().get(realSymbol).getLocation() + ", the signature is different", getLocation());
@@ -81,9 +83,14 @@ public class DeclMethod extends AbstractDeclMethod{
         }
         // Put the method in the localEnv
         try {
-            localEnv.declare(name.getName(), currentDef);
+            localEnv.declare(realSymbol, currentDef);
+            name.setType(currentType);
         } catch (DoubleDefException e) {
-            throw new ContextualError(realSymbol + " is already defined at " +
+            if (localEnv.get(realSymbol).isField()){
+                throw new ContextualError(realSymbol + " is a field already defined at " +
+                        currentDef.getLocation() + "can't be a method name", getLocation());
+            }
+            throw new ContextualError(realSymbol + " is a method already defined at " +
                     currentDef.getLocation(), getLocation());
         }
 
