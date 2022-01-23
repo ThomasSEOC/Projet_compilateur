@@ -1,11 +1,11 @@
 package fr.ensimag.deca.opti;
 
-import fr.ensimag.deca.codegen.BinaryBoolOperation;
-import fr.ensimag.deca.codegen.IdentifierRead;
-import fr.ensimag.deca.codegen.LiteralOperation;
-import fr.ensimag.deca.codegen.NotOperation;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 public class BranchCodeBloc extends AbstractCodeBloc {
     private AbstractExpr condition;
@@ -43,6 +43,14 @@ public class BranchCodeBloc extends AbstractCodeBloc {
         else if (getCondition() instanceof BooleanLiteral) {
             LiteralOperation operator = new LiteralOperation(graph.getBackend(), getCondition());
             operator.doOperation();
+        }
+        else if (getCondition() instanceof InstanceOf) {
+            InstanceofOperation operator = new InstanceofOperation(graph.getBackend(), getCondition());
+            operator.doOperation();
+
+            // result is in R0
+            graph.getBackend().addInstruction(new CMP(0, GPRegister.getR(0)));
+            graph.getBackend().addInstruction(new BEQ(new Label("Code.Bloc." + getElseBloc().getId())));
         }
         else {
             BinaryBoolOperation operator = new BinaryBoolOperation(graph.getBackend(), getCondition());
