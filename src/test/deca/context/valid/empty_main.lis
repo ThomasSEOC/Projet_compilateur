@@ -1,5 +1,5 @@
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
-`> (8, 24) Program
+`> [8, 24] Program
    +> ListDeclClass [List with 0 elements]
    `> EmptyMain

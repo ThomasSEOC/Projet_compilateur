@@ -43,13 +43,13 @@ public class DecacCompiler {
 
     private SymbolTable symbolTable = new SymbolTable();
 
-    private EnvironmentType envTypesPredef = new EnvironmentType();    
+    private EnvironmentType envTypesPredef = new EnvironmentType();
     private EnvironmentExp envExpPredef = new EnvironmentExp(null);
     private EnvironmentType envTypes = new EnvironmentType();
-    
+
     // Getters
     public EnvironmentType getTypesPredef() {
-	    return envTypesPredef;
+        return envTypesPredef;
     }
     public EnvironmentExp getExpPredef(){
         return envExpPredef;
@@ -57,7 +57,7 @@ public class DecacCompiler {
     public EnvironmentType getTypes() {
         return envTypes;
     }
-    
+
     /**
      * Portable newline character.
      */
@@ -80,11 +80,11 @@ public class DecacCompiler {
         symbolTable.create("equals");
 
         // Definitions of the predef types
-	    TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
+        TypeDefinition booleanDef = new TypeDefinition(new BooleanType(symbolTable.getMap().get("boolean")), Location.BUILTIN);
         TypeDefinition voidDef = new TypeDefinition(new VoidType(symbolTable.getMap().get("void")), Location.BUILTIN);
         TypeDefinition floatDef = new TypeDefinition(new FloatType(symbolTable.getMap().get("float")), Location.BUILTIN);
-	    TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
-	    
+        TypeDefinition intDef = new TypeDefinition(new IntType(symbolTable.getMap().get("int")), Location.BUILTIN);
+
 
         // Definition for the class Object
         ClassType objectType =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
@@ -105,40 +105,27 @@ public class DecacCompiler {
         try {
             envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
             envTypes.declare(symbolTable.getSymbol("void"), voidDef);
-        } catch (DoubleDefException e) {
-            System.out.println("void : " + e);
-            System.exit(1);
-        }
+        } catch (DoubleDefException e) {}
+
         try {
             envTypesPredef.declare(symbolTable.getSymbol("boolean"), booleanDef);
             envTypes.declare(symbolTable.getSymbol("boolean"), booleanDef);
-        } catch (DoubleDefException e) {
-            System.out.println("boolean : " + e);
-            System.exit(1);
-        }
+        } catch (DoubleDefException e) {}
+
         try {
             envTypesPredef.declare(symbolTable.getSymbol("float"), floatDef);
             envTypes.declare(symbolTable.getSymbol("float"), floatDef);
-        } catch (DoubleDefException e) {
-            System.out.println("float : " + e);
-            System.exit(1);
-        }
+        } catch (DoubleDefException e) {}
+
         try {
             envTypesPredef.declare(symbolTable.getSymbol("int"), intDef);
             envTypes.declare(symbolTable.getSymbol("int"), intDef);
+        } catch (DoubleDefException e) {}
 
-        } catch (DoubleDefException e) {
-            System.out.println("int : " + e);
-            System.exit(1);
-        }
         try {
             envTypesPredef.declare(symbolTable.getSymbol(("Object")), objectDef);
             envTypes.declare(symbolTable.getSymbol(("Object")), objectDef);
-        } catch (DoubleDefException e) {
-            System.out.println("Object : " + e);
-            System.exit(1);
-        }
-
+        } catch (DoubleDefException e) {}
     }
 
 
@@ -202,15 +189,15 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
-    
+
     /**
-     * @see 
+     * @see
      * fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
         return program.display();
     }
-    
+
     private final CompilerOptions compilerOptions;
     private final File source;
     /**
@@ -307,7 +294,7 @@ public class DecacCompiler {
      * @return true on error
      */
     private boolean doCompile(String sourceName, String destName,
-            PrintStream out, PrintStream err)
+                              PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
 

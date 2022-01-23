@@ -1,11 +1,11 @@
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
-`> (10, 0) Program
+`> [10, 0] Program
    +> ListDeclClass [List with 0 elements]
-   `> (10, 0) Main
+   `> [10, 0] Main
       +> ListDeclVar [List with 0 elements]
-      `> (11, 8) ListInst [List with 1 elements]
-         []> (11, 8) Println
+      `> [11, 8] ListInst [List with 1 elements]
+         []> [11, 8] Println
              `> ListExpr [List with 1 elements]
-                []> (11, 16) StringLiteral ("Hel/*bonjour*/lo")
+                []> [11, 16] StringLiteral ("Hel/*bonjour*/lo")
                     type: string

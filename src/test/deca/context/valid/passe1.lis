@@ -1,25 +1,7 @@
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
-`> (1, 0) Program
-   +> ListDeclClass [List with 2 elements]
-   |  []> (1, 0) DeclClass
-   |  ||  +> (1, 6) Identifier (A)
-   |  ||  |  definition: type defined at (1, 0), type=A
-   |  ||  +> Identifier (Object)
-   |  ||  |  definition: type(builtin), type=Object
-   |  ||  +> ListDeclMethod [List with 0 elements]
-   |  ||  `> (2, 8) ListDeclField [List with 1 elements]
-   |  ||     []> (2, 8) DeclField
-   |  ||         [visibility=PUBLIC]    |  ||         +> (2, 4) Identifier (int)
-   |  ||         |  definition: type(builtin), type=int
-   |  ||         +> (2, 8) Identifier (x)
-   |  ||         |  definition: field defined at (2, 8), type=int
-   |  ||         `> NoInitialization
-   |  []> (4, 0) DeclClass
-   |      +> (4, 6) Identifier (B)
-   |      |  definition: type defined at (4, 0), type=B
-   |      +> (4, 8) Identifier (A)
-   |      |  definition: type defined at (1, 0), type=A
-   |      +> ListDeclMethod [List with 0 elements]
-   |      `> ListDeclField [List with 0 elements]
-   `> EmptyMain
+Exception in thread "main" java.lang.NullPointerException: Cannot invoke "fr.ensimag.deca.context.TypeDefinition.isExpression()" because "typeDef" is null
+	at fr.ensimag.deca.tree.DeclField.verifyDeclField(DeclField.java:46)
+	at fr.ensimag.deca.tree.ListDeclField.verifyListDeclField(ListDeclField.java:23)
+	at fr.ensimag.deca.tree.DeclClass.verifyClassMembers(DeclClass.java:84)
+	at fr.ensimag.deca.tree.ListDeclClass.verifyListClassMembers(ListDeclClass.java:45)
+	at fr.ensimag.deca.tree.Program.verifyProgram(Program.java:40)
+	at fr.ensimag.deca.context.ManualTestContext.main(ManualTestContext.java:35)
