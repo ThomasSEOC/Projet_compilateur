@@ -1,12 +1,16 @@
 class A {
-    int x;
-    void maMethod(float y){}
-
+    protected int x ;
+    int getX() {
+        return x ;
+    }
+    void setX(int x) {
+        this.x = x ;
+    }
 }
 
-
 {
-float f = 0.3;
-A a = new A();
-a.maMethod(f);
+    A a = new A() ;
+
+    a.setX(1) ;
+    println("a.getX() = ", a.getX()) ;
 }
