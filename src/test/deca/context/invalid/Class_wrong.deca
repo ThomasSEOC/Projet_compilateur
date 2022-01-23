@@ -1,4 +1,4 @@
-// Mauvaise utilisation de méthodes
+// Argument attendu
 
 //Date: 20.01.2022
 
@@ -13,13 +13,13 @@ class A{
     void setEntier (int e){
         this.entier = e;
     }
+
 }
 
 {
 A a = new A();
-a.setEntier (4);
+a.setEntier(4);
 a.action();
-
 println("ben non");
 }
 
