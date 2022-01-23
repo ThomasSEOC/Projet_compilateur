@@ -1,3 +1,1 @@
-DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClass(ListDeclClass.java:30) - verify listClass: start
-Object : fr.ensimag.deca.context.EnvironmentExp$DoubleDefException: Arleady defined
+./src/test/deca/context/invalid/class_double_def.deca:2:0: A is a class already defined at [1, 0]

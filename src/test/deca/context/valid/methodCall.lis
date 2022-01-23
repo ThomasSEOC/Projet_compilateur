@@ -12,6 +12,7 @@ DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:
    |      |      +> [3, 4] Identifier (int)
    |      |      |  definition: type(builtin), type=int
    |      |      +> [3, 8] Identifier (getX)
+   |      |      |  definition: method defined at [3, 4], type=int
    |      |      +> ListDeclParam [List with 0 elements]
    |      |      `> [3, 15] MethodBody
    |      |         +> ListDeclVar [List with 0 elements]
@@ -26,26 +27,27 @@ DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:
    |             +> [2, 18] Identifier (x)
    |             |  definition: field defined at [2, 18], type=int
    |             `> NoInitialization
-   `> [8, 0] Main
+   `> [9, 0] Main
       +> ListDeclVar [List with 1 elements]
-      |  []> [9, 6] DeclVar
-      |      +> [9, 4] Identifier (A)
+      |  []> [10, 6] DeclVar
+      |      +> [10, 4] Identifier (A)
       |      |  definition: type defined at [1, 0], type=A
-      |      +> [9, 6] Identifier (a)
-      |      |  definition: variable defined at [9, 6], type=A
-      |      `> [9, 6] Initialization
-      |         `> [9, 10] New
+      |      +> [10, 6] Identifier (a)
+      |      |  definition: variable defined at [10, 6], type=A
+      |      `> [10, 6] Initialization
+      |         `> [10, 10] New
       |            type: A
-      |            `> [9, 14] Identifier (A)
+      |            `> [10, 14] Identifier (A)
       |               definition: type defined at [1, 0], type=A
-      `> [10, 4] ListInst [List with 1 elements]
-         []> [10, 4] Println
+      `> [12, 4] ListInst [List with 1 elements]
+         []> [12, 4] Println
              `> ListExpr [List with 2 elements]
-                []> [10, 12] StringLiteral ("a.getX() = ")
+                []> [12, 12] StringLiteral ("a.getX() = ")
                 ||  type: string
-                []> [10, 27] MethodCall
+                []> [12, 27] MethodCall
                     type: int
-                    +> [10, 27] Identifier (a)
-                    |  definition: variable defined at [9, 6], type=A
-                    +> [10, 29] Identifier (getX)
+                    +> [12, 27] Identifier (a)
+                    |  definition: variable defined at [10, 6], type=A
+                    +> [12, 29] Identifier (getX)
+                    |  definition: method defined at [3, 4], type=int
                     `> ListExpr [List with 0 elements]

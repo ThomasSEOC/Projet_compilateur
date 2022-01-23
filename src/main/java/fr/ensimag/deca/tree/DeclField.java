@@ -47,8 +47,8 @@ public class DeclField extends AbstractDeclField{
         EnvironmentType envTypesPredef = compiler.getTypesPredef();
         SymbolTable.Symbol realSymbol = compiler.getSymbolTable().getSymbol(field.getName().getName());
         TypeDefinition typeDef =  envTypes.get(realSymbol);
-
-        if (typeDef != null && typeDef.isExpression()){
+            
+        if (typeDef != null && !typeDef.isExpression()){
             if (typeDef.isClass()){
                 throw new ContextualError(realSymbol + " is a class name defined at "+
                         envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a field name", getLocation());
