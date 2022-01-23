@@ -1,4 +1,4 @@
-// action n'est pas un constructeur
+// Test sur instanceof
 
 // Date: 20.01.2022
 
@@ -13,6 +13,8 @@ class A{
 
 
 {
-A a = new action();
-println("non");
+A a = new A();
+if (a instanceof A){
+    println ("ok");
+    }
 }
