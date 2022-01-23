@@ -25,25 +25,14 @@ abstract class Graph {
 
     abstract public SSAProcessor getSsaProcessor();
 
-    protected void addCodeBloc(AbstractCodeBloc bloc) {
+    public void addCodeBloc(AbstractCodeBloc bloc) {
         if (!blocs.contains(bloc) && (bloc != getStartBloc()) && (bloc != getStopBloc())) {
             blocs.add(bloc);
         }
     }
 
-    protected void replaceCodeBloc(AbstractCodeBloc oldCodeBloc, AbstractCodeBloc newCodeBloc) {
-
-    }
-
-    protected boolean checkGraph() {
-        if ((start == null) || (stop == null)) {
-            return false;
-        }
-
-        //List<CodeBloc> connectedBlocs;
-        // à faire
-
-        return true;
+    public void removeCodeBloc(AbstractCodeBloc bloc) {
+        blocs.remove(bloc);
     }
 
     protected void addArc(Arc arc) {
@@ -54,6 +43,10 @@ abstract class Graph {
         if (!(getBlocs().contains(arc.getStop()))) {
             addCodeBloc(arc.getStop());
         }
+    }
+
+    public void removeArc(Arc arc) {
+        arcs.remove(arc);
     }
 
     protected List<Arc> getArcs() {

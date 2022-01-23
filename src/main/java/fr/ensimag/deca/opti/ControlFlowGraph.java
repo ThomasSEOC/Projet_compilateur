@@ -17,6 +17,7 @@ public class ControlFlowGraph extends Graph {
     private List<AbstractCodeBloc> codeGenDoneBlocs;
     private final SSAProcessor ssaProcessor;
     private final ConstantPropagator constantPropagator;
+    private final DeadCodeRemover deadCodeRemover;
 
     public ControlFlowGraph(DecacCompiler compiler, ListDeclVar variables, ListInst instructions) {
         super();
@@ -31,6 +32,9 @@ public class ControlFlowGraph extends Graph {
 
         this.constantPropagator = new ConstantPropagator(this);
         constantPropagator.process();
+
+        this.deadCodeRemover = new DeadCodeRemover(this);
+        deadCodeRemover.process();
     }
 
     public void setDeclVariables(ListDeclVar variables) {
@@ -48,6 +52,10 @@ public class ControlFlowGraph extends Graph {
 
     public ConstantPropagator getConstantPropagator() {
         return constantPropagator;
+    }
+
+    public DeadCodeRemover getDeadCodeRemover() {
+        return deadCodeRemover;
     }
 
     private void CFGRecursion(List<AbstractInst> instructionsList, AbstractCodeBloc inCodeBloc, AbstractCodeBloc outCodeBloc) {
@@ -138,6 +146,8 @@ public class ControlFlowGraph extends Graph {
     }
 
     public void codeGen() {
+        clearDoneBlocs();
+
         AbstractCodeBloc startBloc = getStartBloc();
         codeGenDoneBlocs = new ArrayList<>();
         codeGenDoneBlocs.add(getStartBloc());

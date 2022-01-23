@@ -15,7 +15,6 @@ public class LinearCodeBloc extends AbstractCodeBloc {
 
         super.codeGen(graph);
 
-
         // normally only 1 out arc
         AbstractCodeBloc nextBloc = getOutArcs().get(0).getStop();
         if (!(graph.getDoneBlocs().contains(nextBloc))) {
@@ -23,9 +22,7 @@ public class LinearCodeBloc extends AbstractCodeBloc {
             nextBloc.codeGen(graph);
         }
         else {
-            if (!(nextBloc instanceof StopBloc)) {
-                graph.getBackend().addInstruction(new BRA(new Label("Code.Bloc." + getOutArcs().get(0).getStop().getId())));
-            }
+            graph.getBackend().addInstruction(new BRA(new Label("Code.Bloc." + getOutArcs().get(0).getStop().getId())));
         }
 
     }
