@@ -1,4 +1,4 @@
-// Argument attendu
+// Argument inattendu
 
 //Date: 20.01.2022
 
@@ -19,7 +19,7 @@ class A{
 {
 A a = new A();
 a.setEntier(4);
-a.action();
+a.action(2);
 println("ben non");
 }
 

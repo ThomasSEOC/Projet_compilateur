@@ -1,0 +1,2 @@
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+./src/test/deca/context/invalid/Class_wrong2.deca:10:22: e n'est pas défini

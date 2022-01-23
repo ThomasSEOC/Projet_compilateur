@@ -6,17 +6,12 @@ class A{
 
     int entier;
 
-    void A (int e){
-        this.entier = e;
-    }
-
     void action (){
-        this.e = this.e+1;
+        this.entier = this.entier+1;
     }
 }
 
 {
-A a = A(4);
-a.action();
-println("ben non");
+A a = A();
+println("non");
 }
