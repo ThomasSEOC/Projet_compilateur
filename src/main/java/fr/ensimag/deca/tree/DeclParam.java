@@ -26,6 +26,7 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     public Type verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Signature signature) throws ContextualError {
+
         // check type
         Type currentType = type.verifyType(compiler);
         if (type.getType().isVoid()) {
@@ -45,25 +46,17 @@ public class DeclParam extends AbstractDeclParam {
             }
         }
 
-        // check if the name is a field or a method name
-        EnvironmentExp classEnv = currentClass.getMembers();
-        if (classEnv.get(realSymbol) != null) {
-            if (classEnv.get(realSymbol).isField()) {
-                throw new ContextualError(realSymbol + " is a field name defined at " +
-                       classEnv.getDico().get(realSymbol).getLocation() + ", can't be a parameter name", getLocation());
-            } else if (classEnv.get(realSymbol).isMethod()){
-                throw new ContextualError(realSymbol + " is a method name defined at " +
-                        classEnv.getDico().get(realSymbol).getLocation() + ", can't be a parameter name", getLocation());
-            }
-        }
-
         // put the parameter name in the local environment
         try {
-            name.setDefinition(new VariableDefinition(type.getType(), getLocation()));
-            localEnv.declare(name.getName(), name.getVariableDefinition());
+            localEnv.declare(name.getName(), new ParamDefinition(currentType,this.getLocation()));
+            name.setType(currentType);
         } catch (DoubleDefException e) {
-            throw new ContextualError(realSymbol + " is already defined at " +
-                    localEnv.get(realSymbol).getLocation(), getLocation());
+            if(localEnv.get(realSymbol).isParam()) {
+                throw new ContextualError(realSymbol + " is a parameter already defined at " +
+                        localEnv.get(realSymbol).getLocation(), getLocation());
+            } else {
+                localEnv.declareforce(name.getName(), new ParamDefinition(currentType,this.getLocation()));
+            }
         }
         return(currentType);
 

@@ -69,12 +69,15 @@ public class DeclField extends AbstractDeclField{
         } catch (DoubleDefException e) {
             throw new ContextualError("This field is already defined at " + dico.get(field.getName()).getLocation(), getLocation());
         }
+
+        // Verify the expression of the field
         field.verifyExpr(compiler, localEnv, currentClass);
 
 
         // check initialization
         init.verifyInitialization(compiler, type.getType(), localEnv, currentClass);
     }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -124,9 +127,7 @@ public class DeclField extends AbstractDeclField{
         return newPrefix;
     }
 
-     //void prettyPrintField(PrintStream s, String prefix, boolean last) {
 
-    //}
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s,prefix,false);
