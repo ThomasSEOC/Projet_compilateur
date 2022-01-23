@@ -1,4 +1,4 @@
-// Mauvaise utilisation de méthodes
+// Argument attendu
 
 //Date: 20.01.2022
 
@@ -6,19 +6,20 @@ class A{
 
     int entier;
 
-    void A (int e){
+
+    void setE( int e){
         this.entier = e;
     }
 
-    void action (){
-        this.e = this.e+1;
+    void action (int b){
+        this.entier = this.e+b;
     }
 }
 
 {
-A a = new A(4);
+A a = new A();
+a.setE(4);
 a.action();
-a.action;
 println("ben non");
 }
 
