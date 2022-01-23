@@ -74,6 +74,11 @@ public abstract class AbstractOperation {
         return this.codegenbackend;
     }
 
+    /**
+     * compute constant associated to current operation
+     * @param compiler global compiler
+     * @return non-null Constant object if constant folding was a success
+     */
     public Constant getConstant(DecacCompiler compiler) {
         return null;
     }

@@ -1,0 +1,11 @@
+class A {
+    protected int x = 42;
+    int getX() {
+        return x ;
+    }
+}
+
+{
+    A a = new A() ;
+    println("a.getX() = ", a.getX()) ;
+}
