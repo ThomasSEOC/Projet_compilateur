@@ -1,6 +1,7 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
@@ -60,6 +61,14 @@ public class ifStatement {
             backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
             backend.addInstruction(new BEQ(elseLabel));
             result.destroy();
+        }
+        else if (expression.getCondition() instanceof InstanceOf) {
+            InstanceofOperation operator = new InstanceofOperation(backend, expression.getCondition());
+            operator.doOperation();
+
+            // result is in R0
+            backend.addInstruction(new CMP(0, GPRegister.getR(0)));
+            backend.addInstruction(new BEQ(elseLabel));
         }
         else {
             BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());

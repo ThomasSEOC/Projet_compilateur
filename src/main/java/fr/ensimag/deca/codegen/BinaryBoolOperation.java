@@ -3,7 +3,9 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**

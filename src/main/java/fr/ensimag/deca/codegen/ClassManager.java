@@ -159,7 +159,7 @@ public class ClassManager {
         backend.addLabel(start);
 
         // loop until success or failure
-        backend.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(0)), GPRegister.getR(1)));
+        backend.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(1)), GPRegister.getR(1)));
         backend.addInstruction(new CMP(GPRegister.getR(0), GPRegister.getR(1)));
         backend.addInstruction(new BEQ(endSucess));
         backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(1)));
