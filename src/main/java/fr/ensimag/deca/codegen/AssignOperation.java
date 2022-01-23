@@ -81,17 +81,27 @@ public class AssignOperation extends AbstractOperation {
             VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
 
             // generate address where to store result
-            Identifier identifier = (Identifier) expr.getLeftOperand();
-            DAddr addr;
-            if (identifier.getDefinition() instanceof FieldDefinition) {
-                addr = identifier.getFieldDefinition().getOperand();
-            }
-            else {
-                addr = identifier.getVariableDefinition().getOperand();
-            }
+            if (expr.getLeftOperand() instanceof Identifier) {
+                Identifier identifier = (Identifier) expr.getLeftOperand();
+                DAddr addr;
+                if (identifier.getDefinition() instanceof FieldDefinition) {
+                    addr = identifier.getFieldDefinition().getOperand();
+                }
+                else {
+                    addr = identifier.getVariableDefinition().getOperand();
+                }
 
-            // store result
-            getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
+                // store result
+                getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
+            }
+            else if (expr.getLeftOperand() instanceof Selection) {
+                result.requestPhysicalRegister();
+
+                getCodeGenBackEnd().getContextManager().operationStackPush(result);
+
+                FieldSelectOperation operator = new FieldSelectOperation(getCodeGenBackEnd(), expr.getLeftOperand());
+                operator.write();
+            }
 
             if (keepValueInOperationStack) {
                 getCodeGenBackEnd().getContextManager().operationStackPush(result);
