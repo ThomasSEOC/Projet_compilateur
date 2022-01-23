@@ -1,26 +1,27 @@
 package fr.ensimag.deca.opti;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import fr.ensimag.deca.DecacCompiler;
+
 import java.util.ArrayList;
 import java.util.List;
 
 abstract class Graph {
+    protected final DecacCompiler compiler;
     private List<AbstractCodeBloc> blocs;
     private List<Arc> arcs;
     private AbstractCodeBloc start;
     private AbstractCodeBloc stop;
-    private int nextId = 0;
 
-    public Graph() {
-        blocs = new ArrayList<AbstractCodeBloc>();
-        arcs = new ArrayList<Arc>();
-        start = new StartBloc(nextId++);
-        stop = new StopBloc(nextId++);
+    public Graph(DecacCompiler compiler) {
+        this.compiler = compiler;
+        blocs = new ArrayList<>();
+        arcs = new ArrayList<>();
+        start = new StartBloc(requestId());
+        stop = new StopBloc(requestId());
     }
 
     protected int requestId() {
-        return nextId++;
+        return compiler.getCodeGenBackend().requestnewGraphId();
     }
 
     abstract public SSAProcessor getSsaProcessor();

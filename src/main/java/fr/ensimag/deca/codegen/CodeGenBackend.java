@@ -43,6 +43,8 @@ public class CodeGenBackend {
 
     private boolean printHex;
 
+    private int nextGraphId = 0;
+
     /**
      * create backend for specified compiler, must be called only once at the beginning of code generation step
      * @param compiler current compiler
@@ -69,6 +71,10 @@ public class CodeGenBackend {
         branchCondition = false;
 
         printHex = false;
+    }
+
+    public int requestnewGraphId() {
+        return nextGraphId++;
     }
 
     /**

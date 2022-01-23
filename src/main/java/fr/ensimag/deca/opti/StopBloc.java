@@ -18,7 +18,9 @@ public class StopBloc extends AbstractCodeBloc {
         // add bloc label
         graph.getBackend().addLabel(new Label("Code.Bloc." + getId()));
 
-        graph.getBackend().addInstruction(new HALT());
+        if (!graph.getIsMethod()) {
+            graph.getBackend().addInstruction(new HALT());
+        }
 
         super.codeGen(graph);
     }

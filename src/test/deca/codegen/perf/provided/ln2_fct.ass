@@ -122,6 +122,8 @@ Code.Polyexp.Init:
 	RTS
 Code.Polyexp.pexp:
 ; pexp
+; Beginning of main instructions:
+Code.Bloc.12:
 	LOAD -3(LB), R2
 	LOAD -3(LB), R3
 	LOAD -3(LB), R4
@@ -145,6 +147,8 @@ Code.Polyexp.pexp:
 	SUB #0x1.0p0, R2	; Minus
 	LOAD R2, R0
 	BRA Code.end.Polyexp.pexp
+	BRA Code.Bloc.11
+Code.Bloc.11:
 Code.end.Polyexp.pexp:
 ; context restore
 	POP R2	; restore R2

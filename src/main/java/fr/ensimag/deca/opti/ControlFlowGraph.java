@@ -11,19 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControlFlowGraph extends Graph {
-    private final DecacCompiler compiler;
     private final ListInst instructions;
     private ListDeclVar variables;
     private List<AbstractCodeBloc> codeGenDoneBlocs;
     private final SSAProcessor ssaProcessor;
     private final ConstantPropagator constantPropagator;
     private final DeadCodeRemover deadCodeRemover;
+    private boolean isMethod = false;
 
     public ControlFlowGraph(DecacCompiler compiler, ListDeclVar variables, ListInst instructions) {
-        super();
+        super(compiler);
         this.variables = variables;
         this.instructions = instructions;
-        this.compiler = compiler;
 
         createCFG();
 
@@ -35,6 +34,14 @@ public class ControlFlowGraph extends Graph {
 
         this.deadCodeRemover = new DeadCodeRemover(this);
         deadCodeRemover.process();
+    }
+
+    public void setMethod() {
+        isMethod = true;
+    }
+
+    public boolean getIsMethod() {
+        return isMethod;
     }
 
     public void setDeclVariables(ListDeclVar variables) {
