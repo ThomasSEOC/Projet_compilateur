@@ -85,6 +85,7 @@ public class DeclMethod extends AbstractDeclMethod{
         try {
             localEnv.declare(realSymbol, currentDef);
             name.setType(currentType);
+            name.setDefinition(currentDef);
         } catch (DoubleDefException e) {
             if (localEnv.get(realSymbol).isField()){
                 throw new ContextualError(realSymbol + " is a field already defined at " +
