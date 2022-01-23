@@ -1,12 +1,11 @@
 package fr.ensimag.deca.tree;
 
+import com.sun.tools.javac.tree.JCTree;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -29,8 +28,36 @@ public class MethodCall extends AbstractExpr{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        return null;
+
+        Type classType = expr.verifyExpr(compiler, localEnv, currentClass);
+        // verify if the method is called with a valid class Name
+        if (!(classType.isClass())) {
+            throw new ContextualError(expr + "is not called with a valid class name", getLocation());
+        }
+        // verifies if the method exists in the class
+        SymbolTable.Symbol realSymbol = ident.getName();
+        if (!(currentClass.getMembers().get(realSymbol).isMethod())) {
+            throw new ContextualError(expr + "does not belong to" + currentClass, getLocation());
+        }
+
+        // verify if the list of parameters correct
+        MethodDefinition methodDef = ident.getMethodDefinition();
+        Signature signature = methodDef.getSignature();
+        if (listExpr.size() != signature.size()) {
+            throw new ContextualError(expr + "has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
+        }
+        for (int i = 0; i < listExpr.size(); i++) {
+            if (!(listExpr.getList().get(i).verifyExpr(compiler, localEnv, currentClass).sameType(signature.paramNumber(i)))) {
+                throw new ContextualError(expr + "has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
+            }
+        }
+
+        // Set the type
+        setType(methodDef.getType());
+        return (methodDef.getType());
+
     }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
