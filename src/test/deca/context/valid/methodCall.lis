@@ -1,0 +1,58 @@
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+`> [1, 0] Program
+   +> ListDeclClass [List with 1 elements]
+   |  []> [1, 0] DeclClass
+   |      +> [1, 6] Identifier (A)
+   |      |  definition: type defined at [1, 0], type=A
+   |      +> Identifier (Object)
+   |      |  definition: type(builtin), type=Object
+   |      +> ListDeclMethod [List with 1 elements]
+   |      |  []> [3, 4] DeclMethod
+   |      |      +> [3, 4] Identifier (void)
+   |      |      |  definition: type(builtin), type=void
+   |      |      +> [3, 9] Identifier (maMethod)
+   |      |      +> [3, 18] ListDeclParam [List with 1 elements]
+   |      |      |  []> [3, 18] DeclParam
+   |      |      |      +> [3, 18] Identifier (float)
+   |      |      |      |  definition: type(builtin), type=float
+   |      |      |      `> [3, 24] Identifier (y)
+   |      |      `> MethodBody
+   |      |         +> ListDeclVar [List with 0 elements]
+   |      |         `> ListInst [List with 0 elements]
+   |      `> [2, 8] ListDeclField [List with 1 elements]
+   |         []> [2, 8] [visibility=PUBLIC] DeclField
+   |             +> [2, 4] Identifier (int)
+   |             |  definition: type(builtin), type=int
+   |             +> [2, 8] Identifier (x)
+   |             |  definition: field defined at [2, 8], type=int
+   |             `> NoInitialization
+   `> [8, 0] Main
+      +> ListDeclVar [List with 2 elements]
+      |  []> [9, 6] DeclVar
+      |  ||  +> [9, 0] Identifier (float)
+      |  ||  |  definition: type(builtin), type=float
+      |  ||  +> [9, 6] Identifier (f)
+      |  ||  |  definition: variable defined at [9, 6], type=float
+      |  ||  `> [9, 6] Initialization
+      |  ||     `> [9, 10] Float (0.3)
+      |  ||        type: float
+      |  []> [10, 2] DeclVar
+      |      +> [10, 0] Identifier (A)
+      |      |  definition: type defined at [1, 0], type=A
+      |      +> [10, 2] Identifier (a)
+      |      |  definition: variable defined at [10, 2], type=A
+      |      `> [10, 2] Initialization
+      |         `> [10, 6] New
+      |            type: A
+      |            `> [10, 10] Identifier (A)
+      |               definition: type defined at [1, 0], type=A
+      `> [11, 0] ListInst [List with 1 elements]
+         []> [11, 0] MethodCall
+             type: void
+             +> [11, 0] Identifier (a)
+             |  definition: variable defined at [10, 2], type=A
+             +> [11, 2] Identifier (maMethod)
+             `> ListExpr [List with 1 elements]
+                []> [11, 11] Identifier (f)
+                    definition: variable defined at [9, 6], type=float
