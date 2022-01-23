@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.invoke.MethodType;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -85,16 +87,20 @@ public class DecacCompiler {
 	    
 
         // Definition for the class Object
-        ClassType object =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
-        ClassDefinition objDef = object.getDefinition();
-        //Identifier ObjId = new Identifier(symbolTable.getMap().get("Object"));
-        //ObjId.setType(object);
-        //ObjId.setDefinition(objDef);
-        //DeclClass classObject = DeclClass(ObjId, null, methods, field);
+        ClassType objectType =  new ClassType(symbolTable.getMap().get("Object"), Location.BUILTIN, null);
+        ClassDefinition objectDef = objectType.getDefinition();
 
-	//DeclMethod equals = new DeclMethod
-	
-	
+        // Creation of the equals method
+        Signature equalsSignature = new Signature();
+        equalsSignature.add(objectType);
+        Type returnType = new BooleanType(symbolTable.getMap().get("boolean"));
+        objectDef.incNumberOfMethods();
+        MethodDefinition equals = new MethodDefinition(returnType, Location.BUILTIN, equalsSignature, 1);
+        try {
+            objectDef.getMembers().declare(symbolTable.create("equals"), equals);
+        } catch (DoubleDefException e) {}
+
+
         // Declare in the envTypePredef
         try {
             envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
@@ -126,8 +132,8 @@ public class DecacCompiler {
             System.exit(1);
         }
         try {
-            envTypesPredef.declare(symbolTable.getSymbol(("Object")), objDef);
-            envTypes.declare(symbolTable.getSymbol(("Object")), objDef);
+            envTypesPredef.declare(symbolTable.getSymbol(("Object")), objectDef);
+            envTypes.declare(symbolTable.getSymbol(("Object")), objectDef);
         } catch (DoubleDefException e) {
             System.out.println("Object : " + e);
             System.exit(1);
