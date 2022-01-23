@@ -3,8 +3,6 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -31,13 +29,12 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
      */
     @Override
     public void doOperation () {
+        // try to simplify operation by a constant
         boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
-
         Constant constant = null;
         if (opti) {
             constant = getConstant(getCodeGenBackEnd().getCompiler());
         }
-
         if (constant != null) {
             if (constant.getValueBoolean()) {
                 if (getCodeGenBackEnd().getBranchCondition()) {
@@ -168,13 +165,14 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
         // cast expression to AbstractBinaryExpr
         AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
 
+        // get operand recursively
         Constant cLOp = expr.getLeftOperand().getConstant(compiler);
         Constant cROp = expr.getRightOperand().getConstant(compiler);
-
         if (cLOp == null || cROp == null) {
             return null;
         }
 
+        // compute constant according to data type and operation
         if (cLOp.getIsFloat()) {
             float op1 = cLOp.getValueFloat();
             float op2 = cROp.getValueFloat();
@@ -197,7 +195,6 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             else if (this.getExpression() instanceof NotEquals) {
                 return new Constant(op1 != op2);
             }
-
         }
         else {
             if (cLOp.getIsBoolean()) {
@@ -245,9 +242,8 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
      */
     @Override
     public void print() {
-        doOperation();
-
-        throw new UnsupportedOperationException("not yet implemented");
+        // cannot print result of boolean operation
+        throw new UnsupportedOperationException("operation not permitted");
     }
 
 
