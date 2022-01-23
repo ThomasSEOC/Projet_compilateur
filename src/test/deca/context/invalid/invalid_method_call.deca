@@ -22,4 +22,3 @@ a.setE(4);
 a.action();
 println("ben non");
 }
-cap

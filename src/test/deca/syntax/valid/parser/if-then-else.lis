@@ -8,7 +8,7 @@
    |      |  ||  +> [21, 4] Identifier (public)
    |      |  ||  +> [21, 11] Identifier (A)
    |      |  ||  +> ListDeclParam [List with 0 elements]
-   |      |  ||  `> MethodBody
+   |      |  ||  `> [21, 14] MethodBody
    |      |  ||     +> ListDeclVar [List with 0 elements]
    |      |  ||     `> [23, 8] ListInst [List with 2 elements]
    |      |  ||        []> [22, 8] Assign
@@ -25,7 +25,7 @@
    |      |  ||  +> [25, 4] Identifier (int)
    |      |  ||  +> [25, 8] Identifier (getX)
    |      |  ||  +> ListDeclParam [List with 0 elements]
-   |      |  ||  `> MethodBody
+   |      |  ||  `> [25, 14] MethodBody
    |      |  ||     +> ListDeclVar [List with 0 elements]
    |      |  ||     `> [26, 8] ListInst [List with 1 elements]
    |      |  ||        []> [26, 15] Return
@@ -36,7 +36,7 @@
    |      |  ||  +> [28, 4] Identifier (int)
    |      |  ||  +> [28, 8] Identifier (getY)
    |      |  ||  +> ListDeclParam [List with 0 elements]
-   |      |  ||  `> MethodBody
+   |      |  ||  `> [28, 14] MethodBody
    |      |  ||     +> ListDeclVar [List with 0 elements]
    |      |  ||     `> [29, 8] ListInst [List with 1 elements]
    |      |  ||        []> [29, 15] Return
@@ -50,7 +50,7 @@
    |      |  ||  |  []> [31, 14] DeclParam
    |      |  ||  |      +> [31, 14] Identifier (int)
    |      |  ||  |      `> [31, 18] Identifier (x)
-   |      |  ||  `> MethodBody
+   |      |  ||  `> [31, 20] MethodBody
    |      |  ||     +> ListDeclVar [List with 0 elements]
    |      |  ||     `> [32, 8] ListInst [List with 1 elements]
    |      |  ||        []> [32, 8] Assign
@@ -65,7 +65,7 @@
    |      |      |  []> [34, 14] DeclParam
    |      |      |      +> [34, 14] Identifier (int)
    |      |      |      `> [34, 18] Identifier (y)
-   |      |      `> MethodBody
+   |      |      `> [34, 20] MethodBody
    |      |         +> ListDeclVar [List with 0 elements]
    |      |         `> [35, 8] ListInst [List with 1 elements]
    |      |            []> [35, 8] Assign
@@ -74,11 +74,11 @@
    |      |                |  `> [35, 13] Identifier (y)
    |      |                `> [35, 17] Identifier (y)
    |      `> [20, 20] ListDeclField [List with 2 elements]
-   |         []> [20, 18] DeclField
+   |         []> [20, 18] [visibility=PROTECTED] DeclField
    |         ||  +> [20, 14] Identifier (int)
    |         ||  +> [20, 18] Identifier (x)
    |         ||  `> NoInitialization
-   |         []> [20, 20] DeclField
+   |         []> [20, 20] [visibility=PROTECTED] DeclField
    |             +> [20, 14] Identifier (int)
    |             +> [20, 20] Identifier (y)
    |             `> NoInitialization
