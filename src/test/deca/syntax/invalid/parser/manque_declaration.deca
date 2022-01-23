@@ -1,0 +1,11 @@
+// Manque la déclaration de c
+
+// Date: 20.01.2022
+
+{
+
+    int a , b;
+    c = b * a;
+    return c;
+
+}

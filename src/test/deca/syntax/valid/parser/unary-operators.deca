@@ -1,0 +1,13 @@
+// Description:
+//    Programme qui teste les opérateurs unaires
+//
+//    Historique:
+//    cree le 18/01/2022
+
+{
+    int a = 10;
+    int b = -a;
+
+    boolean a = true;
+    boolean b = !a;
+}

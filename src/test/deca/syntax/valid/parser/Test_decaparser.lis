@@ -1,0 +1,23 @@
+`> [6, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [6, 0] Main
+      +> ListDeclVar [List with 1 elements]
+      |  []> [7, 12] DeclVar
+      |      +> [7, 0] Identifier (Decaparseur)
+      |      +> [7, 12] Identifier (d)
+      |      `> [7, 12] Initialization
+      |         `> [7, 16] New
+      |            `> [7, 20] Identifier (Decaparseur)
+      `> [9, 0] ListInst [List with 2 elements]
+         []> [8, 0] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [8, 9] MethodCall
+         ||         +> [8, 9] Identifier (d)
+         ||         +> [8, 11] Identifier (getTokenNames)
+         ||         `> ListExpr [List with 0 elements]
+         []> [9, 0] Println
+             `> ListExpr [List with 1 elements]
+                []> [9, 9] MethodCall
+                    +> [9, 9] Identifier (d)
+                    +> [9, 11] Identifier (getGrammarFileName)
+                    `> ListExpr [List with 0 elements]

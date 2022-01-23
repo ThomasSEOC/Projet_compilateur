@@ -1,0 +1,1 @@
+./src/test/deca/syntax/invalid/parser/ineq_inv.deca:7:11: extraneous input '>' expecting {'true', 'false', 'new', 'null', 'readInt', 'readFloat', 'this', IDENT, '-', '(', '!', INT, FLOAT, STRING}

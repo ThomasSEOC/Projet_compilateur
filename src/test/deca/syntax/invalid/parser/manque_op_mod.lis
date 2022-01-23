@@ -1,0 +1,1 @@
+./src/test/deca/syntax/invalid/parser/manque_op_mod.deca:6:11: mismatched input ';' expecting {'true', 'false', 'new', 'null', 'readInt', 'readFloat', 'this', IDENT, '-', '(', '!', INT, FLOAT, STRING}

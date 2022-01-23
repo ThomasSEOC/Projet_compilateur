@@ -1,0 +1,10 @@
+// Inégalité non valide
+
+// Date: 20.01.2022
+
+{
+    int a = 2;
+    if (a <> 4){
+        println ("ben non");
+    }
+}

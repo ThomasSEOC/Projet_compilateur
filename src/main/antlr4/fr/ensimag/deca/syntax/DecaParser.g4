@@ -392,6 +392,8 @@ select_expr returns[AbstractExpr tree]
 
         }
         | /* epsilon */ {
+            assert($e1.tree != null);
+            assert($i.tree != null);
             $tree = new Selection($e1.tree,$i.tree);
             setLocation($tree,$e1.start);
         }

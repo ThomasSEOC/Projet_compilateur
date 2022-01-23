@@ -1,0 +1,15 @@
+// Description:
+//    Test des opérateurs "+", "-", "*", "/", "%"
+//
+// Historique:
+//    cree le 18/01/2022
+
+{
+    int a = 2;
+    int b = 3;
+    int c = a+b;
+    int d = b-a;
+    float e = b/a;
+    float f = b%a;
+    float g = b*a;
+}

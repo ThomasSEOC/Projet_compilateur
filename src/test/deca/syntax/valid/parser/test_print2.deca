@@ -1,0 +1,8 @@
+// Utilisation char de print;
+
+// Date: 20.01.2022
+
+{
+char c = "a";
+println (c);
+}

@@ -1,0 +1,8 @@
+// Une autre mauvaise assignation
+
+// Date: 20.01.2022
+
+{
+    float b = 2.8;
+    int a = b;
+}

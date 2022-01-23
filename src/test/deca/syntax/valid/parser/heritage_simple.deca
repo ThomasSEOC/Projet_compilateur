@@ -1,0 +1,46 @@
+// Description:
+//    Programme appelé dans la classe A
+// Resultats:
+//
+//
+// Historique:
+//    cree le 19/01/2022
+
+class A {
+    protected int x, y;
+
+    public A(){
+        this.x = x;
+        this.y = y;
+    }
+
+    void setXY(int X, int Y) {
+        x = X;
+        this.y = Y;
+    }
+    void setX(int X) {
+        this.x = X;
+    }
+
+    void setY(int y) {
+        this.y = y;
+    }
+    int getX(){
+        return this.x;
+    }
+
+    int getY(){
+        return y;
+    }
+}
+
+
+class B extends A {
+    boolean b = true;
+}
+
+{
+    A a = new A();
+    B b = null;
+    a.setXY(10,20);
+}

@@ -1,0 +1,9 @@
+// Cet include n'est pas lisible
+
+// Date: 20.01.2022
+
+#include "../../lexer/symboles-inexistants.lis"
+
+{
+    println("lecture difficile");
+}

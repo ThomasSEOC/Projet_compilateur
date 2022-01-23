@@ -1,0 +1,8 @@
+// Utilisation booléenne du print
+
+// Date: 20.01.2022
+
+{
+    boolean b = true;
+    println(b);
+}
