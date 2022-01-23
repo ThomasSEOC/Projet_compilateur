@@ -1,11 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.BinaryArithmOperation;
+import fr.ensimag.deca.codegen.BinaryBoolOperation;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.Constant;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -80,5 +82,9 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 		operator.print();
 	}
 
-
+	@Override
+	public Constant getConstant(DecacCompiler compiler) {
+		BinaryArithmOperation operator = new BinaryArithmOperation(compiler.getCodeGenBackend(), this);
+		return operator.getConstant(compiler);
+	}
 }

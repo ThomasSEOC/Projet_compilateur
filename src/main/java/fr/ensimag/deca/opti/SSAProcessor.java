@@ -30,8 +30,20 @@ public class SSAProcessor {
         return lastVariablesIds.keySet();
     }
 
+    public int getSSAVariablesCount(String varName) {
+        return lastVariablesIds.get(varName);
+    }
+
+    public Map<String, Set<SSAMerge>> getMerges() {
+        return merges;
+    }
+
     public Set<InstructionIdentifiers> getInstructionIdentifiers(SSAVariable variable) {
         return usages.get(variable);
+    }
+
+    public void removeIdentifier(SSAVariable variable, Identifier identifier) {
+        usages.get(variable).removeIf(ident -> ident.getWriteIdentifier() == identifier);
     }
 
     private void startMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
@@ -90,6 +102,11 @@ public class SSAProcessor {
     }
 
     private void processBloc(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
+        if (bloc instanceof BranchCodeBloc) {
+            BranchCodeBloc branchCodeBloc = (BranchCodeBloc) bloc;
+            processInstructionIdentifiers(branchCodeBloc.getConditionIdentifiers(), localSSA);
+        }
+
         // check if there are not done in arcs
         if (bloc.getInArcs().size() > 1) {
             boolean needWait = false;
@@ -112,14 +129,17 @@ public class SSAProcessor {
             else {
                 // can end fuse
                 endMerge(bloc, localSSA);
+                graph.addDoneBloc(bloc);
             }
+        }
+        else {
+            graph.addDoneBloc(bloc);
         }
 
         for (InstructionIdentifiers identifiers : bloc.getInstructionIdentifiersList()) {
             processInstructionIdentifiers(identifiers, localSSA);
         }
 
-        graph.addDoneBloc(bloc);
     }
 
     private Map<String,SSAVariable> processDeclVar() {

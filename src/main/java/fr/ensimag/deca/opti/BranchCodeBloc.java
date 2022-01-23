@@ -11,6 +11,7 @@ public class BranchCodeBloc extends AbstractCodeBloc {
     private AbstractExpr condition;
     private AbstractCodeBloc thenBloc;
     private AbstractCodeBloc elseBloc;
+    private InstructionIdentifiers conditionIdentifiers;
 
     public BranchCodeBloc(int id) {
         super(id);
@@ -65,6 +66,7 @@ public class BranchCodeBloc extends AbstractCodeBloc {
 
     public void setCondition(AbstractExpr condition) {
         this.condition = condition;
+        conditionIdentifiers = new InstructionIdentifiers(condition);
     }
 
     public void setThenBloc(AbstractCodeBloc bloc) {
@@ -86,6 +88,8 @@ public class BranchCodeBloc extends AbstractCodeBloc {
     public AbstractCodeBloc getElseBloc() {
         return elseBloc;
     }
+
+    public InstructionIdentifiers getConditionIdentifiers() { return conditionIdentifiers; }
 
     @Override
     public String toString() {

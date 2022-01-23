@@ -3,6 +3,8 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -29,6 +31,27 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
      */
     @Override
     public void doOperation () {
+        boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
+
+        Constant constant = null;
+        if (opti) {
+            constant = getConstant(getCodeGenBackEnd().getCompiler());
+        }
+
+        if (constant != null) {
+            if (constant.getValueBoolean()) {
+                if (getCodeGenBackEnd().getBranchCondition()) {
+                    getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                }
+            }
+            else {
+                if (!getCodeGenBackEnd().getBranchCondition()) {
+                    getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                }
+            }
+            return;
+        }
+
         // cast expression to AbstractBinaryExpr
         AbstractBinaryExpr expr = (AbstractBinaryExpr) getExpression();
 
@@ -151,8 +174,6 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
         if (cLOp == null || cROp == null) {
             return null;
         }
-
-        Constant result;
 
         if (cLOp.getIsFloat()) {
             float op1 = cLOp.getValueFloat();

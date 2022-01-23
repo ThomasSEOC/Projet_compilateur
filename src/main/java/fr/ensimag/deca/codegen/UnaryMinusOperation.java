@@ -1,8 +1,12 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.UnaryMinus;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -24,6 +28,25 @@ public class UnaryMinusOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
+
+        Constant constant = null;
+        if (opti) {
+            constant = getConstant(getCodeGenBackEnd().getCompiler());
+        }
+
+        if (constant != null) {
+            VirtualRegister result;
+            if (constant.getIsFloat()) {
+                result = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateFloat(constant.getValueFloat()));
+            }
+            else {
+                result = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(constant.getValueInt()));
+            }
+            getCodeGenBackEnd().getContextManager().operationStackPush(result);
+            return;
+        }
+
         // cast to UnaryMinus
         UnaryMinus expr = (UnaryMinus) getExpression();
 
@@ -71,5 +94,24 @@ public class UnaryMinusOperation extends AbstractOperation {
             getCodeGenBackEnd().addInstruction(new WINT());
         }
 
+    }
+
+    @Override
+    public Constant getConstant(DecacCompiler compiler) {
+        // cast to UnaryMinus
+        UnaryMinus expr = (UnaryMinus) getExpression();
+
+        Constant cOp = expr.getOperand().getConstant(compiler);
+
+        if (cOp == null) {
+            return null;
+        }
+
+        if (cOp.getIsFloat()) {
+            return new Constant(-cOp.getValueFloat());
+        }
+        else {
+            return new Constant(-cOp.getValueInt());
+        }
     }
 }

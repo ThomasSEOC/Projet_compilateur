@@ -19,6 +19,14 @@ public class Arc {
         return stop;
     }
 
+    public void setStart(AbstractCodeBloc bloc) {
+        this.start = bloc;
+    }
+
+    public void setStop(AbstractCodeBloc bloc) {
+        this.stop = bloc;
+    }
+
     @Override
     public String toString() {
         return "Arc : from " + start.getId() + " to " + stop.getId();

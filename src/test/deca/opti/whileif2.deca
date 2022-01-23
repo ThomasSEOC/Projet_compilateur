@@ -1,0 +1,16 @@
+// Boucle while avec condition if n°2
+
+// Date: 21.01.2022
+
+{
+boolean a = true;
+while (a){
+    if (5 == 5){
+        println ("5 = 5");
+        }
+    else{
+        println ("5 != 5");
+        }
+    a = false;
+    }
+}

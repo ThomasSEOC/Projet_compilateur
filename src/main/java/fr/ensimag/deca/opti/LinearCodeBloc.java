@@ -15,7 +15,6 @@ public class LinearCodeBloc extends AbstractCodeBloc {
 
         super.codeGen(graph);
 
-
         // normally only 1 out arc
         AbstractCodeBloc nextBloc = getOutArcs().get(0).getStop();
         if (!(graph.getDoneBlocs().contains(nextBloc))) {

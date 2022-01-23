@@ -1,8 +1,11 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  * class responsible for is statement code generation
@@ -45,10 +48,18 @@ public class ifStatement {
         else if (expression.getCondition() instanceof Identifier) {
             IdentifierRead operator = new IdentifierRead(backend, expression.getCondition());
             operator.doOperation();
+            VirtualRegister result = backend.getContextManager().operationStackPop();
+            backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            backend.addInstruction(new BEQ(elseLabel));
+            result.destroy();
         }
         else if (expression.getCondition() instanceof BooleanLiteral) {
             LiteralOperation operator = new LiteralOperation(backend, expression.getCondition());
             operator.doOperation();
+            VirtualRegister result = backend.getContextManager().operationStackPop();
+            backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            backend.addInstruction(new BEQ(elseLabel));
+            result.destroy();
         }
         else {
             BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());

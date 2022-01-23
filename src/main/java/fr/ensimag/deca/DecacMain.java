@@ -1,6 +1,12 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.log4j.Logger;
 
 import static fr.ensimag.deca.CompilerOptions.*;
@@ -14,7 +20,7 @@ import static fr.ensimag.deca.CompilerOptions.*;
 public class DecacMain {
     private static Logger LOG = Logger.getLogger(DecacMain.class);
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // example log4j message.
         LOG.info("Decac compiler started");
         boolean error = false;
@@ -47,11 +53,28 @@ public class DecacMain {
             //throw new UnsupportedOperationException("decac without argument not yet implemented");
         }
         if (options.getParallel()) {
-            // A FAIRE : instancier DecacCompiler pour chaque fichier à
-            // compiler, et lancer l'exécution des méthodes compile() de chaque
-            // instance en parallèle. Il est conseillé d'utiliser
-            // java.util.concurrent de la bibliothèque standard Java.
-            throw new UnsupportedOperationException("Parallel build not yet implemented");
+            List<ParallelCompiler> compilers = new ArrayList<>();
+            for (File source : options.getSourceFiles()) {
+                DecacCompiler compiler = new DecacCompiler(options, source);
+                compilers.add(new ParallelCompiler(compiler));
+            }
+
+            ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+            for(ParallelCompiler compiler : compilers) {
+                exec.execute(compiler);
+            }
+
+            exec.shutdown();
+            if (!exec.awaitTermination(60, TimeUnit.SECONDS)) {
+                error = true;
+            }
+
+            for(ParallelCompiler compiler : compilers) {
+                if (compiler.getError()) {
+                    error = true;
+                    break;
+                }
+            }
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

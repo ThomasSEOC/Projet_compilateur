@@ -1,7 +1,12 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.ConvFloat;
+import fr.ensimag.deca.tree.UnaryMinus;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
 /**
@@ -22,6 +27,25 @@ public class ConversionOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
+
+        Constant constant = null;
+        if (opti) {
+            constant = getConstant(getCodeGenBackEnd().getCompiler());
+        }
+
+        if (constant != null) {
+            VirtualRegister result;
+            if (constant.getIsFloat()) {
+                result = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateFloat(constant.getValueFloat()));
+            }
+            else {
+                result = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(constant.getValueInt()));
+            }
+            getCodeGenBackEnd().getContextManager().operationStackPush(result);
+            return;
+        }
+
         if (getExpression() instanceof ConvFloat) {
             // cast to ConvFloat
             ConvFloat expr = (ConvFloat) getExpression();
@@ -70,5 +94,25 @@ public class ConversionOperation extends AbstractOperation {
 //            // free virtual register
 //            r.destroy();
 //        }
+    }
+
+    @Override
+    public Constant getConstant(DecacCompiler compiler) {
+        if (getExpression() instanceof ConvFloat) {
+            // cast to UnaryMinus
+            ConvFloat expr = (ConvFloat) getExpression();
+
+            Constant cOp = expr.getOperand().getConstant(compiler);
+
+            if (cOp == null) {
+                return null;
+            }
+
+            float result = (float) cOp.getValueInt();
+            return new Constant(result);
+        }
+        else {
+            return null;
+        }
     }
 }

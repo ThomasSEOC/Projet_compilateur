@@ -11,10 +11,10 @@
     }
 
     if (false) {
-        println("yes");
+        println("no");
     }
     else {
-        println("no");
+        println("yes");
     }
 
     if (x) {

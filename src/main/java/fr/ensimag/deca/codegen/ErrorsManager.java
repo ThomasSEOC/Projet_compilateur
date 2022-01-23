@@ -21,6 +21,7 @@ public class ErrorsManager {
     private final Label wrongInputTypeLabel = new Label("wrong_input_error");
     private final Label divisionByZeroLabel = new Label("division_by_zero_error");
 
+    private boolean isStackOverflowLabelUsed = false;
     private boolean isDereferencementNullLabelUsed = false;
     private boolean isHeapOverflowLabelUsed = false;
     private boolean isWrongInputTypeLabelUsed = false;
@@ -41,10 +42,10 @@ public class ErrorsManager {
         backend.getCompiler().addComment("###############################################################");
         backend.getCompiler().addComment("ERRORS");
 
-        // this error is always present
-        addSTackOverflowError();
-
         // these errors are only added if needed
+        if (isStackOverflowLabelUsed) {
+            addSTackOverflowError();
+        }
         if (isDereferencementNullLabelUsed) {
             addDereferencementNullError();
         }
@@ -61,9 +62,13 @@ public class ErrorsManager {
 
     /**
      * getter for label to which jump to enter stack overflow error
+     *
      * @return stackOverflowLabel
      */
-    public Label getStackOverflowLabel() { return stackOverflowLabel; }
+    public Label getStackOverflowLabel() {
+        isStackOverflowLabelUsed = true;
+        return stackOverflowLabel;
+    }
 
     /**
      * getter for label to which jump in case of null pointer exception
