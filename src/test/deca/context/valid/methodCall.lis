@@ -9,50 +9,43 @@ DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:
    |      |  definition: type(builtin), type=Object
    |      +> ListDeclMethod [List with 1 elements]
    |      |  []> [3, 4] DeclMethod
-   |      |      +> [3, 4] Identifier (void)
-   |      |      |  definition: type(builtin), type=void
-   |      |      +> [3, 9] Identifier (maMethod)
-   |      |      +> [3, 18] ListDeclParam [List with 1 elements]
-   |      |      |  []> [3, 18] DeclParam
-   |      |      |      +> [3, 18] Identifier (float)
-   |      |      |      |  definition: type(builtin), type=float
-   |      |      |      `> [3, 24] Identifier (y)
-   |      |      `> MethodBody
+   |      |      +> [3, 4] Identifier (int)
+   |      |      |  definition: type(builtin), type=int
+   |      |      +> [3, 8] Identifier (getX)
+   |      |      +> ListDeclParam [List with 0 elements]
+   |      |      `> [3, 15] MethodBody
    |      |         +> ListDeclVar [List with 0 elements]
-   |      |         `> ListInst [List with 0 elements]
-   |      `> [2, 8] ListDeclField [List with 1 elements]
-   |         []> [2, 8] [visibility=PUBLIC] DeclField
-   |             +> [2, 4] Identifier (int)
+   |      |         `> [4, 8] ListInst [List with 1 elements]
+   |      |            []> [4, 15] Return
+   |      |                `> [4, 15] Identifier (x)
+   |      |                   definition: field defined at [2, 18], type=int
+   |      `> [2, 18] ListDeclField [List with 1 elements]
+   |         []> [2, 18] [visibility=PROTECTED] DeclField
+   |             +> [2, 14] Identifier (int)
    |             |  definition: type(builtin), type=int
-   |             +> [2, 8] Identifier (x)
-   |             |  definition: field defined at [2, 8], type=int
+   |             +> [2, 18] Identifier (x)
+   |             |  definition: field defined at [2, 18], type=int
    |             `> NoInitialization
    `> [8, 0] Main
-      +> ListDeclVar [List with 2 elements]
+      +> ListDeclVar [List with 1 elements]
       |  []> [9, 6] DeclVar
-      |  ||  +> [9, 0] Identifier (float)
-      |  ||  |  definition: type(builtin), type=float
-      |  ||  +> [9, 6] Identifier (f)
-      |  ||  |  definition: variable defined at [9, 6], type=float
-      |  ||  `> [9, 6] Initialization
-      |  ||     `> [9, 10] Float (0.3)
-      |  ||        type: float
-      |  []> [10, 2] DeclVar
-      |      +> [10, 0] Identifier (A)
+      |      +> [9, 4] Identifier (A)
       |      |  definition: type defined at [1, 0], type=A
-      |      +> [10, 2] Identifier (a)
-      |      |  definition: variable defined at [10, 2], type=A
-      |      `> [10, 2] Initialization
-      |         `> [10, 6] New
+      |      +> [9, 6] Identifier (a)
+      |      |  definition: variable defined at [9, 6], type=A
+      |      `> [9, 6] Initialization
+      |         `> [9, 10] New
       |            type: A
-      |            `> [10, 10] Identifier (A)
+      |            `> [9, 14] Identifier (A)
       |               definition: type defined at [1, 0], type=A
-      `> [11, 0] ListInst [List with 1 elements]
-         []> [11, 0] MethodCall
-             type: void
-             +> [11, 0] Identifier (a)
-             |  definition: variable defined at [10, 2], type=A
-             +> [11, 2] Identifier (maMethod)
-             `> ListExpr [List with 1 elements]
-                []> [11, 11] Identifier (f)
-                    definition: variable defined at [9, 6], type=float
+      `> [10, 4] ListInst [List with 1 elements]
+         []> [10, 4] Println
+             `> ListExpr [List with 2 elements]
+                []> [10, 12] StringLiteral ("a.getX() = ")
+                ||  type: string
+                []> [10, 27] MethodCall
+                    type: int
+                    +> [10, 27] Identifier (a)
+                    |  definition: variable defined at [9, 6], type=A
+                    +> [10, 29] Identifier (getX)
+                    `> ListExpr [List with 0 elements]

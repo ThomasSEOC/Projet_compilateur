@@ -61,7 +61,8 @@ public class MethodCall extends AbstractExpr{
 
         // verify if the list of parameters correct
         MethodDefinition methodDef = (MethodDefinition) classDef.getMembers().get(realSymbol);
-        Signature signature = methodDef.getSignature();
+        ident.setDefinition(methodDef);
+        Signature signature = ident.getMethodDefinition().getSignature();
         if (listExpr.size() != signature.size()) {
             throw new ContextualError(expr + "has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
         }
@@ -71,7 +72,6 @@ public class MethodCall extends AbstractExpr{
             }
         }
 
-        // Set the type
         setType(methodDef.getType());
         return (methodDef.getType());
 
