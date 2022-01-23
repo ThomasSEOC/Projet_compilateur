@@ -12,6 +12,7 @@ DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:
    |      |      +> [3, 4] Identifier (int)
    |      |      |  definition: type(builtin), type=int
    |      |      +> [3, 8] Identifier (getX)
+   |      |      |  definition: method defined at [3, 4], type=int
    |      |      +> ListDeclParam [List with 0 elements]
    |      |      `> [3, 15] MethodBody
    |      |         +> ListDeclVar [List with 0 elements]
@@ -48,4 +49,5 @@ DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:
                     +> [10, 27] Identifier (a)
                     |  definition: variable defined at [9, 6], type=A
                     +> [10, 29] Identifier (getX)
+                    |  definition: method defined at [3, 4], type=int
                     `> ListExpr [List with 0 elements]
