@@ -27,7 +27,7 @@ public class Location implements Serializable {
         if (this == BUILTIN) {
             return "(builtin)";
         } else {
-            return "(" + line + ", " + positionInLine + ")";
+            return "[" + line + ", " + positionInLine + "]";
         }
     }
 

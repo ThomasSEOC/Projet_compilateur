@@ -88,13 +88,47 @@ public class DeclField extends AbstractDeclField{
         init.decompile(s);
     }
 
+    @Override
+    String printNodeLine(PrintStream s, String prefix, boolean last,
+                         boolean inlist, String nodeName){
+        s.print(prefix);
+        if (inlist) {
+            s.print("[]>");
+        } else if (last) {
+            s.print("`>");
+        } else {
+            s.print("+>");
+        }
+        if (getLocation() != null) {
+            s.print(" " + getLocation().toString());
+        }
+        s.print(" ");
+        s.print("[visibility=" + visibility + "] ");
+        s.print(nodeName);
+        s.println();
+        String newPrefix;
+        if (last) {
+            if (inlist) {
+                newPrefix = prefix + "    ";
+            } else {
+                newPrefix = prefix + "   ";
+            }
+        } else {
+            if (inlist) {
+                newPrefix = prefix + "||  ";
+            } else {
+                newPrefix = prefix + "|  ";
+            }
+        }
+        prettyPrintType(s, newPrefix);
+        return newPrefix;
+    }
+
      //void prettyPrintField(PrintStream s, String prefix, boolean last) {
 
     //}
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        s.print(prefix);
-        s.print("[visibility=" + visibility + "] ");
         type.prettyPrint(s,prefix,false);
         field.prettyPrint(s,prefix,false);
         init.prettyPrint(s,prefix,true);
