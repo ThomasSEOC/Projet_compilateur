@@ -43,16 +43,16 @@ Code.Bloc.3:
 	CMP R3, R2
 	BLT Code.Bloc.9
 Code.Bloc.4:
+Code.Bloc.5:
+; call method pexp
+	ADDSP #2
+	LOAD 6(GB), R0
+	STORE R0, 0(SP)
 	LOAD 7(GB), R2
 	LOAD 8(GB), R3
 	ADD R3, R2	; Plus
 	DIV #0x1.0p1, R2	; float divide
 	STORE R2, 11(GB)
-; call method pexp
-	ADDSP #2
-	LOAD 6(GB), R0
-	STORE R0, 0(SP)
-	LOAD 11(GB), R2
 	STORE R2, -1(SP)
 	LOAD 6(GB), R0
 	LOAD 0(R0), R0
@@ -60,8 +60,6 @@ Code.Bloc.4:
 	SUBSP #2
 	LOAD R0, R3
 	STORE R3, 12(GB)
-Code.Bloc.5:
-	LOAD 12(GB), R3
 	CMP #0x0.0p0, R3
 	BLE Code.Bloc.8
 Code.Bloc.7:

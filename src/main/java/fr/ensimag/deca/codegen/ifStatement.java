@@ -67,8 +67,17 @@ public class ifStatement {
             operator.doOperation();
 
             // result is in R0
-            backend.addInstruction(new CMP(0, GPRegister.getR(0)));
+            backend.addInstruction(new CMP(new ImmediateInteger(0), GPRegister.getR(0)));
             backend.addInstruction(new BEQ(elseLabel));
+        }
+        else if (expression.getCondition() instanceof Assign) {
+            AssignOperation operator = new AssignOperation(backend, expression.getCondition());
+            operator.doOperation(true);
+
+            VirtualRegister result = backend.getContextManager().operationStackPop();
+            backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            backend.addInstruction(new BEQ(elseLabel));
+            result.destroy();
         }
         else {
             BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());
