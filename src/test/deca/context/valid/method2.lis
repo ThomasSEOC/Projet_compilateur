@@ -1,5 +1,7 @@
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+A
 DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+A
 `> (1, 0) Program
    +> ListDeclClass [List with 1 elements]
    |  []> (1, 0) DeclClass
@@ -7,7 +9,27 @@ DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:
    |      |  definition: type defined at (1, 0), type=A
    |      +> Identifier (Object)
    |      |  definition: type(builtin), type=Object
-   |      +> ListDeclMethod [List with 1 elements]
+   |      +> ListDeclMethod [List with 2 elements]
+   |      |  []> (3, 4) DeclMethod
+   |      |  ||  +> (3, 4) Identifier (void)
+   |      |  ||  |  definition: type(builtin), type=void
+   |      |  ||  +> (3, 9) Identifier (setX)
+   |      |  ||  +> (3, 14) ListDeclParam [List with 1 elements]
+   |      |  ||  |  []> (3, 14) DeclParam
+   |      |  ||  |      +> (3, 14) Identifier (int)
+   |      |  ||  |      `> (3, 18) Identifier (x)
+   |      |  ||  `> MethodBody
+   |      |  ||     +> ListDeclVar [List with 0 elements]
+   |      |  ||     `> (4, 8) ListInst [List with 1 elements]
+   |      |  ||        []> (4, 8) Assign
+   |      |  ||            type: int
+   |      |  ||            +> (4, 8) Selection
+   |      |  ||            |  type: int
+   |      |  ||            |  +> (4, 8) This
+   |      |  ||            |  |  type: boolean
+   |      |  ||            |  `> (4, 13) Identifier (x)
+   |      |  ||            `> (4, 17) Identifier (x)
+   |      |  ||               definition: field defined at (2, 8), type=int
    |      |  []> (9, 4) DeclMethod
    |      |      +> (9, 4) Identifier (void)
    |      |      |  definition: type(builtin), type=void
