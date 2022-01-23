@@ -56,18 +56,24 @@ public class DeclClass extends AbstractDeclClass {
         superClass.verifyType(compiler);
 
         // Definition and type of the class
-        SymbolTable.Symbol classSymbol = nameClass.getName();
-        classType = new ClassType(classSymbol, getLocation(), (ClassDefinition) compiler.getTypes().get(superClass.getName()));
+        SymbolTable.Symbol realSymbol = nameClass.getName();
+        classType = new ClassType(realSymbol, getLocation(), (ClassDefinition) compiler.getTypes().get(superClass.getName()));
         classDefinition = classType.getDefinition();
         nameClass.setDefinition(classDefinition);
-        nameClass.setType(classType);
 
         // put in the dictionary
-        Map<SymbolTable.Symbol, TypeDefinition> dico = compiler.getTypes().getDico();
+        EnvironmentType envTypes = compiler.getTypes();
         try {
             compiler.getTypes().declare(nameClass.getName(), classDefinition);
+            nameClass.setType(classType);
         } catch (DoubleDefException e) {
-            throw new ContextualError(classSymbol.getName() + " is already defined at " + dico.get(classSymbol).getLocation() , getLocation());
+            // If the name is a Predefined type or an already defined class
+            if (envTypes.get(realSymbol).isClass()){
+                throw new ContextualError(realSymbol  + " is a class already defined at "+
+                        envTypes.getDico().get(realSymbol ).getLocation(), getLocation());
+            } else {
+                throw new ContextualError(realSymbol  + " is a predefined type, can't be a class name", getLocation());
+            }
         }
 
 
