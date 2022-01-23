@@ -8,7 +8,7 @@
    |  ||  |  ||  +> [12, 4] Identifier (public)
    |  ||  |  ||  +> [12, 11] Identifier (A)
    |  ||  |  ||  +> ListDeclParam [List with 0 elements]
-   |  ||  |  ||  `> MethodBody
+   |  ||  |  ||  `> [12, 14] MethodBody
    |  ||  |  ||     +> ListDeclVar [List with 0 elements]
    |  ||  |  ||     `> [14, 8] ListInst [List with 2 elements]
    |  ||  |  ||        []> [13, 8] Assign
@@ -31,7 +31,7 @@
    |  ||  |  ||  |  []> [17, 22] DeclParam
    |  ||  |  ||  |      +> [17, 22] Identifier (int)
    |  ||  |  ||  |      `> [17, 26] Identifier (Y)
-   |  ||  |  ||  `> MethodBody
+   |  ||  |  ||  `> [17, 29] MethodBody
    |  ||  |  ||     +> ListDeclVar [List with 0 elements]
    |  ||  |  ||     `> [19, 8] ListInst [List with 2 elements]
    |  ||  |  ||        []> [18, 8] Assign
@@ -49,7 +49,7 @@
    |  ||  |  ||  |  []> [21, 14] DeclParam
    |  ||  |  ||  |      +> [21, 14] Identifier (int)
    |  ||  |  ||  |      `> [21, 18] Identifier (X)
-   |  ||  |  ||  `> MethodBody
+   |  ||  |  ||  `> [21, 21] MethodBody
    |  ||  |  ||     +> ListDeclVar [List with 0 elements]
    |  ||  |  ||     `> [22, 8] ListInst [List with 1 elements]
    |  ||  |  ||        []> [22, 8] Assign
@@ -64,7 +64,7 @@
    |  ||  |  ||  |  []> [25, 14] DeclParam
    |  ||  |  ||  |      +> [25, 14] Identifier (int)
    |  ||  |  ||  |      `> [25, 18] Identifier (y)
-   |  ||  |  ||  `> MethodBody
+   |  ||  |  ||  `> [25, 21] MethodBody
    |  ||  |  ||     +> ListDeclVar [List with 0 elements]
    |  ||  |  ||     `> [26, 8] ListInst [List with 1 elements]
    |  ||  |  ||        []> [26, 8] Assign
@@ -76,7 +76,7 @@
    |  ||  |  ||  +> [28, 4] Identifier (int)
    |  ||  |  ||  +> [28, 8] Identifier (getX)
    |  ||  |  ||  +> ListDeclParam [List with 0 elements]
-   |  ||  |  ||  `> MethodBody
+   |  ||  |  ||  `> [28, 14] MethodBody
    |  ||  |  ||     +> ListDeclVar [List with 0 elements]
    |  ||  |  ||     `> [29, 8] ListInst [List with 1 elements]
    |  ||  |  ||        []> [29, 15] Return
@@ -87,17 +87,17 @@
    |  ||  |      +> [32, 4] Identifier (int)
    |  ||  |      +> [32, 8] Identifier (getY)
    |  ||  |      +> ListDeclParam [List with 0 elements]
-   |  ||  |      `> MethodBody
+   |  ||  |      `> [32, 14] MethodBody
    |  ||  |         +> ListDeclVar [List with 0 elements]
    |  ||  |         `> [33, 8] ListInst [List with 1 elements]
    |  ||  |            []> [33, 15] Return
    |  ||  |                `> [33, 15] Identifier (y)
    |  ||  `> [10, 21] ListDeclField [List with 2 elements]
-   |  ||     []> [10, 18] DeclField
+   |  ||     []> [10, 18] [visibility=PROTECTED] DeclField
    |  ||     ||  +> [10, 14] Identifier (int)
    |  ||     ||  +> [10, 18] Identifier (x)
    |  ||     ||  `> NoInitialization
-   |  ||     []> [10, 21] DeclField
+   |  ||     []> [10, 21] [visibility=PROTECTED] DeclField
    |  ||         +> [10, 14] Identifier (int)
    |  ||         +> [10, 21] Identifier (y)
    |  ||         `> NoInitialization
@@ -106,7 +106,7 @@
    |      +> [38, 8] Identifier (A)
    |      +> ListDeclMethod [List with 0 elements]
    |      `> [39, 12] ListDeclField [List with 1 elements]
-   |         []> [39, 12] DeclField
+   |         []> [39, 12] [visibility=PUBLIC] DeclField
    |             +> [39, 4] Identifier (boolean)
    |             +> [39, 12] Identifier (b)
    |             `> [39, 14] Initialization
