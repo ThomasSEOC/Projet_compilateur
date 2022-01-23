@@ -7,7 +7,7 @@ import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
 
-public class Return extends AbstractExpr{
+public class Return extends AbstractInst{
 
     private  AbstractExpr returnExpr;
 
@@ -21,13 +21,12 @@ public class Return extends AbstractExpr{
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-                           ClassDefinition currentClass) throws ContextualError {
-	Type type = getType();
-	if (!type.isVoid()) {
-	    return type;
-	}
-	throw new ContextualError("Must not be void", getLocation());
+    public void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+                           ClassDefinition currentClass, Type returnType) throws ContextualError {
+        if (returnType.isVoid()) {
+            throw new ContextualError("Return type must not be void", getLocation());
+        }
+        returnExpr.verifyRValue(compiler, localEnv, currentClass, returnType);
     }
 
 
@@ -48,5 +47,11 @@ public class Return extends AbstractExpr{
         // l.170 dans Tree.java explique les paramètres de la fonction
         returnExpr.prettyPrint(s,prefix,true);
     }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
 
 }
