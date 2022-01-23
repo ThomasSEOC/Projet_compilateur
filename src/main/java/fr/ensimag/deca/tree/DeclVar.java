@@ -77,6 +77,7 @@ public class DeclVar extends AbstractDeclVar {
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
+            varName.setType(type.getType());
             if (varName.getVariableDefinition().isExpression()) {
             //    throw new ContextualError("Variable name must not be an expression", getLocation());
             }
