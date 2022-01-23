@@ -16,6 +16,7 @@ public class ClassManager {
     private int vtableOffset;
     private boolean isInstanceofUsed = false;
     private Label currentMethodEnd = null;
+    private ClassObject currentObject = null;
 
     /**
      * constructor for ClassManager
@@ -28,6 +29,14 @@ public class ClassManager {
         classMap = new HashMap<>();
         classList.add(new DefaultObject(this));
         classMap.put("Object", classList.get(0));
+    }
+
+    public void setCurrentObject(ClassObject object) {
+        this.currentObject = object;
+    }
+
+    public ClassObject getCurrentObject() {
+        return currentObject;
     }
 
     /**

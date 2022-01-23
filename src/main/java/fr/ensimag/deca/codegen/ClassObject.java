@@ -143,6 +143,8 @@ public class ClassObject extends AbstractClassObject {
      */
     @Override
     public void methodsCodeGen() {
+        getClassManager().setCurrentObject(this);
+
         CodeGenBackend backend = getClassManager().getBackend();
         backend.addComment("Code for methods of " + getNameClass().getName().getName());
         structureInitCodeGen();
@@ -182,6 +184,8 @@ public class ClassObject extends AbstractClassObject {
 
             backend.popContext();
         }
+
+        getClassManager().setCurrentObject(null);
     }
 
     /**

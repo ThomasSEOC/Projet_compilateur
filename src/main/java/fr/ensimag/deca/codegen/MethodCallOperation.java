@@ -18,23 +18,25 @@ public class MethodCallOperation extends AbstractReadOperation {
         // get object instance
         MethodCall methodCall = (MethodCall) getExpression();
         Identifier objectIdentifier = (Identifier) methodCall.getExpr();
-        int structureOffset = getCodeGenBackEnd().getVariableOffset(objectIdentifier.getName().getName());
+//        int structureOffset = getCodeGenBackEnd().getVariableOffset(objectIdentifier.getName().getName());
+        RegisterOffset structureOffset = getCodeGenBackEnd().getVariableRegisterOffset(objectIdentifier.getName().getName());
 
         // get method offset
-        String nature = objectIdentifier.getClassDefinition().getNature();
+        String nature = objectIdentifier.getType().toString();
         int methodOffset = getCodeGenBackEnd().getClassManager().getClassObject(nature).getMethodsOffsets().get(methodCall.getIdent().getName().getName());
 
         getCodeGenBackEnd().addComment("call method " + methodCall.getIdent().getName().getName());
 
+        // reserve space for params in stack
+        getCodeGenBackEnd().addInstruction(new ADDSP(methodCall.getListExpr().size() + 1));
+
         // check structure
-        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
-        if (getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+//        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
+        getCodeGenBackEnd().addInstruction(new LOAD(structureOffset, GPRegister.getR(0)));
+        if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
             getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
             getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getErrorsManager().getDereferencementNullLabel()));
         }
-
-        // reserve space for params in stack
-        getCodeGenBackEnd().addInstruction(new ADDSP(methodCall.getListExpr().size() + 1));
 
         // add implicit param
         getCodeGenBackEnd().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, Register.SP)));
@@ -57,7 +59,9 @@ public class MethodCallOperation extends AbstractReadOperation {
         }
 
         // jump
-        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
+//        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
+        getCodeGenBackEnd().addInstruction(new LOAD(structureOffset, GPRegister.getR(0)));
+        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(0)), GPRegister.getR(0)));
         getCodeGenBackEnd().addInstruction(new BSR(new RegisterOffset(methodOffset, GPRegister.getR(0))));
 
         // free space
@@ -66,6 +70,23 @@ public class MethodCallOperation extends AbstractReadOperation {
 
     @Override
     public void print() {
-        throw new UnsupportedOperationException("not yet implemented");
+        doOperation();
+
+        // move result to R1
+        getCodeGenBackEnd().addInstruction(new LOAD(GPRegister.getR(0), GPRegister.getR(1)));
+
+        // get type
+        MethodCall methodCall = (MethodCall) getExpression();
+        if (methodCall.getType().isFloat()) {
+            if (getCodeGenBackEnd().getPrintHex()) {
+                getCodeGenBackEnd().addInstruction(new WFLOATX());
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new WFLOAT());
+            }
+        }
+        else {
+            getCodeGenBackEnd().addInstruction(new WINT());
+        }
     }
 }
