@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.MethodCallOperation;
+import fr.ensimag.deca.codegen.VirtualRegister;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -10,6 +11,8 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -106,7 +109,6 @@ public class MethodCall extends AbstractExpr{
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         MethodCallOperation operator = new MethodCallOperation(compiler.getCodeGenBackend(), this);
-        operator.doOperation();
         operator.print();
     }
 
@@ -114,5 +116,9 @@ public class MethodCall extends AbstractExpr{
     protected void codeGenInst(DecacCompiler compiler) {
         MethodCallOperation operator = new MethodCallOperation(compiler.getCodeGenBackend(), this);
         operator.doOperation();
+
+        VirtualRegister result = compiler.getCodeGenBackend().getContextManager().requestNewRegister();
+        compiler.getCodeGenBackend().addInstruction(new LOAD(GPRegister.getR(0), result.requestPhysicalRegister()));
+        compiler.getCodeGenBackend().getContextManager().operationStackPush(result);
     }
 }

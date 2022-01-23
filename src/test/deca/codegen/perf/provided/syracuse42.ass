@@ -1,15 +1,15 @@
 ; Main program
 ; ###############################################################
+; ###############################################################
 ; start main program
-	TSTO #2
+	TSTO #3
 	BOV stack_overflow_error
-	ADDSP #2
+	ADDSP #3
 	LOAD #42, R2
 	STORE R2, 1(GB)
 	LOAD #0, R2
 	STORE R2, 2(GB)
 ; Beginning of main instructions:
-Code.Bloc.0:
 Code.Bloc.2:
 Code.Bloc.3:
 	LOAD 1(GB), R2
@@ -18,7 +18,7 @@ Code.Bloc.3:
 Code.Bloc.4:
 Code.Bloc.5:
 	LOAD 1(GB), R2
-	LOAD R2, R0
+	LOAD R2, R0	; simplify modulo using shifts
 	SHR R0
 	SHL R0
 	SUB R0, R2
@@ -30,15 +30,15 @@ Code.Bloc.7:
 	STORE R2, 1(GB)
 Code.Bloc.6:
 	LOAD 2(GB), R2
-	ADD #1, R2	; Operation Plus
+	ADD #1, R2	; Plus
 	STORE R2, 2(GB)
 	BRA Code.Bloc.3
 Code.Bloc.8:
 	LOAD 1(GB), R2
 	SHL R2
 	LOAD 1(GB), R3
-	ADD R3, R2	; Operation Plus
-	ADD #1, R2	; Operation Plus
+	ADD R3, R2	; Plus
+	ADD #1, R2	; Plus
 	STORE R2, 1(GB)
 	BRA Code.Bloc.6
 Code.Bloc.9:

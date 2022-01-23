@@ -1,0 +1,174 @@
+; Main program
+; ###############################################################
+; VTABLE INIT
+; init vtable for default object
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; init vtable for Polyexp
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+	LOAD Code.Polyexp.pexp, R0
+	STORE R0, 5(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+; ###############################################################
+; ###############################################################
+; start main program
+	TSTO #13
+	BOV stack_overflow_error
+	ADDSP #13
+; create instance of class Polyexp
+	NEW #1, R0
+	BOV heap_overflow_error
+	PUSH R0
+	BSR Code.Polyexp.Init
+	POP R2
+	STORE R2, 6(GB)
+	LOAD #0x0.0p0, R2
+	STORE R2, 7(GB)
+	LOAD #0x1.0p0, R2
+	STORE R2, 8(GB)
+	LOAD #-0x1.0p0, R2
+	STORE R2, 9(GB)
+	LOAD #0x1.6fc2ecp-1, R2
+	STORE R2, 10(GB)
+; Beginning of main instructions:
+Code.Bloc.2:
+Code.Bloc.3:
+	LOAD 8(GB), R2
+	LOAD 7(GB), R3
+	ADD #0x1.0p-23, R3	; Plus
+	CMP R3, R2
+	BLT Code.Bloc.9
+Code.Bloc.4:
+Code.Bloc.5:
+; call method pexp
+	ADDSP #2
+	LOAD 6(GB), R0
+	STORE R0, 0(SP)
+	LOAD 7(GB), R2
+	LOAD 8(GB), R3
+	ADD R3, R2	; Plus
+	DIV #0x1.0p1, R2	; float divide
+	STORE R2, 11(GB)
+	STORE R2, -1(SP)
+	LOAD 6(GB), R0
+	LOAD 0(R0), R0
+	BSR 2(R0)
+	SUBSP #2
+	LOAD R0, R3
+	STORE R3, 12(GB)
+	CMP #0x0.0p0, R3
+	BLE Code.Bloc.8
+Code.Bloc.7:
+	LOAD 11(GB), R3
+	STORE R3, 8(GB)
+	LOAD 12(GB), R3
+	STORE R3, 10(GB)
+Code.Bloc.6:
+	BRA Code.Bloc.3
+Code.Bloc.8:
+	LOAD 11(GB), R3
+	STORE R3, 7(GB)
+	LOAD 12(GB), R3
+	STORE R3, 9(GB)
+	BRA Code.Bloc.6
+Code.Bloc.9:
+	LOAD 7(GB), R1
+	WFLOAT
+	WSTR " = "
+	LOAD 7(GB), R1
+	WFLOATX
+	WNL
+	BRA Code.Bloc.1
+Code.Bloc.1:
+	HALT
+; ###############################################################
+; METHODS
+; Code for methods of Object :
+; structure init
+Code.Object.Init:
+	LOAD -2(LB), R1
+	LEA 1(GB), R0
+	STORE R0, 0(R1)
+	RTS
+; equals method
+code.Object.equals:
+	LOAD -2(LB), R0
+	CMP -3(LB), R0
+	SEQ R0
+	RTS
+; Code for methods of Polyexp
+; Code for init of Polyexp
+Code.Polyexp.Init:
+	TSTO #20
+	BOV stack_overflow_error
+	ADDSP #13
+; context save
+	PUSH R2	; save R2
+	PUSH R3	; save R3
+	PUSH R4	; save R4
+	PUSH R5	; save R5
+	PUSH R6	; save R6
+	PUSH R7	; save R7
+	PUSH R8	; save R8
+	TSTO #14
+	BOV stack_overflow_error
+	ADDSP #13
+; context save
+	PUSH R2	; save R2
+; store VTable pointer
+	LOAD -2(LB), R2
+	LEA 3(GB), R0
+	STORE R0, 0(R2)
+; context restore
+	POP R2	; restore R2
+	RTS
+Code.Polyexp.pexp:
+; pexp
+	LOAD -3(LB), R2
+	LOAD -3(LB), R3
+	LOAD -3(LB), R4
+	LOAD -3(LB), R5
+	LOAD -3(LB), R6
+	LOAD -3(LB), R7
+	LOAD -3(LB), R8
+	MUL #0x1.a01a02p-13, R8	; Multiply
+	ADD #0x1.6c16c2p-10, R8	; Plus
+	MUL R8, R7	; Multiply
+	ADD #0x1.111112p-7, R7	; Plus
+	MUL R7, R6	; Multiply
+	ADD #0x1.555556p-5, R6	; Plus
+	MUL R6, R5	; Multiply
+	ADD #0x1.555556p-3, R5	; Plus
+	MUL R5, R4	; Multiply
+	ADD #0x1.0p-1, R4	; Plus
+	MUL R4, R3	; Multiply
+	ADD #0x1.0p0, R3	; Plus
+	MUL R3, R2	; Multiply
+	SUB #0x1.0p0, R2	; Minus
+	LOAD R2, R0
+	BRA Code.end.Polyexp.pexp
+Code.end.Polyexp.pexp:
+; context restore
+	POP R2	; restore R2
+	POP R3	; restore R3
+	POP R4	; restore R4
+	POP R5	; restore R5
+	POP R6	; restore R6
+	POP R7	; restore R7
+	POP R8	; restore R8
+	RTS
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+heap_overflow_error:
+	WSTR "Erreur : le tas est plein"
+	WNL
+	ERROR
+; end main program

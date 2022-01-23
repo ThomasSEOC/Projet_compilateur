@@ -3,6 +3,8 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;
+import fr.ensimag.deca.tree.AbstractInst;
+import fr.ensimag.deca.tree.Assign;
 import fr.ensimag.deca.tree.ListInst;
 
 /**
@@ -48,6 +50,17 @@ public abstract class AbstractOperation {
             list.add(abstractExpr);
         }
         list.codeGenListInst(codegenbackend.getCompiler());
+    }
+
+    public void operandCodeGen(AbstractExpr operand) {
+        if (operand instanceof Assign) {
+            AssignOperation operator = new AssignOperation(getCodeGenBackEnd(), operand);
+            operator.doOperation(true);
+        }
+        else {
+            AbstractExpr[] inst = {operand};
+            ListCodeGen(inst);
+        }
     }
 
     /**
