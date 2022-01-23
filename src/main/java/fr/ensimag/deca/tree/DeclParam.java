@@ -48,8 +48,9 @@ public class DeclParam extends AbstractDeclParam {
 
         // put the parameter name in the local environment
         try {
-            localEnv.declare(name.getName(), new ParamDefinition(currentType,this.getLocation()));
+            localEnv.declare(name.getName(), new ParamDefinition(currentType,getLocation()));
             name.setType(currentType);
+            name.setDefinition(new ParamDefinition(currentType, getLocation()));
             if ((new ParamDefinition(currentType,this.getLocation())).isExpression()) {
             //    throw new ContextualError("Parameter name must not be an expression", getLocation());
             }
