@@ -12,5 +12,7 @@ class A {
 }
 
 {
-A.x = 1;
+    A a = new A();
+    a.x = 1;
+    A.x = 1;
 }

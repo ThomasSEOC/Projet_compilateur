@@ -53,7 +53,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
 
-        // verifies the existence of superClass
+        // Verify the existence of superClass
         superClass.verifyType(compiler);
 
         // Definition and type of the class
@@ -61,22 +61,21 @@ public class DeclClass extends AbstractDeclClass {
         classType = new ClassType(realSymbol, getLocation(), (ClassDefinition) compiler.getTypes().get(superClass.getName()));
         classDefinition = classType.getDefinition();
         nameClass.setDefinition(classDefinition);
-
-        // put in the dictionary
         EnvironmentType envTypes = compiler.getTypes();
+
+        // Put in the dictionary
         try {
             compiler.getTypes().declare(nameClass.getName(), classDefinition);
             nameClass.setType(classType);
         } catch (DoubleDefException e) {
             // If the name is a Predefined type or an already defined class
             if (envTypes.get(realSymbol).isClass()){
-                throw new ContextualError(realSymbol  + " is a class already defined at "+
+                throw new ContextualError(realSymbol  + " is a class already defined at " +
                         envTypes.getDico().get(realSymbol ).getLocation(), getLocation());
             } else {
                 throw new ContextualError(realSymbol  + " is a predefined type, can't be a class name", getLocation());
             }
         }
-
 
     }
 

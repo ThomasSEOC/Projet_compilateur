@@ -38,6 +38,10 @@ public class SSAProcessor {
         return merges;
     }
 
+    public void removeMerge(String varName, SSAMerge merge) {
+        merges.get(varName).remove(merge);
+    }
+
     public Set<InstructionIdentifiers> getInstructionIdentifiers(SSAVariable variable) {
         return usages.get(variable);
     }

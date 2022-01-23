@@ -121,6 +121,7 @@ public class ConstantPropagator {
 
             // search for merges
             Set<SSAMerge> merges = graph.getSsaProcessor().getMerges().get(toDelete.getName());
+            Set<SSAMerge> toRemove = new HashSet<>();
             for (SSAMerge merge : merges) {
                 if (merge.getOperands().contains(toDelete)) {
                     merge.removeOperand(toDelete);
@@ -130,10 +131,19 @@ public class ConstantPropagator {
                         if (operand == result) {
                             constants.put(result, constant);
                             toProcess.add(result);
-                            merges.remove(merge);
+                            toRemove.add(merge);
                         }
                     }
+                    else if (merge.getOperands().size() == 0) {
+                        SSAVariable result = merge.getResult();
+                        constants.put(result, constant);
+                        toProcess.add(result);
+                        toRemove.add(merge);
+                    }
                 }
+            }
+            for (SSAMerge merge : toRemove) {
+                graph.getSsaProcessor().removeMerge(toDelete.getName(), merge);
             }
         }
 

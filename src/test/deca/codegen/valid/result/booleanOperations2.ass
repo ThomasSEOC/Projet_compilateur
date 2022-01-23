@@ -1,0 +1,108 @@
+; Main program
+; ###############################################################
+; ###############################################################
+; start main program
+	TSTO #3
+	BOV stack_overflow_error
+	ADDSP #3
+	LOAD #0, R2
+	STORE R2, 1(GB)
+	LOAD #0x1.4p1, R3
+	CMP #0x1.4cccccp0, R3
+	BLE if_1_else
+if_1_then:
+	LOAD #1, R3
+	STORE R3, 2(GB)
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
+	LOAD #0, R4
+	STORE R4, 2(GB)
+if_1_end:
+; Beginning of main instructions:
+	LOAD #1, R5
+	STORE R5, 1(GB)
+	LOAD #1, R6
+	CMP #1, R6
+	BNE if_2_else
+if_2_then:
+	WSTR "yes"
+	WNL
+	BRA if_2_end	; jump to end of if statement
+if_2_else:
+	WSTR "no"
+	WNL
+if_2_end:
+	LOAD #1, R6
+	CMP #0, R6
+	BNE if_3_else
+if_3_then:
+	WSTR "no"
+	WNL
+	BRA if_3_end	; jump to end of if statement
+if_3_else:
+	WSTR "yes"
+	WNL
+if_3_end:
+	LOAD #1, R6
+	CMP #1, R6
+	BEQ if_4_else
+if_4_then:
+	WSTR "no"
+	WNL
+	BRA if_4_end	; jump to end of if statement
+if_4_else:
+	WSTR "yes"
+	WNL
+if_4_end:
+	LOAD #1, R6
+	CMP #0, R6
+	BEQ if_5_else
+if_5_then:
+	WSTR "yes"
+	WNL
+	BRA if_5_end	; jump to end of if statement
+if_5_else:
+	WSTR "no"
+	WNL
+if_5_end:
+	LOAD #0x1.666666p2, R6
+	CMP #0x1.133334p2, R6
+	BLE if_6_else
+if_6_then:
+	WSTR "yes"
+	WNL
+	BRA if_6_end	; jump to end of if statement
+if_6_else:
+	WSTR "no"
+	WNL
+if_6_end:
+	LOAD 1(GB), R6
+	CMP #1, R6
+	BNE if_7_else
+if_7_then:
+	WSTR "yes"
+	WNL
+	BRA if_7_end	; jump to end of if statement
+if_7_else:
+	WSTR "no"
+	WNL
+if_7_end:
+	LOAD 2(GB), R6
+	CMP #0, R6
+	BEQ if_8_else
+if_8_then:
+	WSTR "yes"
+	WNL
+	BRA if_8_end	; jump to end of if statement
+if_8_else:
+	WSTR "no"
+	WNL
+if_8_end:
+	HALT
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program
