@@ -43,7 +43,7 @@ public class EnvironmentExp {
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.
      */
-    public Definition get(Symbol key) {
+    public ExpDefinition get(Symbol key) {
 
         // Symbol already in the dictionary
         if (dico.containsKey(key)) {

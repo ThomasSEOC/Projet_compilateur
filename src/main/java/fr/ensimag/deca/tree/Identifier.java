@@ -174,13 +174,20 @@ public class Identifier extends AbstractIdentifier {
 
         // Get and set the definition of the symbol
         Symbol realSymbol = compiler.getSymbolTable().getSymbol(name.getName());
-        Definition def = localEnv.get(realSymbol);
-        setDefinition(def);
+        ExpDefinition expDef = localEnv.get(realSymbol);
+        TypeDefinition  typeDef = compiler.getTypes().get(realSymbol);
 
         // Set the type or return an error if the identifier is not previously defined
-        if (def != null) {
-            setType(def.getType());
-            return def.getType();
+        if (expDef != null) {
+            setType(expDef.getType());
+            setDefinition(expDef);
+            return expDef.getType();
+
+        }
+        if (typeDef!= null) {
+            setType(typeDef.getType());
+            setDefinition(typeDef);
+            return typeDef.getType();
         }
         throw new ContextualError(name + " n'est pas défini", getLocation());
     }
