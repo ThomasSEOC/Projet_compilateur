@@ -1,5 +1,7 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.ListInst;
 
@@ -72,4 +74,12 @@ public abstract class AbstractOperation {
         return this.codegenbackend;
     }
 
+    /**
+     * compute constant associated to current operation
+     * @param compiler global compiler
+     * @return non-null Constant object if constant folding was a success
+     */
+    public Constant getConstant(DecacCompiler compiler) {
+        return null;
+    }
 }

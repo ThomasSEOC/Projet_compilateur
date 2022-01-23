@@ -1,0 +1,6 @@
+class A {
+public int x;
+public void method() {
+x=3;
+}
+}

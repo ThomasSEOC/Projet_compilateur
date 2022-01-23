@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.InstructionIdentifiers;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
@@ -15,7 +16,8 @@ import fr.ensimag.ima.pseudocode.Label;
  * @date 01/01/2022
  */
 public abstract class AbstractInst extends Tree {
-    
+    private boolean useless = false;
+
     /**
      * Implements non-terminal "inst" of [SyntaxeContextuelle] in pass 3
      * @param compiler contains the "env_types" attribute
@@ -43,5 +45,17 @@ public abstract class AbstractInst extends Tree {
      */
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
+    }
+
+    public void searchIdentifiers(InstructionIdentifiers instructionIdentifiers) {
+        // nothing
+    }
+
+    public void setUseless() {
+        useless = true;
+    }
+
+    public boolean getUseless() {
+        return useless;
     }
 }

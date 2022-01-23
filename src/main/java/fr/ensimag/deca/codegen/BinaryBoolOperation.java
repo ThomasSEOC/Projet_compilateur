@@ -1,6 +1,10 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -13,7 +17,7 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 public class BinaryBoolOperation  extends AbstractBinaryOperation{
 
     /**
-     * Constructor pf class BinaryBoolOperation
+     * Constructor for class BinaryBoolOperation
      *
      * @param codegenbackend global codegen backend
      * @param expression expression related to current operation
@@ -27,6 +31,27 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
      */
     @Override
     public void doOperation () {
+        boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
+
+        Constant constant = null;
+        if (opti) {
+            constant = getConstant(getCodeGenBackEnd().getCompiler());
+        }
+
+        if (constant != null) {
+            if (constant.getValueBoolean()) {
+                if (getCodeGenBackEnd().getBranchCondition()) {
+                    getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                }
+            }
+            else {
+                if (!getCodeGenBackEnd().getBranchCondition()) {
+                    getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                }
+            }
+            return;
+        }
+
         // cast expression to AbstractBinaryExpr
         AbstractBinaryExpr expr = (AbstractBinaryExpr) getExpression();
 
@@ -59,7 +84,7 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             ListCodeGen(op1);
 
             // add label and pop it
-            getCodeGenBackEnd().getCompiler().addLabel(falseLabel);
+            getCodeGenBackEnd().addLabel(falseLabel);
             getCodeGenBackEnd().popCurrentFalseBooleanLabel();
 
             // branch on false condition
@@ -70,7 +95,7 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             ListCodeGen(op2);
 
             // add label and pop it
-            getCodeGenBackEnd().getCompiler().addLabel(trueLabel);
+            getCodeGenBackEnd().addLabel(trueLabel);
             getCodeGenBackEnd().popCurrentTrueBooleanLabel();
         }
         else {
@@ -85,7 +110,7 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
             // compare registers
-            getCodeGenBackEnd().getCompiler().addInstruction(new CMP(rOp.getDVal(), lOp.requestPhysicalRegister()));
+            getCodeGenBackEnd().addInstruction(new CMP(rOp.getDVal(), lOp.requestPhysicalRegister()));
 
             // destroy registers
             rOp.destroy();
@@ -95,47 +120,123 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             if (getCodeGenBackEnd().getBranchCondition()) {
                 // branch on true condition
                 if (getExpression() instanceof Greater) {
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BGT(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BGT(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
                 }
                 else if (getExpression() instanceof  GreaterOrEqual) {
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BGE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BGE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof Lower){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BLT(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BLT(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof LowerOrEqual){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BLE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BLE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof Equals){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof NotEquals){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
                 }
             }
             else {
                 // branch on false condition
                 // need to inverse branch operations
                 if (getExpression() instanceof Greater) {
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BLE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BLE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
                 }
                 else if (getExpression() instanceof  GreaterOrEqual) {
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BLT(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BLT(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof Lower){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BGE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BGE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof LowerOrEqual){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BGT(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BGT(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof Equals){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BNE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
                 }
                 else if (this.getExpression() instanceof NotEquals){
-                    getCodeGenBackEnd().getCompiler().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                    getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
                 }
             }
         }
+    }
+
+    @Override
+    public Constant getConstant(DecacCompiler compiler) {
+        // cast expression to AbstractBinaryExpr
+        AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
+
+        Constant cLOp = expr.getLeftOperand().getConstant(compiler);
+        Constant cROp = expr.getRightOperand().getConstant(compiler);
+
+        if (cLOp == null || cROp == null) {
+            return null;
+        }
+
+        if (cLOp.getIsFloat()) {
+            float op1 = cLOp.getValueFloat();
+            float op2 = cROp.getValueFloat();
+
+            if (this.getExpression() instanceof Greater) {
+                return new Constant(op1 > op2);
+            }
+            else if (this.getExpression() instanceof GreaterOrEqual) {
+                return new Constant(op1 >= op2);
+            }
+            else if (this.getExpression() instanceof Lower) {
+                return new Constant(op1 < op2);
+            }
+            else if (this.getExpression() instanceof LowerOrEqual) {
+                return new Constant(op1 <= op2);
+            }
+            else if (this.getExpression() instanceof Equals) {
+                return new Constant(op1 == op2);
+            }
+            else if (this.getExpression() instanceof NotEquals) {
+                return new Constant(op1 != op2);
+            }
+
+        }
+        else {
+            if (cLOp.getIsBoolean()) {
+                boolean op1 = cLOp.getValueBoolean();
+                boolean op2 = cROp.getValueBoolean();
+
+                if (this.getExpression() instanceof Equals) {
+                    return new Constant(op1 == op2);
+                }
+                else if (this.getExpression() instanceof NotEquals) {
+                    return new Constant(op1 != op2);
+                }
+            }
+            else {
+                int op1 = cLOp.getValueInt();
+                int op2 = cROp.getValueInt();
+
+                if (this.getExpression() instanceof Greater) {
+                    return new Constant(op1 > op2);
+                }
+                else if (this.getExpression() instanceof GreaterOrEqual) {
+                    return new Constant(op1 >= op2);
+                }
+                else if (this.getExpression() instanceof Lower) {
+                    return new Constant(op1 < op2);
+                }
+                else if (this.getExpression() instanceof LowerOrEqual) {
+                    return new Constant(op1 <= op2);
+                }
+                else if (this.getExpression() instanceof Equals) {
+                    return new Constant(op1 == op2);
+                }
+                else if (this.getExpression() instanceof NotEquals) {
+                    return new Constant(op1 != op2);
+                }
+            }
+        }
+        return null;
+
     }
 
     /**

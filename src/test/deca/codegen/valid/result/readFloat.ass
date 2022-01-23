@@ -2,7 +2,7 @@
 ; Main program
 	TSTO #1
 	BOV stack_overflow_error
-	ADDSP #0
+	ADDSP #1
 	RFLOAT
 	LOAD R1, R2
 	STORE R2, 1(GB)

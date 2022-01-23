@@ -24,8 +24,8 @@
 	LOAD R2, R1
 	WINT
 	WNL
-	LOAD #3, R2
-	MUL #5, R2	; Operation Multiply
+	LOAD #5, R2
+	MUL #3, R2	; Operation Multiply
 	LOAD R2, R1
 	WINT
 	WNL

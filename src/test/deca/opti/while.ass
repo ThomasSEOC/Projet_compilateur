@@ -1,0 +1,30 @@
+; start main program
+; Main program
+	LOAD #1, R2
+	STORE R2, 1(GB)
+; Beginning of main instructions:
+Code.Bloc.0:
+Code.Bloc.2:
+Code.Bloc.3:
+	LOAD 1(GB), R2
+	CMP #10, R2
+	BGE Code.Bloc.5
+Code.Bloc.4:
+	WSTR "yes"
+	WNL
+	LOAD 1(GB), R2
+	ADD #1, R2	; Operation Plus
+	STORE R2, 1(GB)
+	BRA Code.Bloc.3
+Code.Bloc.5:
+	WSTR "end"
+	WNL
+	BRA Code.Bloc.1
+Code.Bloc.1:
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

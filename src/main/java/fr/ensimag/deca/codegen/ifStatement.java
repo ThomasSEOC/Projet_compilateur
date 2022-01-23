@@ -1,8 +1,11 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  * class responsible for is statement code generation
@@ -45,10 +48,18 @@ public class ifStatement {
         else if (expression.getCondition() instanceof Identifier) {
             IdentifierRead operator = new IdentifierRead(backend, expression.getCondition());
             operator.doOperation();
+            VirtualRegister result = backend.getContextManager().operationStackPop();
+            backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            backend.addInstruction(new BEQ(elseLabel));
+            result.destroy();
         }
         else if (expression.getCondition() instanceof BooleanLiteral) {
             LiteralOperation operator = new LiteralOperation(backend, expression.getCondition());
             operator.doOperation();
+            VirtualRegister result = backend.getContextManager().operationStackPop();
+            backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            backend.addInstruction(new BEQ(elseLabel));
+            result.destroy();
         }
         else {
             BinaryBoolOperation operator = new BinaryBoolOperation(backend, expression.getCondition());
@@ -56,22 +67,22 @@ public class ifStatement {
         }
 
         // add then label
-        backend.getCompiler().addLabel(thenLabel);
+        backend.addLabel(thenLabel);
 
         // generate code for then branch
         expression.getThenBranch().codeGenListInst(backend.getCompiler());
 
         // add unconditioned branch to end if
-        backend.getCompiler().addInstruction(new BRA(endLabel), "jump to end of if statement");
+        backend.addInstruction(new BRA(endLabel), "jump to end of if statement");
 
         // add else label
-        backend.getCompiler().addLabel(elseLabel);
+        backend.addLabel(elseLabel);
 
         // generate code for else branch
         expression.getElseBranch().codeGenListInst(backend.getCompiler());
 
         // add end if label
-        backend.getCompiler().addLabel(endLabel);
+        backend.addLabel(endLabel);
 
         // pop labels
         backend.popCurrentTrueBooleanLabel();

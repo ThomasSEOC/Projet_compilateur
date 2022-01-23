@@ -1,3 +1,0 @@
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
-./src/test/deca/context/invalid/test.deca:2:14: Variable name must not be an expression

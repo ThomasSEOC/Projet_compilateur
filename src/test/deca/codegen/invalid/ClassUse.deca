@@ -1,0 +1,27 @@
+// Mauvaise utilisation des classes
+
+// Date: 19.01.2022
+
+class A {
+
+    int a;
+
+    void A (int a){
+        this.a = a;
+    }
+}
+
+class B{
+
+    int b;
+
+    void B (int b){
+        this.b = b;
+    }
+}
+
+{
+A aa = new A(1);
+B bb = new B(4);
+float c = aa/bb;
+}

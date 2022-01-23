@@ -1,11 +1,12 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Backend for codegen which include commonly used fields and methods across the entire codegen step
@@ -17,12 +18,21 @@ public class CodeGenBackend {
     private int maxStackSize = 0;
     private int maxGlobalVariablesSize = 0;
 
-    private final Map<String, Integer> variables;
+    private final Map<String, Integer> globalVariables;
+    private final Stack<Map<String, Integer>> localVariables;
+    private final Stack<Integer> localVariableSize;
+    private final Stack<Integer> tempUseStackSize;
+
+    private final List<Instruction> instructions;
+    private final List<String> instructionsComments;
+    private final List<String> comments;
+    private final List<Label> labels;
 
     private final ErrorsManager errorsManager;
     private final StartupManager startupManager;
     private final DecacCompiler compiler;
-    private final ContextManager contextManager;
+    private final Stack<ContextManager> contextManagers;
+    private final ClassManager classManager;
 
     private int ifStatementsCount = 0;
     private int whileStatementsCount = 0;
@@ -40,12 +50,20 @@ public class CodeGenBackend {
     public CodeGenBackend(DecacCompiler compiler) {
         this.compiler = compiler;
 
-        variables = new HashMap<>();
+        globalVariables = new HashMap<>();
+        localVariables = new Stack<>();
+        localVariableSize = new Stack<>();
+        tempUseStackSize = new Stack<>();
+        instructions = new ArrayList<>();
+        comments = new ArrayList<>();
+        instructionsComments = new ArrayList<>();
+        labels = new ArrayList<>();
 
         errorsManager = new ErrorsManager(this);
         startupManager = new StartupManager(this);
-        contextManager = new ContextManager(this);
-
+        contextManagers = new Stack<>();
+        contextManagers.add(new ContextManager(this));
+        classManager = new ClassManager(this);
         trueBooleanLabel = new Stack<>();
         falseBooleanLabel = new Stack<>();
         branchCondition = false;
@@ -160,29 +178,85 @@ public class CodeGenBackend {
      * getter for current max stack size
      * @return maxStackSize
      */
-    public int getMaxStackSize() { return maxStackSize; }
+    public int getMaxStackSize() {
+        if (tempUseStackSize.size() != 0) {
+            return localVariableSize.peek() + tempUseStackSize.peek();
+        }
+        return maxStackSize;
+    }
 
     /**
      * getter for current global variables max size
      * @return maxGlobalVariablesSize
      */
-    public int getMaxGlobalVAriablesSize() { return maxGlobalVariablesSize; }
+    public int getContextDataSize() {
+        if (tempUseStackSize.size() != 0) {
+            return localVariableSize.peek();
+        }
+        return maxGlobalVariablesSize;
+    }
+
+    public void addVariable(String name, int size) {
+        // if local context exists
+        if (localVariables.size() != 0) {
+            localVariableSize.push(localVariableSize.pop() + size);
+            localVariables.peek().put(name, localVariableSize.peek());
+        }
+        // add to global variables
+        else {
+            globalVariables.put(name, ++maxGlobalVariablesSize);
+            maxStackSize++;
+        }
+    }
 
     /**
      * add a declared global variable
      * @param name string used to identify variable
      */
     public void addVariable(String name) {
-        variables.put(name, ++maxGlobalVariablesSize);
+        addVariable(name, 1);
+    }
+
+    public Set<String> getVariables() {
+        // if local context exists
+        if (localVariables.size() != 0) {
+            return localVariables.peek().keySet();
+        }
+        // add to global variables
+        else {
+            return globalVariables.keySet();
+        }
+    }
+
+    public void addParam(String name, int offset) {
+        localVariables.peek().put(name, offset);
     }
 
     /**
      * get the offset count from GB for the specified global variable
      * @param name string used to identify variable
-     * @return offset count form GB
+     * @return offset count from LB
      */
     public int getVariableOffset(String name) {
-        return variables.get(name);
+        // search in local context if exists
+        if (localVariables.size() != 0) {
+            if (localVariables.peek().containsKey(name)) {
+                return localVariables.peek().get(name);
+            }
+        }
+        // search in global context
+        return classManager.getVtableOffset() + globalVariables.get(name) - 1;
+    }
+
+    public RegisterOffset getVariableRegisterOffset(String name) {
+        // search in local context if exists
+        if (localVariables.size() != 0) {
+            if (localVariables.peek().containsKey(name)) {
+                return new RegisterOffset(localVariables.peek().get(name), Register.LB);
+            }
+        }
+        // search in global context
+        return new RegisterOffset(classManager.getVtableOffset() + globalVariables.get(name) - 1, Register.GB);
     }
 
     /**
@@ -224,5 +298,127 @@ public class CodeGenBackend {
      * getter for program ContextManager
      * @return contextManager
      */
-    public ContextManager getContextManager(){ return contextManager; }
+    public ContextManager getContextManager(){ return contextManagers.peek(); }
+
+    /**
+     * getter for classManager
+     * @return current class manager
+     */
+    public ClassManager getClassManager() { return classManager; }
+
+    /**
+     * create a new method context
+     */
+    public void createContext() {
+        localVariableSize.push(0);
+        localVariables.push(new HashMap<>());
+        tempUseStackSize.push(0);
+        contextManagers.push(new ContextManager(this));
+    }
+
+    /**
+     * pop method context
+     */
+    public void popContext() {
+        localVariableSize.pop();
+        localVariables.pop();
+        tempUseStackSize.pop();
+        contextManagers.pop().destroy();
+    }
+
+    /**
+     * add instruction to backend buffer
+     * @param instruction to add
+     */
+    public void addInstruction(Instruction instruction) {
+        instructions.add(instruction);
+        instructionsComments.add(null);
+        comments.add(null);
+        labels.add(null);
+    }
+
+    /**
+     * add commented instruction to backend buffer
+     * @param instruction to add
+     * @param comment to add
+     */
+    public void addInstruction(Instruction instruction, String comment) {
+        instructions.add(instruction);
+        instructionsComments.add(comment);
+        comments.add(null);
+        labels.add(null);
+    }
+
+    /**
+     * add instruction to beginning of backend buffer
+     * @param instructionsArray instructions to add
+     * @param commentsArray comments to add
+     */
+    public void addInstructionFirst(List<Instruction> instructionsArray, List<String> commentsArray) {
+        for (int i = instructionsArray.size() - 1; i >= 0; i--) {
+            instructions.add(0, instructionsArray.get(i));
+            instructionsComments.add(0, commentsArray.get(i));
+            comments.add(0, null);
+            labels.add(0, null);
+        }
+    }
+
+    /**
+     * add comment to beginning to backend buffer
+     * @param comment to add
+     */
+    public void addCommentFirst(String comment) {
+        comments.add(0, comment);
+        labels.add(0, null);
+        instructions.add(0, null);
+        instructionsComments.add(0, null);
+    }
+
+    /**
+     * add label to backend buffer
+     * @param label to add
+     */
+    public void addLabel(Label label) {
+        labels.add(label);
+        instructions.add(null);
+        instructionsComments.add(null);
+        comments.add(null);
+    }
+
+    /**
+     * add comment to backend buffer
+     * @param comment to add
+     */
+    public void addComment(String comment) {
+        comments.add(comment);
+        instructions.add(null);
+        instructionsComments.add(null);
+        labels.add(null);
+    }
+
+    /**
+     * copy backend buffer to destination file
+     */
+    public void writeInstructions() {
+        for (int i = 0; i < instructions.size(); i++) {
+            if (instructions.get(i) != null) {
+                if (!Objects.equals(instructionsComments.get(i), null)) {
+                    compiler.addInstruction(instructions.get(i), instructionsComments.get(i));
+                }
+                else {
+                    compiler.addInstruction(instructions.get(i));
+                }
+            }
+            else if (comments.get(i) != null) {
+                compiler.addComment(comments.get(i));
+            }
+            else {
+                compiler.addLabel(labels.get(i));
+            }
+        }
+        instructions.clear();
+        instructionsComments.clear();
+        comments.clear();
+        labels.clear();
+    }
 }

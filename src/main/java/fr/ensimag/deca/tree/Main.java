@@ -2,9 +2,13 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.opti.ControlFlowGraph;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
+import java.io.IOException;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.instructions.HALT;
 import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -41,10 +45,42 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
-        declVariables.codeGenListDeclVar(compiler);
 
-        compiler.addComment("Beginning of main instructions:");
-        insts.codeGenListInst(compiler);
+        if (compiler.getCompilerOptions().getOptimize() == 2) {
+            // create control flow graph;
+            ControlFlowGraph graph = new ControlFlowGraph(compiler, declVariables, insts);
+
+            LOG.debug(graph);
+            if (compiler.getCompilerOptions().getCreateGraphFile()) {
+                try {
+                    graph.createDotGraph();
+                } catch (IOException ex) {
+                    System.out.println("IO error while creating ");
+                }
+            }
+            graph.codeGen();
+        }
+        else {
+            declVariables.codeGenListDeclVar(compiler);
+            compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
+            insts.codeGenListInst(compiler);
+            compiler.getCodeGenBackend().addInstruction(new HALT());
+        }
+
+
+//        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
+
+        // end of the program
+//        compiler.getCodeGenBackend().addInstruction(new HALT());
+
+        compiler.getCodeGenBackend().getStartupManager().generateStartupCode();
+
+//        compiler.getCodeGenBackend().writeInstructions();
+
+        compiler.getCodeGenBackend().addCommentFirst("start main program");
+        compiler.getCodeGenBackend().addCommentFirst("###############################################################");
+
+        compiler.getCodeGenBackend().writeInstructions();
     }
     
     @Override

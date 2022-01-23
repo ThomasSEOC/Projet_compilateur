@@ -2,16 +2,16 @@
 ; Main program
 	TSTO #2
 	BOV stack_overflow_error
-	ADDSP #0
-	LOAD #2, R2
-	FLOAT R2, R2
-	ADD #0x1.4p1, R2	; Operation Plus
-	STORE R2, 1(GB)
+	ADDSP #2
 	LOAD #2, R2
 	FLOAT R2, R2
 	LOAD #0x1.4p1, R3
 	ADD R2, R3	; Operation Plus
-	STORE R3, 2(GB)
+	STORE R3, 1(GB)
+	LOAD #2, R2
+	FLOAT R2, R2
+	ADD #0x1.4p1, R2	; Operation Plus
+	STORE R2, 2(GB)
 ; Beginning of main instructions:
 	LOAD 1(GB), R1
 	WFLOAT

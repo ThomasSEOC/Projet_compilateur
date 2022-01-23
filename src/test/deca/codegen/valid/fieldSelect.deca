@@ -1,0 +1,8 @@
+class A {
+    int x = 152;
+}
+
+{
+    A a = new A();
+    println("la valeur de x est : ", a.x);
+}

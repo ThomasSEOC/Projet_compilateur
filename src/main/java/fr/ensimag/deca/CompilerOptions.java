@@ -53,6 +53,10 @@ public class CompilerOptions {
 
     public int getCompilerStages() { return compilerStages; }
 
+    public int getOptimize() { return optimize; }
+
+    public boolean getCreateGraphFile() { return createGraphFile; }
+
     private int debug = 0;
     private boolean parallel = false;
     private int printBanner = 0;
@@ -60,6 +64,8 @@ public class CompilerOptions {
     private int compilerStages = 3;
     private boolean noCheck = false;
     private int registersCount = 16;
+    private int optimize = 0;
+    private boolean createGraphFile = false;
     
     public void parseArgs(String[] args) throws CLIException {
         // A FAIRE : parcourir args pour positionner les options correctement.
@@ -113,6 +119,20 @@ public class CompilerOptions {
                 // parallel
                 case "-P":
                     parallel = true;
+                    break;
+                // parallel
+                case "-O0":
+                    optimize = 0;
+                    break;
+                case "-O1":
+                    optimize = 1;
+                    break;
+                case "-O2":
+                    optimize = 2;
+                    break;
+                case "-O2g":
+                    optimize = 2;
+                    createGraphFile = true;
                     break;
                 default:
                     // ce doit être un fichier

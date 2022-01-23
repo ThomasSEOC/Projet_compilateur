@@ -4,8 +4,8 @@
 	BOV stack_overflow_error
 	ADDSP #0
 ; Beginning of main instructions:
-	LOAD #0x1.333334p0, R2
-	ADD #0x1.8p0, R2	; Operation Plus
+	LOAD #0x1.8p0, R2
+	ADD #0x1.333334p0, R2	; Operation Plus
 	LOAD R2, R1
 	WFLOAT
 	WNL
@@ -19,13 +19,13 @@
 	LOAD R2, R1
 	WFLOAT
 	WNL
-	LOAD #0x1.d9999ap1, R2
-	MUL #0x1.79999ap2, R2	; Operation Multiply
+	LOAD #0x1.79999ap2, R2
+	MUL #0x1.d9999ap1, R2	; Operation Multiply
 	LOAD R2, R1
 	WFLOAT
 	WNL
-	LOAD #0x1.333334p0, R2
-	ADD #0x1.8p0, R2	; Operation Plus
+	LOAD #0x1.8p0, R2
+	ADD #0x1.333334p0, R2	; Operation Plus
 	LOAD R2, R1
 	WFLOATX
 	WNL

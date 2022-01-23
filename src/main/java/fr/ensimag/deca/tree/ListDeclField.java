@@ -5,7 +5,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import org.apache.log4j.Logger;
+
 import java.util.Iterator;
 
 /**
@@ -34,4 +34,10 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         }
     }
 
+//    public void codeGenDecl(ClassManager classManager, AbstractClassObject object, int offset) {
+//        if (object instanceof ClassObject) {
+//            Fields fields = new Fields((ClassObject) object);
+//            fields.codeGenDecl(offset);
+//        }
+//    }
 }

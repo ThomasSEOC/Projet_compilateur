@@ -91,7 +91,6 @@ public class DeclClass extends AbstractDeclClass {
         this.methods.verifyListDeclMethodBody(compiler, classDefinition.getMembers(), classDefinition);
     }
 
-
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         nameClass.prettyPrint(s,prefix,false);
@@ -108,4 +107,8 @@ public class DeclClass extends AbstractDeclClass {
         field.iterChildren(f);
     }
 
+    @Override
+    protected void codeGenDeclare(DecacCompiler compiler) {
+        compiler.getCodeGenBackend().getClassManager().addClass(nameClass, superClass, methods, field);
+    }
 }

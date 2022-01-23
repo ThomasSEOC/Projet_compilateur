@@ -9,6 +9,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.opti.InstructionIdentifiers;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
@@ -84,4 +85,10 @@ public abstract class AbstractPrint extends AbstractInst {
         arguments.prettyPrint(s, prefix, true);
     }
 
+    @Override
+    public void searchIdentifiers(InstructionIdentifiers instructionIdentifiers) {
+        for (AbstractExpr expr : getArguments().getList()) {
+            expr.searchIdentifiers(instructionIdentifiers);
+        }
+    }
 }

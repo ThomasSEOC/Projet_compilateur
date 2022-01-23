@@ -40,5 +40,4 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             s.println();
         }
     }
-
 }

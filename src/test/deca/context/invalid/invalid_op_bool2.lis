@@ -1,3 +1,0 @@
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
-./src/test/deca/context/invalid/invalid_op_bool2.deca:2:0: Both binary boolean operators need to be a boolean

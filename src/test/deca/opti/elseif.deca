@@ -1,0 +1,25 @@
+// Vérification arborescence elseif
+// manque partie B
+
+// Date: 19.01.2022
+
+{
+int a = 4;
+
+if (a == 0){
+    println ("non");
+    }
+
+else if (a == 2){
+    println ("tjs pas");
+    }
+
+else if (a == 4){
+    println ("ouiii!!");
+    }
+
+else{
+    println ("non");
+    }
+
+}

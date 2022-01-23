@@ -46,4 +46,12 @@ public class MethodBody extends AbstractMethodBody{
         insts.iter(f);
         vars.iter(f);
     }
+
+
+    @Override
+    public void codeGen(DecacCompiler compiler) {
+        vars.codeGenListDeclVar(compiler);
+
+        insts.codeGenListInst(compiler);
+    }
 }

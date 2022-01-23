@@ -1,0 +1,15 @@
+// if avec des conditions compliquées
+
+// "oui" doit se printer
+// Date: 19.01.2022
+
+{
+boolean a = true;
+boolean b = false;
+if (((a == !b && (b || a) == true) || !a == true) && true == !b){
+    println ("oui");
+}
+else {
+    println ("non");
+}
+}

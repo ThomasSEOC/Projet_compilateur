@@ -77,6 +77,7 @@ public class DeclVar extends AbstractDeclVar {
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
+            varName.setType(type.getType());
             if (varName.getVariableDefinition().isExpression()) {
             //    throw new ContextualError("Variable name must not be an expression", getLocation());
             }
@@ -114,10 +115,10 @@ public class DeclVar extends AbstractDeclVar {
     public void codeGenDeclVar(DecacCompiler compiler) {
         // declare variable to backend
         compiler.getCodeGenBackend().addVariable(varName.getName().getName());
-        int offset = compiler.getCodeGenBackend().getVariableOffset(varName.getName().getName());
+        RegisterOffset registerOffset = compiler.getCodeGenBackend().getVariableRegisterOffset(varName.getName().getName());
 
         // set address operand
-        varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.GB));
+        varName.getVariableDefinition().setOperand(registerOffset);
 
         // init variable if initialization
         if (initialization instanceof Initialization) {

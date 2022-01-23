@@ -1,6 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.MethodCallOperation;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -24,6 +29,17 @@ public class MethodCall extends AbstractExpr{
         this.listExpr = listExpr;
     }
 
+    public AbstractExpr getExpr() {
+        return expr;
+    }
+
+    public AbstractIdentifier getIdent() {
+        return ident;
+    }
+
+    public ListExpr getListExpr() {
+        return listExpr;
+    }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
@@ -45,7 +61,8 @@ public class MethodCall extends AbstractExpr{
 
         // verify if the list of parameters correct
         MethodDefinition methodDef = (MethodDefinition) classDef.getMembers().get(realSymbol);
-        Signature signature = methodDef.getSignature();
+        ident.setDefinition(methodDef);
+        Signature signature = ident.getMethodDefinition().getSignature();
         if (listExpr.size() != signature.size()) {
             throw new ContextualError(expr + "has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
         }
@@ -55,7 +72,6 @@ public class MethodCall extends AbstractExpr{
             }
         }
 
-        // Set the type
         setType(methodDef.getType());
         return (methodDef.getType());
 
@@ -85,5 +101,18 @@ public class MethodCall extends AbstractExpr{
         expr.iter(f);
         ident.iter(f);
         listExpr.iter(f);
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        MethodCallOperation operator = new MethodCallOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
+        operator.print();
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        MethodCallOperation operator = new MethodCallOperation(compiler.getCodeGenBackend(), this);
+        operator.doOperation();
     }
 }

@@ -1,0 +1,9 @@
+// Modulo et flottants
+
+// Date: 19.01.2022
+
+{
+int a = 4;
+float b = 5;
+println (a%b);
+}

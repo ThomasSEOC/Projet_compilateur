@@ -59,5 +59,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         LOG.debug("verify listClassBody: end");
     }
 
-
+    public void codeGenDeclare(DecacCompiler compiler) {
+        for (AbstractDeclClass declClass : getList()) {
+            declClass.codeGenDeclare(compiler);
+        }
+    }
 }

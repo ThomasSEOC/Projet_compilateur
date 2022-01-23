@@ -13,9 +13,8 @@
 int a;
 a = 30 % 14;
 // donc /* a = 2
-
-println("2 = ");
+println ("2 = ", a);
 a = a + 1;
 println ("juste/* si */ si 0:");
-return (18 % a);
+println(18 % a);
 }

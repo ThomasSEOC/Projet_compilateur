@@ -1,0 +1,10 @@
+class A {
+    void method() {
+        println("salut");
+    }
+}
+
+{
+    A a = new A();
+    a.method();
+}

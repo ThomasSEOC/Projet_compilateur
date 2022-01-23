@@ -1,8 +1,12 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * class dedicated to assign operation code generation
@@ -26,6 +30,14 @@ public class AssignOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        doOperation(false);
+    }
+
+    /**
+     * method called to generate code for assignation
+     * @param keepValueInOperationStack do not destroy result virtual register of true
+     */
+    public void doOperation(boolean keepValueInOperationStack) {
         // cast expression
         Assign expr = (Assign) this.getExpression();
 
@@ -46,6 +58,22 @@ public class AssignOperation extends AbstractOperation {
             IfThenElse ifThenElse = new IfThenElse(expr.getRightOperand(), okListInst, notOkListInst);
             ifStatement operator = new ifStatement(getCodeGenBackEnd(), ifThenElse);
             operator.createStatement();
+
+            if (keepValueInOperationStack) {
+                // keep result in a register and push it on operation stack
+                VirtualRegister result = getCodeGenBackEnd().getContextManager().requestNewRegister();
+                if (expr.getLeftOperand() instanceof Identifier) {
+                    Identifier id = (Identifier) expr.getLeftOperand();
+                    RegisterOffset ro = new RegisterOffset(getCodeGenBackEnd().getVariableOffset(id.getName().getName()), Register.LB);
+                    getCodeGenBackEnd().addInstruction(new LOAD(ro, result.requestPhysicalRegister()));
+                    getCodeGenBackEnd().getContextManager().operationStackPush(result);
+                }
+                else if (expr.getLeftOperand() instanceof Selection){
+                    Selection sel = (Selection) expr.getLeftOperand();
+                    FieldSelectOperation selOperator = new FieldSelectOperation(getCodeGenBackEnd(), sel);
+                    selOperator.doOperation();
+                }
+            }
         }
         else {
             // generate code for right operand
@@ -56,14 +84,36 @@ public class AssignOperation extends AbstractOperation {
             VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
 
             // generate address where to store result
-            Identifier identifier = (Identifier) expr.getLeftOperand();
-            DAddr addr = identifier.getVariableDefinition().getOperand();
+            if (expr.getLeftOperand() instanceof Identifier) {
+                Identifier identifier = (Identifier) expr.getLeftOperand();
+                DAddr addr;
+                if (identifier.getDefinition() instanceof FieldDefinition) {
+                    addr = identifier.getFieldDefinition().getOperand();
+                }
+                else {
+                    addr = identifier.getVariableDefinition().getOperand();
+                }
 
-            // store result
-            getCodeGenBackEnd().getCompiler().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
+                // store result
+                getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
+            }
+            else if (expr.getLeftOperand() instanceof Selection) {
+                result.requestPhysicalRegister();
 
-            // destroy register
-            result.destroy();
+                getCodeGenBackEnd().getContextManager().operationStackPush(result);
+
+                FieldSelectOperation operator = new FieldSelectOperation(getCodeGenBackEnd(), expr.getLeftOperand());
+                operator.write();
+            }
+
+            if (keepValueInOperationStack) {
+                // push result on operation stack
+                getCodeGenBackEnd().getContextManager().operationStackPush(result);
+            }
+            else {
+                // destroy register
+                result.destroy();
+            }
         }
     }
 
@@ -73,6 +123,30 @@ public class AssignOperation extends AbstractOperation {
      */
     @Override
     public void print() {
-        throw new UnsupportedOperationException("not yet implemented");
+        // do assign
+        doOperation(true);
+
+        // get result
+        VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
+        getCodeGenBackEnd().addInstruction(new LOAD(result.requestPhysicalRegister(), GPRegister.getR(1)));
+
+        // cast expression
+        Assign expr = (Assign) this.getExpression();
+
+        // print result according to type
+        if (expr.getLeftOperand().getType().isFloat()) {
+            if (getCodeGenBackEnd().getPrintHex()) {
+                getCodeGenBackEnd().addInstruction(new WFLOATX());
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new WFLOAT());
+            }
+        }
+        else if (expr.getLeftOperand().getType().isInt()) {
+            getCodeGenBackEnd().addInstruction(new WINT());
+        }
+
+        // destroy result
+        result.destroy();
     }
 }

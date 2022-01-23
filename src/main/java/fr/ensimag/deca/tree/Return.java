@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ReturnOperation;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import org.apache.commons.lang.Validate;
@@ -9,7 +10,7 @@ import java.io.PrintStream;
 
 public class Return extends AbstractInst{
 
-    private  AbstractExpr returnExpr;
+    private AbstractExpr returnExpr;
 
     public Return(AbstractExpr returnExpr){
         this.returnExpr = returnExpr;
@@ -50,8 +51,7 @@ public class Return extends AbstractInst{
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        ReturnOperation operator = new ReturnOperation(compiler.getCodeGenBackend(), returnExpr);
+        operator.doOperation();
     }
-
-
 }

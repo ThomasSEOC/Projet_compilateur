@@ -13,6 +13,10 @@ public class ImmediateFloat extends DVal {
         super();
         this.value = value;
     }
+    
+    public float getValue() {
+	return value;
+    }
 
     @Override
     public String toString() {

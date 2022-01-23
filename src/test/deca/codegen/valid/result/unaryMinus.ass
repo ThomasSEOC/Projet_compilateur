@@ -2,7 +2,7 @@
 ; Main program
 	TSTO #2
 	BOV stack_overflow_error
-	ADDSP #0
+	ADDSP #2
 	LOAD #2, R2
 	OPP R2, R2
 	STORE R2, 1(GB)

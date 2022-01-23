@@ -1,0 +1,19 @@
+; Main program
+; Beginning of main instructions:
+Code.Bloc.0:
+Code.Bloc.2:
+	WSTR "hello world"
+	WNL
+	LOAD #4, R1
+	WINT
+	WNL
+	BRA Code.Bloc.1
+Code.Bloc.1:
+	HALT
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program
