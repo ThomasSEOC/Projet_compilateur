@@ -1,0 +1,41 @@
+// Description:
+//    Programme qui teste les if et les else
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 18/01/2022
+
+// Description:
+//    Programme utilisant le mot "extends" pour l'héritage des classes".
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 18/01/2022
+
+{
+    if(2>=3){
+        println("pas normal");
+    }
+    if(2>=3){
+        println("pas normal");
+    }
+    if(2>3){
+        println("pas normal");
+    }
+    if(2==3){
+        println("pas normal");
+    }
+    if(2<3){
+        println("normal");
+    }
+    if(2<=3){
+        println("normal");
+    }
+    if(!(2==3)){
+        println("normal");
+    }
+}

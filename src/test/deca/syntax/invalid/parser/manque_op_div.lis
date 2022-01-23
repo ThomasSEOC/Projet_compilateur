@@ -1,0 +1,1 @@
+./src/test/deca/syntax/invalid/parser/manque_op_div.deca:6:8: extraneous input '/' expecting {'true', 'false', 'new', 'null', 'readInt', 'readFloat', 'this', IDENT, '-', '(', '!', INT, FLOAT, STRING}

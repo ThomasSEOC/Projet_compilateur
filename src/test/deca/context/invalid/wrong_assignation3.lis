@@ -1,0 +1,3 @@
+DEBUG fr.ensimag.deca.tree.Program.verifyProgram(Program.java:39) - verify program: start
+DEBUG fr.ensimag.deca.tree.Main.verifyMain(Main.java:33) - verify Main: start
+./src/test/deca/context/invalid/wrong_assignation3.deca:7:12: int is expected

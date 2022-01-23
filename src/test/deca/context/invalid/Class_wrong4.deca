@@ -1,0 +1,22 @@
+// Il n'y a pas de new
+
+// Date: 20.01.2022
+
+class A{
+
+    int entier;
+
+    void A (int e){
+        this.entier = e;
+    }
+
+    void action (){
+        this.e = this.e+1;
+    }
+}
+
+{
+A a = A(4);
+a.action();
+println("ben non");
+}

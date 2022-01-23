@@ -1,0 +1,8 @@
+// Manque arguments
+
+// Date: 20.01.2022
+
+{
+    int a = 2;
+    boolean b = ( a =< 3);
+}

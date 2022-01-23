@@ -1,0 +1,7 @@
+// Il manque opérande à modulo
+
+// Date: 20.01.2022
+
+{
+int a = 5 %;
+}

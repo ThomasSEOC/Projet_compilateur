@@ -381,8 +381,7 @@ select_expr returns[AbstractExpr tree]
             setLocation($tree,$e.start);
         }
     | e1=select_expr DOT i=ident {
-            assert($e1.tree != null);
-            assert($i.tree != null);
+
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
@@ -392,6 +391,8 @@ select_expr returns[AbstractExpr tree]
 
         }
         | /* epsilon */ {
+            assert($e1.tree != null);
+            assert($i.tree != null);
             $tree = new Selection($e1.tree,$i.tree);
             setLocation($tree,$e1.start);
         }
@@ -591,6 +592,7 @@ decl_method returns[AbstractDeclMethod tree]
 }
     : type ident OPARENT params=list_params CPARENT (block {
         amb = new MethodBody($block.decls,$block.insts);
+        setLocation(amb,$block.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
             StringLiteral string = new StringLiteral($code.text);

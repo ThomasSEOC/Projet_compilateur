@@ -1,0 +1,22 @@
+// Test invalide sur les classes.
+
+// Date: 20.01.2022
+
+
+class A{
+
+    boolean b;
+
+    void A (){
+        this.b = true;
+    }
+
+    void inv(){
+        this.b = false;
+    }
+}
+
+{
+A a = new A(true);
+a.inv;
+}

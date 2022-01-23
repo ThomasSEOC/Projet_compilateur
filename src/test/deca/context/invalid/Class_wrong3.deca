@@ -1,0 +1,22 @@
+// Mauvaise utilisation du constructeur
+
+// Date: 20.01.2022
+
+class A{
+
+    int entier;
+
+    void A (){
+        this.entier = 1;
+    }
+
+    void action (){
+        this.e = this.e+1;
+    }
+}
+
+{
+A a = new A(4);
+a.action();
+println("ben non");
+}

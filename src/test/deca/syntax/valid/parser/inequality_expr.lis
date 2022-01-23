@@ -1,0 +1,69 @@
+`> [19, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [19, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [38, 4] ListInst [List with 7 elements]
+         []> [20, 4] IfThenElse
+         ||  +> [20, 7] GreaterOrEqual
+         ||  |  +> [20, 7] Int (2)
+         ||  |  `> [20, 10] Int (3)
+         ||  +> [21, 8] ListInst [List with 1 elements]
+         ||  |  []> [21, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [21, 16] StringLiteral ("pas normal")
+         ||  `> ListInst [List with 0 elements]
+         []> [23, 4] IfThenElse
+         ||  +> [23, 7] GreaterOrEqual
+         ||  |  +> [23, 7] Int (2)
+         ||  |  `> [23, 10] Int (3)
+         ||  +> [24, 8] ListInst [List with 1 elements]
+         ||  |  []> [24, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [24, 16] StringLiteral ("pas normal")
+         ||  `> ListInst [List with 0 elements]
+         []> [26, 4] IfThenElse
+         ||  +> [26, 7] Greater
+         ||  |  +> [26, 7] Int (2)
+         ||  |  `> [26, 9] Int (3)
+         ||  +> [27, 8] ListInst [List with 1 elements]
+         ||  |  []> [27, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [27, 16] StringLiteral ("pas normal")
+         ||  `> ListInst [List with 0 elements]
+         []> [29, 4] IfThenElse
+         ||  +> [29, 7] Equals
+         ||  |  +> [29, 7] Int (2)
+         ||  |  `> [29, 10] Int (3)
+         ||  +> [30, 8] ListInst [List with 1 elements]
+         ||  |  []> [30, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [30, 16] StringLiteral ("pas normal")
+         ||  `> ListInst [List with 0 elements]
+         []> [32, 4] IfThenElse
+         ||  +> [32, 7] Lower
+         ||  |  +> [32, 7] Int (2)
+         ||  |  `> [32, 9] Int (3)
+         ||  +> [33, 8] ListInst [List with 1 elements]
+         ||  |  []> [33, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [33, 16] StringLiteral ("normal")
+         ||  `> ListInst [List with 0 elements]
+         []> [35, 4] IfThenElse
+         ||  +> [35, 7] LowerOrEqual
+         ||  |  +> [35, 7] Int (2)
+         ||  |  `> [35, 10] Int (3)
+         ||  +> [36, 8] ListInst [List with 1 elements]
+         ||  |  []> [36, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [36, 16] StringLiteral ("normal")
+         ||  `> ListInst [List with 0 elements]
+         []> [38, 4] IfThenElse
+             +> [38, 7] Not
+             |  `> [38, 8] Equals
+             |     +> [38, 9] Int (2)
+             |     `> [38, 12] Int (3)
+             +> [39, 8] ListInst [List with 1 elements]
+             |  []> [39, 8] Println
+             |      `> ListExpr [List with 1 elements]
+             |         []> [39, 16] StringLiteral ("normal")
+             `> ListInst [List with 0 elements]

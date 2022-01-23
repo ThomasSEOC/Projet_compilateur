@@ -1,0 +1,17 @@
+// Description:
+//    Programme minimaliste utilisant plusieurs print, println, printlnx, printx.
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 18/01/2022
+
+{
+    print("hello world");
+    println("hello world");
+    printx("hello world");
+    printlnx("hello world");
+
+
+}

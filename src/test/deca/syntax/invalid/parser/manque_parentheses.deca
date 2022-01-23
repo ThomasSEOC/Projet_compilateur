@@ -1,0 +1,11 @@
+// Fichier test avec trop peu de parantheses
+
+// Date: 20.01.2022
+
+{
+    float c = 3.2;
+    flaot d = 5.2;
+    float e = (((c/d)/d);
+    return e;
+
+}

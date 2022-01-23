@@ -1,0 +1,12 @@
+// Divisions par booléens / de booléens
+
+// Date : 20.01.2022
+
+{
+    int a = 2;
+    boolean b = true;
+    boolean c = false;
+    a = a/b;
+    b = a/c;
+    c = b/a;
+        }
