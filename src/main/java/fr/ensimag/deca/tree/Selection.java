@@ -75,7 +75,6 @@ public class Selection extends AbstractLValue{
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         FieldSelectOperation operator = new FieldSelectOperation(compiler.getCodeGenBackend(), this);
-        operator.doOperation();
         operator.print();
     }
 

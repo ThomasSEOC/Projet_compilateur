@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import com.sun.org.apache.bcel.internal.Const;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;

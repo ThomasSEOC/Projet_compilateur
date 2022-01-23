@@ -1,7 +1,5 @@
 package fr.ensimag.deca.opti;
 
-import sun.security.provider.certpath.OCSP;
-
 public class Constant {
     private boolean isFloat;
     private boolean isBool;

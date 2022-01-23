@@ -202,9 +202,10 @@ public class ClassObject extends AbstractClassObject {
 
         // if field in current class
         int i = 0;
-        for (AbstractDeclField field : fields.getList()) {
-            if (Objects.equals(field.toString(), fieldName)) {
-                return i +  superObject.getStructureSize();
+        for (AbstractDeclField abstractField : fields.getList()) {
+            DeclField field = (DeclField) abstractField;
+            if (Objects.equals(field.getField().getName().getName(), fieldName)) {
+                return i + superObject.getStructureSize();
             }
             i++;
         }
