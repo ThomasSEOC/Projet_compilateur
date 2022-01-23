@@ -60,8 +60,14 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             getCodeGenBackEnd().setBranchCondition(false);
 
             // compute left part first and right part after
-            AbstractExpr[] ops = {expr.getLeftOperand(), expr.getRightOperand()};
-            ListCodeGen(ops);
+            // generate code for left and right operand
+            if (operandCodeGen(expr.getLeftOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
+
+            if (operandCodeGen(expr.getRightOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
         }
         else if (this.getExpression() instanceof Or) {
             // request a nex Or label
@@ -79,8 +85,11 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             getCodeGenBackEnd().setBranchCondition(true);
 
             // generate code for left operand
-            AbstractExpr[] op1 = {expr.getLeftOperand()};
-            ListCodeGen(op1);
+//            AbstractExpr[] op1 = {expr.getLeftOperand()};
+//            ListCodeGen(op1);
+            if (operandCodeGen(expr.getLeftOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
 
             // add label and pop it
             getCodeGenBackEnd().addLabel(falseLabel);
@@ -90,8 +99,11 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             getCodeGenBackEnd().setBranchCondition(false);
 
             // generate code for right operand
-            AbstractExpr[] op2 = {expr.getRightOperand()};
-            ListCodeGen(op2);
+//            AbstractExpr[] op2 = {expr.getRightOperand()};
+//            ListCodeGen(op2);
+            if (operandCodeGen(expr.getRightOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
 
             // add label and pop it
             getCodeGenBackEnd().addLabel(trueLabel);

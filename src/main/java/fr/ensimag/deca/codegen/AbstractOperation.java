@@ -2,10 +2,12 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
-import fr.ensimag.deca.tree.AbstractExpr;
-import fr.ensimag.deca.tree.AbstractInst;
-import fr.ensimag.deca.tree.Assign;
-import fr.ensimag.deca.tree.ListInst;
+import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  * Once the tree done, this Class allows choosing
@@ -52,14 +54,67 @@ public abstract class AbstractOperation {
         list.codeGenListInst(codegenbackend.getCompiler());
     }
 
-    public void operandCodeGen(AbstractExpr operand) {
+    public boolean operandCodeGen(AbstractExpr operand) {
         if (operand instanceof Assign) {
             AssignOperation operator = new AssignOperation(getCodeGenBackEnd(), operand);
             operator.doOperation(true);
+            return true;
+        }
+        else if (operand instanceof InstanceOf) {
+            InstanceofOperation operator = new InstanceofOperation(getCodeGenBackEnd(), operand);
+            operator.doOperation();
+
+            // result is in R0
+            VirtualRegister result;
+            getCodeGenBackEnd().addInstruction(new CMP(new ImmediateInteger(0), GPRegister.getR(0)));
+            if (getCodeGenBackEnd().getBranchCondition()) {
+                getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                result = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(0));
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                result = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(0));
+            }
+
+            getCodeGenBackEnd().getContextManager().operationStackPush(result);
+            return true;
+        }
+        else if (operand instanceof BooleanLiteral) {
+            LiteralOperation operator = new LiteralOperation(getCodeGenBackEnd(), operand);
+            operator.doOperation();
+            VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
+            getCodeGenBackEnd().addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+
+            if (getCodeGenBackEnd().getBranchCondition()) {
+                getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+            }
+
+            getCodeGenBackEnd().getContextManager().operationStackPush(result);
+            return true;
+        }
+        else if (operand instanceof Identifier) {
+            IdentifierRead operator = new IdentifierRead(getCodeGenBackEnd(), operand);
+            operator.doOperation();
+            VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
+            getCodeGenBackEnd().addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+
+            if (getCodeGenBackEnd().getBranchCondition()) {
+                getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+            }
+
+            getCodeGenBackEnd().getContextManager().operationStackPush(result);
+            return true;
         }
         else {
             AbstractExpr[] inst = {operand};
             ListCodeGen(inst);
+            return false;
         }
     }
 
