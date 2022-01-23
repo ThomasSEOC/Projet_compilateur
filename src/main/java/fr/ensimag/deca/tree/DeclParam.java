@@ -50,9 +50,9 @@ public class DeclParam extends AbstractDeclParam {
         try {
             localEnv.declare(name.getName(), new ParamDefinition(currentType,this.getLocation()));
             name.setType(currentType);
-            if ((new ParamDefinition(currentType,this.getLocation())).isExpression()) {
-                throw new ContextualError("Parameter name must not be an expression", getLocation());
-            }
+            //if ((new ParamDefinition(currentType,this.getLocation())).isExpression()) {
+            //    throw new ContextualError("Parameter name must not be an expression", getLocation());
+            //}
         } catch (DoubleDefException e) {
             if(localEnv.get(realSymbol).isParam()) {
                 throw new ContextualError(realSymbol + " is a parameter already defined at " +

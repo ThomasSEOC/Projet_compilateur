@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import com.sun.tools.javac.tree.JCTree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -34,14 +33,18 @@ public class MethodCall extends AbstractExpr{
         if (!(classType.isClass())) {
             throw new ContextualError(expr + "is not called with a valid class name", getLocation());
         }
-        // verifies if the method exists in the class
+
+
+        // verifies if the method exists in the clas
+        EnvironmentType envTypes = compiler.getTypes();
+        ClassDefinition classDef = (ClassDefinition) envTypes.get(classType.getName());
         SymbolTable.Symbol realSymbol = ident.getName();
-        if (!(currentClass.getMembers().get(realSymbol).isMethod())) {
-            throw new ContextualError(expr + "does not belong to" + currentClass, getLocation());
+        if (!(classDef.getMembers().get(realSymbol).isMethod())) {
+            throw new ContextualError(expr + "does not belong to" + classType.getName(), getLocation());
         }
 
         // verify if the list of parameters correct
-        MethodDefinition methodDef = ident.getMethodDefinition();
+        MethodDefinition methodDef = (MethodDefinition) classDef.getMembers().get(realSymbol);
         Signature signature = methodDef.getSignature();
         if (listExpr.size() != signature.size()) {
             throw new ContextualError(expr + "has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
