@@ -1,4 +1,4 @@
-// Mauvaise utilisation de super()
+// e indéfini
 
 // Date: 20.01.2022
 
@@ -6,16 +6,18 @@ class A{
 
     int entier;
 
-    void A (int e){
-        super (e);
+    void action (){
+        this.entier = e+1;
     }
 
-    void action (){
-        this.e = this.e+1;
+    void initEntier(){
+        this.entier=5;
     }
 }
 
 {
-A a = new A(4);
+A a = new A();
+a.initEntier();
+a.action();
 println("ben non");
 }

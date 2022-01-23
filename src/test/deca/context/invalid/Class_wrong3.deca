@@ -1,4 +1,5 @@
 // Mauvaise utilisation du constructeur
+// Il n'y en a pas
 
 // Date: 20.01.2022
 
@@ -6,9 +7,6 @@ class A{
 
     int entier;
 
-    void A (){
-        this.entier = 1;
-    }
 
     void action (){
         this.e = this.e+1;
@@ -18,5 +16,5 @@ class A{
 {
 A a = new A(4);
 a.action();
-println("ben non");
+println("non");
 }
