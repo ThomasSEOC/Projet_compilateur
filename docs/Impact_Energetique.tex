@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+% Le titre
+\title{Rapport: Impact énergétique du compilateur}
+
+% Le nom des auteurs
+\author{DIJS Thomas \and FALGAYRAC Loïc \and HO-SUN Jules \and NOIRY Sylvain \and WANG Caroline}
+
+% Pour renommer la table des matières
+\renewcommand*\contentsname{Table des matières}
+
+
+% Début du rappoert sur l'impact énergétique
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+	Il est primordial de s'inquiéter de l'impact environnemental de notre compilateur et d'essayer de le réduire au maximum. L'informatique représente une grande part des émissions de gaz à effets de serre mais aussi de pollution des sols. Limiter cet impact n'est pas seulement une envie mais aussi une nécessité.
+	
+\section{Consommation énergétique des machines}
+
+	Pour évaluer la consommation énergétique des machines, il faut tout d’abord les données constructeur des machines sur lesquelles le projet est réalisé. Nous avons tous réalisé le projet sur nos machines personnelles, des ordinateurs portables. 
+	
+	Une batterie d’un ordinateur portable fait environ 42 Wh. Les membres du groupe rechargent leur ordinateur portable en moyenne 2x par jour. On peut supposer que la batterie tient 2x le temps de la recharge, donc il y a besoin de 3x la capacité totale de la batterie par jour et par ordinateur. Il y a ainsi 5 ordinateurs sur 4 semaines (comptons aussi un jour par week-end). Cela nécessite donc au total 15 kWh, ce qui représente 2 jours de chauffage dans un logement moyen. Le pur coût énergétique de ce projet n’est donc pas trop important. L’utilisation d’ordinateurs portables est enfin moins énergivore que celle d’ordinateurs fixes (environ 33\% moins énergivores).
+	
+	Il ne faut pas oublier les coûts cachés. Une recherche internet demande en moyenne 0.0003 kWh (données Google). Nous faisons en moyenne 50 recherches internet par jour et par membre du groupe. Cela représente sur la durée totale du projet 1,8 kWh (bien moins important que la consommation de nos machines personnelles).
+	
+	Néanmoins, la part la plus importante de la consommation énergétique d’un ordinateur reste sa fabrication, qui nécessite environ 900 kWh d’énergie et 50 kWh pour le transport. Comme les ordinateurs sont fabriqués en Chine, qui produit son énergie principalement à base de charbon, la fabrication d’un ordinateur émet près d’une tonne de CO2. Il ne faut cependant pas imputer la totalité de ce coût au projet, car nos machines personnelles n’ont pas été achetées exclusivement pour celui-ci.
+	
+	
+%\section{Impact des choix de compilation de deca vers ima}
+	%L'environnement de travail ima utilise la même architecture que le processeur Motorola 68k, sorti en 1979. Ce processeur est assez vieux mais reste quand même d'actualité, surtout dans le domaine des systèmes embarqués, qui utilise régulièrement des processeurs assez vieux, beaucoup moins chers et aussi efficaces pour les tâches souhaitées.
+
+\section{Efficience du code produit}
+	L'efficience du code produit est caractérisé par sa facilité d'exéution pour les machines, une fois converti en assembleur.
+	
+	\subsection{Mesures}
+	La manière la plus simple pour mesurer l'efficacité d'un code est l'utilisation de la notion de temps de temps d'exécution. Néanmoins, cette méthode diffère suivant le nombre de processus utilisés pour des tâches de fond sur l'ordinateur mais aussi et surtout suivant la puissance des ordinateurs en question.
+	Nous allons utiliser dans cette question un autre moyen de mesure de l'efficacité du code: le comptage du nombre de cycles d'horloge nécessaires à l'ordinateur pour l'exécuter.
+	Pour exécuter le test de performances Syracuse, il faut par exemple 735 cycles d'horloges. Pour un processeur de 1.6 GHz, il faut donc:
+	\begin{displaymath}
+	T_{execution}=\frac{735}{1.60*10^{9}} \approx 4.59^{-7}s
+	\end{displaymath}
+	
+	A l'échelle humaine, ce temps d'exécution n'est pas perceptible. Pour un processeur nécessitant 100W de puissance lorsque ses capacités sont utilisées au maximum, il aura consommé $4.59^{-5} J$, soit un niveau d'énergie équivalent à celui dégagé par des collisions de noyaux d'ions lourds, une énergie donc très faible (en terme de calculs purs).
+	
+	\subsection{Implémentation}
+	
+	Nous avons pu obtenir ce résultat très faible en se concentrant sur l'optimisation de la génération de code. L'ensemble des optimisations réalisées nécessitent un temps de compilation plus important mais permettent de limiter grandement le temps d'exécution. Parmi les optimisations réalisées, on retrouve l'utilisatoin d'un graphe, l'élimination du code mort ou encore la propagation des constantes \textit{[voir documentation de l'extension]}.
+
+\section{Efficience du procédé de fabrication}
+	Le procédé qui demande le plus de temps à l'ordinateur reste quand même la compilation du compilateur. L'opération \textit{mvn compile} nécessite entre 3 et 8 secondes suivant les ordinateurs pour s'exécuter, soit jusqu'à $800 J$ d'énergie (seulement pour le processeur).
+	
+
+
+\end{document}
