@@ -8,8 +8,8 @@ import org.apache.commons.lang.Validate;
 import java.io.PrintStream;
 
 public class Selection extends AbstractLValue{
-    private AbstractExpr expr;
-    private AbstractIdentifier fieldIdent;
+    final private AbstractExpr expr;
+    final private AbstractIdentifier fieldIdent;
 
     public Selection(AbstractExpr expr, AbstractIdentifier fieldIdent){
         Validate.notNull(expr);
@@ -47,7 +47,9 @@ public class Selection extends AbstractLValue{
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        expr.decompile(s);
+        s.print(".");
+        fieldIdent.decompile(s);
     }
 
     @Override

@@ -1,0 +1,52 @@
+// Description:
+//    Programme qui teste les if et les else
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 18/01/2022
+
+// Description:
+//    Programme utilisant le mot "extends" pour l'héritage des classes".
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 18/01/2022
+
+class A extends B{
+    protected int x,y;
+    public A(){
+        this.x = x;
+        this.y = y;
+    }
+    int getX(){
+        return this.x;
+    }
+    int getY(){
+        return this.y;
+    }
+    void setX(int x){
+        this.x = x;
+    }
+    void setY(int y){
+        this.y = y;
+    }
+}
+
+{
+    A a = new A();
+    a.setX(2);
+    a.setY(3);
+    if( (a.getX() == 2) && (a.getY() == 3) ){
+        return ("Les setters fonctionnent");
+    }
+    else if( (a.getX() == 2) || (a.getY() == 3) ){
+        return ("Un seul des deux setters fonctionne");
+    }
+    else{
+        return("Les setters ne fonctionnent pas");
+    }
+}

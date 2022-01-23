@@ -1,0 +1,7 @@
+// Opération booléenne incorrecte
+
+// Date: 20.01.2022
+
+{
+boolean b = 2 || true;
+}

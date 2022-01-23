@@ -77,9 +77,9 @@ public class DeclVar extends AbstractDeclVar {
         try {
             varName.setDefinition(new VariableDefinition(type.getType(), getLocation()));
             localEnv.declare(varName.getName(), varName.getVariableDefinition());
-            //if (varName.getVariableDefinition().isExpression()) {
+            if (varName.getVariableDefinition().isExpression()) {
             //    throw new ContextualError("Variable name must not be an expression", getLocation());
-            //}
+            }
         } catch (DoubleDefException e) {
                 throw new ContextualError(realSymbol + " is already defined at " +
                         localEnv.get(realSymbol).getLocation(), getLocation());
@@ -89,9 +89,9 @@ public class DeclVar extends AbstractDeclVar {
     
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(type.getName().getName());
+        type.decompile(s);
         s.print(" ");
-        s.print(varName.getName().getName());
+        varName.decompile(s);
         initialization.decompile(s);
         s.println(";");
     }

@@ -18,6 +18,16 @@ public class ListExpr extends TreeList<AbstractExpr> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        int length_list = getList().size()- 1 ;
+
+        for (AbstractExpr expr : getList()) {
+            expr.decompile(s);
+
+            // On affiche (", ") que si le paramètre courant n'est pas le dernier de la liste
+            int range = getList().indexOf(expr);
+            if (! (range == length_list)) {
+                s.print(", ");
+            }
+        }
     }
 }

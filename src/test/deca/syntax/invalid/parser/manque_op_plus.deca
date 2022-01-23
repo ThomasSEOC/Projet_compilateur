@@ -1,0 +1,14 @@
+// Il manque clairement des opérandes
+
+// Date: 20.01.2022
+
+{
+    float a = 2;
+    float b;
+    b = + a ;
+    //a = 4 *;
+    //a = / 2;
+    //a = 2 %;
+    //a = 2 -;
+
+}

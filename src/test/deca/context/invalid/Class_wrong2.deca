@@ -1,0 +1,21 @@
+// Mauvaise utilisation de super()
+
+// Date: 20.01.2022
+
+class A{
+
+    int entier;
+
+    void A (int e){
+        super (e);
+    }
+
+    void action (){
+        this.e = this.e+1;
+    }
+}
+
+{
+A a = new A(4);
+println("ben non");
+}

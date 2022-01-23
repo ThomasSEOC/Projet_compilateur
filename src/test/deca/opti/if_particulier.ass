@@ -1,0 +1,10 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	HALT
+; error messages
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

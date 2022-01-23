@@ -1,0 +1,34 @@
+// Méthode non implémentée
+
+// Date: 20.01.2022
+
+class A{
+
+    int entier;
+
+    void A (int e){
+        this.entier = e;
+    }
+
+    void Action (){
+        this.e = this.e+1;
+    }
+}
+
+Class B extends A{
+
+    void B (int f){
+        super(f);
+    }
+
+    void GrosseAction(){
+        this.e = this.e+1000;
+    }
+
+}
+
+{
+A a = new A(2);
+a.GrosseAction();
+println("ben non");
+}

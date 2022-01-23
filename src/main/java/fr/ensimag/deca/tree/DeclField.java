@@ -43,11 +43,11 @@ public class DeclField extends AbstractDeclField{
         SymbolTable.Symbol realSymbol = field.getName();
         TypeDefinition typeDef =  envTypes.get(realSymbol);
 
-        //if (typeDef.isExpression()){
+        if (typeDef.isExpression()){
         //    throw new ContextualError(realSymbol + " is an Expression can't be a field name", getLocation());
-        //}
+        }
 
-        if (typeDef != null){
+        if (typeDef != null && typeDef.isExpression()){
             if (typeDef.isClass()){
                 throw new ContextualError(realSymbol + " is a class name defined at "+
                         envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a field name", getLocation());
@@ -88,13 +88,14 @@ public class DeclField extends AbstractDeclField{
     @Override
     public void decompile(IndentPrintStream s) {
         if(visibility == Visibility.PROTECTED){
-            s.print("protected");
+            s.print("protected ");
         }
         type.decompile(s);
         s.print(" ");
         field.decompile(s);
         s.print(" ");
         init.decompile(s);
+        s.print(";");
     }
 
     @Override

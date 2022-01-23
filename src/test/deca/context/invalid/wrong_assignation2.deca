@@ -1,0 +1,7 @@
+// Une autre mauvaise assignation
+
+// Date: 20.01.2022
+
+{
+    boolean b = 1;
+}

@@ -1,0 +1,25 @@
+// Argument attendu
+
+//Date: 20.01.2022
+
+class A{
+
+    int entier;
+
+
+    void setE( int e){
+        this.entier = e;
+    }
+
+    void action (int b){
+        this.entier = this.e+b;
+    }
+}
+
+{
+A a = new A();
+a.setE(4);
+a.action();
+println("ben non");
+}
+

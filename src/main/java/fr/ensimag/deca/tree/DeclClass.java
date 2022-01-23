@@ -39,12 +39,13 @@ public class DeclClass extends AbstractDeclClass {
     public void decompile(IndentPrintStream s) {
         s.print("class ");
         nameClass.decompile(s);
-        s.print(" extends");
+        s.print(" extends ");
         superClass.decompile(s);
         s.println("{");
         s.indent();
-        methods.decompile(s);
         field.decompile(s);
+        s.println("");
+        methods.decompile(s);
         s.unindent();
         s.println("}");
     }
