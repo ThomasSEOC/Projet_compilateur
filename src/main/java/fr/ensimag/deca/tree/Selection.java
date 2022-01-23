@@ -21,7 +21,6 @@ public class Selection extends AbstractLValue{
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 	    Type selectType = expr.verifyExpr(compiler, localEnv, currentClass);
-        System.out.println(selectType.getName());
         ClassDefinition classDef = (ClassDefinition) compiler.getTypes().get(selectType.getName());
 	ClassType selectClass = classDef.getType();
 	FieldDefinition selectField = (FieldDefinition)classDef.getMembers().get(fieldIdent.getName());
@@ -38,7 +37,7 @@ public class Selection extends AbstractLValue{
 	    if (!(selectClass).isSubClassOf(currentClass.getType())) {
 		throw new ContextualError("Subtype error", getLocation());
 	    }
-	    if (!selectClass.isSubClassOf((ClassType)selectField.getType())) {
+	    if (!selectClass.isSubClassOf((ClassType)classDef.getType())) {
 		throw new ContextualError("Subtype error", getLocation());
 	    }
 	}
