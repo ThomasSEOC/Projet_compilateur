@@ -28,8 +28,10 @@ public class MethodCallOperation extends AbstractReadOperation {
 
         // check structure
         getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
-        getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
-        getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getErrorsManager().getDereferencementNullLabel()));
+        if (getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+            getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
+            getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getErrorsManager().getDereferencementNullLabel()));
+        }
 
         // reserve space for params in stack
         getCodeGenBackEnd().addInstruction(new ADDSP(methodCall.getListExpr().size() + 1));

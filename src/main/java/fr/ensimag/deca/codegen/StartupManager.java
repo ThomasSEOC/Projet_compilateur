@@ -26,7 +26,7 @@ public class StartupManager {
 
     public void generateStartupCode(int contextSaveSpace) {
         // check stack overflow
-        if (contextSaveSpace + backend.getMaxStackSize() > 0) {
+        if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus() && (contextSaveSpace + backend.getMaxStackSize() > 0)) {
             List<Instruction> instructions = new ArrayList<>();
             List<String> comments = new ArrayList<>();
             instructions.add(new TSTO(contextSaveSpace + backend.getMaxStackSize()));

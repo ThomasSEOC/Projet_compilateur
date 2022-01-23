@@ -71,12 +71,22 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			// get correct operand
 			lOp.requestPhysicalRegister();
 			getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Plus");
+			if (lOp.getIsFloat()) {
+				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+				}
+			}
 			rOp.destroy();
 			this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 		} else if (this.getExpression() instanceof Minus) {
 			// get correct operand
 			lOp.requestPhysicalRegister();
 			getCodeGenBackEnd().addInstruction(new SUB(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Minus");
+			if (lOp.getIsFloat()) {
+				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+				}
+			}
 			rOp.destroy();
 			this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 		} else if (this.getExpression() instanceof Multiply) {
@@ -113,6 +123,11 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				// get correct operand
 				lOp.requestPhysicalRegister();
 				getCodeGenBackEnd().addInstruction(new MUL(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Multiply");
+				if (lOp.getIsFloat()) {
+					if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+						getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+					}
+				}
 				rOp.destroy();
 				getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
@@ -146,7 +161,9 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				} else {
 					getCodeGenBackEnd().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "int divide");
 				}
-				getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+				}
 				rOp.destroy();
 				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
@@ -179,7 +196,9 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			}
 			else {
 				getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "int remainder");
-				getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
+				}
 				rOp.destroy();
 				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}

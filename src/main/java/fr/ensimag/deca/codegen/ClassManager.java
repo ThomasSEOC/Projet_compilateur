@@ -15,6 +15,7 @@ public class ClassManager {
     private final Map<String, AbstractClassObject> classMap;
     private int vtableOffset;
     private boolean isInstanceofUsed = false;
+    private Label currentMethodEnd = null;
 
     /**
      * constructor for ClassManager
@@ -159,8 +160,17 @@ public class ClassManager {
         backend.writeInstructions();
     }
 
-    public void setInstanceofUsed() {
+    public void setCurrentMethodEnd(Label endLabel) {
+        currentMethodEnd = endLabel;
+    }
+
+    public Label getCurrentMethodEnd() {
+        return currentMethodEnd;
+    }
+
+    public Label getInstanceofLabel() {
         isInstanceofUsed = true;
+        return new Label("Code.InstanceOf");
     }
 
     // ####################################################################################
@@ -195,8 +205,13 @@ public class ClassManager {
     public void destroyObjectCodeGen() {
         VirtualRegister objectPointer = backend.getContextManager().operationStackPop();
         backend.addComment("destroy allocated object");
-        backend.addInstruction(new CMP(new NullOperand(), objectPointer.requestPhysicalRegister()));
-        backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
+
+        // check structure
+        if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus()) {
+            backend.addInstruction(new CMP(new NullOperand(), objectPointer.requestPhysicalRegister()));
+            backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
+        }
+
         backend.addInstruction(new DEL(objectPointer.requestPhysicalRegister()));
     }
 }

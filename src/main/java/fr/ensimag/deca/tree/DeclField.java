@@ -48,7 +48,7 @@ public class DeclField extends AbstractDeclField{
         SymbolTable.Symbol realSymbol = compiler.getSymbolTable().getSymbol(field.getName().getName());
         TypeDefinition typeDef =  envTypes.get(realSymbol);
 
-        if ((typeDef != null) &&  typeDef.isExpression()){
+        if ((typeDef != null) && typeDef.isExpression()){
             throw new ContextualError(realSymbol + " is an Expression can't be a field name", getLocation());
         }
 

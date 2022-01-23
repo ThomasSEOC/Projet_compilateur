@@ -23,8 +23,10 @@ public class FieldSelectOperation extends AbstractOperation {
         getCodeGenBackEnd().addInstruction(new LOAD(variablePointer, GPRegister.getR(0)));
 
         // check null pointer
-        getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
-        getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getErrorsManager().getDereferencementNullLabel()));
+        if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+            getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
+            getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getErrorsManager().getDereferencementNullLabel()));
+        }
     }
 
     private int getOffset() {

@@ -28,8 +28,10 @@ public class InstanceofOperation extends AbstractOperation {
 
         // check structure
         getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
-        getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
-        getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getErrorsManager().getDereferencementNullLabel()));
+        if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
+            getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
+            getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getErrorsManager().getDereferencementNullLabel()));
+        }
 
         // store implicit param
         getCodeGenBackEnd().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(0, Register.SP)));
@@ -41,6 +43,9 @@ public class InstanceofOperation extends AbstractOperation {
         // store target object
         getCodeGenBackEnd().addInstruction(new LEA(new RegisterOffset(VTableOffset, Register.GB), GPRegister.getR(0)));
         getCodeGenBackEnd().addInstruction(new STORE(GPRegister.getR(0), new RegisterOffset(-1, Register.SP)));
+
+        // call method
+        getCodeGenBackEnd().addInstruction(new BSR(getCodeGenBackEnd().getClassManager().getInstanceofLabel()));
 
         // delete used stack space
         getCodeGenBackEnd().addInstruction(new SUBSP(2));

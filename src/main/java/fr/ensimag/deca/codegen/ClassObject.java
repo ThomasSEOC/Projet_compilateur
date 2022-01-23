@@ -175,6 +175,16 @@ public class ClassObject extends AbstractClassObject {
         structureInitCodeGen();
         for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
             DeclMethod method = (DeclMethod) abstractMethod;
+
+            Label endLabel;
+            if (Objects.equals(method.getType().getName().getName(), "void")) {
+                endLabel = null;
+            }
+            else {
+                endLabel = new Label("Code.end." + getNameClass().getName().getName() + "." + method.getName().getName());
+            }
+            getClassManager().setCurrentMethodEnd(endLabel);
+
             backend.addLabel(new Label("Code." + getNameClass().getName().getName() + "." + method.getName().getName()));
             backend.addComment(method.getName().getName().getName());
             backend.createContext();
@@ -187,6 +197,15 @@ public class ClassObject extends AbstractClassObject {
             }
 
             method.getBody().codeGen(backend.getCompiler());
+
+            if (endLabel != null) {
+                if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus()) {
+                    backend.addInstruction(new WSTR("Erreur : sortie de la méthode " + getNameClass().getName().getName() + "." + method.getName().getName() + " sans return"));
+                    backend.addInstruction(new WNL());
+                    backend.addInstruction(new ERROR());
+                }
+                backend.addLabel(endLabel);
+            }
 
             backend.popContext();
         }
