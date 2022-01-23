@@ -15,8 +15,15 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
 
     @Override
     public void decompile(IndentPrintStream s) {
+        int length_list = getList().size()- 1 ;
         for( AbstractDeclParam param : getList()){
             param.decompile(s);
+
+            // On affiche (", ") que si le paramètre courant n'est pas le dernier de la liste
+            int range = getList().indexOf(param);
+            if (! (range == length_list)) {
+                s.print(", ");
+            }
         }
     }
 
