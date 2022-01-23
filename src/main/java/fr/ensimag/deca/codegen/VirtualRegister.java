@@ -113,15 +113,17 @@ public class VirtualRegister {
      * destroy virtual register and free used resources
      */
     public void destroy() {
-        switch (type) {
-            case PHYSICAL:
-                contextManager.freePhysicalRegister(this);
-                break;
-            case INSTACK:
-                contextManager.freeInStackRegister(this);
-                break;
-            default:
-                break;
+        if (contextManager.getLastStoreRegister() != this) {
+            switch (type) {
+                case PHYSICAL:
+                    contextManager.freePhysicalRegister(this);
+                    break;
+                case INSTACK:
+                    contextManager.freeInStackRegister(this);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

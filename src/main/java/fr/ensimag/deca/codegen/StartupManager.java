@@ -26,7 +26,7 @@ public class StartupManager {
 
     public void generateStartupCode(int contextSaveSpace) {
         // check stack overflow
-        //if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus() && (contextSaveSpace + backend.getMaxStackSize() > 0)) {
+        if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus() && (contextSaveSpace + backend.getMaxStackSize() > 0)) {
             List<Instruction> instructions = new ArrayList<>();
             List<String> comments = new ArrayList<>();
             instructions.add(new TSTO(contextSaveSpace + backend.getMaxStackSize() + backend.getClassManager().getVtableOffset()));
@@ -39,7 +39,17 @@ public class StartupManager {
             comments.add(null);
 
             backend.addInstructionFirst(instructions, comments);
-       // }
+        }
+        else {
+            List<Instruction> instructions = new ArrayList<>();
+            List<String> comments = new ArrayList<>();
+            if (backend.getContextDataSize() > 0) {
+                instructions.add(new ADDSP(backend.getContextDataSize() + backend.getClassManager().getVtableOffset()));
+            }
+            comments.add(null);
+
+            backend.addInstructionFirst(instructions, comments);
+        }
     }
 
     /**
