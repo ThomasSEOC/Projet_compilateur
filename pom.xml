@@ -174,8 +174,7 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-<!--                                            <minimum>0.75</minimum>-->
-                                            <minimum>0.5</minimum>
+                                            <minimum>0.75</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -217,62 +216,61 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-<!--                    <execution>-->
-<!--                        &lt;!&ndash; run a unit test by defining our own class with a main-->
-<!--                        function &ndash;&gt;-->
-<!--                        &lt;!&ndash; warning: java assertions are not enabled &ndash;&gt;-->
-<!--                        <id>unit-test-symbol</id>-->
-<!--                        <configuration>-->
-<!--                            <mainClass>fr.ensimag.deca.tools.ManualTestSymbol</mainClass>-->
-<!--                            <classpathScope>test</classpathScope>-->
-<!--                        </configuration>-->
-<!--                        <phase>test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>java</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>basic-context</id>-->
-<!--                        <configuration>-->
-<!--                            <executable>./src/test/script/basic-context.sh</executable>-->
-<!--                        </configuration>-->
-<!--                        <phase>test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>exec</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>basic-gencode</id>-->
-<!--                        <configuration>-->
-<!--                            <executable>./src/test/script/basic-gencode.sh</executable>-->
-<!--                        </configuration>-->
-<!--                        <phase>test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>exec</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>basic-decac</id>-->
-<!--                        <configuration>-->
-<!--                            <executable>./src/test/script/basic-decac.sh</executable>-->
-<!--                        </configuration>-->
-<!--                        <phase>test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>exec</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>common-tests</id>-->
-<!--                        <configuration>-->
-<!--                            <executable>./src/test/script/common-tests.sh</executable>-->
-<!--                        </configuration>-->
-<!--                        <phase>test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>exec</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
+                    <execution>
+                        <!-- run a unit test by defining our own class with a main
+                        function -->
+                        <!-- warning: java assertions are not enabled -->
+                        <id>unit-test-symbol</id>
+                        <configuration>
+                            <mainClass>fr.ensimag.deca.tools.ManualTestSymbol</mainClass>
+                            <classpathScope>test</classpathScope>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-context</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-context.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-gencode</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-gencode.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-decac</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-decac.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>common-tests</id>
+                        <configuration>
+                            <executable>./src/test/script/common-tests.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
 <!--                    tests ajoutés-->
-
                     <execution>
                         <id>complete-lex</id>
                         <configuration>
@@ -304,6 +302,14 @@
                         <id>complete-gencode</id>
                         <configuration>
                             <executable>./src/test/script/complete-gencode.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals><goal>exec</goal></goals>
+                    </execution>
+            <execution>
+                        <id>complete-gencode_opti</id>
+                        <configuration>
+                            <executable>./src/test/script/complete-gencode_opti.sh</executable>
                         </configuration>
                         <phase>test</phase>
                         <goals><goal>exec</goal></goals>

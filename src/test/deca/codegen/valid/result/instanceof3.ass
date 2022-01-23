@@ -1,0 +1,143 @@
+; Main program
+; ###############################################################
+; VTABLE INIT
+; init vtable for default object
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; init vtable for A
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+; init vtable for B
+	LEA 1(GB), R0
+	STORE R0, 5(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 6(GB)
+; ###############################################################
+; ###############################################################
+; start main program
+	TSTO #8
+	BOV stack_overflow_error
+	ADDSP #8
+; create instance of class A
+	NEW #2, R0
+	BOV heap_overflow_error
+	PUSH R0
+	BSR Code.A.Init
+	POP R2
+	STORE R2, 7(GB)
+; Beginning of main instructions:
+	LOAD #1, R3
+	CMP #0, R3
+	BNE Or_1_true
+Or_1_false:
+	ADDSP #2
+	LOAD 7(LB), R0
+	CMP #null, R0
+	BEQ dereferencement_null_error
+	STORE R0, 0(SP)
+	LEA 3(GB), R0
+	STORE R0, -1(SP)
+	BSR Code.InstanceOf
+	SUBSP #2
+	CMP #0, R0
+	BEQ if_1_else
+Or_1_true:
+if_1_then:
+	WSTR "salut"
+	WNL
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
+	WSTR "pas salut"
+	WNL
+if_1_end:
+	HALT
+; ###############################################################
+; METHODS
+; Code for methods of Object :
+; structure init
+Code.Object.Init:
+	LOAD -2(LB), R1
+	LEA 1(GB), R0
+	STORE R0, 0(R1)
+	RTS
+; equals method
+code.Object.equals:
+	LOAD -2(LB), R0
+	CMP -3(LB), R0
+	SEQ R0
+	RTS
+; Code for methods of A
+; Code for init of A
+Code.A.Init:
+	TSTO #10
+	BOV stack_overflow_error
+	ADDSP #8
+; context save
+	PUSH R2	; save R2
+	PUSH R3	; save R3
+; store VTable pointer
+	LOAD -2(LB), R2
+	LEA 3(GB), R0
+	STORE R0, 0(R2)
+; init A.x
+	LOAD #42, R3
+	STORE R3, 1(R2)
+; context restore
+	POP R2	; restore R2
+	POP R3	; restore R3
+	RTS
+; Code for methods of B
+; Code for init of B
+Code.B.Init:
+	TSTO #10
+	BOV stack_overflow_error
+	ADDSP #8
+; context save
+	PUSH R2	; save R2
+	PUSH R3	; save R3
+; store VTable pointer
+	LOAD -2(LB), R2
+	LEA 5(GB), R0
+	STORE R0, 0(R2)
+; init B.x
+	LOAD #42, R3
+	STORE R3, 1(R2)
+; context restore
+	POP R2	; restore R2
+	POP R3	; restore R3
+	RTS
+Code.InstanceOf:
+	LOAD -2(LB), R1
+	LOAD -3(LB), R0
+InstanceOf_start:
+	LOAD 0(R1), R1
+	CMP R0, R1
+	BEQ InstanceOf_sucess
+	CMP #null, R1
+	BEQ InstanceOf_failure
+	BRA InstanceOf_start
+InstanceOf_sucess:
+	LOAD #1, R0
+	RTS
+InstanceOf_failure:
+	LOAD #0, R0
+	RTS
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+dereferencement_null_error:
+	WSTR "Erreur : dereferencement de null"
+	WNL
+	ERROR
+heap_overflow_error:
+	WSTR "Erreur : le tas est plein"
+	WNL
+	ERROR
+; end main program
