@@ -33,7 +33,6 @@ public class Selection extends AbstractLValue{
 
         // Verify if the type exists and set it
         Type selectType = expr.verifyExpr(compiler, localEnv, currentClass);
-        fieldIdent.verifyExpr(compiler, currentClass.getMembers(), currentClass);
 
         SymbolTable.Symbol exprTypeSymbol = selectType.getName();
         SymbolTable.Symbol fieldIdentSymbol = fieldIdent.getName();
@@ -66,12 +65,23 @@ public class Selection extends AbstractLValue{
                         throw new ContextualError("Subtype error", getLocation());
                     }
                 }
+                selectField = classDef.getMembers().get(fieldIdentSymbol);
                 setType((selectField).getType());
+                if (currentClass != null) {
+                    fieldIdent.verifyExpr(compiler, currentClass.getMembers(), currentClass);
+                } else {
+                    fieldIdent.verifyExpr(compiler, classDef.getMembers(), currentClass);
+                }
                 return (selectField).getType();
             }
              else {
                 selectField = (MethodDefinition) classDef.getMembers().get(fieldIdentSymbol);
                 setType(((MethodDefinition)selectField).getType());
+                if (currentClass != null) {
+                    fieldIdent.verifyExpr(compiler, currentClass.getMembers(), currentClass);
+                } else {
+                    fieldIdent.verifyExpr(compiler, classDef.getMembers(), currentClass);
+                }
                 return ((MethodDefinition)selectField).getType();
             }
         }
