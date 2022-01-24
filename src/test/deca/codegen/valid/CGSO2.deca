@@ -25,17 +25,21 @@ if (t){
     if (t != f){
         println(" 2");
         }
-    else if (true){
-        println ("erreur");
+    else {
+        if (true){
+            println ("erreur");
         }
+    }
     if (!f){
         println("  3");
         }
     if (f){
         println ("erreur");
         }
-    else if (t == true){
-        println("   Soleil!");
+    else {
+        if (t == true){
+            println("   Soleil!");
+            }
         }
     }
 }
