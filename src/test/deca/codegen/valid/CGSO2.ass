@@ -1,0 +1,69 @@
+; Main program
+; ###############################################################
+; ###############################################################
+; start main program
+	TSTO #3
+	BOV stack_overflow_error
+	ADDSP #3
+	LOAD #1, R2
+	STORE R2, 1(GB)
+	LOAD #0, R3
+	STORE R3, 2(GB)
+; Beginning of main instructions:
+Code.Bloc.2:
+Code.Bloc.3:
+Code.Bloc.5:
+Code.Bloc.6:
+Or_1_false:
+	BRA Code.Bloc.9
+Or_1_true:
+Code.Bloc.8:
+	WSTR "erreur programme"
+	WNL
+Code.Bloc.7:
+Code.Bloc.10:
+	BRA Or_2_true
+Or_2_false:
+	BRA Code.Bloc.13
+Or_2_true:
+Code.Bloc.12:
+	WSTR "1"
+	WNL
+Code.Bloc.11:
+Code.Bloc.14:
+Code.Bloc.16:
+	WSTR " 2"
+	WNL
+Code.Bloc.15:
+Code.Bloc.22:
+Code.Bloc.24:
+	WSTR "  3"
+	WNL
+Code.Bloc.23:
+Code.Bloc.26:
+Code.Bloc.29:
+Code.Bloc.30:
+Code.Bloc.32:
+	WSTR "   Soleil!"
+	WNL
+Code.Bloc.31:
+Code.Bloc.27:
+Code.Bloc.4:
+	BRA Code.Bloc.1
+Code.Bloc.25:
+	BRA Code.Bloc.23
+Code.Bloc.13:
+	WSTR "erreur"
+	WNL
+	BRA Code.Bloc.11
+Code.Bloc.9:
+	BRA Code.Bloc.7
+Code.Bloc.1:
+	HALT
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

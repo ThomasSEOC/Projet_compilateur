@@ -117,20 +117,12 @@ public abstract class AbstractOperation {
         }
         else if (operand instanceof Identifier) {
             IdentifierRead operator = new IdentifierRead(getCodeGenBackEnd(), operand);
-            operator.doOperation();
-            if (!doNotBranch) {
-                VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
-                getCodeGenBackEnd().addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
-                if (getCodeGenBackEnd().getBranchCondition()) {
-                    getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
-                }
-                else {
-                    getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
-                }
-                getCodeGenBackEnd().getContextManager().operationStackPush(result);
-            }
+            operator.doOperation(doNotBranch);
 
-            return true;
+            if(doNotBranch) {
+                return true;
+            }
+            return false;
         }
         else {
             AbstractExpr[] inst = {operand};
