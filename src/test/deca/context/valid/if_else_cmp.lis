@@ -1,0 +1,141 @@
+`> [1, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [1, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [51, 4] ListInst [List with 8 elements]
+         []> [2, 4] IfThenElse
+         ||  +> [2, 8] NotEquals
+         ||  |  type: boolean
+         ||  |  +> [2, 8] Int (1)
+         ||  |  |  type: int
+         ||  |  `> [2, 13] Int (1)
+         ||  |     type: int
+         ||  +> [3, 8] ListInst [List with 1 elements]
+         ||  |  []> [3, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [3, 16] StringLiteral ("no")
+         ||  |             type: string
+         ||  `> [6, 8] ListInst [List with 1 elements]
+         ||     []> [6, 8] Println
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [6, 16] StringLiteral ("yes")
+         ||                type: string
+         []> [9, 4] IfThenElse
+         ||  +> [9, 8] Lower
+         ||  |  type: boolean
+         ||  |  +> [9, 8] Int (1)
+         ||  |  |  type: int
+         ||  |  `> [9, 12] Int (1)
+         ||  |     type: int
+         ||  +> [10, 8] ListInst [List with 1 elements]
+         ||  |  []> [10, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [10, 16] StringLiteral ("no")
+         ||  |             type: string
+         ||  `> [13, 8] ListInst [List with 1 elements]
+         ||     []> [13, 8] Println
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [13, 16] StringLiteral ("yes")
+         ||                type: string
+         []> [16, 4] IfThenElse
+         ||  +> [16, 8] Greater
+         ||  |  type: boolean
+         ||  |  +> [16, 8] Int (1)
+         ||  |  |  type: int
+         ||  |  `> [16, 12] Int (1)
+         ||  |     type: int
+         ||  +> [17, 8] ListInst [List with 1 elements]
+         ||  |  []> [17, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [17, 16] StringLiteral ("no")
+         ||  |             type: string
+         ||  `> [20, 8] ListInst [List with 1 elements]
+         ||     []> [20, 8] Println
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [20, 16] StringLiteral ("yes")
+         ||                type: string
+         []> [23, 4] IfThenElse
+         ||  +> [23, 8] LowerOrEqual
+         ||  |  type: boolean
+         ||  |  +> [23, 8] Int (2)
+         ||  |  |  type: int
+         ||  |  `> [23, 13] Int (1)
+         ||  |     type: int
+         ||  +> [24, 8] ListInst [List with 1 elements]
+         ||  |  []> [24, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [24, 16] StringLiteral ("no")
+         ||  |             type: string
+         ||  `> [27, 8] ListInst [List with 1 elements]
+         ||     []> [27, 8] Println
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [27, 16] StringLiteral ("yes")
+         ||                type: string
+         []> [30, 4] IfThenElse
+         ||  +> [30, 8] Lower
+         ||  |  type: boolean
+         ||  |  +> [30, 8] Int (2)
+         ||  |  |  type: int
+         ||  |  `> [30, 12] Int (1)
+         ||  |     type: int
+         ||  +> [31, 8] ListInst [List with 1 elements]
+         ||  |  []> [31, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [31, 16] StringLiteral ("no")
+         ||  |             type: string
+         ||  `> [34, 8] ListInst [List with 1 elements]
+         ||     []> [34, 8] Println
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [34, 16] StringLiteral ("yes")
+         ||                type: string
+         []> [37, 4] IfThenElse
+         ||  +> [37, 8] GreaterOrEqual
+         ||  |  type: boolean
+         ||  |  +> [37, 8] Int (1)
+         ||  |  |  type: int
+         ||  |  `> [37, 13] Int (2)
+         ||  |     type: int
+         ||  +> [38, 8] ListInst [List with 1 elements]
+         ||  |  []> [38, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [38, 16] StringLiteral ("no")
+         ||  |             type: string
+         ||  `> [41, 8] ListInst [List with 1 elements]
+         ||     []> [41, 8] Println
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [41, 16] StringLiteral ("yes")
+         ||                type: string
+         []> [44, 4] IfThenElse
+         ||  +> [44, 8] Greater
+         ||  |  type: boolean
+         ||  |  +> [44, 8] Int (1)
+         ||  |  |  type: int
+         ||  |  `> [44, 12] Int (2)
+         ||  |     type: int
+         ||  +> [45, 8] ListInst [List with 1 elements]
+         ||  |  []> [45, 8] Println
+         ||  |      `> ListExpr [List with 1 elements]
+         ||  |         []> [45, 16] StringLiteral ("no")
+         ||  |             type: string
+         ||  `> [48, 8] ListInst [List with 1 elements]
+         ||     []> [48, 8] Println
+         ||         `> ListExpr [List with 1 elements]
+         ||            []> [48, 16] StringLiteral ("yes")
+         ||                type: string
+         []> [51, 4] IfThenElse
+             +> [51, 8] Equals
+             |  type: boolean
+             |  +> [51, 8] Int (2)
+             |  |  type: int
+             |  `> [51, 13] Int (1)
+             |     type: int
+             +> [52, 8] ListInst [List with 1 elements]
+             |  []> [52, 8] Println
+             |      `> ListExpr [List with 1 elements]
+             |         []> [52, 16] StringLiteral ("no")
+             |             type: string
+             `> [55, 8] ListInst [List with 1 elements]
+                []> [55, 8] Println
+                    `> ListExpr [List with 1 elements]
+                       []> [55, 16] StringLiteral ("yes")
+                           type: string

@@ -1,0 +1,3 @@
+Exception in thread "main" java.lang.NullPointerException: Cannot invoke "fr.ensimag.deca.tree.Location.getFilename()" because "this.location" is null
+	at fr.ensimag.deca.tree.LocationException.display(LocationException.java:27)
+	at fr.ensimag.deca.context.ManualTestContext.main(ManualTestContext.java:37)
