@@ -52,6 +52,12 @@ public class MethodCall extends AbstractExpr{
         if (!(classType.isClass())) {
             throw new ContextualError(expr + "is not called with a valid class name", getLocation());
         }
+        SymbolTable.Symbol exprSymbol = ((AbstractIdentifier) (expr)).getName();
+        if (compiler.getTypes().get(exprSymbol)!= null){
+            if (expr.getType().isClass()) {
+                throw new ContextualError(exprSymbol + " is a class name or a predefined type", getLocation());
+            }
+        }
 
 
         // verifies if the method exists in the clas
