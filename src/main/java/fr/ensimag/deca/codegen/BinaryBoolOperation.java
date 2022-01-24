@@ -3,9 +3,7 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -173,6 +171,11 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
         }
     }
 
+    /**
+     * try to evaluate operation as a constant
+     * @param compiler global compiler
+     * @return Constant result, can be null
+     */
     @Override
     public Constant getConstant(DecacCompiler compiler) {
         // cast expression to AbstractBinaryExpr

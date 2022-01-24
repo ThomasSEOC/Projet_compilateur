@@ -98,17 +98,6 @@ public class VirtualRegister {
         }
     }
 
-//    /**
-//     * constructor for string immediate register
-//     * @param contextManager current context manager
-//     * @param immediate string immediate
-//     */
-//    public VirtualRegister(ContextManager contextManager, ImmediateString immediate) {
-//        type = IMMEDIAT_STRING;
-//        this.contextManager = contextManager;
-//        this.immediateString = immediate;
-//    }
-
     /**
      * destroy virtual register and free used resources
      */

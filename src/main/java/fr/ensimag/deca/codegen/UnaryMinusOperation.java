@@ -28,13 +28,12 @@ public class UnaryMinusOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        // try to evaluate as a constant
         boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
-
         Constant constant = null;
         if (opti) {
             constant = getConstant(getCodeGenBackEnd().getCompiler());
         }
-
         if (constant != null) {
             VirtualRegister result;
             if (constant.getIsFloat()) {
@@ -96,6 +95,11 @@ public class UnaryMinusOperation extends AbstractOperation {
 
     }
 
+    /**
+     * try to evaluate operation as a constant
+     * @param compiler global compiler
+     * @return created constant, can be null
+     */
     @Override
     public Constant getConstant(DecacCompiler compiler) {
         // cast to UnaryMinus

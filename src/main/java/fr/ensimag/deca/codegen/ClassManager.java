@@ -31,10 +31,18 @@ public class ClassManager {
         classMap.put("Object", classList.get(0));
     }
 
+    /**
+     * setter for current in processing object
+     * @param object class object
+     */
     public void setCurrentObject(ClassObject object) {
         this.currentObject = object;
     }
 
+    /**
+     * getter for current object
+     * @return current in processing object
+     */
     public ClassObject getCurrentObject() {
         return currentObject;
     }

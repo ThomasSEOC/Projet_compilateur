@@ -52,10 +52,21 @@ public abstract class AbstractOperation {
         list.codeGenListInst(codegenbackend.getCompiler());
     }
 
+    /**
+     * generate code for condition operands
+     * @param operand expression to process
+     * @return true if a result added in operation stack
+     */
     public boolean operandCodeGen(AbstractExpr operand) {
         return operandCodeGen(operand, false);
     }
 
+    /**
+     * generate code for condition operands
+     * @param operand expression to process
+     * @param doNotBranch set true to do not generate a branch
+     * @return true if a result added in operation stack
+     */
     public boolean operandCodeGen(AbstractExpr operand, boolean doNotBranch) {
         if (operand instanceof Assign) {
             AssignOperation operator = new AssignOperation(getCodeGenBackEnd(), operand);

@@ -52,11 +52,6 @@ public class LiteralOperation extends AbstractOperation {
             r.setInt();
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
-//        else if (getExpression() instanceof StringLiteral) {
-//            StringLiteral expr = (StringLiteral) getExpression();
-//            VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateString(expr.getValue()));
-//            getCodeGenBackEnd().getContextManager().operationStackPush(r);
-//        }
     }
 
     /**
@@ -84,15 +79,6 @@ public class LiteralOperation extends AbstractOperation {
                 getCodeGenBackEnd().addInstruction(new WFLOAT());
             }
         }
-//        else if (getExpression() instanceof BooleanLiteral) {
-//            BooleanLiteral expr = (BooleanLiteral) getExpression();
-//            if (expr.getValue()) {
-//                getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString("True")));
-//            }
-//            else {
-//                getCodeGenBackEnd().getCompiler().addInstruction(new WSTR(new ImmediateString("False")));
-//            }
-//        }
         else if (getExpression() instanceof StringLiteral) {
             StringLiteral expr = (StringLiteral) getExpression();
             String toDisplay = expr.getValue().substring(1, expr.getValue().length()-1);

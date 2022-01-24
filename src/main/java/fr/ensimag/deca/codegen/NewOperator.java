@@ -31,9 +31,6 @@ public class NewOperator extends AbstractOperation {
 
         // instantiate object
         object.createObjectCodeGen();
-
-        // call constructor
-        // todo
     }
 
     /**
@@ -41,6 +38,6 @@ public class NewOperator extends AbstractOperation {
      */
     @Override
     public void print() {
-        throw new UnsupportedOperationException("not yet implemented");
+        throw new UnsupportedOperationException("operation not permitted");
     }
 }

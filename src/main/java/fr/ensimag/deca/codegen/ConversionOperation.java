@@ -4,10 +4,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.ConvFloat;
-import fr.ensimag.deca.tree.UnaryMinus;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 
 /**
  * Class responsible for type conversion
@@ -27,13 +28,12 @@ public class ConversionOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        // try do evaluate it as a constant
         boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
-
         Constant constant = null;
         if (opti) {
             constant = getConstant(getCodeGenBackEnd().getCompiler());
         }
-
         if (constant != null) {
             VirtualRegister result;
             if (constant.getIsFloat()) {
@@ -66,7 +66,7 @@ public class ConversionOperation extends AbstractOperation {
             getCodeGenBackEnd().getContextManager().operationStackPush(r);
         }
         else {
-            throw new UnsupportedOperationException("not yet implemented");
+            throw new UnsupportedOperationException("operation not permitted");
         }
     }
 
@@ -75,27 +75,31 @@ public class ConversionOperation extends AbstractOperation {
      */
     @Override
     public void print() {
-        throw new UnsupportedOperationException("useless method");
-//        if (getExpression() instanceof ConvFloat) {
-//            // do operation
-//            doOperation();
-//
-//            // get result
-//            VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
-//
-//            // print it according to Hex
-//            if (getCodeGenBackEnd().getPrintHex()) {
-//                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
-//            }
-//            else {
-//                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
-//            }
-//
-//            // free virtual register
-//            r.destroy();
-//        }
+        if (getExpression() instanceof ConvFloat) {
+            // do operation
+            doOperation();
+
+            // get result
+            VirtualRegister r = getCodeGenBackEnd().getContextManager().operationStackPop();
+
+            // print it according to Hex
+            if (getCodeGenBackEnd().getPrintHex()) {
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOATX());
+            }
+            else {
+                getCodeGenBackEnd().getCompiler().addInstruction(new WFLOAT());
+            }
+
+            // free virtual register
+            r.destroy();
+        }
     }
 
+    /**
+     * try to evaluate operation as a constant
+     * @param compiler global compiler
+     * @return created constant, can be null
+     */
     @Override
     public Constant getConstant(DecacCompiler compiler) {
         if (getExpression() instanceof ConvFloat) {

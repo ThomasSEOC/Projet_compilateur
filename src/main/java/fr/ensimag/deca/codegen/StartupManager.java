@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -24,6 +23,9 @@ public class StartupManager {
         this.backend = backend;
     }
 
+    /**
+     * method responsible for method block stack check and initialisation, must be called after block generation
+     */
     public void generateStartupCode(int contextSaveSpace) {
         // check stack overflow
         if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus() && (contextSaveSpace + backend.getMaxStackSize() > 0)) {

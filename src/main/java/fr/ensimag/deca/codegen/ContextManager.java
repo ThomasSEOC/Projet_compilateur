@@ -41,15 +41,27 @@ public class ContextManager {
         operationStack = new Stack<>();
     }
 
+    /**
+     * setter a register and a register offset as the last store
+     * @param register last register store
+     * @param registerOffset last register offset store
+     */
     public void setLastStoreRegister(VirtualRegister register, RegisterOffset registerOffset) {
         this.lastStoreRegister = register;
         this.lastStoreOffset = registerOffset;
     }
 
+    /**
+     * getter for last stored register
+     * @return last stored register
+     */
     public VirtualRegister getLastStoreRegister() {
         return lastStoreRegister;
     }
 
+    /**
+     * destroy local context
+     */
     public void destroy() {
         // save register at beginning
         List<Instruction> savingInstructions = new ArrayList<>();
@@ -232,6 +244,11 @@ public class ContextManager {
         return register;
     }
 
+    /**
+     * request a virtual register with the specified register offset
+     * @param registerOffset data register offset
+     * @return created virtual register
+     */
     public VirtualRegister requestNewRegister(RegisterOffset registerOffset) {
         if (lastStoreOffset != null) {
             if ((registerOffset.getRegister() == lastStoreOffset.getRegister()) &&
@@ -266,15 +283,6 @@ public class ContextManager {
     public VirtualRegister requestNewRegister(ImmediateFloat immediate) {
         return new VirtualRegister(this, immediate);
     }
-
-//    /**
-//     * method called to request a new immediate virtual register
-//     * @param immediate string immediate
-//     * @return new virtual register
-//     */
-//    public VirtualRegister requestNewRegister(ImmediateString immediate) {
-//        return new VirtualRegister(this, immediate);
-//    }
 
     /**
      * method called to request a new immediate virtual register
@@ -337,12 +345,4 @@ public class ContextManager {
     public void operationStackPush(VirtualRegister register) {
         operationStack.push(register);
     }
-
-//    /**
-//     * get operation stack length
-//     * @return length of operation stack
-//     */
-//    public int operationStackLength() {
-//        return operationStack.size();
-//    }
 }
