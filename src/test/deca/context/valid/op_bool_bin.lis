@@ -1,0 +1,29 @@
+`> [9, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [9, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [13, 0] ListInst [List with 4 elements]
+         []> [10, 0] Or
+         ||  type: boolean
+         ||  +> [10, 0] BooleanLiteral (true)
+         ||  |  type: boolean
+         ||  `> [10, 8] BooleanLiteral (false)
+         ||     type: boolean
+         []> [11, 0] And
+         ||  type: boolean
+         ||  +> [11, 0] BooleanLiteral (true)
+         ||  |  type: boolean
+         ||  `> [11, 8] BooleanLiteral (true)
+         ||     type: boolean
+         []> [12, 0] Equals
+         ||  type: boolean
+         ||  +> [12, 0] BooleanLiteral (true)
+         ||  |  type: boolean
+         ||  `> [12, 8] BooleanLiteral (true)
+         ||     type: boolean
+         []> [13, 0] NotEquals
+             type: boolean
+             +> [13, 0] BooleanLiteral (true)
+             |  type: boolean
+             `> [13, 8] BooleanLiteral (false)
+                type: boolean

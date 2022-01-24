@@ -1,0 +1,89 @@
+`> [14, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [14, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [22, 0] ListInst [List with 8 elements]
+         []> [15, 0] Println
+         ||  `> ListExpr [List with 2 elements]
+         ||     []> [15, 10] StringLiteral (" 7 * 7 = ")
+         ||     ||  type: string
+         ||     []> [15, 23] Multiply
+         ||         type: int
+         ||         +> [15, 23] Int (7)
+         ||         |  type: int
+         ||         `> [15, 25] Int (7)
+         ||            type: int
+         []> [16, 0] Println
+         ||  `> ListExpr [List with 2 elements]
+         ||     []> [16, 10] StringLiteral (" 16 / 4 = ")
+         ||     ||  type: string
+         ||     []> [16, 24] Divide
+         ||         type: int
+         ||         +> [16, 24] Int (16)
+         ||         |  type: int
+         ||         `> [16, 27] Int (4)
+         ||            type: int
+         []> [17, 0] Println
+         ||  `> ListExpr [List with 2 elements]
+         ||     []> [17, 10] StringLiteral (" 0.9 * 0.9 = ")
+         ||     ||  type: string
+         ||     []> [17, 27] Multiply
+         ||         type: float
+         ||         +> [17, 27] Float (0.9)
+         ||         |  type: float
+         ||         `> [17, 33] Float (0.9)
+         ||            type: float
+         []> [18, 0] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [18, 10] StringLiteral (" 1.3 * 0.5 + 3 / (4 * 2.5) =  0.95 ")
+         ||         type: string
+         []> [19, 0] Println
+         ||  `> ListExpr [List with 2 elements]
+         ||     []> [19, 10] StringLiteral (" On trouve ")
+         ||     ||  type: string
+         ||     []> [19, 25] Plus
+         ||         type: float
+         ||         +> [19, 25] Multiply
+         ||         |  type: float
+         ||         |  +> [19, 25] Float (1.3)
+         ||         |  |  type: float
+         ||         |  `> [19, 31] Float (0.5)
+         ||         |     type: float
+         ||         `> [19, 39] Divide
+         ||            type: float
+         ||            +> ConvFloat
+         ||            |  type: float
+         ||            |  `> [19, 37] Int (3)
+         ||            |     type: int
+         ||            `> [19, 41] Multiply
+         ||               type: float
+         ||               +> ConvFloat
+         ||               |  type: float
+         ||               |  `> [19, 42] Int (4)
+         ||               |     type: int
+         ||               `> [19, 46] Float (2.5)
+         ||                  type: float
+         []> [20, 0] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [20, 10] StringLiteral ("Approximations:")
+         ||         type: string
+         []> [21, 0] Println
+         ||  `> ListExpr [List with 2 elements]
+         ||     []> [21, 10] StringLiteral (" 1/3 = ")
+         ||     ||  type: string
+         ||     []> [21, 21] Divide
+         ||         type: int
+         ||         +> [21, 21] Int (1)
+         ||         |  type: int
+         ||         `> [21, 23] Int (3)
+         ||            type: int
+         []> [22, 0] Println
+             `> ListExpr [List with 2 elements]
+                []> [22, 10] StringLiteral (" 0.3/ 0.88 = ")
+                ||  type: string
+                []> [22, 27] Divide
+                    type: float
+                    +> [22, 27] Float (0.3)
+                    |  type: float
+                    `> [22, 32] Float (0.88)
+                       type: float

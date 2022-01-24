@@ -1,0 +1,37 @@
+`> [1, 0] Program
+   +> ListDeclClass [List with 1 elements]
+   |  []> [1, 0] DeclClass
+   |      +> [1, 6] Identifier (A)
+   |      |  definition: type defined at [1, 0], type=A
+   |      +> Identifier (Object)
+   |      |  definition: type(builtin), type=Object
+   |      +> ListDeclMethod [List with 0 elements]
+   |      `> [2, 8] ListDeclField [List with 1 elements]
+   |         []> [2, 8] [visibility=PUBLIC] DeclField
+   |             +> [2, 4] Identifier (int)
+   |             |  definition: type(builtin), type=int
+   |             +> [2, 8] Identifier (x)
+   |             |  definition: field defined at [2, 8], type=int
+   |             `> NoInitialization
+   `> [5, 0] Main
+      +> ListDeclVar [List with 1 elements]
+      |  []> [6, 6] DeclVar
+      |      +> [6, 4] Identifier (A)
+      |      |  definition: type defined at [1, 0], type=A
+      |      +> [6, 6] Identifier (a)
+      |      |  definition: variable defined at [6, 6], type=A
+      |      `> [6, 6] Initialization
+      |         `> [6, 10] New
+      |            type: A
+      |            `> [6, 14] Identifier (A)
+      |               definition: type defined at [1, 0], type=A
+      `> [7, 4] ListInst [List with 1 elements]
+         []> [7, 4] IfThenElse
+             +> [7, 8] InstanceOf
+             |  type: boolean
+             |  +> [7, 8] Identifier (a)
+             |  |  definition: variable defined at [6, 6], type=A
+             |  `> [7, 21] Identifier (A)
+             |     definition: type defined at [1, 0], type=A
+             +> ListInst [List with 0 elements]
+             `> ListInst [List with 0 elements]

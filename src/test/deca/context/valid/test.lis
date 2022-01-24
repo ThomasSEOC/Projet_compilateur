@@ -1,0 +1,54 @@
+`> [4, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [4, 0] Main
+      +> ListDeclVar [List with 1 elements]
+      |  []> [5, 14] DeclVar
+      |      +> [5, 8] Identifier (float)
+      |      |  definition: type(builtin), type=float
+      |      +> [5, 14] Identifier (f)
+      |      |  definition: variable defined at [5, 14], type=float
+      |      `> [5, 14] Initialization
+      |         `> [5, 18] Float (1.2)
+      |            type: float
+      `> [9, 8] ListInst [List with 4 elements]
+         []> [6, 8] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [6, 16] Divide
+         ||         type: int
+         ||         +> [6, 16] Int (8)
+         ||         |  type: int
+         ||         `> [6, 18] Int (2)
+         ||            type: int
+         []> [7, 8] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [7, 16] Modulo
+         ||         type: int
+         ||         +> [7, 16] Int (16)
+         ||         |  type: int
+         ||         `> [7, 19] Int (3)
+         ||            type: int
+         []> [8, 8] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [8, 16] Plus
+         ||         type: int
+         ||         +> [8, 16] Int (1)
+         ||         |  type: int
+         ||         `> [8, 18] Int (3)
+         ||            type: int
+         []> [9, 8] IfThenElse
+             +> [9, 12] LowerOrEqual
+             |  type: boolean
+             |  +> [9, 12] Int (1)
+             |  |  type: int
+             |  `> [9, 17] Int (1)
+             |     type: int
+             +> [10, 12] ListInst [List with 1 elements]
+             |  []> [10, 12] Println
+             |      `> ListExpr [List with 1 elements]
+             |         []> [10, 20] StringLiteral ("oh yes")
+             |             type: string
+             `> [13, 12] ListInst [List with 1 elements]
+                []> [13, 12] Println
+                    `> ListExpr [List with 1 elements]
+                       []> [13, 20] StringLiteral ("oh no")
+                           type: string

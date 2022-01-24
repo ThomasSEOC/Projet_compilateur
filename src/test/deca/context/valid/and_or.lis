@@ -1,0 +1,125 @@
+`> [11, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [11, 0] Main
+      +> ListDeclVar [List with 4 elements]
+      |  []> [12, 12] DeclVar
+      |  ||  +> [12, 4] Identifier (boolean)
+      |  ||  |  definition: type(builtin), type=boolean
+      |  ||  +> [12, 12] Identifier (f)
+      |  ||  |  definition: variable defined at [12, 12], type=boolean
+      |  ||  `> [12, 12] Initialization
+      |  ||     `> [12, 16] BooleanLiteral (false)
+      |  ||        type: boolean
+      |  []> [13, 12] DeclVar
+      |  ||  +> [13, 4] Identifier (boolean)
+      |  ||  |  definition: type(builtin), type=boolean
+      |  ||  +> [13, 12] Identifier (t)
+      |  ||  |  definition: variable defined at [13, 12], type=boolean
+      |  ||  `> [13, 12] Initialization
+      |  ||     `> [13, 16] BooleanLiteral (true)
+      |  ||        type: boolean
+      |  []> [14, 12] DeclVar
+      |  ||  +> [14, 4] Identifier (boolean)
+      |  ||  |  definition: type(builtin), type=boolean
+      |  ||  +> [14, 12] Identifier (f1)
+      |  ||  |  definition: variable defined at [14, 12], type=boolean
+      |  ||  `> [14, 12] Initialization
+      |  ||     `> [14, 17] BooleanLiteral (false)
+      |  ||        type: boolean
+      |  []> [15, 12] DeclVar
+      |      +> [15, 4] Identifier (boolean)
+      |      |  definition: type(builtin), type=boolean
+      |      +> [15, 12] Identifier (t1)
+      |      |  definition: variable defined at [15, 12], type=boolean
+      |      `> [15, 12] Initialization
+      |         `> [15, 17] BooleanLiteral (true)
+      |            type: boolean
+      `> [30, 4] ListInst [List with 8 elements]
+         []> [20, 4] IfThenElse
+         ||  +> [20, 8] And
+         ||  |  type: boolean
+         ||  |  +> [20, 8] Identifier (t)
+         ||  |  |  definition: variable defined at [13, 12], type=boolean
+         ||  |  `> [20, 13] Identifier (t)
+         ||  |     definition: variable defined at [13, 12], type=boolean
+         ||  +> ListInst [List with 0 elements]
+         ||  `> ListInst [List with 0 elements]
+         []> [21, 4] IfThenElse
+         ||  +> [21, 8] And
+         ||  |  type: boolean
+         ||  |  +> [21, 8] Identifier (t)
+         ||  |  |  definition: variable defined at [13, 12], type=boolean
+         ||  |  `> [21, 13] Not
+         ||  |     type: boolean
+         ||  |     `> [21, 14] Identifier (t)
+         ||  |        definition: variable defined at [13, 12], type=boolean
+         ||  +> ListInst [List with 0 elements]
+         ||  `> ListInst [List with 0 elements]
+         []> [22, 4] IfThenElse
+         ||  +> [22, 8] And
+         ||  |  type: boolean
+         ||  |  +> [22, 8] Not
+         ||  |  |  type: boolean
+         ||  |  |  `> [22, 9] Identifier (t)
+         ||  |  |     definition: variable defined at [13, 12], type=boolean
+         ||  |  `> [22, 14] Identifier (t)
+         ||  |     definition: variable defined at [13, 12], type=boolean
+         ||  +> ListInst [List with 0 elements]
+         ||  `> ListInst [List with 0 elements]
+         []> [23, 4] IfThenElse
+         ||  +> [23, 8] And
+         ||  |  type: boolean
+         ||  |  +> [23, 8] Not
+         ||  |  |  type: boolean
+         ||  |  |  `> [23, 9] Identifier (t)
+         ||  |  |     definition: variable defined at [13, 12], type=boolean
+         ||  |  `> [23, 14] Not
+         ||  |     type: boolean
+         ||  |     `> [23, 15] Identifier (t)
+         ||  |        definition: variable defined at [13, 12], type=boolean
+         ||  +> ListInst [List with 0 elements]
+         ||  `> ListInst [List with 0 elements]
+         []> [27, 4] IfThenElse
+         ||  +> [27, 10] Or
+         ||  |  type: boolean
+         ||  |  +> [27, 8] Identifier (t)
+         ||  |  |  definition: variable defined at [13, 12], type=boolean
+         ||  |  `> [27, 13] Identifier (t)
+         ||  |     definition: variable defined at [13, 12], type=boolean
+         ||  +> ListInst [List with 0 elements]
+         ||  `> ListInst [List with 0 elements]
+         []> [28, 4] IfThenElse
+         ||  +> [28, 10] Or
+         ||  |  type: boolean
+         ||  |  +> [28, 8] Identifier (t)
+         ||  |  |  definition: variable defined at [13, 12], type=boolean
+         ||  |  `> [28, 13] Not
+         ||  |     type: boolean
+         ||  |     `> [28, 14] Identifier (t)
+         ||  |        definition: variable defined at [13, 12], type=boolean
+         ||  +> ListInst [List with 0 elements]
+         ||  `> ListInst [List with 0 elements]
+         []> [29, 4] IfThenElse
+         ||  +> [29, 11] Or
+         ||  |  type: boolean
+         ||  |  +> [29, 8] Not
+         ||  |  |  type: boolean
+         ||  |  |  `> [29, 9] Identifier (t)
+         ||  |  |     definition: variable defined at [13, 12], type=boolean
+         ||  |  `> [29, 14] Identifier (t)
+         ||  |     definition: variable defined at [13, 12], type=boolean
+         ||  +> ListInst [List with 0 elements]
+         ||  `> ListInst [List with 0 elements]
+         []> [30, 4] IfThenElse
+             +> [30, 11] Or
+             |  type: boolean
+             |  +> [30, 8] Not
+             |  |  type: boolean
+             |  |  `> [30, 9] Identifier (t)
+             |  |     definition: variable defined at [13, 12], type=boolean
+             |  `> [30, 14] Not
+             |     type: boolean
+             |     `> [30, 15] Identifier (t)
+             |        definition: variable defined at [13, 12], type=boolean
+             +> ListInst [List with 0 elements]
+             `> ListInst [List with 0 elements]
