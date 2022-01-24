@@ -82,17 +82,19 @@ public class SSAProcessor {
     }
 
     /**
-     *
-     * @param bloc
-     * @param localSSA
+     * start a merge (Phi function)
+     * @param bloc     branch bloc
+     * @param localSSA current last SSA variables
      */
-    private void startMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
+    private void startMerge(AbstractCodeBloc bloc, Map<String, SSAVariable> localSSA) {
+        // add bloc to internal structure for merges not already finished
         waitingFusionCodeBlocs.put(bloc, new HashMap<>());
 
+        // create a merge for each variable
         for (String variable : localSSA.keySet()) {
             SSAVariable oldVariable = localSSA.get(variable);
 
-            lastVariablesIds.replace(variable, lastVariablesIds.get(variable)+1);
+            lastVariablesIds.replace(variable, lastVariablesIds.get(variable) + 1);
             SSAVariable newVariable = new SSAVariable(variable, lastVariablesIds.get(variable));
             localSSA.replace(variable, newVariable);
             usages.put(newVariable, new HashSet<>());
@@ -102,36 +104,40 @@ public class SSAProcessor {
     }
 
     /**
-     *
-     * @param bloc
-     * @param localSSA
+     * continue a merge by adding a new input
+     * @param bloc branch bloc
+     * @param localSSA current last SSA variables
      */
-    private void continueMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
+    private void continueMerge(AbstractCodeBloc bloc, Map<String, SSAVariable> localSSA) {
+        // add each SSA variable from bloc to merges operands
         for (String name : localSSA.keySet()) {
             waitingFusionCodeBlocs.get(bloc).get(name).addOperand(localSSA.get(name));
         }
     }
 
     /**
-     *
-     * @param bloc
-     * @param localSSA
+     * end a merge form a branch bloc
+     * @param bloc branch bloc
+     * @param localSSA current last SSA variables
      */
     private void endMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
+        // add input
         continueMerge(bloc, localSSA);
 
+        // end each merge
         for (String name : localSSA.keySet()) {
             SSAMerge merge = waitingFusionCodeBlocs.get(bloc).get(name);
             merges.get(name).add(merge);
         }
 
+        // remove bloc from waiting blocs
         waitingFusionCodeBlocs.remove(bloc);
     }
 
     /**
-     *
-     * @param identifiers
-     * @param localSSA
+     * extract SSa variable from an instruction
+     * @param identifiers instructions identifiers related to the instruction
+     * @param localSSA current local last SSA variables
      */
     private void processInstructionIdentifiers(InstructionIdentifiers identifiers, Map<String,SSAVariable> localSSA) {
         // process read identifiers
@@ -143,6 +149,7 @@ public class SSAProcessor {
         // process write identifier if exists
         Identifier writeIdentifier = identifiers.getWriteIdentifier();
         if (writeIdentifier != null) {
+            // need to create a new SSA variable
             String name = writeIdentifier.getName().getName();
             lastVariablesIds.replace(name, lastVariablesIds.get(name)+1);
 
@@ -157,18 +164,20 @@ public class SSAProcessor {
     }
 
     /**
-     *
-     * @param bloc
-     * @param localSSA
+     * extract SSA variables from bloc
+     * @param bloc to process
+     * @param localSSA current local last SSA variable map
      */
     private void processBloc(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
+        // process condition if branch bloc
         if (bloc instanceof BranchCodeBloc) {
             BranchCodeBloc branchCodeBloc = (BranchCodeBloc) bloc;
             processInstructionIdentifiers(branchCodeBloc.getConditionIdentifiers(), localSSA);
         }
 
-        // check if there are not done in arcs
+        // check if there are more than one in arc for the bloc
         if (bloc.getInArcs().size() > 1) {
+            // check if at least one of these blocs is not processed
             boolean needWait = false;
             for (int i = 0; i < bloc.getInArcs().size(); i++) {
                 if (!graph.getDoneBlocs().contains(bloc.getInArcs().get(i).getStart())) {
@@ -178,24 +187,24 @@ public class SSAProcessor {
             }
 
             if (needWait) {
-                // check if start fuse is already done
+                // need to manage merge
                 if (!waitingFusionCodeBlocs.containsKey(bloc)) {
+                    // start merge
                     startMerge(bloc, localSSA);
-                }
-                else {
+                } else {
+                    // continue merge
                     continueMerge(bloc, localSSA);
                 }
-            }
-            else {
-                // can end fuse
+            } else {
+                // end merge
                 endMerge(bloc, localSSA);
                 graph.addDoneBloc(bloc);
             }
-        }
-        else {
+        } else {
             graph.addDoneBloc(bloc);
         }
 
+        // process instructions of the bloc
         for (InstructionIdentifiers identifiers : bloc.getInstructionIdentifiersList()) {
             processInstructionIdentifiers(identifiers, localSSA);
         }
@@ -203,46 +212,58 @@ public class SSAProcessor {
     }
 
     /**
-     *
-     * @return
+     * extract SSA variable from variables declaration
+     * @return a map containing last SSA variable for each variable name
      */
     private Map<String,SSAVariable> processDeclVar() {
-        Map<String,SSAVariable> initSSA = new HashMap<>();
+        // create map
+        Map<String, SSAVariable> initSSA = new HashMap<>();
+
+        // iterate on each variable declaration
         for (AbstractDeclVar var : graph.getDeclVariables().getList()) {
+            // add entry in last ids map
             DeclVar variable = (DeclVar) var;
             lastVariablesIds.put(variable.getVarName().getName().getName(), 1);
 
+            // create SSA variable
             Identifier lIdentifier = (Identifier) variable.getVarName();
             SSAVariable ssaVariable = new SSAVariable(lIdentifier.getName().getName(), 1);
             lIdentifier.setSsaVariable(ssaVariable);
 
+            // init internal data structures
             initSSA.put(lIdentifier.getName().getName(), ssaVariable);
             usages.put(ssaVariable, new HashSet<>());
             merges.put(lIdentifier.getName().getName(), new HashSet<>());
 
+            // process initialization
             if (variable.getInitialization() instanceof Initialization) {
                 Initialization initialization = (Initialization) variable.getInitialization();
                 InstructionIdentifiers identifiers = new InstructionIdentifiers(initialization.getExpression());
                 processInstructionIdentifiers(identifiers, initSSA);
             }
         }
+
         return initSSA;
     }
 
     /**
-     *
+     * transform control flow graph into SSA form
      */
     public void process() {
+        // process variables declarations and create local SSA map
         Map<String,SSAVariable> initSSA = processDeclVar();
 
+        // prepare for graph read
         graph.clearDoneBlocs();
         graph.addDoneBloc(graph.getStopBloc());
 
+        // use stack to store which blocs to process
         Stack<AbstractCodeBloc> toProcessBlocs = new Stack<>();
         Stack<Map<String,SSAVariable>> localSSAs = new Stack<>();
         toProcessBlocs.push(graph.getStartBloc());
         localSSAs.push(initSSA);
 
+        // process each bloc of the stack and add next blocs
         while (toProcessBlocs.size() > 0) {
             AbstractCodeBloc bloc = toProcessBlocs.pop();
             Map<String,SSAVariable> localSSA = localSSAs.pop();
