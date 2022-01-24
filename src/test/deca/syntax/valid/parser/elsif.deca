@@ -1,0 +1,15 @@
+// Utilisation du elsif
+// Return: oui
+// cree le 15/01/2022
+
+{
+    if ( false ){
+        println("non");
+    }
+    elsif ( true ){
+        println("oui");
+    }
+    else{
+        println("nn");
+    }
+}

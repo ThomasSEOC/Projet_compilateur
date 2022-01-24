@@ -147,7 +147,21 @@ public class ClassObject extends AbstractClassObject {
 
         CodeGenBackend backend = getClassManager().getBackend();
         backend.addComment("Code for methods of " + getNameClass().getName().getName());
-        structureInitCodeGen();
+
+        // check if init is redefined
+
+        boolean isInitOverride = false;
+        for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
+            DeclMethod method = (DeclMethod) abstractMethod;
+            if (Objects.equals(method.getName().getName().getName(), "init")) {
+                isInitOverride = true;
+                break;
+            }
+        }
+        if (!isInitOverride) {
+            structureInitCodeGen();
+        }
+
         for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
             DeclMethod method = (DeclMethod) abstractMethod;
 

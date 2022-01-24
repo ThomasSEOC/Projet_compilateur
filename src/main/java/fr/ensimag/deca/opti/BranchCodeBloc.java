@@ -3,6 +3,7 @@ package fr.ensimag.deca.opti;
 import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -54,10 +55,27 @@ public class BranchCodeBloc extends AbstractCodeBloc {
         else if (getCondition() instanceof Identifier) {
             IdentifierRead operator = new IdentifierRead(graph.getBackend(), getCondition());
             operator.doOperation();
+            VirtualRegister result = graph.getBackend().getContextManager().operationStackPop();
+            graph.getBackend().addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            graph.getBackend().addInstruction(new BEQ(new Label("Code.Bloc." + getElseBloc().getId())));
+            result.destroy();
         }
         else if (getCondition() instanceof BooleanLiteral) {
             LiteralOperation operator = new LiteralOperation(graph.getBackend(), getCondition());
             operator.doOperation();
+            VirtualRegister result = graph.getBackend().getContextManager().operationStackPop();
+            graph.getBackend().addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            graph.getBackend().addInstruction(new BEQ(new Label("Code.Bloc." + getElseBloc().getId())));
+            result.destroy();
+        }
+        else if (getCondition() instanceof Assign) {
+            AssignOperation operator = new AssignOperation(graph.getBackend(), getCondition());
+            operator.doOperation(true);
+
+            VirtualRegister result = graph.getBackend().getContextManager().operationStackPop();
+            graph.getBackend().addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            graph.getBackend().addInstruction(new BEQ(new Label("Code.Bloc." + getElseBloc().getId())));
+            result.destroy();
         }
         else if (getCondition() instanceof InstanceOf) {
             InstanceofOperation operator = new InstanceofOperation(graph.getBackend(), getCondition());

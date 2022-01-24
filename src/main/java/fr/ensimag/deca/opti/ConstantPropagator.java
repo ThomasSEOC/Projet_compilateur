@@ -38,14 +38,31 @@ public class ConstantPropagator {
                     Assign assign = (Assign) instruction;
                     // process only local variable assign
                     if (assign.getLeftOperand() instanceof Identifier) {
-                        Constant constant = assign.getRightOperand().getConstant(graph.getCompiler());
-                        if (constant != null) {
-                            // result is a constant
-                            Identifier leftOperand = (Identifier) assign.getLeftOperand();
-                            constants.put(leftOperand.getSsaVariable(), constant);
-                            toProcess.add(leftOperand.getSsaVariable());
-                            graph.getSsaProcessor().removeIdentifier(leftOperand.getSsaVariable(), leftOperand);
-                        } else {
+                        Identifier leftOperand = (Identifier) assign.getLeftOperand();
+                        if (!graph.getIsMethod() || graph.getBackend().isVariableLocal(leftOperand.getName().getName())) {
+                            Constant constant = assign.getRightOperand().getConstant(graph.getCompiler());
+                            if (constant != null) {
+                                boolean isInMerge = false;
+                                for (SSAMerge merge : graph.getSsaProcessor().getMerges().get(leftOperand.getName().getName())) {
+                                    if (merge.getOperands().contains(leftOperand.getSsaVariable())) {
+                                        isInMerge = true;
+                                        break;
+                                    }
+                                }
+                                if (!isInMerge) {
+                                    // result is a constant
+                                    constants.put(leftOperand.getSsaVariable(), constant);
+                                    toProcess.add(leftOperand.getSsaVariable());
+                                    graph.getSsaProcessor().removeIdentifier(leftOperand.getSsaVariable(), leftOperand);
+                                }
+                                else {
+                                    newListInst.add(instruction);
+                                }
+                            } else {
+                                newListInst.add(instruction);
+                            }
+                        }
+                        else {
                             newListInst.add(instruction);
                         }
                     } else {

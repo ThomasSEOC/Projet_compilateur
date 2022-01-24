@@ -55,8 +55,7 @@ public class MethodBody extends AbstractMethodBody{
     public void codeGen(DecacCompiler compiler) {
         if (compiler.getCompilerOptions().getOptimize() == 2) {
             // create control flow graph;
-            ControlFlowGraph graph = new ControlFlowGraph(compiler, vars, insts);
-            graph.setMethod();
+            ControlFlowGraph graph = new ControlFlowGraph(compiler, vars, insts, true);
 
             graph.codeGen();
         }

@@ -1,8 +1,5 @@
 class A {
     int x = 0 ;
-    void setX(int x) {
-        this.x = x ;
-    }
  //   int getX() {
    //     return x ;
     //}
@@ -12,5 +9,7 @@ class A {
 }
 
 {
-A.x = 1;
+A a = new A();
+a.x = 1;
+println("a.x = ", a.x);
 }

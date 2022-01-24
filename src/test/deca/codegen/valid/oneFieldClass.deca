@@ -1,4 +1,7 @@
 class A {
     int x;
 }
+{
+println("salut");
+}
 
