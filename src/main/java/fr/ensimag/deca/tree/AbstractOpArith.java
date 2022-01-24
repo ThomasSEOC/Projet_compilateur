@@ -43,7 +43,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 			}
 
 		}
-		//Si l'opérande de gauche est un flottant, convertit celle de droite en ConvFloat et retourne un flottant
+		// If one of the two operand is float, convert it with a ConvFloat
 		else if (typeLOp.isFloat()) {
 			if (typeROp.isInt()) {
 				setType(typeLOp);
@@ -51,7 +51,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 				getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 				return typeLOp;
 			}
-			//Si les 2 sont des float, retourne float
+			// if the two operands are floats
 			else if (typeROp.isFloat()) {
 				setType(typeLOp);
 				return typeLOp;
@@ -67,7 +67,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 				getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 				return typeLOp;
 			}
-			// Both are float
+			// Both are floats
 			else if (typeROp.isFloat()) {
 				setType(typeLOp);
 				return typeLOp;
