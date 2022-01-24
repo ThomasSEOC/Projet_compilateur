@@ -24,8 +24,13 @@ public class This extends AbstractExpr{
         if (currentClass == null) {
 	        throw new ContextualError("Instruction is not in the current class", getLocation());
 	    }
-        setType(compiler.getTypes().get(compiler.getSymbolTable().getSymbol("boolean")).getType());
+        setType(currentClass.getType());
         return currentClass.getType();
+    }
+
+    @Override
+    public boolean isThis(){
+        return true;
     }
 
     @Override

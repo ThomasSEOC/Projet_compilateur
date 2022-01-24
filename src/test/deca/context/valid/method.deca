@@ -1,14 +1,17 @@
 class A {
-    protected int x ;
-    void setX(int x) {
-        this.x = x ;
+    int x ;
+    void setX(int y) {
+        this.x = y ;
     }
     int getX() {
-    return x;
+        return x;
     }
 }
 
 {
-A.setX(1);
-println(A.getX());
+    A a = new A();
+    a.x = 1;
+    a.getX();
+//A.x = 1;
+//println(A.getX());
 }

@@ -141,6 +141,10 @@ public abstract class AbstractExpr extends AbstractInst {
         verifyExpr(compiler,localEnv, currentClass);
     }
 
+    public boolean isThis(){
+        return false;
+    }
+
     /**
      * Verify the expression as a condition, i.e. check that the type is
      * boolean.
