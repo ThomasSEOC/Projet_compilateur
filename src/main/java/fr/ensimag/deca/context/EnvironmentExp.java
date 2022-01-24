@@ -39,10 +39,16 @@ public class EnvironmentExp {
     }
 
     public void initDico(Map<Symbol, ExpDefinition> dico) {
-        this.dico = dico;
+        this.dico = new HashMap<Symbol, ExpDefinition>(dico);
     }
 
 
+    public void addDico(Map<Symbol, ExpDefinition> dicoAdd) {
+        for (Symbol key : dicoAdd.keySet()){
+            dico.put(key,dicoAdd.get(key));
+        }
+
+    }
     /**
      * Return the definition of the symbol in the environment, or null if the
      * symbol is undefined.

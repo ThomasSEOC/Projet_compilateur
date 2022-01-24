@@ -85,11 +85,11 @@ public class MethodCall extends AbstractExpr{
         ident.setDefinition(methodDef);
         Signature signature = ident.getMethodDefinition().getSignature();
         if (listExpr.size() != signature.size()) {
-            throw new ContextualError(expr + "has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
+            throw new ContextualError(exprSymbol+ "." + realSymbol + " has a wrong number of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
         }
         for (int i = 0; i < listExpr.size(); i++) {
             if (!(listExpr.getList().get(i).verifyExpr(compiler, localEnv, currentClass).sameType(signature.paramNumber(i)))) {
-                throw new ContextualError(expr + "has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
+                throw new ContextualError(exprSymbol+ "." + realSymbol  + " has a wrong list of param, please check at the method defined at " + methodDef.getLocation(), getLocation());
             }
         }
 

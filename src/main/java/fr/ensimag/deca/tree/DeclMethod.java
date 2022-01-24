@@ -15,6 +15,7 @@ public class DeclMethod extends AbstractDeclMethod{
     final private ListDeclParam params;
     final private AbstractMethodBody body;
     private Signature signature;
+    EnvironmentExp methodMembers;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name, ListDeclParam params, AbstractMethodBody body){
         Validate.notNull(type);
@@ -23,21 +24,29 @@ public class DeclMethod extends AbstractDeclMethod{
         this.name = name;
         this.params = params;
         this.body = body;
+
+    }
+    public EnvironmentExp getMethodMemberMembers() {
+        return methodMembers;
     }
 
     protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
+        methodMembers = new EnvironmentExp(localEnv);
+        //methodMembers.initDico(currentClass.getMembers().getDico());
         SymbolTable.Symbol realSymbol = name.getName();
         TypeDefinition typeDef =  compiler.getTypes().get(realSymbol);
         ExpDefinition currentDef = currentClass.getMembers().get(realSymbol);
         ClassDefinition superClass = currentClass.getSuperClass();
+        MethodDefinition currentMethodDef = name.getMethodDefinition();
+
 
         // Verify if the type exists and set it
         Type currentType = type.verifyType(compiler);
 
         // Verify the signature
-        signature = params.verifyListDeclParam(compiler, localEnv, currentClass);
+        signature = params.verifyListDeclParam(compiler, methodMembers, currentClass);
 
         // Check if the name is a Predefined type or a class
         if (typeDef != null){
@@ -101,7 +110,7 @@ public class DeclMethod extends AbstractDeclMethod{
                                         EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type currentType = type.verifyType(compiler);
-        body.verifyMethodBody(compiler, localEnv, currentClass, currentType);
+        body.verifyMethodBody(compiler, methodMembers, currentClass, currentType);
     }
 
 
