@@ -29,14 +29,23 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                           ClassDefinition currentClass) throws ContextualError {
 
         // Verify if the two operands have the same Type
-        AbstractLValue lOp = this.getLeftOperand();
-        Type typeLOp = lOp.verifyExpr(compiler, currentClass.getMembers(), currentClass);
-        getRightOperand().verifyRValue(compiler, localEnv, currentClass, typeLOp);
-        setType(typeLOp);
-        return typeLOp;
+        if (currentClass != null){
+            AbstractLValue lOp = this.getLeftOperand();
+            Type typeLOp = lOp.verifyExpr(compiler, currentClass.getMembers(), currentClass);
+            getRightOperand().verifyRValue(compiler, localEnv, currentClass, typeLOp);
+            setType(typeLOp);
+            return typeLOp;
+        }
+        else {
+            AbstractLValue lOp = this.getLeftOperand();
+            Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
+            getRightOperand().verifyRValue(compiler, localEnv, currentClass, typeLOp);
+            setType(typeLOp);
+            return typeLOp;
+        }
     }
 
     @Override
