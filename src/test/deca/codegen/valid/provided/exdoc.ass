@@ -1,0 +1,141 @@
+; Main program
+; ###############################################################
+; VTABLE INIT
+; init vtable for default object
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; init vtable for A
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+	LOAD Code.A.getX, R0
+	STORE R0, 5(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+	LOAD Code.A.setX, R0
+	STORE R0, 6(GB)
+; ###############################################################
+; ###############################################################
+; start main program
+	TSTO #8
+	BOV stack_overflow_error
+	ADDSP #8
+; create instance of class A
+	NEW #2, R0
+	BOV heap_overflow_error
+	PUSH R0
+	BSR Code.A.Init
+	POP R2
+	STORE R2, 7(GB)
+; Beginning of main instructions:
+; call method setX
+	ADDSP #2
+	LOAD 7(GB), R0
+	CMP #null, R0
+	BEQ dereferencement_null_error
+	STORE R0, 0(SP)
+	LOAD #1, R3
+	STORE R3, -1(SP)
+	LOAD 7(GB), R0
+	LOAD 0(R0), R0
+	BSR 3(R0)
+	SUBSP #2
+	LOAD R0, R4
+	WSTR "a.getX() = "
+; call method getX
+	ADDSP #2
+	LOAD 7(GB), R0
+	CMP #null, R0
+	BEQ dereferencement_null_error
+	STORE R0, 0(SP)
+	LOAD #1, R5
+	STORE R5, -1(SP)
+	LOAD 7(GB), R0
+	LOAD 0(R0), R0
+	BSR 2(R0)
+	SUBSP #2
+	LOAD R0, R1
+	WINT
+	WNL
+	HALT
+; ###############################################################
+; METHODS
+; Code for methods of Object :
+; structure init
+Code.Object.Init:
+	LOAD -2(LB), R1
+	LEA 1(GB), R0
+	STORE R0, 0(R1)
+	RTS
+; equals method
+code.Object.equals:
+	LOAD -2(LB), R0
+	CMP -3(LB), R0
+	SEQ R0
+	RTS
+; Code for methods of A
+; Code for init of A
+Code.A.Init:
+	TSTO #9
+	BOV stack_overflow_error
+	ADDSP #8
+; context save
+	PUSH R2	; save R2
+	TSTO #9
+	BOV stack_overflow_error
+	ADDSP #8
+; context save
+	PUSH R2	; save R2
+	TSTO #9
+	BOV stack_overflow_error
+	ADDSP #8
+; context save
+	PUSH R2	; save R2
+; store VTable pointer
+	LOAD -2(LB), R2
+	LEA 3(GB), R0
+	STORE R0, 0(R2)
+; init A.x
+	LOAD #0, R0
+	STORE R0, 1(R2)
+; context restore
+	POP R2	; restore R2
+	RTS
+Code.A.getX:
+; getX
+	LOAD -3(LB), R2
+	LOAD R2, R0
+	BRA Code.end.A.getX
+	WSTR "Erreur : sortie de la méthode A.getX sans return"
+	WNL
+	ERROR
+Code.end.A.getX:
+; context restore
+	POP R2	; restore R2
+	RTS
+Code.A.setX:
+; setX
+	LOAD -3(LB), R2
+	LOAD -2(LB), R0
+	CMP #null, R0
+	BEQ dereferencement_null_error
+	STORE R2, 1(R0)
+; context restore
+	POP R2	; restore R2
+	RTS
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+dereferencement_null_error:
+	WSTR "Erreur : dereferencement de null"
+	WNL
+	ERROR
+heap_overflow_error:
+	WSTR "Erreur : le tas est plein"
+	WNL
+	ERROR
+; end main program

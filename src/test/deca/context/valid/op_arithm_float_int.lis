@@ -1,0 +1,33 @@
+`> [1, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [1, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [5, 0] ListInst [List with 4 elements]
+         []> [2, 0] Plus
+         ||  type: int
+         ||  +> [2, 0] Int (1)
+         ||  |  type: int
+         ||  `> [2, 2] Int (1)
+         ||     type: int
+         []> [3, 0] Plus
+         ||  type: float
+         ||  +> ConvFloat
+         ||  |  type: float
+         ||  |  `> [3, 0] Int (1)
+         ||  |     type: int
+         ||  `> [3, 2] Float (1.1)
+         ||     type: float
+         []> [4, 0] Plus
+         ||  type: float
+         ||  +> ConvFloat
+         ||  |  type: float
+         ||  |  `> [4, 0] Int (1)
+         ||  |     type: int
+         ||  `> [4, 2] Float (1.1)
+         ||     type: float
+         []> [5, 0] Plus
+             type: float
+             +> [5, 0] Float (1.1)
+             |  type: float
+             `> [5, 4] Float (1.1)
+                type: float

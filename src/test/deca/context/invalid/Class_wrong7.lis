@@ -1,0 +1,66 @@
+`> [5, 0] Program
+   +> ListDeclClass [List with 1 elements]
+   |  []> [5, 0] DeclClass
+   |      +> [5, 6] Identifier (A)
+   |      |  definition: type defined at [5, 0], type=A
+   |      +> Identifier (Object)
+   |      |  definition: type(builtin), type=Object
+   |      +> ListDeclMethod [List with 1 elements]
+   |      |  []> [9, 4] DeclMethod
+   |      |      +> [9, 4] Identifier (void)
+   |      |      |  definition: type(builtin), type=void
+   |      |      +> [9, 9] Identifier (action)
+   |      |      |  definition: method defined at [9, 4], type=void
+   |      |      +> ListDeclParam [List with 0 elements]
+   |      |      `> [9, 18] MethodBody
+   |      |         +> ListDeclVar [List with 0 elements]
+   |      |         `> [10, 8] ListInst [List with 1 elements]
+   |      |            []> [10, 8] Assign
+   |      |                type: int
+   |      |                +> [10, 8] Selection
+   |      |                |  type: int
+   |      |                |  +> [10, 8] This
+   |      |                |  |  type: A
+   |      |                |  `> [10, 13] Identifier (entier)
+   |      |                |     definition: field defined at [7, 8], type=int
+   |      |                `> [10, 22] Plus
+   |      |                   type: int
+   |      |                   +> [10, 22] Selection
+   |      |                   |  type: int
+   |      |                   |  +> [10, 22] This
+   |      |                   |  |  type: A
+   |      |                   |  `> [10, 27] Identifier (entier)
+   |      |                   |     definition: field defined at [7, 8], type=int
+   |      |                   `> [10, 36] Int (1)
+   |      |                      type: int
+   |      `> [7, 8] ListDeclField [List with 1 elements]
+   |         []> [7, 8] [visibility=PUBLIC] DeclField
+   |             +> [7, 4] Identifier (int)
+   |             |  definition: type(builtin), type=int
+   |             +> [7, 8] Identifier (entier)
+   |             |  definition: field defined at [7, 8], type=int
+   |             `> NoInitialization
+   `> [15, 0] Main
+      +> ListDeclVar [List with 1 elements]
+      |  []> [16, 2] DeclVar
+      |      +> [16, 0] Identifier (A)
+      |      |  definition: type defined at [5, 0], type=A
+      |      +> [16, 2] Identifier (a)
+      |      |  definition: variable defined at [16, 2], type=A
+      |      `> [16, 2] Initialization
+      |         `> [16, 6] New
+      |            type: A
+      |            `> [16, 10] Identifier (A)
+      |               definition: type defined at [5, 0], type=A
+      `> [18, 0] ListInst [List with 2 elements]
+         []> [17, 0] MethodCall
+         ||  type: void
+         ||  +> [17, 0] Identifier (A)
+         ||  |  definition: type defined at [5, 0], type=A
+         ||  +> [17, 2] Identifier (action)
+         ||  |  definition: method defined at [9, 4], type=void
+         ||  `> ListExpr [List with 0 elements]
+         []> [18, 0] Println
+             `> ListExpr [List with 1 elements]
+                []> [18, 8] StringLiteral ("ben non")
+                    type: string

@@ -13,7 +13,7 @@
 boolean t = true;
 boolean f = false;
 if (t){
-    if (f || (t && f)){
+    if ((t && f)){
         println ("erreur programme");
         }
     if (t || f){

@@ -1,0 +1,29 @@
+`> [1, 0] Program
+   +> ListDeclClass [List with 2 elements]
+   |  []> [1, 0] DeclClass
+   |  ||  +> [1, 6] Identifier (A)
+   |  ||  |  definition: type defined at [1, 0], type=A
+   |  ||  +> Identifier (Object)
+   |  ||  |  definition: type(builtin), type=Object
+   |  ||  +> ListDeclMethod [List with 0 elements]
+   |  ||  `> ListDeclField [List with 0 elements]
+   |  []> [2, 0] DeclClass
+   |      +> [2, 6] Identifier (B)
+   |      |  definition: type defined at [2, 0], type=B
+   |      +> [2, 8] Identifier (A)
+   |      |  definition: type defined at [1, 0], type=A
+   |      +> ListDeclMethod [List with 0 elements]
+   |      `> ListDeclField [List with 0 elements]
+   `> [3, 0] Main
+      +> ListDeclVar [List with 1 elements]
+      |  []> [4, 2] DeclVar
+      |      +> [4, 0] Identifier (A)
+      |      |  definition: type defined at [1, 0], type=A
+      |      +> [4, 2] Identifier (a)
+      |      |  definition: variable defined at [4, 2], type=A
+      |      `> [4, 2] Initialization
+      |         `> [4, 6] New
+      |            type: B
+      |            `> [4, 10] Identifier (B)
+      |               definition: type defined at [2, 0], type=B
+      `> ListInst [List with 0 elements]
