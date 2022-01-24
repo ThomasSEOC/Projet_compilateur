@@ -27,6 +27,7 @@
    |      |  ||            |  +> [4, 8] This
    |      |  ||            |  |  type: A
    |      |  ||            |  `> [4, 13] Identifier (x)
+   |      |  ||            |     definition: field defined at [2, 8], type=int
    |      |  ||            `> [4, 17] Identifier (y)
    |      |  ||               definition: parameter defined at [3, 14], type=int
    |      |  []> [6, 4] DeclMethod
@@ -68,6 +69,7 @@
          ||  |  +> [13, 4] Identifier (a)
          ||  |  |  definition: variable defined at [12, 6], type=A
          ||  |  `> [13, 6] Identifier (x)
+         ||  |     definition: field defined at [2, 8], type=int
          ||  `> [13, 10] Int (1)
          ||     type: int
          []> [14, 4] MethodCall

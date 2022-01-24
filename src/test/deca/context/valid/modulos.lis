@@ -1,0 +1,49 @@
+`> [12, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [12, 0] Main
+      +> ListDeclVar [List with 1 elements]
+      |  []> [13, 4] DeclVar
+      |      +> [13, 0] Identifier (int)
+      |      |  definition: type(builtin), type=int
+      |      +> [13, 4] Identifier (a)
+      |      |  definition: variable defined at [13, 4], type=int
+      |      `> [13, 4] NoInitialization
+      `> [19, 0] ListInst [List with 5 elements]
+         []> [14, 0] Assign
+         ||  type: int
+         ||  +> [14, 0] Identifier (a)
+         ||  |  definition: variable defined at [13, 4], type=int
+         ||  `> [14, 4] Modulo
+         ||     type: int
+         ||     +> [14, 4] Int (30)
+         ||     |  type: int
+         ||     `> [14, 9] Int (14)
+         ||        type: int
+         []> [16, 0] Println
+         ||  `> ListExpr [List with 2 elements]
+         ||     []> [16, 9] StringLiteral ("2 = ")
+         ||     ||  type: string
+         ||     []> [16, 17] Identifier (a)
+         ||         definition: variable defined at [13, 4], type=int
+         []> [17, 0] Assign
+         ||  type: int
+         ||  +> [17, 0] Identifier (a)
+         ||  |  definition: variable defined at [13, 4], type=int
+         ||  `> [17, 4] Plus
+         ||     type: int
+         ||     +> [17, 4] Identifier (a)
+         ||     |  definition: variable defined at [13, 4], type=int
+         ||     `> [17, 8] Int (1)
+         ||        type: int
+         []> [18, 0] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [18, 9] StringLiteral ("juste/* si */ si 0:")
+         ||         type: string
+         []> [19, 0] Println
+             `> ListExpr [List with 1 elements]
+                []> [19, 8] Modulo
+                    type: int
+                    +> [19, 8] Int (18)
+                    |  type: int
+                    `> [19, 13] Identifier (a)
+                       definition: variable defined at [13, 4], type=int

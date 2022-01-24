@@ -1,0 +1,123 @@
+`> [9, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [9, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [30, 0] ListInst [List with 17 elements]
+         []> [10, 0] Divide
+         ||  type: int
+         ||  +> [10, 0] Int (2)
+         ||  |  type: int
+         ||  `> [10, 2] Int (1)
+         ||     type: int
+         []> [11, 0] Divide
+         ||  type: float
+         ||  +> [11, 0] Float (2.1)
+         ||  |  type: float
+         ||  `> ConvFloat
+         ||     type: float
+         ||     `> [11, 4] Int (1)
+         ||        type: int
+         []> [12, 0] Divide
+         ||  type: float
+         ||  +> ConvFloat
+         ||  |  type: float
+         ||  |  `> [12, 0] Int (2)
+         ||  |     type: int
+         ||  `> [12, 2] Float (1.2)
+         ||     type: float
+         []> [13, 0] Divide
+         ||  type: float
+         ||  +> [13, 0] Float (2.1)
+         ||  |  type: float
+         ||  `> [13, 4] Float (1.2)
+         ||     type: float
+         []> [15, 0] Minus
+         ||  type: int
+         ||  +> [15, 0] Int (2)
+         ||  |  type: int
+         ||  `> [15, 2] Int (1)
+         ||     type: int
+         []> [16, 0] Minus
+         ||  type: float
+         ||  +> [16, 0] Float (2.1)
+         ||  |  type: float
+         ||  `> ConvFloat
+         ||     type: float
+         ||     `> [16, 4] Int (1)
+         ||        type: int
+         []> [17, 0] Minus
+         ||  type: float
+         ||  +> ConvFloat
+         ||  |  type: float
+         ||  |  `> [17, 0] Int (2)
+         ||  |     type: int
+         ||  `> [17, 2] Float (1.2)
+         ||     type: float
+         []> [18, 0] Minus
+         ||  type: float
+         ||  +> [18, 0] Float (2.1)
+         ||  |  type: float
+         ||  `> [18, 4] Float (1.2)
+         ||     type: float
+         []> [20, 0] Modulo
+         ||  type: int
+         ||  +> [20, 0] Int (2)
+         ||  |  type: int
+         ||  `> [20, 2] Int (1)
+         ||     type: int
+         []> [22, 0] Multiply
+         ||  type: int
+         ||  +> [22, 0] Int (2)
+         ||  |  type: int
+         ||  `> [22, 2] Int (1)
+         ||     type: int
+         []> [23, 0] Multiply
+         ||  type: float
+         ||  +> [23, 0] Float (2.1)
+         ||  |  type: float
+         ||  `> ConvFloat
+         ||     type: float
+         ||     `> [23, 4] Int (1)
+         ||        type: int
+         []> [24, 0] Multiply
+         ||  type: float
+         ||  +> ConvFloat
+         ||  |  type: float
+         ||  |  `> [24, 0] Int (2)
+         ||  |     type: int
+         ||  `> [24, 2] Float (1.2)
+         ||     type: float
+         []> [25, 0] Multiply
+         ||  type: float
+         ||  +> [25, 0] Float (2.1)
+         ||  |  type: float
+         ||  `> [25, 4] Float (1.2)
+         ||     type: float
+         []> [27, 0] Plus
+         ||  type: int
+         ||  +> [27, 0] Int (2)
+         ||  |  type: int
+         ||  `> [27, 2] Int (1)
+         ||     type: int
+         []> [28, 0] Plus
+         ||  type: float
+         ||  +> [28, 0] Float (2.1)
+         ||  |  type: float
+         ||  `> ConvFloat
+         ||     type: float
+         ||     `> [28, 4] Int (1)
+         ||        type: int
+         []> [29, 0] Plus
+         ||  type: float
+         ||  +> ConvFloat
+         ||  |  type: float
+         ||  |  `> [29, 0] Int (2)
+         ||  |     type: int
+         ||  `> [29, 2] Float (1.2)
+         ||     type: float
+         []> [30, 0] Plus
+             type: float
+             +> [30, 0] Float (2.1)
+             |  type: float
+             `> [30, 4] Float (1.2)
+                type: float

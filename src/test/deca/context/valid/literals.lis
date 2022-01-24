@@ -1,0 +1,17 @@
+`> [1, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [1, 0] Main
+      +> ListDeclVar [List with 0 elements]
+      `> [9, 4] ListInst [List with 3 elements]
+         []> [7, 4] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [7, 12] Int (5)
+         ||         type: int
+         []> [8, 4] Println
+         ||  `> ListExpr [List with 1 elements]
+         ||     []> [8, 12] Float (5.5)
+         ||         type: float
+         []> [9, 4] Println
+             `> ListExpr [List with 1 elements]
+                []> [9, 13] Float (5.5)
+                    type: float
