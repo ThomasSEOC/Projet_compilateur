@@ -21,7 +21,7 @@ class B extends A{
 }
 
 {
-A a = new A();
-a.GrosseAction();
+A a = new AA();
+a.Action();
 println("ben non");
 }

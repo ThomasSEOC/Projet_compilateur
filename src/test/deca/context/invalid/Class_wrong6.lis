@@ -1,7 +1,1 @@
-Exception in thread "main" java.lang.NullPointerException
-	at fr.ensimag.deca.tree.MethodCall.verifyExpr(MethodCall.java:79)
-	at fr.ensimag.deca.tree.AbstractExpr.verifyInst(AbstractExpr.java:135)
-	at fr.ensimag.deca.tree.ListInst.verifyListInst(ListInst.java:33)
-	at fr.ensimag.deca.tree.Main.verifyMain(Main.java:40)
-	at fr.ensimag.deca.tree.Program.verifyProgram(Program.java:42)
-	at fr.ensimag.deca.context.ManualTestContext.main(ManualTestContext.java:35)
+./src/test/deca/context/invalid/Class_wrong6.deca:24:10: AA is not a type
