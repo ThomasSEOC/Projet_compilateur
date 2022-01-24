@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class representing a control flow graph
+ */
 public class ControlFlowGraph extends Graph {
     private final ListInst instructions;
     private ListDeclVar variables;
@@ -19,52 +22,79 @@ public class ControlFlowGraph extends Graph {
     private final DeadCodeRemover deadCodeRemover;
     private boolean isMethod = false;
 
+    /**
+     * constructor for ControlFlowGraph
+     * @param compiler global compiler
+     * @param variables list of variables
+     * @param instructions list of instructions
+     */
     public ControlFlowGraph(DecacCompiler compiler, ListDeclVar variables, ListInst instructions) {
         super(compiler);
         this.variables = variables;
         this.instructions = instructions;
 
+        // create the graph
         createCFG();
 
+        // transform graph into SSA form
         this.ssaProcessor = new SSAProcessor(this);
         ssaProcessor.process();
 
+        // propagate constants
         this.constantPropagator = new ConstantPropagator(this);
         constantPropagator.process();
 
+        // remove dead code
         this.deadCodeRemover = new DeadCodeRemover(this);
         deadCodeRemover.process();
     }
 
+    /**
+     * set graph as representation if a method
+     */
     public void setMethod() {
         isMethod = true;
     }
 
+    /**
+     * get if graph represents a method
+     * @return true if graph represents a method
+     */
     public boolean getIsMethod() {
         return isMethod;
     }
 
+    /**
+     * setter for variables
+     * @param variables list of variables declarations
+     */
     public void setDeclVariables(ListDeclVar variables) {
         this.variables = variables;
     }
 
+    /**
+     * getter for variables
+     * @return list of variables declarations
+     */
     public ListDeclVar getDeclVariables() {
         return variables;
     }
 
+    /**
+     * getter for SSA processor
+     * @return SSAProcessor related to the graph
+     */
     @Override
     public SSAProcessor getSsaProcessor() {
         return ssaProcessor;
     }
 
-    public ConstantPropagator getConstantPropagator() {
-        return constantPropagator;
-    }
-
-    public DeadCodeRemover getDeadCodeRemover() {
-        return deadCodeRemover;
-    }
-
+    /**
+     * create recursively control flow graph from instructions
+     * @param instructionsList instructions as input
+     * @param inCodeBloc local start bloc
+     * @param outCodeBloc local stop bloc
+     */
     private void CFGRecursion(List<AbstractInst> instructionsList, AbstractCodeBloc inCodeBloc, AbstractCodeBloc outCodeBloc) {
         AbstractCodeBloc currentBloc = new LinearCodeBloc(requestId());
         addArc(new Arc(inCodeBloc, currentBloc));
@@ -134,24 +164,40 @@ public class ControlFlowGraph extends Graph {
         addArc(new Arc(currentBloc, outCodeBloc));
     }
 
+    /**
+     * create control flow graph from list of instructions
+     */
     private void createCFG() {
         List<AbstractInst> instructionsList = instructions.getList();
-
         CFGRecursion(instructionsList, getStartBloc(), getStopBloc());
     }
 
+    /**
+     * add done bloc when iterating on the graph
+     * @param bloc done bloc
+     */
     public void addDoneBloc(AbstractCodeBloc bloc) {
         codeGenDoneBlocs.add(bloc);
     }
 
+    /**
+     * getter for done bloc hen iterating on the graph
+     * @return done blocs
+     */
     public List<AbstractCodeBloc> getDoneBlocs() {
         return codeGenDoneBlocs;
     }
 
+    /**
+     * clear done blocs when iterating of the graph
+     */
     public void clearDoneBlocs() {
         codeGenDoneBlocs = new ArrayList<>();
     }
 
+    /**
+     * generate code corresponding to the current state of the graph
+     */
     public void codeGen() {
         clearDoneBlocs();
 
@@ -161,23 +207,36 @@ public class ControlFlowGraph extends Graph {
         codeGenDoneBlocs.add(getStopBloc());
 
         variables.codeGenListDeclVar(compiler);
-        compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
+        if (!getIsMethod()) {
+            compiler.getCodeGenBackend().addComment("Beginning of main instructions:");
+        }
 
         startBloc.codeGen(this);
 
         getStopBloc().codeGen(this);
-
-//        getBackend().writeInstructions();
     }
 
+    /**
+     * getter for compiler
+     * @return global compiler
+     */
     public DecacCompiler getCompiler() {
         return compiler;
     }
 
+    /**
+     * getter for backend
+     * @return global code generation backend
+     */
     public CodeGenBackend getBackend() {
         return compiler.getCodeGenBackend();
     }
 
+    /**
+     * create a dot file to represent the graph
+     * it can be processed using graphviz
+     * @throws IOException if file cannot be created
+     */
     public void createDotGraph() throws IOException {
         String destFile = compiler.getSource().toString().replaceFirst("[.][^.]+$", "") + ".dot";
         BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));

@@ -88,7 +88,8 @@ public class AssignOperation extends AbstractOperation {
                 Identifier identifier = (Identifier) expr.getLeftOperand();
                 DAddr addr;
                 if (identifier.getDefinition() instanceof FieldDefinition) {
-                    addr = identifier.getFieldDefinition().getOperand();
+                    String name = identifier.getName().getName();
+                    addr = getCodeGenBackEnd().getVariableRegisterOffset(name);
                 }
                 else {
                     addr = identifier.getVariableDefinition().getOperand();
@@ -96,7 +97,6 @@ public class AssignOperation extends AbstractOperation {
 
                 // store result
                 getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
-
                 if (addr instanceof RegisterOffset) {
                     RegisterOffset registerOffset = (RegisterOffset) addr;
                     getCodeGenBackEnd().getContextManager().setLastStoreRegister(result, registerOffset);
