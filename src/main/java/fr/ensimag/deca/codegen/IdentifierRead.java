@@ -86,8 +86,19 @@ public class IdentifierRead extends AbstractOperation {
 
         VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(registerOffset);
 
-        // push virtual register to operation stack
-        getCodeGenBackEnd().getContextManager().operationStackPush(r);
+        if (doNotBranch) {
+            // push virtual register to operation stack
+            getCodeGenBackEnd().getContextManager().operationStackPush(r);
+        }
+        else {
+            getCodeGenBackEnd().addInstruction(new CMP(new ImmediateInteger(0), r.requestPhysicalRegister()));
+            if (getCodeGenBackEnd().getBranchCondition()) {
+                getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+            }
+        }
     }
 
     /**
@@ -95,7 +106,7 @@ public class IdentifierRead extends AbstractOperation {
      */
     @Override
     public void doOperation() {
-       doOperation(false);
+       doOperation(true);
     }
 
     /**

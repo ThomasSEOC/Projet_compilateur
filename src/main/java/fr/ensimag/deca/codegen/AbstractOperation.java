@@ -118,8 +118,7 @@ public abstract class AbstractOperation {
         else if (operand instanceof Identifier) {
             IdentifierRead operator = new IdentifierRead(getCodeGenBackEnd(), operand);
             operator.doOperation(doNotBranch);
-
-            if(doNotBranch) {
+            if (doNotBranch) {
                 return true;
             }
             return false;
