@@ -1,4 +1,4 @@
-Exception in thread "main" java.lang.NullPointerException: Cannot invoke "fr.ensimag.deca.context.ExpDefinition.isMethod()" because the return value of "fr.ensimag.deca.context.EnvironmentExp.get(fr.ensimag.deca.tools.SymbolTable$Symbol)" is null
+Exception in thread "main" java.lang.NullPointerException
 	at fr.ensimag.deca.tree.MethodCall.verifyExpr(MethodCall.java:79)
 	at fr.ensimag.deca.tree.AbstractExpr.verifyInst(AbstractExpr.java:135)
 	at fr.ensimag.deca.tree.ListInst.verifyListInst(ListInst.java:33)

@@ -1,2 +1,1 @@
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
 ./src/test/deca/context/invalid/Class_wrong5.deca:18:22: int is expected

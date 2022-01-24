@@ -1,3 +1,1 @@
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
 ./src/test/deca/context/invalid/Instanceof_wrong.deca:16:17: a is not a type
