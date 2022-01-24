@@ -34,26 +34,30 @@ public class Selection extends AbstractLValue{
         // Verify if the type exists and set it
         Type selectType = expr.verifyExpr(compiler, localEnv, currentClass);
 
-        SymbolTable.Symbol exprTypeSymbol = selectType.getName();
 
+        SymbolTable.Symbol exprTypeSymbol = selectType.getName();
         SymbolTable.Symbol fieldIdentSymbol = fieldIdent.getName();
 
-
+        // Verify if exp hac a class type
         if (!selectType.isClass()){
             throw new ContextualError( " Must be a class type", getLocation());
         }
 
+        // Verify in the main, if expr is not a class name
         if (!expr.isThis()) {
             SymbolTable.Symbol exprSymbol = ((AbstractIdentifier) (expr)).getName();
             if (compiler.getTypes().get(exprSymbol) != null) {
                 throw new ContextualError(exprSymbol + " is a class name or a predefined type", getLocation());
             }
         }
+
         ClassDefinition classDef = (ClassDefinition) compiler.getTypes().get(exprTypeSymbol);
         FieldDefinition selectField = null;
+
+        // Verify if the class have fieldIdent in it environment
         if (classDef.getMembers().get(fieldIdentSymbol)!=null){
             if (classDef.getMembers().get(fieldIdentSymbol).isField()){
-               selectField = (FieldDefinition) classDef.getMembers().get(fieldIdentSymbol);
+                selectField = (FieldDefinition) classDef.getMembers().get(fieldIdentSymbol);
 
                 if (selectField.getVisibility() == Visibility.PROTECTED) {
                     if (!(classDef.getType()).isSubClassOf(currentClass.getType())) {
@@ -68,6 +72,8 @@ public class Selection extends AbstractLValue{
         else {
             throw new ContextualError("This is neither a field or a method of the class" + exprTypeSymbol, getLocation());
         }
+
+        // Set and return
         setType(selectField.getType());
         return selectField.getType();
     }

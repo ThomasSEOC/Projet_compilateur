@@ -47,28 +47,40 @@ public class MethodCall extends AbstractExpr{
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
 
+        // Verify if the type exists and set it
         Type classType = expr.verifyExpr(compiler, localEnv, currentClass);
-        // verify if the method is called with a valid class Name
+
+
+        // Verify if the method is called with a valid class Name
         if (!(classType.isClass())) {
             throw new ContextualError(expr + "is not called with a valid class name", getLocation());
         }
+
+
+
         SymbolTable.Symbol exprSymbol = ((AbstractIdentifier) (expr)).getName();
-        if (compiler.getTypes().get(exprSymbol)!= null){
-            if (expr.getType().isClass()) {
-                throw new ContextualError(exprSymbol + " is a class name or a predefined type", getLocation());
+        TypeDefinition typeDef =  compiler.getTypes().get(exprSymbol);
+
+        // Check if the name is a predefined type or a class
+        if (typeDef != null && typeDef.isExpression()){
+            if (typeDef.isClass()){
+                throw new ContextualError(exprSymbol + " is a class name defined at "+
+                        typeDef.getLocation()+ ", can't be a field name", getLocation());
+            }
+            else {
+                throw new ContextualError(exprSymbol + " is a predefined type, can't be a field name", getLocation());
             }
         }
 
-
-        // verifies if the method exists in the clas
-        EnvironmentType envTypes = compiler.getTypes();
-        ClassDefinition classDef = (ClassDefinition) envTypes.get(classType.getName());
+        ClassDefinition classDef = (ClassDefinition) compiler.getTypes().get(classType.getName());
         SymbolTable.Symbol realSymbol = ident.getName();
+
+        // Verify if the method exists in the class
         if (!(classDef.getMembers().get(realSymbol).isMethod())) {
             throw new ContextualError(expr + "does not belong to" + classType.getName(), getLocation());
         }
 
-        // verify if the list of parameters correct
+        // Verify if the list of parameters is correct
         MethodDefinition methodDef = (MethodDefinition) classDef.getMembers().get(realSymbol);
         ident.setDefinition(methodDef);
         Signature signature = ident.getMethodDefinition().getSignature();

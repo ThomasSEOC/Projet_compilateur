@@ -22,7 +22,6 @@ public class EmptyMain extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         compiler.addComment("EMPTY MAIN");
         compiler.addInstruction(new HALT());
-//        throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
