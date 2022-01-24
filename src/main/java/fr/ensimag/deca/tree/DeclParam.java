@@ -58,13 +58,11 @@ public class DeclParam extends AbstractDeclParam {
             if (localEnv.get(realSymbol).isParam()) {
                 throw new ContextualError(realSymbol + " is a parameter already defined at " +
                         localEnv.get(realSymbol).getLocation(), getLocation());
-            } else {
-                localEnv.declareforce(name.getName(), new ParamDefinition(currentType,this.getLocation()));
             }
         }
         return(currentType);
 
-}
+    }
 
     @Override
     public void decompile(IndentPrintStream s){
