@@ -52,14 +52,17 @@ public class Selection extends AbstractLValue{
         }
 
         ClassDefinition classDef = (ClassDefinition) compiler.getTypes().get(exprTypeSymbol);
-        FieldDefinition selectField = null;
+        ExpDefinition selectField = null;
 
         // Verify if the class have fieldIdent in it environment
         if (classDef.getMembers().get(fieldIdentSymbol)!=null){
-            if (classDef.getMembers().get(fieldIdentSymbol).isField()){
+            if (classDef.getMembers().get(fieldIdentSymbol).isParam()){
+                selectField = (ParamDefinition) classDef.getMembers().get(fieldIdentSymbol);
+                }
+             else if (classDef.getMembers().get(fieldIdentSymbol).isField()){
                 selectField = (FieldDefinition) classDef.getMembers().get(fieldIdentSymbol);
 
-                if (selectField.getVisibility() == Visibility.PROTECTED) {
+                if (((FieldDefinition)selectField).getVisibility() == Visibility.PROTECTED) {
                     if (!(classDef.getType()).isSubClassOf(currentClass.getType())) {
                         throw new ContextualError("Subtype error", getLocation());
                     }
@@ -67,6 +70,9 @@ public class Selection extends AbstractLValue{
                         throw new ContextualError("Subtype error", getLocation());
                     }
                 }
+            }
+             else {
+                selectField = (MethodDefinition) classDef.getMembers().get(fieldIdentSymbol);
             }
         }
         else {
