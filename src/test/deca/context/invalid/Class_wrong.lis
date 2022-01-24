@@ -1,3 +1,1 @@
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
-DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
-./src/test/deca/context/invalid/Class_wrong.deca:22:0: fr.ensimag.deca.tree.Identifier@1753acfehas a wrong list of param, please check at the method defined at [9, 4]
+./src/test/deca/context/invalid/Class_wrong.deca:22:0: a.action has a wrong number of param, please check at the method defined at [9, 4]
