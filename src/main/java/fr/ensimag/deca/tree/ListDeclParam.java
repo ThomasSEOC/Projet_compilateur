@@ -1,11 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Signature;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.util.Iterator;
@@ -32,7 +28,7 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
     }
 
     Signature verifyListDeclParam (DecacCompiler compiler, EnvironmentExp localEnv,
-                                ClassDefinition currentClass) throws ContextualError {
+                                   ClassDefinition currentClass) throws ContextualError {
         Iterator<AbstractDeclParam> it = this.iterator();
         Signature signature = new Signature();
         Type type;

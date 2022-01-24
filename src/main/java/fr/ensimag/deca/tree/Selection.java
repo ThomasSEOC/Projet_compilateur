@@ -33,7 +33,7 @@ public class Selection extends AbstractLValue{
 
         // Verify if the type exists and set it
         Type selectType = expr.verifyExpr(compiler, localEnv, currentClass);
-
+        fieldIdent.verifyExpr(compiler, currentClass.getMembers(), currentClass);
 
         SymbolTable.Symbol exprTypeSymbol = selectType.getName();
         SymbolTable.Symbol fieldIdentSymbol = fieldIdent.getName();
@@ -56,12 +56,8 @@ public class Selection extends AbstractLValue{
 
         // Verify if the class have fieldIdent in it environment
         if (classDef.getMembers().get(fieldIdentSymbol)!=null){
-            if (classDef.getMembers().get(fieldIdentSymbol).isParam()){
-                selectField = (ParamDefinition) classDef.getMembers().get(fieldIdentSymbol);
-                }
-             else if (classDef.getMembers().get(fieldIdentSymbol).isField()){
-                selectField = (FieldDefinition) classDef.getMembers().get(fieldIdentSymbol);
-
+            if (classDef.getMembers().get(fieldIdentSymbol).isField()){
+                selectField = classDef.getMembers().get(fieldIdentSymbol);
                 if (((FieldDefinition)selectField).getVisibility() == Visibility.PROTECTED) {
                     if (!(classDef.getType()).isSubClassOf(currentClass.getType())) {
                         throw new ContextualError("Subtype error", getLocation());
@@ -70,18 +66,20 @@ public class Selection extends AbstractLValue{
                         throw new ContextualError("Subtype error", getLocation());
                     }
                 }
+                setType((selectField).getType());
+                return (selectField).getType();
             }
              else {
                 selectField = (MethodDefinition) classDef.getMembers().get(fieldIdentSymbol);
+                setType(((MethodDefinition)selectField).getType());
+                return ((MethodDefinition)selectField).getType();
             }
         }
         else {
             throw new ContextualError("This is neither a field or a method of the class" + exprTypeSymbol, getLocation());
         }
 
-        // Set and return
-        setType(selectField.getType());
-        return selectField.getType();
+
     }
 
     @Override

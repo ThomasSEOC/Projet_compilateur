@@ -33,7 +33,7 @@ public class Assign extends AbstractBinaryExpr {
 
         // Verify if the two operands have the same Type
         AbstractLValue lOp = this.getLeftOperand();
-        Type typeLOp = lOp.verifyExpr(compiler, localEnv, currentClass);
+        Type typeLOp = lOp.verifyExpr(compiler, currentClass.getMembers(), currentClass);
         getRightOperand().verifyRValue(compiler, localEnv, currentClass, typeLOp);
         setType(typeLOp);
         return typeLOp;
