@@ -1,0 +1,10 @@
+`> [2, 0] Program
+   +> ListDeclClass [List with 1 elements]
+   |  []> [2, 0] DeclClass
+   |      +> [2, 6] Identifier (A)
+   |      |  definition: type defined at [2, 0], type=A
+   |      +> Identifier (Object)
+   |      |  definition: type(builtin), type=Object
+   |      +> ListDeclMethod [List with 0 elements]
+   |      `> ListDeclField [List with 0 elements]
+   `> EmptyMain
