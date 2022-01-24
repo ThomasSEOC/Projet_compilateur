@@ -263,14 +263,18 @@ public class CodeGenBackend {
         }
 
         // search if fields
-        ClassObject currentObject = classManager.getCurrentObject();
+        AbstractClassObject currentObject = classManager.getCurrentObject();
         if (currentObject != null) {
-            for (AbstractDeclField abstractField : currentObject.getFields().getList()) {
-                DeclField field = (DeclField) abstractField;
-                if (Objects.equals(field.getField().getName().getName(), name)) {
-                    addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
-                    return new RegisterOffset(currentObject.getFieldOffset(name), GPRegister.getR(0));
+            while (!(currentObject instanceof DefaultObject)) {
+                ClassObject object = (ClassObject) currentObject;
+                for (AbstractDeclField abstractField : object.getFields().getList()) {
+                    DeclField field = (DeclField) abstractField;
+                    if (Objects.equals(field.getField().getName().getName(), name)) {
+                        addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
+                        return new RegisterOffset(object.getFieldOffset(name), GPRegister.getR(0));
+                    }
                 }
+                currentObject = getClassManager().getClassObject(((ClassObject) currentObject).getSuperClass());
             }
         }
 
