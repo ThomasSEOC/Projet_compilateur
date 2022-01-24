@@ -1,4 +1,0 @@
-{
-    int x = (int) 2.4;
-    println(x);
-}
