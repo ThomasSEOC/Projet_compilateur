@@ -142,24 +142,28 @@ public class SSAProcessor {
     private void processInstructionIdentifiers(InstructionIdentifiers identifiers, Map<String,SSAVariable> localSSA) {
         // process read identifiers
         for (Identifier identifier : identifiers.getReadIdentifiers()) {
-            identifier.setSsaVariable(localSSA.get(identifier.getName().getName()));
-            usages.get(localSSA.get(identifier.getName().getName())).add(identifiers);
+            if (!graph.getIsMethod() || graph.getBackend().isVariableLocal(identifier.getName().getName())) {
+                identifier.setSsaVariable(localSSA.get(identifier.getName().getName()));
+                usages.get(localSSA.get(identifier.getName().getName())).add(identifiers);
+            }
         }
 
         // process write identifier if exists
         Identifier writeIdentifier = identifiers.getWriteIdentifier();
         if (writeIdentifier != null) {
-            // need to create a new SSA variable
-            String name = writeIdentifier.getName().getName();
-            lastVariablesIds.replace(name, lastVariablesIds.get(name)+1);
+            if ((!graph.getIsMethod()) || graph.getBackend().isVariableLocal(writeIdentifier.getName().getName())) {
+                // need to create a new SSA variable
+                String name = writeIdentifier.getName().getName();
+                lastVariablesIds.replace(name, lastVariablesIds.get(name)+1);
 
-            SSAVariable newVariable = new SSAVariable(name, lastVariablesIds.get(name));
+                SSAVariable newVariable = new SSAVariable(name, lastVariablesIds.get(name));
 
-            localSSA.replace(name, newVariable);
-            usages.put(newVariable, new HashSet<>());
-            usages.get(newVariable).add(identifiers);
+                localSSA.replace(name, newVariable);
+                usages.put(newVariable, new HashSet<>());
+                usages.get(newVariable).add(identifiers);
 
-            writeIdentifier.setSsaVariable(newVariable);
+                writeIdentifier.setSsaVariable(newVariable);
+            }
         }
     }
 

@@ -177,10 +177,12 @@ if_then_else returns[IfThenElse tree]
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
-            if(elifBranch == null)
+            if(elifBranch == null) {
                 $tree.setElseBranch($li_else.tree);
-            else
+            }
+            else {
                 elifBranch.setElseBranch($li_else.tree);
+            }
         }
       )?
     ;

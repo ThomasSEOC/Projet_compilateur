@@ -16,6 +16,8 @@
 ; ###############################################################
 ; ###############################################################
 ; start main program
+	TSTO #13
+	BOV stack_overflow_error
 	ADDSP #13
 ; create instance of class Polyexp
 	NEW #1, R0
@@ -45,11 +47,14 @@ Code.Bloc.5:
 ; call method pexp
 	ADDSP #2
 	LOAD 6(GB), R0
+	CMP #null, R0
+	BEQ dereferencement_null_error
 	STORE R0, 0(SP)
 	LOAD 7(GB), R7
 	LOAD 8(GB), R8
 	ADD R8, R7	; Plus
 	DIV #0x1.0p1, R7	; float divide
+	BOV division_by_zero_error
 	STORE R7, 11(GB)
 	STORE R7, -1(SP)
 	LOAD 6(GB), R0
@@ -101,6 +106,8 @@ code.Object.equals:
 ; Code for methods of Polyexp
 ; Code for init of Polyexp
 Code.Polyexp.Init:
+	TSTO #20
+	BOV stack_overflow_error
 	ADDSP #13
 ; context save
 	PUSH R2	; save R2
@@ -110,6 +117,8 @@ Code.Polyexp.Init:
 	PUSH R6	; save R6
 	PUSH R7	; save R7
 	PUSH R8	; save R8
+	TSTO #14
+	BOV stack_overflow_error
 	ADDSP #13
 ; context save
 	PUSH R2	; save R2
@@ -122,7 +131,6 @@ Code.Polyexp.Init:
 	RTS
 Code.Polyexp.pexp:
 ; pexp
-; Beginning of main instructions:
 Code.Bloc.12:
 	LOAD -3(LB), R2
 	LOAD -3(LB), R3
@@ -149,6 +157,9 @@ Code.Bloc.12:
 	BRA Code.end.Polyexp.pexp
 	BRA Code.Bloc.11
 Code.Bloc.11:
+	WSTR "Erreur : sortie de la méthode Polyexp.pexp sans return"
+	WNL
+	ERROR
 Code.end.Polyexp.pexp:
 ; context restore
 	POP R2	; restore R2
@@ -161,8 +172,20 @@ Code.end.Polyexp.pexp:
 	RTS
 ; ###############################################################
 ; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+dereferencement_null_error:
+	WSTR "Erreur : dereferencement de null"
+	WNL
+	ERROR
 heap_overflow_error:
 	WSTR "Erreur : le tas est plein"
+	WNL
+	ERROR
+division_by_zero_error:
+	WSTR "Erreur : division par 0"
 	WNL
 	ERROR
 ; end main program

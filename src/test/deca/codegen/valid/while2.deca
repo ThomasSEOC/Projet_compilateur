@@ -1,0 +1,30 @@
+class A {
+    int y = 2;
+}
+class B {
+    int y = 2;
+}
+
+{
+    int x = 1;
+    A a = new A();
+
+    while ((x < 5) && (a instanceof A)) {
+        println("et un tour de plus");
+        x = x + 1;
+    }
+
+    x = 1;
+    while (x < 5) {
+        println("et un tour de plus");
+        x = x + 1;
+    }
+
+    while (false) {
+        println("coup dur");
+    }
+
+    while (a instanceof B) {
+        println("coup dur");
+    }
+}

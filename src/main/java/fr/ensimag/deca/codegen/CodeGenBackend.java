@@ -282,6 +282,19 @@ public class CodeGenBackend {
     }
 
     /**
+     * get if variable is in local context of a method or not
+     * @param name variable name
+     * @return true if variable is in local context
+     */
+    public boolean isVariableLocal(String name) {
+        // search in local context if exists
+        if (localVariables.size() != 0) {
+            return localVariables.peek().containsKey(name);
+        }
+        return false;
+    }
+
+    /**
      * increment the maximum stack size
      */
     public void incMaxStackSize() { maxStackSize++; }

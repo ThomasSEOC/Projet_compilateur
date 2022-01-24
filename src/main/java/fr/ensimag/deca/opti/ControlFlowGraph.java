@@ -35,7 +35,6 @@ public class ControlFlowGraph extends Graph {
 
         // create the graph
         createCFG();
-
         // transform graph into SSA form
         this.ssaProcessor = new SSAProcessor(this);
         ssaProcessor.process();
@@ -50,10 +49,32 @@ public class ControlFlowGraph extends Graph {
     }
 
     /**
-     * set graph as representation if a method
+     * constructor for ControlFlowGraph
+     * @param compiler global compiler
+     * @param variables list of variables
+     * @param instructions list of instructions
+     * @param isMethod true if graph is used on a method
      */
-    public void setMethod() {
-        isMethod = true;
+    public ControlFlowGraph(DecacCompiler compiler, ListDeclVar variables, ListInst instructions, boolean isMethod) {
+        super(compiler);
+        this.variables = variables;
+        this.instructions = instructions;
+        this.isMethod = isMethod;
+
+        // create the graph
+        createCFG();
+
+        // transform graph into SSA form
+        this.ssaProcessor = new SSAProcessor(this);
+        ssaProcessor.process();
+
+        // propagate constants
+        this.constantPropagator = new ConstantPropagator(this);
+        constantPropagator.process();
+
+        // remove dead code
+        this.deadCodeRemover = new DeadCodeRemover(this);
+        deadCodeRemover.process();
     }
 
     /**

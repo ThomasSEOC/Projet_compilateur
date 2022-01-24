@@ -2,6 +2,8 @@
 ; ###############################################################
 ; ###############################################################
 ; start main program
+	TSTO #3
+	BOV stack_overflow_error
 	ADDSP #3
 	LOAD #42, R2
 	STORE R2, 1(GB)
@@ -48,4 +50,8 @@ Code.Bloc.1:
 	HALT
 ; ###############################################################
 ; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
 ; end main program
