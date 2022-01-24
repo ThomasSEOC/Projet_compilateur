@@ -22,8 +22,8 @@ public class MethodCallOperation extends AbstractReadOperation {
         RegisterOffset structureOffset = getCodeGenBackEnd().getVariableRegisterOffset(objectIdentifier.getName().getName());
 
         // get method offset
-        String nature = objectIdentifier.getType().toString();
-        int methodOffset = getCodeGenBackEnd().getClassManager().getClassObject(nature).getMethodsOffsets().get(methodCall.getIdent().getName().getName());
+        String methodName = objectIdentifier.getType().toString();
+        int methodOffset = getCodeGenBackEnd().getClassManager().getClassObject(methodName).getMethodsOffsets().get(methodCall.getIdent().getName().getName());
 
         getCodeGenBackEnd().addComment("call method " + methodCall.getIdent().getName().getName());
 

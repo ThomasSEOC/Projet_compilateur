@@ -7,6 +7,9 @@ import fr.ensimag.deca.tree.Initialization;
 
 import java.util.*;
 
+/**
+ * class responsible for transformation of a control flow graph into SSA form
+ */
 public class SSAProcessor {
     private final ControlFlowGraph graph;
     private final Map<String,Integer> lastVariablesIds;
@@ -14,42 +17,75 @@ public class SSAProcessor {
     private final Map<AbstractCodeBloc, Map<String,SSAMerge>> waitingFusionCodeBlocs;
     private final Map<String, Set<SSAMerge>> merges;
 
+    /**
+     * constructor for SSAProcessor
+     * @param graph related control flow graph
+     */
     public SSAProcessor(ControlFlowGraph graph) {
         this.graph = graph;
         this.lastVariablesIds = new HashMap<>();
         this.usages = new HashMap<>();
         this.waitingFusionCodeBlocs = new HashMap<>();
         this.merges = new HashMap<>();
-
-//        for (String variableName : graph.getBackend().getVariables()) {
-//            lastVariablesIds.put(variableName, 1);
-//        }
     }
 
+    /**
+     * getter for the set of variables names
+     * @return set of all variables names
+     */
     public Set<String> getVariablesNames() {
         return lastVariablesIds.keySet();
     }
 
+    /**
+     * getter for the number of SSA variables for the specified variable name
+     * @param varName variable name
+     * @return number of SSA variables related to variable name
+     */
     public int getSSAVariablesCount(String varName) {
         return lastVariablesIds.get(varName);
     }
 
+    /**
+     * getter for all generated merges (Phi functions)
+     * @return Map of all merges ordered by variable name
+     */
     public Map<String, Set<SSAMerge>> getMerges() {
         return merges;
     }
 
+    /**
+     * remove a merge form the merges
+     * @param varName variable name
+     * @param merge to remove
+     */
     public void removeMerge(String varName, SSAMerge merge) {
         merges.get(varName).remove(merge);
     }
 
+    /**
+     * getter for Set of InstructionIdentifiers related to the specified SSA variable
+     * @param variable SSA variable
+     * @return Set of InstructionIdentifiers related to the specified SSA variable
+     */
     public Set<InstructionIdentifiers> getInstructionIdentifiers(SSAVariable variable) {
         return usages.get(variable);
     }
 
+    /**
+     * remove a written identifier from usages of the specified SSA variable
+     * @param variable SSA variable
+     * @param identifier to remove from usages
+     */
     public void removeIdentifier(SSAVariable variable, Identifier identifier) {
         usages.get(variable).removeIf(ident -> ident.getWriteIdentifier() == identifier);
     }
 
+    /**
+     *
+     * @param bloc
+     * @param localSSA
+     */
     private void startMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
         waitingFusionCodeBlocs.put(bloc, new HashMap<>());
 
@@ -65,12 +101,22 @@ public class SSAProcessor {
         }
     }
 
+    /**
+     *
+     * @param bloc
+     * @param localSSA
+     */
     private void continueMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
         for (String name : localSSA.keySet()) {
             waitingFusionCodeBlocs.get(bloc).get(name).addOperand(localSSA.get(name));
         }
     }
 
+    /**
+     *
+     * @param bloc
+     * @param localSSA
+     */
     private void endMerge(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
         continueMerge(bloc, localSSA);
 
@@ -82,6 +128,11 @@ public class SSAProcessor {
         waitingFusionCodeBlocs.remove(bloc);
     }
 
+    /**
+     *
+     * @param identifiers
+     * @param localSSA
+     */
     private void processInstructionIdentifiers(InstructionIdentifiers identifiers, Map<String,SSAVariable> localSSA) {
         // process read identifiers
         for (Identifier identifier : identifiers.getReadIdentifiers()) {
@@ -105,6 +156,11 @@ public class SSAProcessor {
         }
     }
 
+    /**
+     *
+     * @param bloc
+     * @param localSSA
+     */
     private void processBloc(AbstractCodeBloc bloc, Map<String,SSAVariable> localSSA) {
         if (bloc instanceof BranchCodeBloc) {
             BranchCodeBloc branchCodeBloc = (BranchCodeBloc) bloc;
@@ -146,6 +202,10 @@ public class SSAProcessor {
 
     }
 
+    /**
+     *
+     * @return
+     */
     private Map<String,SSAVariable> processDeclVar() {
         Map<String,SSAVariable> initSSA = new HashMap<>();
         for (AbstractDeclVar var : graph.getDeclVariables().getList()) {
@@ -169,6 +229,9 @@ public class SSAProcessor {
         return initSSA;
     }
 
+    /**
+     *
+     */
     public void process() {
         Map<String,SSAVariable> initSSA = processDeclVar();
 
@@ -179,14 +242,6 @@ public class SSAProcessor {
         Stack<Map<String,SSAVariable>> localSSAs = new Stack<>();
         toProcessBlocs.push(graph.getStartBloc());
         localSSAs.push(initSSA);
-
-//        localSSAs.push(new HashMap<>());
-//        for (String variableName : graph.getBackend().getVariables()) {
-//            SSAVariable variable = new SSAVariable(variableName, 1);
-//            localSSAs.peek().put(variableName, variable);
-//            usages.put(variable, new HashSet<>());
-//            merges.put(variableName, new HashSet<>());
-//        }
 
         while (toProcessBlocs.size() > 0) {
             AbstractCodeBloc bloc = toProcessBlocs.pop();

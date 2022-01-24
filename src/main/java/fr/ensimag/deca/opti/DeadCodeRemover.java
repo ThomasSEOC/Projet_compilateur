@@ -1,17 +1,27 @@
 package fr.ensimag.deca.opti;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Stack;
 
+/**
+ * class responsible for dead code removing from a control flow graph
+ */
 public class DeadCodeRemover {
     private final ControlFlowGraph graph;
 
+    /**
+     * constructor for DeadCodeRemover
+     * @param graph related control flow graph
+     */
     public DeadCodeRemover(ControlFlowGraph graph) {
         this.graph = graph;
     }
 
-    public void addNextBlocs(AbstractCodeBloc bloc, Stack<AbstractCodeBloc> stack) {
+    /**
+     * add next blocs to process
+     * @param bloc base bloc
+     * @param stack processing stack
+     */
+    private void addNextBlocs(AbstractCodeBloc bloc, Stack<AbstractCodeBloc> stack) {
         for (Arc arc : bloc.getOutArcs()) {
             AbstractCodeBloc nextBloc = arc.getStop();
             if (!graph.getDoneBlocs().contains(nextBloc)) {
@@ -53,6 +63,9 @@ public class DeadCodeRemover {
 //        }
 //    }
 
+    /**
+     * remove dead code from the graph
+     */
     public void process() {
         graph.clearDoneBlocs();
 

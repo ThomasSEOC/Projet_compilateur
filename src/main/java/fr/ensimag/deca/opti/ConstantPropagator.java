@@ -4,12 +4,19 @@ import fr.ensimag.deca.tree.*;
 
 import java.util.*;
 
+/**
+ *
+ */
 public class ConstantPropagator {
     private final ControlFlowGraph graph;
     private final List<SSAVariable> toProcess;
     private final Map<SSAVariable, Constant> constants;
     private final Map<String, Integer> deletedSSAVariables;
 
+    /**
+     *
+     * @param graph
+     */
     public ConstantPropagator(ControlFlowGraph graph) {
         this.graph = graph;
         toProcess = new ArrayList<>();
@@ -17,6 +24,9 @@ public class ConstantPropagator {
         deletedSSAVariables = new HashMap<>();
     }
 
+    /**
+     *
+     */
     private void foldAssign() {
         for (AbstractCodeBloc bloc : graph.getBlocs()) {
             ListInst newListInst = new ListInst();
@@ -48,6 +58,9 @@ public class ConstantPropagator {
         }
     }
 
+    /**
+     *
+     */
     private void foldDeclVar() {
         ListDeclVar newListDeclVar = new ListDeclVar();
         for (AbstractDeclVar var : graph.getDeclVariables().getList()) {
@@ -86,6 +99,9 @@ public class ConstantPropagator {
         }
     }
 
+    /**
+     * propagate constants throw the graph
+     */
     public void process() {
         foldDeclVar();
 
@@ -150,6 +166,9 @@ public class ConstantPropagator {
         postProcess();
     }
 
+    /**
+     *
+     */
     private void postProcess() {
         ListDeclVar newListDeclVar = new ListDeclVar();
         for (AbstractDeclVar var : graph.getDeclVariables().getList()) {
