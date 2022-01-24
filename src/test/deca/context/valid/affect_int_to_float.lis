@@ -1,7 +1,23 @@
-Exception in thread "main" java.lang.NullPointerException: Cannot invoke "fr.ensimag.deca.context.ClassDefinition.getMembers()" because "currentClass" is null
-	at fr.ensimag.deca.tree.Assign.verifyExpr(Assign.java:36)
-	at fr.ensimag.deca.tree.AbstractExpr.verifyInst(AbstractExpr.java:135)
-	at fr.ensimag.deca.tree.ListInst.verifyListInst(ListInst.java:33)
-	at fr.ensimag.deca.tree.Main.verifyMain(Main.java:40)
-	at fr.ensimag.deca.tree.Program.verifyProgram(Program.java:42)
-	at fr.ensimag.deca.context.ManualTestContext.main(ManualTestContext.java:35)
+`> [10, 0] Program
+   +> ListDeclClass [List with 0 elements]
+   `> [10, 0] Main
+      +> ListDeclVar [List with 2 elements]
+      |  []> [11, 9] DeclVar
+      |  ||  +> [11, 3] Identifier (float)
+      |  ||  |  definition: type(builtin), type=float
+      |  ||  +> [11, 9] Identifier (a)
+      |  ||  |  definition: variable defined at [11, 9], type=float
+      |  ||  `> [11, 9] NoInitialization
+      |  []> [12, 7] DeclVar
+      |      +> [12, 3] Identifier (int)
+      |      |  definition: type(builtin), type=int
+      |      +> [12, 7] Identifier (b)
+      |      |  definition: variable defined at [12, 7], type=int
+      |      `> [12, 7] NoInitialization
+      `> [14, 3] ListInst [List with 1 elements]
+         []> [14, 3] Assign
+             type: float
+             +> [14, 3] Identifier (a)
+             |  definition: variable defined at [11, 9], type=float
+             `> [14, 7] Identifier (b)
+                definition: variable defined at [12, 7], type=int

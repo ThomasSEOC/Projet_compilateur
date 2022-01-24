@@ -1,7 +1,1 @@
-Exception in thread "main" java.lang.NullPointerException: Cannot invoke "fr.ensimag.deca.context.ClassDefinition.getMembers()" because "currentClass" is null
-	at fr.ensimag.deca.tree.Assign.verifyExpr(Assign.java:36)
-	at fr.ensimag.deca.tree.AbstractExpr.verifyInst(AbstractExpr.java:135)
-	at fr.ensimag.deca.tree.ListInst.verifyListInst(ListInst.java:33)
-	at fr.ensimag.deca.tree.Main.verifyMain(Main.java:40)
-	at fr.ensimag.deca.tree.Program.verifyProgram(Program.java:42)
-	at fr.ensimag.deca.context.ManualTestContext.main(ManualTestContext.java:35)
+./src/test/deca/context/valid/method2.deca:15:0: A is a class name or a predefined type
