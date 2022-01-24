@@ -30,53 +30,22 @@ public class DeadCodeRemover {
         }
     }
 
-//    public void removeFrom(AbstractCodeBloc bloc) {
-//        Set<AbstractCodeBloc> currentStage = new HashSet<>();
-//        Set<Arc> arcs = new HashSet<>();
-//        currentStage.add(bloc);
-//
-//        while (currentStage.size() > 0) {
-//            for (AbstractCodeBloc currentBloc : currentStage) {
-//                arcs.addAll(currentBloc.getOutArcs());
-//                graph.removeCodeBloc(currentBloc);
-//            }
-//
-//            currentStage.clear();
-//
-//            for (Arc arc : arcs) {
-//                AbstractCodeBloc nextBloc = arc.getStop();
-//                boolean canRemove = true;
-//                for (Arc nextBlocArc : nextBloc.getInArcs()) {
-//                    if (!arcs.contains(nextBlocArc)) {
-//                        canRemove = false;
-//                    }
-//                }
-//                if (canRemove) {
-//                    currentStage.add(nextBloc);
-//                }
-//            }
-//
-//            for (Arc arc : arcs) {
-//                graph.removeArc(arc);
-//            }
-//            arcs.clear();
-//        }
-//    }
-
     /**
      * remove dead code from the graph
      */
     public void process() {
+        // prepare for graph read
         graph.clearDoneBlocs();
-
         graph.addDoneBloc(graph.getStopBloc());
 
+        // init internal structure
         Stack<AbstractCodeBloc> toProcess = new Stack<>();
         toProcess.push(graph.getStartBloc());
 
+        // use a stack to process each bloc
         while (toProcess.size() > 0) {
             AbstractCodeBloc bloc = toProcess.pop();
-
+            // process only branches
             if (bloc instanceof BranchCodeBloc) {
                 // cast bloc
                 BranchCodeBloc branchCodeBloc = (BranchCodeBloc) bloc;
@@ -88,22 +57,22 @@ public class DeadCodeRemover {
                     addNextBlocs(bloc, toProcess);
                 }
                 else {
-                    // success
+                    // success, create a linear bloc to replace branch bloc
                     LinearCodeBloc newBloc = new LinearCodeBloc(branchCodeBloc.getId());
                     newBloc.setInstructions(branchCodeBloc.getInstructions());
+                    // copy input arcs
                     for (Arc inArc : branchCodeBloc.getInArcs()) {
                         inArc.setStop(newBloc);
                         newBloc.addInArc(inArc);
                     }
 
+                    // select right branch according to result of evaluation
                     Arc outArc;
                     if (constant.getValueBoolean()) {
-//                        removeFrom(branchCodeBloc.getElseBloc());
                         outArc = branchCodeBloc.getOutArcs().get(0);
                         graph.removeArc(branchCodeBloc.getOutArcs().get(1));
                     }
                     else {
-//                        removeFrom(branchCodeBloc.getThenBloc());
                         outArc = branchCodeBloc.getOutArcs().get(1);
                         graph.removeArc(branchCodeBloc.getOutArcs().get(0));
                     }

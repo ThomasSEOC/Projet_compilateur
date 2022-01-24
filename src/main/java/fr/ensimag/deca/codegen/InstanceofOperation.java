@@ -9,12 +9,23 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+/**
+ * class responsible for instanceof call code generation
+ */
 public class InstanceofOperation extends AbstractOperation {
 
+    /**
+     * constructor for Instanceof Operation
+     * @param backend global code generation backend
+     * @param expression operation related expression
+     */
     public InstanceofOperation(CodeGenBackend backend, AbstractExpr expression) {
         super(backend, expression);
     }
 
+    /**
+     * generate code for instanceof call
+     */
     @Override
     public void doOperation() {
         InstanceOf expr = (InstanceOf) getExpression();
@@ -51,6 +62,9 @@ public class InstanceofOperation extends AbstractOperation {
         getCodeGenBackEnd().addInstruction(new SUBSP(2));
     }
 
+    /**
+     * call instanceof and print result
+     */
     @Override
     public void print() {
         doOperation();

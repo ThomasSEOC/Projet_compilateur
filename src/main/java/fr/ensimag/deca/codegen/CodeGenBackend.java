@@ -73,6 +73,10 @@ public class CodeGenBackend {
         printHex = false;
     }
 
+    /**
+     * create a new graph bloc unique ID
+     * @return new unique ID
+     */
     public int requestnewGraphId() {
         return nextGraphId++;
     }
@@ -202,10 +206,14 @@ public class CodeGenBackend {
         return maxGlobalVariablesSize;
     }
 
-    public void addVariable(String name, int size) {
+    /**
+     * add a declared variable
+     * @param name variable name
+     */
+    public void addVariable(String name) {
         // if local context exists
         if (localVariables.size() != 0) {
-            localVariableSize.push(localVariableSize.pop() + size);
+            localVariableSize.push(localVariableSize.pop() + 1);
             localVariables.peek().put(name, localVariableSize.peek());
         }
         // add to global variables
@@ -216,24 +224,10 @@ public class CodeGenBackend {
     }
 
     /**
-     * add a declared global variable
-     * @param name string used to identify variable
+     * add a param in a local context
+     * @param name param name
+     * @param offset offset from LB
      */
-    public void addVariable(String name) {
-        addVariable(name, 1);
-    }
-
-    public Set<String> getVariables() {
-        // if local context exists
-        if (localVariables.size() != 0) {
-            return localVariables.peek().keySet();
-        }
-        // add to global variables
-        else {
-            return globalVariables.keySet();
-        }
-    }
-
     public void addParam(String name, int offset) {
         localVariables.peek().put(name, offset);
     }
@@ -254,6 +248,11 @@ public class CodeGenBackend {
         return classManager.getVtableOffset() + globalVariables.get(name) - 1;
     }
 
+    /**
+     * create register offset for the requested variable
+     * @param name variable name
+     * @return register offset for the specified variable
+     */
     public RegisterOffset getVariableRegisterOffset(String name) {
         // search in local context if exists
         if (localVariables.size() != 0) {

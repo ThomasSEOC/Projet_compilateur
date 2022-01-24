@@ -6,7 +6,6 @@ import fr.ensimag.deca.context.IntType;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Identifier;
-import fr.ensimag.deca.tree.UnaryMinus;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -29,8 +28,8 @@ public class IdentifierRead extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        // try to evaluate as constant
         boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
-
         Constant constant = null;
         if (opti) {
             constant = getConstant(getCodeGenBackEnd().getCompiler());
@@ -137,6 +136,11 @@ public class IdentifierRead extends AbstractOperation {
         }
     }
 
+    /**
+     * try to evaluate operation as constant
+     * @param compiler global compiler
+     * @return created constant, can be null
+     */
     @Override
     public Constant getConstant(DecacCompiler compiler) {
         // cast to UnaryMinus

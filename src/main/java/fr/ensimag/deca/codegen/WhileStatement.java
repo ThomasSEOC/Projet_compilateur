@@ -5,7 +5,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 /**
- * class responsible for while statement code genration
+ * class responsible for while statement code generation
  */
 public class WhileStatement {
     CodeGenBackend backend;

@@ -3,8 +3,6 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 /**
@@ -26,13 +24,12 @@ public class NotOperation extends AbstractOperation {
      */
     @Override
     public void doOperation() {
+        // try to evaluate as a constant
         boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
-
         Constant constant = null;
         if (opti) {
             constant = getConstant(getCodeGenBackEnd().getCompiler());
         }
-
         if (constant != null) {
             if (constant.getValueBoolean()) {
                 if (getCodeGenBackEnd().getBranchCondition()) {
@@ -100,6 +97,11 @@ public class NotOperation extends AbstractOperation {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    /**
+     * try to evaluate as a constant
+     * @param compiler global compiler
+     * @return created constant, can be null
+     */
     @Override
     public Constant getConstant(DecacCompiler compiler) {
         // cast to Not

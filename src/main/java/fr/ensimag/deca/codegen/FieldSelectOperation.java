@@ -10,12 +10,23 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+/**
+ * class responsible for field selection operation
+ */
 public class FieldSelectOperation extends AbstractOperation {
 
+    /**
+     * constructor for FieldSelectOperation
+     * @param backend global code generation backend
+     * @param expression operation related expression
+     */
     public FieldSelectOperation(CodeGenBackend backend, AbstractExpr expression) {
         super(backend, expression);
     }
 
+    /**
+     * select right structure variable from which process fields
+     */
     private void selectVariable() {
         Selection selection = (Selection) getExpression();
         if (selection.getExpr() instanceof Identifier) {
@@ -34,6 +45,10 @@ public class FieldSelectOperation extends AbstractOperation {
         }
     }
 
+    /**
+     * get offset in structure from field
+     * @return offset in structure
+     */
     private int getOffset() {
         Selection selection = (Selection) getExpression();
         String field = selection.getFieldIdent().getName().getName();
@@ -48,6 +63,9 @@ public class FieldSelectOperation extends AbstractOperation {
         }
     }
 
+    /**
+     * write data from operation stack to field
+     */
     public void write() {
         selectVariable();
 
@@ -58,6 +76,9 @@ public class FieldSelectOperation extends AbstractOperation {
         getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), new RegisterOffset(offset, GPRegister.getR(0))));
     }
 
+    /**
+     * read field
+     */
     @Override
     public void doOperation() {
         selectVariable();
@@ -70,6 +91,9 @@ public class FieldSelectOperation extends AbstractOperation {
         getCodeGenBackEnd().getContextManager().operationStackPush(register);
     }
 
+    /**
+     * print field
+     */
     @Override
     public void print() {
         selectVariable();

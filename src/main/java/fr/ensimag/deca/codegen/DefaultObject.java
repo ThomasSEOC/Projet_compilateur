@@ -37,8 +37,6 @@ public class DefaultObject extends AbstractClassObject {
 
         // first parameter is current Object address
         // second parameter is other object address
-//        compiler.getCodeGenBackend().addInstruction(new TSTO(2));
-//        compiler.getCodeGenBackend().addInstruction(new BOV(compiler.getCodeGenBackend().getErrorsManager().getStackOverflowLabel()));
         backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
         backend.addInstruction(new CMP(new RegisterOffset(-3, Register.LB), GPRegister.getR(0)));
         backend.addInstruction(new SEQ(GPRegister.getR(0)));
@@ -92,6 +90,9 @@ public class DefaultObject extends AbstractClassObject {
         return 1;
     }
 
+    /**
+     * generate code for default object methods
+     */
     @Override
     public void methodsCodeGen() {
         CodeGenBackend backend = getClassManager().getBackend();
@@ -135,6 +136,9 @@ public class DefaultObject extends AbstractClassObject {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    /**
+     * generate code for default object fields
+     */
     @Override
     public void codeGenFieldDecl() {
         // nothing

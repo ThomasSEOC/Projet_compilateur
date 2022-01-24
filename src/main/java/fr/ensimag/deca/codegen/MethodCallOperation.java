@@ -7,18 +7,28 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+/**
+ * class responsible for method call code generation
+ */
 public class MethodCallOperation extends AbstractReadOperation {
 
+    /**
+     * constructor for method coll
+     * @param backend global code generation backend
+     * @param expression operation related
+     */
     public MethodCallOperation(CodeGenBackend backend, AbstractExpr expression) {
         super(backend, expression);
     }
 
+    /**
+     * generate code for method call
+     */
     @Override
     public void doOperation() {
         // get object instance
         MethodCall methodCall = (MethodCall) getExpression();
         Identifier objectIdentifier = (Identifier) methodCall.getExpr();
-//        int structureOffset = getCodeGenBackEnd().getVariableOffset(objectIdentifier.getName().getName());
         RegisterOffset structureOffset = getCodeGenBackEnd().getVariableRegisterOffset(objectIdentifier.getName().getName());
 
         // get method offset
@@ -31,7 +41,6 @@ public class MethodCallOperation extends AbstractReadOperation {
         getCodeGenBackEnd().addInstruction(new ADDSP(methodCall.getListExpr().size() + 1));
 
         // check structure
-//        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
         getCodeGenBackEnd().addInstruction(new LOAD(structureOffset, GPRegister.getR(0)));
         if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
             getCodeGenBackEnd().addInstruction(new CMP(new NullOperand(), GPRegister.getR(0)));
@@ -59,7 +68,6 @@ public class MethodCallOperation extends AbstractReadOperation {
         }
 
         // jump
-//        getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(structureOffset, Register.LB), GPRegister.getR(0)));
         getCodeGenBackEnd().addInstruction(new LOAD(structureOffset, GPRegister.getR(0)));
         getCodeGenBackEnd().addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(0)), GPRegister.getR(0)));
         getCodeGenBackEnd().addInstruction(new BSR(new RegisterOffset(methodOffset, GPRegister.getR(0))));
@@ -68,6 +76,9 @@ public class MethodCallOperation extends AbstractReadOperation {
         getCodeGenBackEnd().addInstruction(new SUBSP(methodCall.getListExpr().size() + 1));
     }
 
+    /**
+     * call method and print result
+     */
     @Override
     public void print() {
         doOperation();

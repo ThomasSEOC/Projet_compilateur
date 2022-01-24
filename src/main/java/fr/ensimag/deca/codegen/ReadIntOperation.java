@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -57,6 +56,4 @@ public class ReadIntOperation extends AbstractReadOperation{
         // print R1
         getCodeGenBackEnd().addInstruction(new WINT());
     }
-
-
 }
