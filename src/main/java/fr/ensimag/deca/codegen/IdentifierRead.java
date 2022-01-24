@@ -66,13 +66,15 @@ public class IdentifierRead extends AbstractOperation {
         Identifier expr = (Identifier) getExpression();
 
         // request a new virtual register
-        VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister();
+//        VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister();
 
-        // get offset from GB for variable identified by expr
+        // get register offset for variable identified by expr
         RegisterOffset registerOffset = getCodeGenBackEnd().getVariableRegisterOffset(expr.getName().getName());
 
         // load into physical register
-        getCodeGenBackEnd().addInstruction(new LOAD(registerOffset, r.requestPhysicalRegister()));
+//        getCodeGenBackEnd().addInstruction(new LOAD(registerOffset, r.requestPhysicalRegister()));
+
+        VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(registerOffset);
 
         // push virtual register to operation stack
         getCodeGenBackEnd().getContextManager().operationStackPush(r);

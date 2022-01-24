@@ -46,8 +46,8 @@ DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:
                 ||  type: string
                 []> [12, 27] MethodCall
                     type: int
-                    +> [12, 27] Identifier (a)
-                    |  definition: variable defined at [10, 6], type=A
-                    +> [12, 29] Identifier (getX)
+                    +> [10, 27] Identifier (a)
+                    |  definition: variable defined at [9, 6], type=A
+                    +> [10, 29] Identifier (getX)
                     |  definition: method defined at [3, 4], type=int
                     `> ListExpr [List with 0 elements]

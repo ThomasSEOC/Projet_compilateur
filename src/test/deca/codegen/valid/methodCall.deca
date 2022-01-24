@@ -1,5 +1,5 @@
 class A {
-    protected int x ;
+    protected int x = 42;
     int getX() {
         return x ;
     }

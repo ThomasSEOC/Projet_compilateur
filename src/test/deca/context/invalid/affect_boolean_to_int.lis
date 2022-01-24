@@ -1,0 +1,3 @@
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:54) - verify listClassBody: start
+DEBUG fr.ensimag.deca.tree.ListDeclClass.verifyListClassBody(ListDeclClass.java:59) - verify listClassBody: end
+./src/test/deca/context/invalid/affect_boolean_to_int.deca:15:7: int is expected

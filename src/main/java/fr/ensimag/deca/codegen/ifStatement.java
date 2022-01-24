@@ -1,6 +1,7 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
@@ -56,6 +57,23 @@ public class ifStatement {
         else if (expression.getCondition() instanceof BooleanLiteral) {
             LiteralOperation operator = new LiteralOperation(backend, expression.getCondition());
             operator.doOperation();
+            VirtualRegister result = backend.getContextManager().operationStackPop();
+            backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            backend.addInstruction(new BEQ(elseLabel));
+            result.destroy();
+        }
+        else if (expression.getCondition() instanceof InstanceOf) {
+            InstanceofOperation operator = new InstanceofOperation(backend, expression.getCondition());
+            operator.doOperation();
+
+            // result is in R0
+            backend.addInstruction(new CMP(new ImmediateInteger(0), GPRegister.getR(0)));
+            backend.addInstruction(new BEQ(elseLabel));
+        }
+        else if (expression.getCondition() instanceof Assign) {
+            AssignOperation operator = new AssignOperation(backend, expression.getCondition());
+            operator.doOperation(true);
+
             VirtualRegister result = backend.getContextManager().operationStackPop();
             backend.addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
             backend.addInstruction(new BEQ(elseLabel));

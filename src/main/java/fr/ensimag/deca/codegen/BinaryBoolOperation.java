@@ -3,9 +3,9 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -31,13 +31,12 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
      */
     @Override
     public void doOperation () {
+        // try to simplify operation by a constant
         boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
-
         Constant constant = null;
         if (opti) {
             constant = getConstant(getCodeGenBackEnd().getCompiler());
         }
-
         if (constant != null) {
             if (constant.getValueBoolean()) {
                 if (getCodeGenBackEnd().getBranchCondition()) {
@@ -61,8 +60,14 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             getCodeGenBackEnd().setBranchCondition(false);
 
             // compute left part first and right part after
-            AbstractExpr[] ops = {expr.getLeftOperand(), expr.getRightOperand()};
-            ListCodeGen(ops);
+            // generate code for left and right operand
+            if (operandCodeGen(expr.getLeftOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
+
+            if (operandCodeGen(expr.getRightOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
         }
         else if (this.getExpression() instanceof Or) {
             // request a nex Or label
@@ -80,8 +85,11 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             getCodeGenBackEnd().setBranchCondition(true);
 
             // generate code for left operand
-            AbstractExpr[] op1 = {expr.getLeftOperand()};
-            ListCodeGen(op1);
+//            AbstractExpr[] op1 = {expr.getLeftOperand()};
+//            ListCodeGen(op1);
+            if (operandCodeGen(expr.getLeftOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
 
             // add label and pop it
             getCodeGenBackEnd().addLabel(falseLabel);
@@ -91,8 +99,11 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             getCodeGenBackEnd().setBranchCondition(false);
 
             // generate code for right operand
-            AbstractExpr[] op2 = {expr.getRightOperand()};
-            ListCodeGen(op2);
+//            AbstractExpr[] op2 = {expr.getRightOperand()};
+//            ListCodeGen(op2);
+            if (operandCodeGen(expr.getRightOperand())) {
+                getCodeGenBackEnd().getContextManager().operationStackPop();
+            }
 
             // add label and pop it
             getCodeGenBackEnd().addLabel(trueLabel);
@@ -102,12 +113,11 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             // classical boolean operation
 
             // generate code for left and right operand
-            AbstractExpr[] ops = {expr.getLeftOperand(), expr.getRightOperand()};
-            ListCodeGen(ops);
-
-            // get result out of operation stack
-            VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
+            operandCodeGen(expr.getLeftOperand(), true);
             VirtualRegister lOp = getCodeGenBackEnd().getContextManager().operationStackPop();
+
+            operandCodeGen(expr.getRightOperand(), true);
+            VirtualRegister rOp = getCodeGenBackEnd().getContextManager().operationStackPop();
 
             // compare registers
             getCodeGenBackEnd().addInstruction(new CMP(rOp.getDVal(), lOp.requestPhysicalRegister()));
@@ -168,13 +178,14 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
         // cast expression to AbstractBinaryExpr
         AbstractBinaryExpr expr = (AbstractBinaryExpr) this.getExpression();
 
+        // get operand recursively
         Constant cLOp = expr.getLeftOperand().getConstant(compiler);
         Constant cROp = expr.getRightOperand().getConstant(compiler);
-
         if (cLOp == null || cROp == null) {
             return null;
         }
 
+        // compute constant according to data type and operation
         if (cLOp.getIsFloat()) {
             float op1 = cLOp.getValueFloat();
             float op2 = cROp.getValueFloat();
@@ -197,7 +208,6 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
             else if (this.getExpression() instanceof NotEquals) {
                 return new Constant(op1 != op2);
             }
-
         }
         else {
             if (cLOp.getIsBoolean()) {
@@ -245,9 +255,8 @@ public class BinaryBoolOperation  extends AbstractBinaryOperation{
      */
     @Override
     public void print() {
-        doOperation();
-
-        throw new UnsupportedOperationException("not yet implemented");
+        // cannot print result of boolean operation
+        throw new UnsupportedOperationException("operation not permitted");
     }
 
 

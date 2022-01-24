@@ -6,18 +6,14 @@ class A{
 
     int entier;
 
-    void A (int e){
-        this.entier = e;
-    }
-
     void action (){
-        this.e = this.e+1;
+        this.entier = this.entier + 1;
     }
 }
 
 
 {
-A a = new A(15);
+A a = new A();
 A.action();
 println("ben non");
 }

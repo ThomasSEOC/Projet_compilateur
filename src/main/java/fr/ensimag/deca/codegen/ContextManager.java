@@ -1,9 +1,6 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.ArrayList;
@@ -27,6 +24,9 @@ public class ContextManager {
 
     private final boolean[] toSavePhysicalRegisters = new boolean[16];
 
+    private VirtualRegister lastStoreRegister = null;
+    private RegisterOffset lastStoreOffset = null;
+
     /**
      * constructor context manager, must be called only once by {@link CodeGenBackend}
      * @param backend {@link CodeGenBackend}
@@ -39,6 +39,15 @@ public class ContextManager {
         inStackRegisters = new ArrayList<>();
 
         operationStack = new Stack<>();
+    }
+
+    public void setLastStoreRegister(VirtualRegister register, RegisterOffset registerOffset) {
+        this.lastStoreRegister = register;
+        this.lastStoreOffset = registerOffset;
+    }
+
+    public VirtualRegister getLastStoreRegister() {
+        return lastStoreRegister;
     }
 
     public void destroy() {
@@ -95,6 +104,12 @@ public class ContextManager {
      * @param virtualRegister virtualRegister requesting a physical register
      */
     public void AllocatePhysicalRegister(VirtualRegister virtualRegister) {
+        if (lastStoreRegister != null) {
+            lastStoreRegister.destroy();
+        }
+        lastStoreRegister = null;
+        lastStoreOffset = null;
+
         // get registers count
         int usableRegistersCount = backend.getCompiler().getCompilerOptions().getRegistersCount();
 
@@ -185,6 +200,12 @@ public class ContextManager {
      * @return new virtual register
      */
     public VirtualRegister requestNewRegister() {
+        if (lastStoreRegister != null) {
+            lastStoreRegister.destroy();
+        }
+        lastStoreOffset = null;
+        lastStoreRegister = null;
+
         VirtualRegister register;
 
         // get physical registers count
@@ -208,6 +229,23 @@ public class ContextManager {
             inStackRegisters.add(register);
         }
 
+        return register;
+    }
+
+    public VirtualRegister requestNewRegister(RegisterOffset registerOffset) {
+        if (lastStoreOffset != null) {
+            if ((registerOffset.getRegister() == lastStoreOffset.getRegister()) &&
+                (registerOffset.getOffset() == lastStoreOffset.getOffset())) {
+                VirtualRegister register = lastStoreRegister;
+                lastStoreOffset = null;
+                lastStoreRegister = null;
+                return register;
+            }
+        }
+        lastStoreOffset = null;
+        lastStoreRegister = null;
+        VirtualRegister register = requestNewRegister();
+        getBackend().addInstruction(new LOAD(registerOffset, register.requestPhysicalRegister()));
         return register;
     }
 

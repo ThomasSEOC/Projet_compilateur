@@ -1,10 +1,10 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.deca.tree.AbstractDeclField;
+import fr.ensimag.deca.tree.DeclField;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.util.*;
 
@@ -43,6 +43,8 @@ public class CodeGenBackend {
 
     private boolean printHex;
 
+    private int nextGraphId = 0;
+
     /**
      * create backend for specified compiler, must be called only once at the beginning of code generation step
      * @param compiler current compiler
@@ -69,6 +71,10 @@ public class CodeGenBackend {
         branchCondition = false;
 
         printHex = false;
+    }
+
+    public int requestnewGraphId() {
+        return nextGraphId++;
     }
 
     /**
@@ -255,6 +261,23 @@ public class CodeGenBackend {
                 return new RegisterOffset(localVariables.peek().get(name), Register.LB);
             }
         }
+
+        // search if fields
+        AbstractClassObject currentObject = classManager.getCurrentObject();
+        if (currentObject != null) {
+            while (!(currentObject instanceof DefaultObject)) {
+                ClassObject object = (ClassObject) currentObject;
+                for (AbstractDeclField abstractField : object.getFields().getList()) {
+                    DeclField field = (DeclField) abstractField;
+                    if (Objects.equals(field.getField().getName().getName(), name)) {
+                        addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(0)));
+                        return new RegisterOffset(object.getFieldOffset(name), GPRegister.getR(0));
+                    }
+                }
+                currentObject = getClassManager().getClassObject(((ClassObject) currentObject).getSuperClass());
+            }
+        }
+
         // search in global context
         return new RegisterOffset(classManager.getVtableOffset() + globalVariables.get(name) - 1, Register.GB);
     }

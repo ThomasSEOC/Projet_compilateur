@@ -1,40 +1,68 @@
 package fr.ensimag.deca.opti;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import fr.ensimag.deca.DecacCompiler;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class representing an oriented graph
+ */
 abstract class Graph {
-    private List<AbstractCodeBloc> blocs;
-    private List<Arc> arcs;
-    private AbstractCodeBloc start;
-    private AbstractCodeBloc stop;
-    private int nextId = 0;
+    protected final DecacCompiler compiler;
+    private final List<AbstractCodeBloc> blocs;
+    private final List<Arc> arcs;
+    private final AbstractCodeBloc start;
+    private final AbstractCodeBloc stop;
 
-    public Graph() {
-        blocs = new ArrayList<AbstractCodeBloc>();
-        arcs = new ArrayList<Arc>();
-        start = new StartBloc(nextId++);
-        stop = new StopBloc(nextId++);
+    /**
+     * constructor for Graph
+     * @param compiler global compiler
+     */
+    public Graph(DecacCompiler compiler) {
+        this.compiler = compiler;
+        blocs = new ArrayList<>();
+        arcs = new ArrayList<>();
+        start = new StartBloc(requestId());
+        stop = new StopBloc(requestId());
     }
 
+    /**
+     * create a new unique bloc ID and return it
+     * @return a unique bloc ID
+     */
     protected int requestId() {
-        return nextId++;
+        return compiler.getCodeGenBackend().requestnewGraphId();
     }
 
+    /**
+     * getter for SSA processor
+     * @return graph related SSA processor
+     */
     abstract public SSAProcessor getSsaProcessor();
 
+    /**
+     * add a bloc to the graph
+     * @param bloc to add
+     */
     public void addCodeBloc(AbstractCodeBloc bloc) {
         if (!blocs.contains(bloc) && (bloc != getStartBloc()) && (bloc != getStopBloc())) {
             blocs.add(bloc);
         }
     }
 
+    /**
+     * remove a bloc from the graph
+     * @param bloc to remove
+     */
     public void removeCodeBloc(AbstractCodeBloc bloc) {
         blocs.remove(bloc);
     }
 
+    /**
+     * add an arc to the graph
+     * @param arc to add
+     */
     protected void addArc(Arc arc) {
         arcs.add(arc);
         if (!(getBlocs().contains(arc.getStart()))) {
@@ -45,36 +73,50 @@ abstract class Graph {
         }
     }
 
+    /**
+     * remove an arc from the graph
+     * @param arc to remove
+     */
     public void removeArc(Arc arc) {
         arcs.remove(arc);
     }
 
+    /**
+     * getter for arcs of the graph
+     * @return arcs related to the graph
+     */
     protected List<Arc> getArcs() {
         return arcs;
     }
 
+    /**
+     * getter for start bloc
+     * @return start bloc
+     */
     protected AbstractCodeBloc getStartBloc() {
         return start;
     }
 
+    /**
+     * getter for stop bloc
+     * @return stop bloc
+     */
     protected AbstractCodeBloc getStopBloc() {
         return stop;
     }
 
+    /**
+     * getter for graph blocs
+     * @return blocs related to the graph
+     */
     protected List<AbstractCodeBloc> getBlocs() {
         return blocs;
     }
 
-//    protected void setStart(AbstractCodeBloc bloc){
-//        this.start = bloc;
-//        addCodeBloc(bloc);
-//    }
-//
-//    protected void setStop(AbstractCodeBloc bloc) {
-//        this.stop = bloc;
-//        addCodeBloc(bloc);
-//    }
-
+    /**
+     * represent graph in a human-readable form
+     * @return graph representation
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

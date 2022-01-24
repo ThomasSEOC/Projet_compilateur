@@ -16,6 +16,7 @@ public class ClassManager {
     private int vtableOffset;
     private boolean isInstanceofUsed = false;
     private Label currentMethodEnd = null;
+    private ClassObject currentObject = null;
 
     /**
      * constructor for ClassManager
@@ -28,6 +29,14 @@ public class ClassManager {
         classMap = new HashMap<>();
         classList.add(new DefaultObject(this));
         classMap.put("Object", classList.get(0));
+    }
+
+    public void setCurrentObject(ClassObject object) {
+        this.currentObject = object;
+    }
+
+    public ClassObject getCurrentObject() {
+        return currentObject;
     }
 
     /**
@@ -68,75 +77,20 @@ public class ClassManager {
         return classMap.get(nameClass.getName().getName());
     }
 
+    /**
+     * get AbstractClassObject related to nameClass
+     * @param nameClass class Identifier name
+     * @return class object corresponding to nameClass
+     */
     public AbstractClassObject getClassObject(String nameClass) {
         return classMap.get(nameClass);
     }
-
-//    private List<List<AbstractClassObject>> orderClassObjects() {
-//        // need to optimize
-//
-//        List<AbstractClassObject> done = new ArrayList<>();
-//        List<List<AbstractClassObject>> list = new ArrayList<>();
-//
-//        // first element is default object
-//        List<AbstractClassObject> currentObjects = new ArrayList<>();
-//        AbstractClassObject defaultObject = classList.remove(0);
-//        currentObjects.add(defaultObject);
-//        list.add(currentObjects);
-//        done.add(defaultObject);
-//
-//        while (classList.size() > 0) {
-//            List<AbstractClassObject> lastObjects = currentObjects;
-//            currentObjects = new ArrayList<>();
-//            List<AbstractClassObject> toRemove = new ArrayList<>();
-//            for (AbstractClassObject abstractClassObject : classList) {
-//                ClassObject classObject = (ClassObject) abstractClassObject;
-//                AbstractIdentifier superClassIdentifier = classObject.getSuperClass();
-//
-//                boolean found = false;
-//                int i = 0;
-//                while ((i < lastObjects.size()) && (!found)) {
-//                    if (lastObjects.get(i).getClassName() == superClassIdentifier) {
-//                        found = true;
-//                    }
-//                    i++;
-//                }
-//
-//                if (found) {
-//                    currentObjects.add(abstractClassObject);
-//                    done.add(abstractClassObject);
-//                    toRemove.add(abstractClassObject);
-//                }
-//            }
-//
-//            for (AbstractClassObject AbstractClassObject : toRemove) {
-//                classList.remove(AbstractClassObject);
-//            }
-//
-//            list.add(currentObjects);
-//        }
-//
-//        classList = done;
-//
-//        return list;
-//    }
 
     /**
      * generate Vtable creation code
      */
     public void VTableCodeGen() {
-
-
         backend.getCompiler().addComment("VTABLE INIT");
-
-//        List<List<AbstractClassObject>> orderedClassList = orderClassObjects();
-//
-//        for (List<AbstractClassObject> stage : orderedClassList) {
-//            for (AbstractClassObject classObject : stage) {
-//                classObject.VTableCodeGen(vtableOffset);
-//                vtableOffset += classObject.getVTableSize();
-//            }
-//        }
 
         for (AbstractClassObject classObject : classList) {
             classObject.VTableCodeGen(vtableOffset);
@@ -160,58 +114,66 @@ public class ClassManager {
         backend.writeInstructions();
     }
 
+    /**
+     * set current method label to which jump after return
+     * @param endLabel end of method label
+     */
     public void setCurrentMethodEnd(Label endLabel) {
         currentMethodEnd = endLabel;
     }
 
+    /**
+     * getter for end of method label
+     * @return get label to which jump after a return
+     */
     public Label getCurrentMethodEnd() {
         return currentMethodEnd;
     }
 
+    /**
+     * getter for instanceof method label
+     * @return label to which jump to call instanceof
+     */
     public Label getInstanceofLabel() {
         isInstanceofUsed = true;
         return new Label("Code.InstanceOf");
     }
 
-    // ####################################################################################
-
+    /**
+     * generate code for instanceof method
+     */
     public void instanceOfCodeGen() {
+        // create internal labels
         Label start = new Label("InstanceOf_start");
         Label endSucess = new Label("InstanceOf_sucess");
         Label endFailure = new Label("InstanceOf_failure");
 
+        // add call label
         backend.addLabel(new Label("Code.InstanceOf"));
 
+        // load the two operands in R0 and R1
         backend.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), GPRegister.getR(1)));
         backend.addInstruction(new LOAD(new RegisterOffset(-3, Register.LB), GPRegister.getR(0)));
 
+        // add start label
         backend.addLabel(start);
-        backend.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(0)), GPRegister.getR(1)));
+
+        // loop until success or failure
+        backend.addInstruction(new LOAD(new RegisterOffset(0, GPRegister.getR(1)), GPRegister.getR(1)));
         backend.addInstruction(new CMP(GPRegister.getR(0), GPRegister.getR(1)));
         backend.addInstruction(new BEQ(endSucess));
         backend.addInstruction(new CMP(new NullOperand(), GPRegister.getR(1)));
         backend.addInstruction(new BEQ(endFailure));
         backend.addInstruction(new BRA(start));
 
+        // success
         backend.addLabel(endSucess);
         backend.addInstruction(new LOAD(new ImmediateInteger(1), GPRegister.getR(0)));
         backend.addInstruction(new RTS());
 
+        // failure
         backend.addLabel(endFailure);
         backend.addInstruction(new LOAD(new ImmediateInteger(0), GPRegister.getR(0)));
         backend.addInstruction(new RTS());
-    }
-
-    public void destroyObjectCodeGen() {
-        VirtualRegister objectPointer = backend.getContextManager().operationStackPop();
-        backend.addComment("destroy allocated object");
-
-        // check structure
-        if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus()) {
-            backend.addInstruction(new CMP(new NullOperand(), objectPointer.requestPhysicalRegister()));
-            backend.addInstruction(new BEQ(backend.getErrorsManager().getDereferencementNullLabel()));
-        }
-
-        backend.addInstruction(new DEL(objectPointer.requestPhysicalRegister()));
     }
 }

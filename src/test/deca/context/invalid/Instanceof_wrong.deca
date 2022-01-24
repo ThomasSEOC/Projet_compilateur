@@ -1,0 +1,19 @@
+// a n'est pas une classe
+
+// Date: 22.01.2022
+
+class A{
+
+    int e;
+
+    void action (){
+        this.e = this.e + 1;
+    }
+}
+
+{
+A a = new A();
+if (A instanceof a){
+    println ("pb");
+    }
+}

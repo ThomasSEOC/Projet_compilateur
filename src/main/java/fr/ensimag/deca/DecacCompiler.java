@@ -101,7 +101,7 @@ public class DecacCompiler {
         } catch (DoubleDefException e) {}
 
 
-        // Declare in the envTypePredef
+        // Declare in the envTypePredef and envTypes
         try {
             envTypesPredef.declare(symbolTable.getSymbol("void"), voidDef);
             envTypes.declare(symbolTable.getSymbol("void"), voidDef);

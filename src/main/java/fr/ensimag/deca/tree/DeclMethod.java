@@ -28,23 +28,22 @@ public class DeclMethod extends AbstractDeclMethod{
     protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
-        EnvironmentType envTypes = compiler.getTypes();
         SymbolTable.Symbol realSymbol = name.getName();
-        TypeDefinition typeDef =  envTypes.get(realSymbol);
-        ExpDefinition currentDef = (ExpDefinition) currentClass.getMembers().get(realSymbol);
+        TypeDefinition typeDef =  compiler.getTypes().get(realSymbol);
+        ExpDefinition currentDef = currentClass.getMembers().get(realSymbol);
         ClassDefinition superClass = currentClass.getSuperClass();
 
-        // Verifies if the type exists
+        // Verify if the type exists and set it
         Type currentType = type.verifyType(compiler);
 
         // Verify the signature
         signature = params.verifyListDeclParam(compiler, localEnv, currentClass);
 
-        // check if the name is a Predefined type or a class
+        // Check if the name is a Predefined type or a class
         if (typeDef != null){
             if (typeDef.isClass()){
                 throw new ContextualError(realSymbol + " is a class name defined at "+
-                        envTypes.getDico().get(realSymbol).getLocation()+ ", can't be a method name", getLocation());
+                        typeDef.getLocation()+ ", can't be a method name", getLocation());
             }
             else {
                 throw new ContextualError(realSymbol + " is a predefined type, can't be a method name", getLocation());
@@ -54,21 +53,21 @@ public class DeclMethod extends AbstractDeclMethod{
         // Check if we need to override the method that already exists in super class
         if (superClass != null){
             ExpDefinition superDef = (ExpDefinition) superClass.getMembers().get(realSymbol);
-            // if the name is already in the envExp of the super class
+            // If the name is already in the envExp of the super class
             if (superDef != null){
-                // check if the name is a field name
+                // Check if the name is a field name
                 if (superDef.isField()) {
                     throw new ContextualError(realSymbol + " is a field name in super class defined at " +
-                            superClass.getMembers().getDico().get(realSymbol).getLocation() + ", can't be a method name", getLocation());
+                            superDef.getLocation() + ", can't be a method name", getLocation());
                 }
-                // it is a method name
+                // It is a method name
                 else if (superDef.isMethod()) {
                     MethodDefinition superMethod = (MethodDefinition) superDef;
                     MethodDefinition currentMethod = (MethodDefinition) currentDef;
                     Type superType = superDef.getType();
                     if (!superMethod.getSignature().equals(currentMethod.getSignature())) {
                         throw new ContextualError(realSymbol + "  is already defined at " +
-                                superClass.getMembers().getDico().get(realSymbol).getLocation() + ", the signature is different", getLocation());
+                                superDef.getLocation() + ", the signature is different", getLocation());
                     } else if (!(currentType.getName().getName().equals(superType.getName().getName()))){
                         throw new ContextualError("override of " + realSymbol +
                                 " is not possible ; the return type of the original method defined at " +
@@ -101,9 +100,6 @@ public class DeclMethod extends AbstractDeclMethod{
     protected void verifyDeclMethodBody(DecacCompiler compiler,
                                         EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        EnvironmentType envTypes = compiler.getTypes();
-        SymbolTable.Symbol realSymbol = name.getName();
-        TypeDefinition typeDef =  envTypes.get(realSymbol);
         Type currentType = type.verifyType(compiler);
         body.verifyMethodBody(compiler, localEnv, currentClass, currentType);
     }

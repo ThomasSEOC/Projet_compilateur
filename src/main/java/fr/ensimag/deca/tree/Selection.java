@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.FieldSelectOperation;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -29,29 +30,52 @@ public class Selection extends AbstractLValue{
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-	    Type selectType = expr.verifyExpr(compiler, localEnv, currentClass);
-        ClassDefinition classDef = (ClassDefinition) compiler.getTypes().get(selectType.getName());
-	ClassType selectClass = classDef.getType();
-	FieldDefinition selectField = (FieldDefinition)classDef.getMembers().get(fieldIdent.getName());
-	Visibility visibility = selectField.getVisibility();
-	if (selectClass.isNull()) {
-	    throw new ContextualError("Null", getLocation());
-	}
-    	if (visibility == Visibility.PUBLIC) {
-	    if (selectClass != compiler.getTypes().get(selectClass.getName()).getType()) {
-		throw new ContextualError("Class not defined", getLocation());
-	    }
-	}
-	else {
-	    if (!(selectClass).isSubClassOf(currentClass.getType())) {
-		throw new ContextualError("Subtype error", getLocation());
-	    }
-	    if (!selectClass.isSubClassOf((ClassType)classDef.getType())) {
-		throw new ContextualError("Subtype error", getLocation());
-	    }
-	}
-	setType(selectField.getType());
-	return selectField.getType();
+
+        // Verify if the type exists and set it
+        Type selectType = expr.verifyExpr(compiler, localEnv, currentClass);
+
+
+        SymbolTable.Symbol exprTypeSymbol = selectType.getName();
+        SymbolTable.Symbol fieldIdentSymbol = fieldIdent.getName();
+
+        // Verify if exp hac a class type
+        if (!selectType.isClass()){
+            throw new ContextualError( " Must be a class type", getLocation());
+        }
+
+        // Verify in the main, if expr is not a class name
+        if (!expr.isThis()) {
+            SymbolTable.Symbol exprSymbol = ((AbstractIdentifier) (expr)).getName();
+            if (compiler.getTypes().get(exprSymbol) != null) {
+                throw new ContextualError(exprSymbol + " is a class name or a predefined type", getLocation());
+            }
+        }
+
+        ClassDefinition classDef = (ClassDefinition) compiler.getTypes().get(exprTypeSymbol);
+        FieldDefinition selectField = null;
+
+        // Verify if the class have fieldIdent in it environment
+        if (classDef.getMembers().get(fieldIdentSymbol)!=null){
+            if (classDef.getMembers().get(fieldIdentSymbol).isField()){
+                selectField = (FieldDefinition) classDef.getMembers().get(fieldIdentSymbol);
+
+                if (selectField.getVisibility() == Visibility.PROTECTED) {
+                    if (!(classDef.getType()).isSubClassOf(currentClass.getType())) {
+                        throw new ContextualError("Subtype error", getLocation());
+                    }
+                    if (!classDef.getType().isSubClassOf(classDef.getType())) {
+                        throw new ContextualError("Subtype error", getLocation());
+                    }
+                }
+            }
+        }
+        else {
+            throw new ContextualError("This is neither a field or a method of the class" + exprTypeSymbol, getLocation());
+        }
+
+        // Set and return
+        setType(selectField.getType());
+        return selectField.getType();
     }
 
     @Override

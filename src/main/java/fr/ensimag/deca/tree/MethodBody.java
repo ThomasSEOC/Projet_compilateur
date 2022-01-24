@@ -2,9 +2,12 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.opti.ControlFlowGraph;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.HALT;
 import org.apache.commons.lang.Validate;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 public class MethodBody extends AbstractMethodBody{
@@ -50,8 +53,16 @@ public class MethodBody extends AbstractMethodBody{
 
     @Override
     public void codeGen(DecacCompiler compiler) {
-        vars.codeGenListDeclVar(compiler);
+        if (compiler.getCompilerOptions().getOptimize() == 2) {
+            // create control flow graph;
+            ControlFlowGraph graph = new ControlFlowGraph(compiler, vars, insts);
+            graph.setMethod();
 
-        insts.codeGenListInst(compiler);
+            graph.codeGen();
+        }
+        else {
+            vars.codeGenListDeclVar(compiler);
+            insts.codeGenListInst(compiler);
+        }
     }
 }

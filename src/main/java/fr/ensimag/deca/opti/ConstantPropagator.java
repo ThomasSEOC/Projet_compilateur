@@ -4,12 +4,19 @@ import fr.ensimag.deca.tree.*;
 
 import java.util.*;
 
+/**
+ *
+ */
 public class ConstantPropagator {
     private final ControlFlowGraph graph;
     private final List<SSAVariable> toProcess;
     private final Map<SSAVariable, Constant> constants;
     private final Map<String, Integer> deletedSSAVariables;
 
+    /**
+     *
+     * @param graph
+     */
     public ConstantPropagator(ControlFlowGraph graph) {
         this.graph = graph;
         toProcess = new ArrayList<>();
@@ -17,6 +24,9 @@ public class ConstantPropagator {
         deletedSSAVariables = new HashMap<>();
     }
 
+    /**
+     *
+     */
     private void foldAssign() {
         for (AbstractCodeBloc bloc : graph.getBlocs()) {
             ListInst newListInst = new ListInst();
@@ -48,6 +58,9 @@ public class ConstantPropagator {
         }
     }
 
+    /**
+     *
+     */
     private void foldDeclVar() {
         ListDeclVar newListDeclVar = new ListDeclVar();
         for (AbstractDeclVar var : graph.getDeclVariables().getList()) {
@@ -86,6 +99,9 @@ public class ConstantPropagator {
         }
     }
 
+    /**
+     * propagate constants throw the graph
+     */
     public void process() {
         foldDeclVar();
 
@@ -121,6 +137,7 @@ public class ConstantPropagator {
 
             // search for merges
             Set<SSAMerge> merges = graph.getSsaProcessor().getMerges().get(toDelete.getName());
+            Set<SSAMerge> toRemove = new HashSet<>();
             for (SSAMerge merge : merges) {
                 if (merge.getOperands().contains(toDelete)) {
                     merge.removeOperand(toDelete);
@@ -130,16 +147,28 @@ public class ConstantPropagator {
                         if (operand == result) {
                             constants.put(result, constant);
                             toProcess.add(result);
-                            merges.remove(merge);
+                            toRemove.add(merge);
                         }
                     }
+                    else if (merge.getOperands().size() == 0) {
+                        SSAVariable result = merge.getResult();
+                        constants.put(result, constant);
+                        toProcess.add(result);
+                        toRemove.add(merge);
+                    }
                 }
+            }
+            for (SSAMerge merge : toRemove) {
+                graph.getSsaProcessor().removeMerge(toDelete.getName(), merge);
             }
         }
 
         postProcess();
     }
 
+    /**
+     *
+     */
     private void postProcess() {
         ListDeclVar newListDeclVar = new ListDeclVar();
         for (AbstractDeclVar var : graph.getDeclVariables().getList()) {

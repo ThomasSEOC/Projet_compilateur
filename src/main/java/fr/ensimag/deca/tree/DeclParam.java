@@ -27,35 +27,35 @@ public class DeclParam extends AbstractDeclParam {
     @Override
     public Type verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Signature signature) throws ContextualError {
 
-        // check type
+        SymbolTable.Symbol realSymbol = name.getName();
+        TypeDefinition typeDef = compiler.getTypes().get(realSymbol);
+
+        // Verify if the type exists and set it
         Type currentType = type.verifyType(compiler);
+
+        // Verify that the type is not a void
         if (type.getType().isVoid()) {
             throw new ContextualError("parameter must not be void", getLocation());
         }
 
-        // check if the name is a Predefined type or a class
-        EnvironmentType envTypes = compiler.getTypes();
-        SymbolTable.Symbol realSymbol = name.getName();
-        TypeDefinition typeDef = envTypes.get(realSymbol);
+        // Check if the name is a Predefined type or a class
         if (typeDef != null) {
             if (typeDef.isClass()) {
                 throw new ContextualError(realSymbol + " is a class name defined at " +
-                        envTypes.getDico().get(realSymbol).getLocation() + ", can't be a parameter name", getLocation());
+                        typeDef.getLocation() + ", can't be a parameter name", getLocation());
             } else {
                 throw new ContextualError(realSymbol + " is a predefined type, can't be a parameter name", getLocation());
             }
         }
 
-        // put the parameter name in the local environment
+        // Put the parameter name in the local environment
         try {
             localEnv.declare(name.getName(), new ParamDefinition(currentType,getLocation()));
             name.setType(currentType);
             name.setDefinition(new ParamDefinition(currentType, getLocation()));
-            if ((new ParamDefinition(currentType,this.getLocation())).isExpression()) {
-            //    throw new ContextualError("Parameter name must not be an expression", getLocation());
-            }
+            if ((new ParamDefinition(currentType,this.getLocation())).isExpression()) {}
         } catch (DoubleDefException e) {
-            if(localEnv.get(realSymbol).isParam()) {
+            if (localEnv.get(realSymbol).isParam()) {
                 throw new ContextualError(realSymbol + " is a parameter already defined at " +
                         localEnv.get(realSymbol).getLocation(), getLocation());
             } else {

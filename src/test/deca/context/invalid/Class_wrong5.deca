@@ -1,4 +1,4 @@
-// Mauvais héritage
+// Entier souhaité à la ligne 17
 
 // Date: 20.01.2022
 
@@ -6,25 +6,23 @@ class A{
 
     int entier;
 
-    void A (int e){
-        this.entier = e;
-    }
 
-    void action (){
-        this.e = this.e+1;
+    void action (int e){
+        this.entier = this.entier + 1;
     }
 }
 
-Class B extends A{
+class B extends A{
 
-    void B (float f){
-        super(f);
+    void action (float e){
+        this.entier = this.entier + 10 * e;
     }
 
 }
 
 {
-B b = new B(1.5);
-b.action();
+B b = new B();
+b.action(23);
+println (b.entier);
 println("ben non");
 }

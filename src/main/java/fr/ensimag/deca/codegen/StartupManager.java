@@ -29,13 +29,23 @@ public class StartupManager {
         if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus() && (contextSaveSpace + backend.getMaxStackSize() > 0)) {
             List<Instruction> instructions = new ArrayList<>();
             List<String> comments = new ArrayList<>();
-            instructions.add(new TSTO(contextSaveSpace + backend.getMaxStackSize()));
+            instructions.add(new TSTO(contextSaveSpace + backend.getMaxStackSize() + backend.getClassManager().getVtableOffset()));
             instructions.add(new BOV(backend.getErrorsManager().getStackOverflowLabel()));
             if (backend.getContextDataSize() > 0) {
-                instructions.add(new ADDSP(backend.getContextDataSize()));
+                instructions.add(new ADDSP(backend.getContextDataSize() + backend.getClassManager().getVtableOffset()));
             }
             comments.add(null);
             comments.add(null);
+            comments.add(null);
+
+            backend.addInstructionFirst(instructions, comments);
+        }
+        else {
+            List<Instruction> instructions = new ArrayList<>();
+            List<String> comments = new ArrayList<>();
+            if (backend.getContextDataSize() > 0) {
+                instructions.add(new ADDSP(backend.getContextDataSize() + backend.getClassManager().getVtableOffset()));
+            }
             comments.add(null);
 
             backend.addInstructionFirst(instructions, comments);

@@ -1,0 +1,1 @@
+./src/test/deca/context/invalid/classAsVariable.deca:16:4: A is a className, can't be used as a variable

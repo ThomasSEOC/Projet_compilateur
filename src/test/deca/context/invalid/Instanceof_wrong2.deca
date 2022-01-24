@@ -1,0 +1,19 @@
+// action n'est pas un constructeur
+
+// Date: 20.01.2022
+
+class A{
+
+    int e;
+
+    void action (){
+        this.e = this.e + 1;
+    }
+}
+
+{
+A a = new A();
+if (a instanceof B){
+    println ("pb");
+}
+}

@@ -43,6 +43,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			constant = getConstant(getCodeGenBackEnd().getCompiler());
 		}
 		if (constant != null) {
+			// push result
 			VirtualRegister result;
 			if (constant.getIsFloat()) {
 				result = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateFloat(constant.getValueFloat()));
@@ -66,28 +67,39 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 		if (this.getExpression() instanceof Plus) {
 			// get correct operand
 			lOp.requestPhysicalRegister();
+			// do operation
 			getCodeGenBackEnd().addInstruction(new ADD(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Plus");
+			// check float overflow
 			if (lOp.getIsFloat()) {
 				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
 					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
 				}
 			}
+			// destroy right operand
 			rOp.destroy();
-			this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+			// push result
+			 getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 		} else if (this.getExpression() instanceof Minus) {
 			// get correct operand
 			lOp.requestPhysicalRegister();
+			// do operation
 			getCodeGenBackEnd().addInstruction(new SUB(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Minus");
+			// check float overflow
 			if (lOp.getIsFloat()) {
 				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
 					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
 				}
 			}
+			// destroy right operand
 			rOp.destroy();
-			this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+			// push result
+			getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 		} else if (this.getExpression() instanceof Multiply) {
+			// check if it's possible replace MUL by shifts
 			VirtualRegister register = null;
 			int operand = 0;
+			int shiftCount = 0;
+			// check if one of the two operands is an integer immediate
 			if (rOp.getDVal() instanceof ImmediateInteger) {
 				register = lOp;
 				operand = ((ImmediateInteger)rOp.getDVal()).getValue();
@@ -96,43 +108,49 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				register = rOp;
 				operand = ((ImmediateInteger)lOp.getDVal()).getValue();
 			}
-
-			int shiftCount = 0;
+			// check if value is a power of two
 			if (operand > 0) {
 				List<Integer> powerOfTwo = new ArrayList<>();
 				for (int i = 1; i < 9; i++) {
 					powerOfTwo.add(1 << i);
 				}
-
 				if (powerOfTwo.contains(operand)) {
 					shiftCount = powerOfTwo.indexOf(operand) + 1;
 				}
 			}
 
 			if (shiftCount > 0) {
+				// MUL can be replaced by shifts left
 				for (int i = 0; i < shiftCount; i++) {
 					getCodeGenBackEnd().addInstruction(new SHL(register.requestPhysicalRegister()));
 				}
+				// push result
 				getCodeGenBackEnd().getContextManager().operationStackPush(register);
 			}
 			else {
 				// get correct operand
 				lOp.requestPhysicalRegister();
+				// do operation
 				getCodeGenBackEnd().addInstruction(new MUL(rOp.getDVal(), (GPRegister) lOp.getDVal()), "Multiply");
+				// check float overflow
 				if (lOp.getIsFloat()) {
 					if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
 						getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
 					}
 				}
+				// destroy right operand
 				rOp.destroy();
+				// push result
 				getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
 		} else if (this.getExpression() instanceof Divide) {
+			// check if divide can be replaced by shifts
 			VirtualRegister register = null;
 			int shiftCount = 0;
+			// check if divisor is an immediate integer and a power of two
 			if ((rOp.getDVal() instanceof ImmediateInteger) && !lOp.getIsFloat()) {
 				register = lOp;
-				int operand = ((ImmediateInteger)rOp.getDVal()).getValue();
+				int operand = ((ImmediateInteger) rOp.getDVal()).getValue();
 				if (operand > 0) {
 					List<Integer> powerOfTwo = new ArrayList<>();
 					for (int i = 1; i < 9; i++) {
@@ -145,30 +163,38 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			}
 
 			if (shiftCount > 0) {
+				// QUO can be replaced by shifts
 				for (int i = 0; i < shiftCount; i++) {
 					getCodeGenBackEnd().addInstruction(new SHR(register.requestPhysicalRegister()));
 				}
+				// push result
 				getCodeGenBackEnd().getContextManager().operationStackPush(register);
-			}
-			else {
+			} else {
 				// get correct operand
+				lOp.requestPhysicalRegister();
+				// do operation according to data type
 				if (lOp.getIsFloat() || rOp.getIsFloat()) {
-					getCodeGenBackEnd().addInstruction(new DIV(rOp.getDVal(), lOp.requestPhysicalRegister()), "float divide");
+					getCodeGenBackEnd().addInstruction(new DIV(rOp.getDVal(), (GPRegister) lOp.getDVal()), "float divide");
 				} else {
-					getCodeGenBackEnd().addInstruction(new QUO(rOp.getDVal(), lOp.requestPhysicalRegister()), "int divide");
+					getCodeGenBackEnd().addInstruction(new QUO(rOp.getDVal(), (GPRegister) lOp.getDVal()), "int divide");
 				}
+				// check overflow
 				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
 					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
 				}
+				// destroy right operand
 				rOp.destroy();
-				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+				// push result
+				getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
 		} else if (this.getExpression() instanceof Modulo) {
+			// check if modulo can be replaced by shifts
 			VirtualRegister register = null;
 			int shiftCount = 0;
+			// check if divisor is an immediate integer an a power of two
 			if (rOp.getDVal() instanceof ImmediateInteger) {
 				register = lOp;
-				int operand = ((ImmediateInteger)rOp.getDVal()).getValue();
+				int operand = ((ImmediateInteger) rOp.getDVal()).getValue();
 				if (operand > 0) {
 					List<Integer> powerOfTwo = new ArrayList<>();
 					for (int i = 1; i < 5; i++) {
@@ -179,27 +205,39 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 					}
 				}
 			}
+
 			if (shiftCount > 0) {
+				// REM can be replaced by shifts
+				// load input data into R0
 				getCodeGenBackEnd().addInstruction(new LOAD(register.requestPhysicalRegister(), GPRegister.getR(0)), "simplify modulo using shifts");
+				// get quotient
 				for (int i = 0; i < shiftCount; i++) {
 					getCodeGenBackEnd().addInstruction(new SHR(GPRegister.getR(0)));
 				}
+				// multiply it by divisor
 				for (int i = 0; i < shiftCount; i++) {
 					getCodeGenBackEnd().addInstruction(new SHL(GPRegister.getR(0)));
 				}
+				// remove it from input data to get remainder
 				getCodeGenBackEnd().addInstruction(new SUB(GPRegister.getR(0), register.requestPhysicalRegister()));
+				// push result
 				getCodeGenBackEnd().getContextManager().operationStackPush(register);
-			}
-			else {
-				getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), lOp.requestPhysicalRegister()), "int remainder");
+			} else {
+				// get correct operand
+				lOp.requestPhysicalRegister();
+				// do operation
+				getCodeGenBackEnd().addInstruction(new REM(rOp.getDVal(), (GPRegister) lOp.getDVal()), "int remainder");
+				// check overflow
 				if (!getCodeGenBackEnd().getCompiler().getCompilerOptions().getNoCheckStatus()) {
 					getCodeGenBackEnd().addInstruction(new BOV(getCodeGenBackEnd().getErrorsManager().getDivisionByZeroLabel()));
 				}
+				// destroy right operand
 				rOp.destroy();
-				this.getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
+				// push result
+				getCodeGenBackEnd().getContextManager().operationStackPush(lOp);
 			}
-		}
-		else {
+		} else {
+			// normally never called
 			throw new UnsupportedOperationException("unknown arithmetic operation");
 		}
 	}
@@ -216,6 +254,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			return null;
 		}
 
+		// compute and return constant according to type of data and operation
 		if (cLOp.getIsFloat()) {
 			float op1 = cLOp.getValueFloat();
 			float op2 = cROp.getValueFloat();
@@ -234,6 +273,7 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 			}
 			else if (this.getExpression() instanceof Divide) {
 				if (op2 == 0) {
+					// force BOV overflow
 					return null;
 				}
 				float resultFloat = op1 / op2;
@@ -257,12 +297,14 @@ public class BinaryArithmOperation extends AbstractBinaryOperation {
 				return new Constant(resultInt);
 			} else if (this.getExpression() instanceof Divide) {
 				if (op2 == 0) {
+					// force BOV overflow
 					return null;
 				}
 				int resultInt = op1 / op2;
 				return new Constant(resultInt);
 			} else if (this.getExpression() instanceof Modulo) {
 				if (op2 == 0) {
+					// force BOV overflow
 					return null;
 				}
 				int resultInt = op1 % op2;

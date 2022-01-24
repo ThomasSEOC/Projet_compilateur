@@ -6,29 +6,22 @@ class A{
 
     int entier;
 
-    void A (int e){
-        this.entier = e;
-    }
-
     void Action (){
-        this.e = this.e+1;
+        this.entier = this.entier + 1;
     }
 }
 
-Class B extends A{
+class B extends A{
 
-    void B (int f){
-        super(f);
-    }
 
     void GrosseAction(){
-        this.e = this.e+1000;
+        this.entier = this.entier + 1000;
     }
 
 }
 
 {
-A a = new A(2);
+A a = new A();
 a.GrosseAction();
 println("ben non");
 }

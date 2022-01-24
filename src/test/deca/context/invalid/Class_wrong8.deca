@@ -4,20 +4,15 @@
 
 class A{
 
-    int entier;
-
-    void A (int e){
-        this.entier = e;
-    }
+    int e;
 
     void action (){
-        this.e = this.e+1;
+        this.e = this.e + 1;
     }
 }
 
 
 {
 A a = new action();
-B.action();
-println("ben non");
+println("non");
 }
