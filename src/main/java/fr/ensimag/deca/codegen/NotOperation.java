@@ -3,7 +3,11 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.opti.Constant;
 import fr.ensimag.deca.tree.*;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  * class responsible for not operation
@@ -81,6 +85,19 @@ public class NotOperation extends AbstractOperation {
         else if (expr.getOperand() instanceof NotEquals){
             setExpression(new Equals(((NotEquals) expr.getOperand()).getLeftOperand(), ((NotEquals) expr.getOperand()).getRightOperand()));
         }
+        else {
+            operandCodeGen(expr.getOperand(), true);
+            VirtualRegister result = getCodeGenBackEnd().getContextManager().operationStackPop();
+            getCodeGenBackEnd().addInstruction(new CMP(new ImmediateInteger(0), result.requestPhysicalRegister()));
+            if (getCodeGenBackEnd().getBranchCondition()) {
+                getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+            }
+            return;
+        }
+
 
         // generate code with change done
         AbstractExpr[] exp = {getExpression()};
