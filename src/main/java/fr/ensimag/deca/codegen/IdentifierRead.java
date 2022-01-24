@@ -26,8 +26,7 @@ public class IdentifierRead extends AbstractOperation {
     /**
      * method called to generate code for declared variable read
      */
-    @Override
-    public void doOperation() {
+    public void doOperation(boolean doNotBranch) {
         // try to evaluate as constant
         boolean opti = (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0);
         Constant constant = null;
@@ -43,14 +42,26 @@ public class IdentifierRead extends AbstractOperation {
 
             }
             else if (constant.getIsBoolean()) {
-                if (constant.getValueBoolean()) {
-                    if (getCodeGenBackEnd().getBranchCondition()) {
-                        getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                if (doNotBranch) {
+                    VirtualRegister register;
+                    if (constant.getValueBoolean()) {
+                        register = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(1));
                     }
+                    else {
+                        register = getCodeGenBackEnd().getContextManager().requestNewRegister(new ImmediateInteger(0));
+                    }
+                    getCodeGenBackEnd().getContextManager().operationStackPush(register);
                 }
                 else {
-                    if (!getCodeGenBackEnd().getBranchCondition()) {
-                        getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                    if (constant.getValueBoolean()) {
+                        if (getCodeGenBackEnd().getBranchCondition()) {
+                            getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+                        }
+                    }
+                    else {
+                        if (!getCodeGenBackEnd().getBranchCondition()) {
+                            getCodeGenBackEnd().addInstruction(new BRA(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+                        }
                     }
                 }
             }
@@ -75,8 +86,27 @@ public class IdentifierRead extends AbstractOperation {
 
         VirtualRegister r = getCodeGenBackEnd().getContextManager().requestNewRegister(registerOffset);
 
-        // push virtual register to operation stack
-        getCodeGenBackEnd().getContextManager().operationStackPush(r);
+        if (doNotBranch) {
+            // push virtual register to operation stack
+            getCodeGenBackEnd().getContextManager().operationStackPush(r);
+        }
+        else {
+            getCodeGenBackEnd().addInstruction(new CMP(new ImmediateInteger(0), r.requestPhysicalRegister()));
+            if (getCodeGenBackEnd().getBranchCondition()) {
+                getCodeGenBackEnd().addInstruction(new BNE(getCodeGenBackEnd().getCurrentTrueBooleanLabel()));
+            }
+            else {
+                getCodeGenBackEnd().addInstruction(new BEQ(getCodeGenBackEnd().getCurrentFalseBooleanLabel()));
+            }
+        }
+    }
+
+    /**
+     * method called to generate code for declared variable read
+     */
+    @Override
+    public void doOperation() {
+       doOperation(true);
     }
 
     /**
