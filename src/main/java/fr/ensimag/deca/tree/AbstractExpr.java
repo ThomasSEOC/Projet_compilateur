@@ -63,7 +63,7 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Verify the expression for contextual error.
-     * 
+     *
      * implements non-terminals "expr" and "lvalue" 
      *    of [SyntaxeContextuelle] in pass 3
      *
@@ -79,12 +79,12 @@ public abstract class AbstractExpr extends AbstractInst {
      *            (corresponds to the "type" attribute)
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+                                    EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
     /**
      * Verify the expression in right hand-side of (implicit) assignments 
-     * 
+     *
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
      * @param compiler  contains the "env_types" attribute
@@ -94,13 +94,14 @@ public abstract class AbstractExpr extends AbstractInst {
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass, 
-            Type expectedType)
+                                     EnvironmentExp localEnv, ClassDefinition currentClass,
+                                     Type expectedType)
             throws ContextualError {
 
+        // Verify and set the type
         Type type = this.verifyExpr(compiler, localEnv, currentClass);
-	    //Si l'expression est de type int et que le type attendu est float,
-        // on la convertit en ConvFloat
+
+        // Convert int to float with a ConvFloat
         if (type.isInt() && expectedType.isFloat()) {
             AbstractExpr convFloat = new ConvFloat(this);
             convFloat.verifyExpr(compiler, localEnv, currentClass);
@@ -110,33 +111,26 @@ public abstract class AbstractExpr extends AbstractInst {
 
         if (type.sameType(expectedType) && !expectedType.isClass()) {
             return this;
-	}
-	
-	if (expectedType.isClass() && type.isClassOrNull()) {
-	    if (type.isNull()) {
-		return this;
-	    }
+        }
 
-	    ClassType classType = (ClassType) type;
-	    ClassType expectedClassType = (ClassType) expectedType;
-	    //while (typeClassDef != null) {
-	    //if (typeClassDef.getType() == expectedType){
-	    //	    return this;
-	    //	}
-	    //	typeClassDef = typeClassDef.getSuperClass();
-	    //}
-	    if (classType.isSubClassOf(expectedClassType)) {
-		return this;
-	    }
-	}
-	    
-    	throw new ContextualError(expectedType + " is expected", getLocation());
+        if (expectedType.isClass() && type.isClassOrNull()) {
+            if (type.isNull()) {
+                return this;
+            }
+
+            ClassType classType = (ClassType) type;
+            ClassType expectedClassType = (ClassType) expectedType;
+            if (classType.isSubClassOf(expectedClassType)) {
+                return this;
+            }
+        }
+        throw new ContextualError(expectedType + " is expected", getLocation());
     }
-    
-    
+
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
+                              ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         verifyExpr(compiler,localEnv, currentClass);
     }
@@ -156,7 +150,7 @@ public abstract class AbstractExpr extends AbstractInst {
      *            the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                         ClassDefinition currentClass) throws ContextualError {
         setType(verifyExpr(compiler, localEnv, currentClass));
         Type typeCondition = getType();
         if (!typeCondition.isBoolean()) {
@@ -177,7 +171,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
