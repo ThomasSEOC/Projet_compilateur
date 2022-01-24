@@ -143,8 +143,10 @@ public class SSAProcessor {
         // process read identifiers
         for (Identifier identifier : identifiers.getReadIdentifiers()) {
             if (!graph.getIsMethod() || graph.getBackend().isVariableLocal(identifier.getName().getName())) {
-                identifier.setSsaVariable(localSSA.get(identifier.getName().getName()));
-                usages.get(localSSA.get(identifier.getName().getName())).add(identifiers);
+                if (usages.containsKey(localSSA.get(identifier.getName().getName()))) {
+                    identifier.setSsaVariable(localSSA.get(identifier.getName().getName()));
+                    usages.get(localSSA.get(identifier.getName().getName())).add(identifiers);
+                }
             }
         }
 
