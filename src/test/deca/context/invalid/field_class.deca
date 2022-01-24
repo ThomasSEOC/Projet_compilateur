@@ -1,3 +1,7 @@
+//Mauvais champ
+
+// Date: 22.02.2022
+
 class A{
-    int A;
+    int a = new A();
 }

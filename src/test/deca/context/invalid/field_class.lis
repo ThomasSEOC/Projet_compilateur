@@ -1,1 +1,1 @@
-./src/test/deca/context/invalid/field_class.deca:2:8: A is a class name defined at [1, 0], can't be a field name
+./src/test/deca/context/invalid/field_class.deca:6:12: int is expected
