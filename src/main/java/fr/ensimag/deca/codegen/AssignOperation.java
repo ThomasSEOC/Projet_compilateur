@@ -1,5 +1,6 @@
 package fr.ensimag.deca.codegen;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.tree.*;
 import fr.ensimag.ima.pseudocode.DAddr;

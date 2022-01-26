@@ -117,7 +117,7 @@ public class ContextManager {
      */
     public void AllocatePhysicalRegister(VirtualRegister virtualRegister) {
         if (lastStoreRegister != null) {
-            lastStoreRegister.destroy();
+            lastStoreRegister.destroy(true);
         }
         lastStoreRegister = null;
         lastStoreOffset = null;
@@ -213,7 +213,7 @@ public class ContextManager {
      */
     public VirtualRegister requestNewRegister() {
         if (lastStoreRegister != null) {
-            lastStoreRegister.destroy();
+            lastStoreRegister.destroy(true);
         }
         lastStoreOffset = null;
         lastStoreRegister = null;
@@ -258,6 +258,7 @@ public class ContextManager {
                 lastStoreRegister = null;
                 return register;
             }
+            lastStoreRegister.destroy(true);
         }
         lastStoreOffset = null;
         lastStoreRegister = null;
@@ -272,6 +273,11 @@ public class ContextManager {
      * @return new virtual register
      */
     public VirtualRegister requestNewRegister(ImmediateInteger immediate) {
+        if (lastStoreRegister != null) {
+            lastStoreRegister.destroy(true);
+        }
+        lastStoreOffset = null;
+        lastStoreRegister = null;
         return new VirtualRegister(this, immediate);
     }
 
@@ -281,6 +287,11 @@ public class ContextManager {
      * @return new virtual register
      */
     public VirtualRegister requestNewRegister(ImmediateFloat immediate) {
+        if (lastStoreRegister != null) {
+            lastStoreRegister.destroy(true);
+        }
+        lastStoreOffset = null;
+        lastStoreRegister = null;
         return new VirtualRegister(this, immediate);
     }
 
@@ -290,6 +301,11 @@ public class ContextManager {
      * @return new virtual register
      */
     public VirtualRegister requestNewRegister(boolean immediate) {
+        if (lastStoreRegister != null) {
+            lastStoreRegister.destroy(true);
+        }
+        lastStoreOffset = null;
+        lastStoreRegister = null;
         return new VirtualRegister(this, immediate);
     }
 
