@@ -2,8 +2,6 @@
 ; ###############################################################
 ; ###############################################################
 ; start main program
-	TSTO #7
-	BOV stack_overflow_error
 	ADDSP #7
 	LOAD #0x0.0p0, R2
 	STORE R2, 1(GB)
@@ -26,7 +24,6 @@ Code.Bloc.4:
 	LOAD 2(GB), R7
 	ADD R7, R6	; Plus
 	DIV #0x1.0p1, R6	; float divide
-	BOV division_by_zero_error
 	STORE R6, 5(GB)
 	LOAD 5(GB), R7
 	LOAD 5(GB), R8
@@ -77,12 +74,4 @@ Code.Bloc.1:
 	HALT
 ; ###############################################################
 ; ERRORS
-stack_overflow_error:
-	WSTR "Erreur : dépassement de pile"
-	WNL
-	ERROR
-division_by_zero_error:
-	WSTR "Erreur : division par 0"
-	WNL
-	ERROR
 ; end main program
