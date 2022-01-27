@@ -39,11 +39,11 @@ then
     echo "TEST: $i"
     if [ "$#" = 1 ]
     then
-      decac "$1" "$i" || exit 1
+      decac -n "$1" "$i" || exit 1
     else
-      decac "$i" || exit 1
+      decac -n "$i" || exit 1
     fi
-    ima "$ASS" 2>"$IMA" 1>"$IMA"
+    ima -s "$ASS" 2>"$IMA" 1>"$IMA"
     RES=$(diff "$REF_IMA" "$IMA")
     if [ "$RES" != "" ]
     then
