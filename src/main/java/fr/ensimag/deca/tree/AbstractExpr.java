@@ -20,15 +20,31 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2022
  */
 public abstract class AbstractExpr extends AbstractInst {
+
     private AbstractExpr operand;
+    private Type type;
+
+    public AbstractExpr getOperand() {
+        return operand;
+    }
+    public Constant getConstant(DecacCompiler compiler) {
+        return null;
+    }
+    public Type getType() {
+        return type;
+    }
 
     protected void setOperand(AbstractExpr operand) {
         Validate.notNull(operand);
         this.operand = operand;
     }
-    public AbstractExpr getOperand() {
-        return operand;
+
+    protected void setType(Type type) {
+        Validate.notNull(type);
+        this.type = type;
     }
+
+
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
@@ -37,22 +53,10 @@ public abstract class AbstractExpr extends AbstractInst {
         return false;
     }
 
-    public Constant getConstant(DecacCompiler compiler) {
-        return null;
+    public boolean isThis(){
+        return false;
     }
 
-    /**
-     * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
-     */
-    public Type getType() {
-        return type;
-    }
-
-    protected void setType(Type type) {
-        Validate.notNull(type);
-        this.type = type;
-    }
-    private Type type;
 
     @Override
     protected void checkDecoration() {
@@ -135,9 +139,7 @@ public abstract class AbstractExpr extends AbstractInst {
         verifyExpr(compiler,localEnv, currentClass);
     }
 
-    public boolean isThis(){
-        return false;
-    }
+
 
     /**
      * Verify the expression as a condition, i.e. check that the type is

@@ -28,7 +28,6 @@ public abstract class AbstractPrint extends AbstractInst {
 
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
-    
     abstract String getSuffix();
 
     public AbstractPrint(boolean printHex, ListExpr arguments) {
@@ -40,39 +39,25 @@ public abstract class AbstractPrint extends AbstractInst {
     public ListExpr getArguments() {
         return arguments;
     }
-
-    @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
-            throws ContextualError {
-
-        //On parcourt l'ensemble des expressions pour toutes les vérifier
-        Iterator<AbstractExpr> it = arguments.iterator();
-        while (it.hasNext()) {
-	    Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);
-        //System.out.println(typeExpr);
-            //On vérifie si le type de l'expression étudiée est compatible avec print ou println
-            if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()) {
-                throw new ContextualError("What is printed needs to be either an int, a float or a string", getLocation());
-            }
-        }
-    }
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        compiler.getCodeGenBackend().setPrintHex(getPrintHex());
-
-        for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
-        }
-    }
-
     protected boolean getPrintHex() {
         return printHex;
     }
 
     @Override
-    public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+                              ClassDefinition currentClass, Type returnType)
+            throws ContextualError {
+
+        // Verify all the expression in the HashMap
+        Iterator<AbstractExpr> it = arguments.iterator();
+        while (it.hasNext()) {
+            Type typeExpr = it.next().verifyExpr(compiler, localEnv, currentClass);
+
+            // Verify if the type id compatible with a print
+            if (!typeExpr.isInt() && !typeExpr.isFloat() && !typeExpr.isString()) {
+                throw new ContextualError("What is printed needs to be either an int, a float or a string", getLocation());
+            }
+        }
     }
 
     @Override
@@ -83,6 +68,20 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         arguments.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.getCodeGenBackend().setPrintHex(getPrintHex());
+
+        for (AbstractExpr a : getArguments().getList()) {
+            a.codeGenPrint(compiler);
+        }
     }
 
     @Override
