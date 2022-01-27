@@ -1,0 +1,105 @@
+; Main program
+; ###############################################################
+; ###############################################################
+; start main program
+	TSTO #7
+	BOV stack_overflow_error
+	ADDSP #7
+	LOAD #0x0.0p0, R2
+	STORE R2, 1(GB)
+	LOAD #0x1.0p0, R2
+	STORE R2, 2(GB)
+	LOAD #0x1.0p0, R2
+	OPP R2, R2
+	STORE R2, 3(GB)
+	LOAD #0x1.6fc2ecp-1, R2
+	STORE R2, 4(GB)
+; Beginning of main instructions:
+while_1_start:
+	LOAD 2(GB), R2
+	LOAD 1(GB), R3
+	ADD #0x1.0p-23, R3	; Plus
+	CMP R3, R2
+	BLT while_1_end
+while_1_body:
+	LOAD 1(GB), R2
+	LOAD 2(GB), R3
+	ADD R3, R2	; Plus
+	DIV #0x1.0p1, R2	; float divide
+	BOV division_by_zero_error
+	STORE R2, 5(GB)
+	LOAD 5(GB), R3
+	LOAD 5(GB), R4
+	LOAD 5(GB), R5
+	LOAD 5(GB), R6
+	LOAD 5(GB), R7
+	LOAD 5(GB), R8
+	LOAD #0x1.0p0, R9
+	DIV #0x1.3bp12, R9	; float divide
+	BOV division_by_zero_error
+	MUL R9, R8	; Multiply
+	LOAD #0x1.0p0, R9
+	DIV #0x1.68p9, R9	; float divide
+	BOV division_by_zero_error
+	ADD R9, R8	; Plus
+	MUL R8, R7	; Multiply
+	LOAD #0x1.0p0, R8
+	DIV #0x1.ep6, R8	; float divide
+	BOV division_by_zero_error
+	ADD R8, R7	; Plus
+	MUL R7, R6	; Multiply
+	LOAD #0x1.0p0, R7
+	DIV #0x1.8p4, R7	; float divide
+	BOV division_by_zero_error
+	ADD R7, R6	; Plus
+	MUL R6, R5	; Multiply
+	LOAD #0x1.0p0, R6
+	DIV #0x1.8p2, R6	; float divide
+	BOV division_by_zero_error
+	ADD R6, R5	; Plus
+	MUL R5, R4	; Multiply
+	LOAD #0x1.0p0, R5
+	DIV #0x1.0p1, R5	; float divide
+	BOV division_by_zero_error
+	ADD R5, R4	; Plus
+	MUL R4, R3	; Multiply
+	ADD #0x1.0p0, R3	; Plus
+	MUL R3, R2	; Multiply
+	LOAD #1, R3
+	FLOAT R3, R3
+	SUB R3, R2	; Minus
+	STORE R2, 6(GB)
+	CMP #0x0.0p0, R2
+	BLE if_1_else
+if_1_then:
+	LOAD 5(GB), R2
+	STORE R2, 2(GB)
+	LOAD 6(GB), R2
+	STORE R2, 4(GB)
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
+	LOAD 5(GB), R2
+	STORE R2, 1(GB)
+	LOAD 6(GB), R2
+	STORE R2, 3(GB)
+if_1_end:
+	BRA while_1_start
+while_1_end:
+	LOAD 1(GB), R1
+	WFLOAT
+	WSTR " = "
+	LOAD 1(GB), R1
+	WFLOATX
+	WNL
+	HALT
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+division_by_zero_error:
+	WSTR "Erreur : division par 0"
+	WNL
+	ERROR
+; end main program

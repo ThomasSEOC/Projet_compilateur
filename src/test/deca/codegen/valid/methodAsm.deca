@@ -1,0 +1,10 @@
+class A {
+    void asmMethod() {
+        asm("WSTR 'coucou'");
+    }
+}
+
+{
+A a = new A();
+println(a.asmMethod(), " comment ça va ?");
+}

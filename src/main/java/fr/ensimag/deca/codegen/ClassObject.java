@@ -164,39 +164,46 @@ public class ClassObject extends AbstractClassObject {
 
         for (AbstractDeclMethod abstractMethod : getMethods().getList()) {
             DeclMethod method = (DeclMethod) abstractMethod;
+            if (method.getBody() instanceof MethodBody) {
 
-            Label endLabel;
-            if (Objects.equals(method.getType().getName().getName(), "void")) {
-                endLabel = null;
+                Label endLabel;
+                if (Objects.equals(method.getType().getName().getName(), "void")) {
+                    endLabel = null;
+                }
+                else {
+                    endLabel = new Label("Code.end." + getNameClass().getName().getName() + "." + method.getName().getName());
+                }
+                getClassManager().setCurrentMethodEnd(endLabel);
+
+                backend.addLabel(new Label("Code." + getNameClass().getName().getName() + "." + method.getName().getName()));
+                backend.addComment(method.getName().getName().getName());
+                backend.writeInstructions();
+                backend.createContext();
+
+                // add params
+                ListDeclParam params = method.getParams();
+                for (int i = 0; i < params.size(); i++) {
+                    DeclParam param = (DeclParam) params.getList().get(i);
+                    backend.addParam(param.getName().getName().getName(), -3 - i);
+                }
+
+                method.getBody().codeGen(backend.getCompiler());
+
+                if (endLabel != null) {
+                    if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus()) {
+                        backend.addInstruction(new WSTR("Erreur : sortie de la méthode " + getNameClass().getName().getName() + "." + method.getName().getName() + " sans return"));
+                        backend.addInstruction(new WNL());
+                        backend.addInstruction(new ERROR());
+                    }
+                    backend.addLabel(endLabel);
+                }
+
+                backend.popContext();
             }
             else {
-                endLabel = new Label("Code.end." + getNameClass().getName().getName() + "." + method.getName().getName());
+                // asm method
+                method.getBody().codeGen(backend.getCompiler());
             }
-            getClassManager().setCurrentMethodEnd(endLabel);
-
-            backend.addLabel(new Label("Code." + getNameClass().getName().getName() + "." + method.getName().getName()));
-            backend.addComment(method.getName().getName().getName());
-            backend.createContext();
-
-            // add params
-            ListDeclParam params = method.getParams();
-            for (int i = 0; i < params.size(); i++) {
-                DeclParam param = (DeclParam) params.getList().get(i);
-                backend.addParam(param.getName().getName().getName(), -3 - i);
-            }
-
-            method.getBody().codeGen(backend.getCompiler());
-
-            if (endLabel != null) {
-                if (!backend.getCompiler().getCompilerOptions().getNoCheckStatus()) {
-                    backend.addInstruction(new WSTR("Erreur : sortie de la méthode " + getNameClass().getName().getName() + "." + method.getName().getName() + " sans return"));
-                    backend.addInstruction(new WNL());
-                    backend.addInstruction(new ERROR());
-                }
-                backend.addLabel(endLabel);
-            }
-
-            backend.popContext();
         }
 
         getClassManager().setCurrentObject(null);

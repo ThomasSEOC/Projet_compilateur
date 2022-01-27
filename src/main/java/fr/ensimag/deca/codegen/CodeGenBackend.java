@@ -386,7 +386,10 @@ public class CodeGenBackend {
         labels.add(null);
 
         if ((instruction instanceof BranchInstruction) || (instruction instanceof BSR)) {
-            getContextManager().setLastStoreRegister(null, null);
+            if (getContextManager().getLastStoreRegister() != null) {
+                getContextManager().getLastStoreRegister().destroy(true);
+                getContextManager().setLastStoreRegister(null, null);
+            }
         }
     }
 

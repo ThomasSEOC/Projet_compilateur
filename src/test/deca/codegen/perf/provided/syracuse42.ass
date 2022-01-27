@@ -28,16 +28,16 @@ if_1_then:
 	STORE R2, 1(GB)
 	BRA if_1_end	; jump to end of if statement
 if_1_else:
+	LOAD 1(GB), R2
+	SHL R2
 	LOAD 1(GB), R3
-	SHL R3
-	LOAD 1(GB), R4
-	ADD R4, R3	; Plus
-	ADD #1, R3	; Plus
-	STORE R3, 1(GB)
+	ADD R3, R2	; Plus
+	ADD #1, R2	; Plus
+	STORE R2, 1(GB)
 if_1_end:
-	LOAD 2(GB), R3
-	ADD #1, R3	; Plus
-	STORE R3, 2(GB)
+	LOAD 2(GB), R2
+	ADD #1, R2	; Plus
+	STORE R2, 2(GB)
 	BRA while_1_start
 while_1_end:
 	LOAD 2(GB), R1

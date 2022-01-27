@@ -98,9 +98,12 @@ public class AssignOperation extends AbstractOperation {
 
                 // store result
                 getCodeGenBackEnd().addInstruction(new STORE(result.requestPhysicalRegister(), addr));
-                if (addr instanceof RegisterOffset) {
-                    RegisterOffset registerOffset = (RegisterOffset) addr;
-                    getCodeGenBackEnd().getContextManager().setLastStoreRegister(result, registerOffset);
+
+                if (getCodeGenBackEnd().getCompiler().getCompilerOptions().getOptimize() > 0) {
+                    if (addr instanceof RegisterOffset) {
+                        RegisterOffset registerOffset = (RegisterOffset) addr;
+                        getCodeGenBackEnd().getContextManager().setLastStoreRegister(result, registerOffset);
+                    }
                 }
             }
             else if (expr.getLeftOperand() instanceof Selection) {

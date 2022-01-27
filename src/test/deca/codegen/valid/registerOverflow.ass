@@ -1,0 +1,66 @@
+; Main program
+; ###############################################################
+; ###############################################################
+; start main program
+	TSTO #2
+	BOV stack_overflow_error
+	ADDSP #2
+	LOAD #1, R2
+	ADD #1, R2	; Plus
+	LOAD #1, R3
+	MUL R2, R3	; Multiply
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	ADD 0(SP), R3	; Plus
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	MUL 0(SP), R3	; Multiply
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	ADD 0(SP), R3	; Plus
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	MUL 0(SP), R3	; Multiply
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	ADD 0(SP), R3	; Plus
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	MUL 0(SP), R3	; Multiply
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	ADD 0(SP), R3	; Plus
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	MUL 0(SP), R3	; Multiply
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	ADD 0(SP), R3	; Plus
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	MUL 0(SP), R3	; Multiply
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	ADD 0(SP), R3	; Plus
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	MUL 0(SP), R3	; Multiply
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	ADD 0(SP), R3	; Plus
+	PUSH R3	; no more GP register available
+	LOAD #1, R3
+	MUL 0(SP), R3	; Multiply
+	STORE R3, 1(GB)
+; Beginning of main instructions:
+	LOAD 1(GB), R1
+	WINT
+	WNL
+	HALT
+; ###############################################################
+; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+; end main program

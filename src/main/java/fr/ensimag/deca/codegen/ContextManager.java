@@ -16,6 +16,7 @@ public class ContextManager {
 
     private int currentRegisterIndex = 2;
     private int stackOffset = 0;
+    private int maxStackOffset = 0;
 
     private final VirtualRegister[] physicalRegisters = new VirtualRegister[16];
     private final List<VirtualRegister> inStackRegisters;
@@ -140,21 +141,20 @@ public class ContextManager {
                     // pop data to physical register
                     backend.addInstruction(new POP(register), "local variable is on top of stack");
 
-                    // free stack from current data
-                    stackOffset--;
-
-                    // free unused in stack data
-                    while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
-                        stackOffset--;
-                        inStackRegisters.remove(stackOffset);
-                    }
+//                    // free stack from current data
+//                    stackOffset--;
+//
+//                    // free unused in stack data
+//                    while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
+//                        stackOffset--;
+//                        inStackRegisters.remove(stackOffset);
+//                    }
                 } else {
                     // copy data to physical register
                     backend.addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("copy from stack R%d", currentRegisterIndex));
-
-                    // indicate that this data in stack is unused
-                    inStackRegisters.set(localIndex, null);
                 }
+
+                freeInStackRegister(virtualRegister);
             }
 
             // mov virtual register from in stack to physical
@@ -180,7 +180,8 @@ public class ContextManager {
 
             // push register to stack
             stackOffset++;
-            if (stackOffset > backend.getMaxStackSize()) {
+            if (stackOffset > maxStackOffset) {
+                maxStackOffset++;
                 backend.incMaxStackSize();
             }
             inStackRegisters.add(oldRegister);
@@ -193,11 +194,11 @@ public class ContextManager {
 
             // remove virtual register from stack if it's the case
             if (virtualRegister.getIsInStack()) {
-                inStackRegisters.set(virtualRegister.getLocalIndex(), null);
+                freeInStackRegister(virtualRegister);
             }
 
             // load into physical register
-//            backend.addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("Load virtual register to R%d", currentRegisterIndex));
+            backend.addInstruction(new LOAD(virtualRegister.getDVal(), register), String.format("Load virtual register to R%d", currentRegisterIndex));
 
             // set virtual register as physical register
             virtualRegister.setPhysical(register);
@@ -234,9 +235,11 @@ public class ContextManager {
         else { // no more free register
             // create an in stack register
             stackOffset++;
-            if (stackOffset > backend.getMaxStackSize()) {
+            if (stackOffset > maxStackOffset) {
+                maxStackOffset++;
                 backend.incMaxStackSize();
             }
+            backend.addInstruction(new ADDSP(1));
             register = new VirtualRegister(this, stackOffset);
             inStackRegisters.add(register);
         }
@@ -332,9 +335,14 @@ public class ContextManager {
      */
     public void freeInStackRegister(VirtualRegister virtualRegister) {
         inStackRegisters.set(virtualRegister.getLocalIndex()-1, null);
+        int removedRegisters = 0;
         while ((stackOffset > 0) && (inStackRegisters.get(stackOffset - 1) == null)) {
             stackOffset--;
             inStackRegisters.remove(stackOffset);
+            removedRegisters++;
+        }
+        if (removedRegisters > 0) {
+            backend.addInstruction(new SUBSP(removedRegisters));
         }
     }
 

@@ -16,6 +16,8 @@
 ; ###############################################################
 ; ###############################################################
 ; start main program
+	TSTO #13
+	BOV stack_overflow_error
 	ADDSP #13
 ; create instance of class Polyexp
 	NEW #1, R0
@@ -24,64 +26,64 @@
 	BSR Code.Polyexp.Init
 	POP R2
 	STORE R2, 6(GB)
-	LOAD #0x0.0p0, R3
-	STORE R3, 7(GB)
-	LOAD #0x1.0p0, R4
-	STORE R4, 8(GB)
-	LOAD #-0x1.0p0, R5
-	STORE R5, 9(GB)
-	LOAD #0x1.6fc2ecp-1, R6
-	STORE R6, 10(GB)
+	LOAD #0x0.0p0, R2
+	STORE R2, 7(GB)
+	LOAD #0x1.0p0, R2
+	STORE R2, 8(GB)
+	LOAD #0x1.0p0, R2
+	OPP R2, R2
+	STORE R2, 9(GB)
+	LOAD #0x1.6fc2ecp-1, R2
+	STORE R2, 10(GB)
 ; Beginning of main instructions:
-Code.Bloc.2:
-Code.Bloc.3:
-	LOAD 8(GB), R7
-	LOAD 7(GB), R8
-	ADD #0x1.0p-23, R8	; Plus
-	CMP R8, R7
-	BLT Code.Bloc.9
-Code.Bloc.4:
-Code.Bloc.5:
+while_1_start:
+	LOAD 8(GB), R2
+	LOAD 7(GB), R3
+	ADD #0x1.0p-23, R3	; Plus
+	CMP R3, R2
+	BLT while_1_end
+while_1_body:
 ; call method pexp
 	ADDSP #2
 	LOAD 6(GB), R0
+	CMP #null, R0
+	BEQ dereferencement_null_error
 	STORE R0, 0(SP)
-	LOAD 7(GB), R7
-	LOAD 8(GB), R8
-	ADD R8, R7	; Plus
-	DIV #0x1.0p1, R7	; float divide
-	STORE R7, 11(GB)
-	STORE R7, -1(SP)
+	LOAD 7(GB), R2
+	LOAD 8(GB), R3
+	ADD R3, R2	; Plus
+	DIV #0x1.0p1, R2	; float divide
+	BOV division_by_zero_error
+	STORE R2, 11(GB)
+	STORE R2, -1(SP)
 	LOAD 6(GB), R0
 	LOAD 0(R0), R0
 	BSR 2(R0)
 	SUBSP #2
-	LOAD R0, R8
-	STORE R8, 12(GB)
-	CMP #0x0.0p0, R8
-	BLE Code.Bloc.8
-Code.Bloc.7:
-	LOAD 11(GB), R9
-	STORE R9, 8(GB)
-	LOAD 12(GB), R10
-	STORE R10, 10(GB)
-Code.Bloc.6:
-	BRA Code.Bloc.3
-Code.Bloc.8:
-	LOAD 11(GB), R11
-	STORE R11, 7(GB)
-	LOAD 12(GB), R12
-	STORE R12, 9(GB)
-	BRA Code.Bloc.6
-Code.Bloc.9:
+	LOAD R0, R3
+	STORE R3, 12(GB)
+	CMP #0x0.0p0, R3
+	BLE if_1_else
+if_1_then:
+	LOAD 11(GB), R3
+	STORE R3, 8(GB)
+	LOAD 12(GB), R3
+	STORE R3, 10(GB)
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
+	LOAD 11(GB), R3
+	STORE R3, 7(GB)
+	LOAD 12(GB), R3
+	STORE R3, 9(GB)
+if_1_end:
+	BRA while_1_start
+while_1_end:
 	LOAD 7(GB), R1
 	WFLOAT
 	WSTR " = "
 	LOAD 7(GB), R1
 	WFLOATX
 	WNL
-	BRA Code.Bloc.1
-Code.Bloc.1:
 	HALT
 ; ###############################################################
 ; METHODS
@@ -101,15 +103,8 @@ code.Object.equals:
 ; Code for methods of Polyexp
 ; Code for init of Polyexp
 Code.Polyexp.Init:
-	ADDSP #13
-; context save
-	PUSH R2	; save R2
-	PUSH R3	; save R3
-	PUSH R4	; save R4
-	PUSH R5	; save R5
-	PUSH R6	; save R6
-	PUSH R7	; save R7
-	PUSH R8	; save R8
+	TSTO #14
+	BOV stack_overflow_error
 	ADDSP #13
 ; context save
 	PUSH R2	; save R2
@@ -122,46 +117,139 @@ Code.Polyexp.Init:
 	RTS
 Code.Polyexp.pexp:
 ; pexp
-Code.Bloc.12:
+	TSTO #27
+	BOV stack_overflow_error
+	ADDSP #13
+; context save
+	PUSH R2	; save R2
+	PUSH R3	; save R3
 	LOAD -3(LB), R2
 	LOAD -3(LB), R3
-	LOAD -3(LB), R4
-	LOAD -3(LB), R5
-	LOAD -3(LB), R6
-	LOAD -3(LB), R7
-	LOAD -3(LB), R8
-	MUL #0x1.a01a02p-13, R8	; Multiply
-	ADD #0x1.6c16c2p-10, R8	; Plus
-	MUL R8, R7	; Multiply
-	ADD #0x1.111112p-7, R7	; Plus
-	MUL R7, R6	; Multiply
-	ADD #0x1.555556p-5, R6	; Plus
-	MUL R6, R5	; Multiply
-	ADD #0x1.555556p-3, R5	; Plus
-	MUL R5, R4	; Multiply
-	ADD #0x1.0p-1, R4	; Plus
-	MUL R4, R3	; Multiply
+	ADDSP #1
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	LOAD -3(LB), R3
+	ADDSP #1
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	LOAD -3(LB), R3
+	ADDSP #1
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	LOAD -3(LB), R3
+	ADDSP #1
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	LOAD -3(LB), R3
+	ADDSP #1
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	LOAD -3(LB), R3
+	PUSH R3	; no more GP register available
+	LOAD #0x1.0p0, R3	; Load virtual register to R3
+	LOAD #0x1.0p0, R3
+	DIV #0x1.3bp12, R3	; float divide
+	BOV division_by_zero_error
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	MUL 0(SP), R3	; Multiply
+	SUBSP #2
+	PUSH R3	; no more GP register available
+	LOAD #0x1.0p0, R3	; Load virtual register to R3
+	LOAD #0x1.0p0, R3
+	DIV #0x1.68p9, R3	; float divide
+	BOV division_by_zero_error
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	ADD 0(SP), R3	; Plus
+	SUBSP #2
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	MUL 0(SP), R3	; Multiply
+	SUBSP #3
+	PUSH R3	; no more GP register available
+	LOAD #0x1.0p0, R3	; Load virtual register to R3
+	LOAD #0x1.0p0, R3
+	DIV #0x1.ep6, R3	; float divide
+	BOV division_by_zero_error
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	ADD 0(SP), R3	; Plus
+	SUBSP #2
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	MUL 0(SP), R3	; Multiply
+	SUBSP #3
+	PUSH R3	; no more GP register available
+	LOAD #0x1.0p0, R3	; Load virtual register to R3
+	LOAD #0x1.0p0, R3
+	DIV #0x1.8p4, R3	; float divide
+	BOV division_by_zero_error
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	ADD 0(SP), R3	; Plus
+	SUBSP #2
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	MUL 0(SP), R3	; Multiply
+	SUBSP #3
+	PUSH R3	; no more GP register available
+	LOAD #0x1.0p0, R3	; Load virtual register to R3
+	LOAD #0x1.0p0, R3
+	DIV #0x1.8p2, R3	; float divide
+	BOV division_by_zero_error
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	ADD 0(SP), R3	; Plus
+	SUBSP #2
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	MUL 0(SP), R3	; Multiply
+	SUBSP #3
+	PUSH R3	; no more GP register available
+	LOAD #0x1.0p0, R3	; Load virtual register to R3
+	LOAD #0x1.0p0, R3
+	DIV #0x1.0p1, R3	; float divide
+	BOV division_by_zero_error
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	ADD 0(SP), R3	; Plus
+	SUBSP #2
+	PUSH R3	; no more GP register available
+	LOAD -1(SP), R3	; Load virtual register to R3
+	MUL 0(SP), R3	; Multiply
+	SUBSP #3
 	ADD #0x1.0p0, R3	; Plus
 	MUL R3, R2	; Multiply
-	SUB #0x1.0p0, R2	; Minus
+	LOAD #1, R3
+	FLOAT R3, R3
+	SUB R3, R2	; Minus
 	LOAD R2, R0
 	BRA Code.end.Polyexp.pexp
-	BRA Code.Bloc.11
-Code.Bloc.11:
+	WSTR "Erreur : sortie de la méthode Polyexp.pexp sans return"
+	WNL
+	ERROR
 Code.end.Polyexp.pexp:
 ; context restore
 	POP R2	; restore R2
 	POP R3	; restore R3
-	POP R4	; restore R4
-	POP R5	; restore R5
-	POP R6	; restore R6
-	POP R7	; restore R7
-	POP R8	; restore R8
 	RTS
 ; ###############################################################
 ; ERRORS
+stack_overflow_error:
+	WSTR "Erreur : dépassement de pile"
+	WNL
+	ERROR
+dereferencement_null_error:
+	WSTR "Erreur : dereferencement de null"
+	WNL
+	ERROR
 heap_overflow_error:
 	WSTR "Erreur : le tas est plein"
+	WNL
+	ERROR
+division_by_zero_error:
+	WSTR "Erreur : division par 0"
 	WNL
 	ERROR
 ; end main program
