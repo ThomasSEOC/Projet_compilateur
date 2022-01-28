@@ -1,0 +1,16 @@
+// exemple correct
+class A {
+   void m() 
+   {
+      int x ; 
+
+      x = readInt(); 
+      println (2 * x);
+   }
+}
+
+{
+   A a;
+   a = new A();
+   a.m();
+}

@@ -1,0 +1,7 @@
+{
+   Object o = new Object() ; 
+   Object o2 ; 
+
+   o2 = (Object)(o) ; 
+}
+

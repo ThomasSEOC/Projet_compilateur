@@ -1,0 +1,19 @@
+// programme correct
+
+class A { }
+class B { }
+
+{
+   A a;
+   B b;
+
+   a = new A();
+   b = new B();
+
+   if (a == b) {
+      println ("ko");
+   } else {
+      println ("ok");
+   }
+}
+

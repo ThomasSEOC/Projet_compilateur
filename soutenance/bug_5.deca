@@ -1,0 +1,10 @@
+{
+   float f = 1; 
+
+   f = 1; 
+   if (f == 1.0) {
+      println("ok"); 
+   } else {
+      println("ko"); 
+   }
+}

@@ -1,0 +1,7 @@
+// programme Deca incorrect
+{
+   float f = 0.2e-123;
+   if (f == 0.0) {
+      println ("ko");
+   }
+}
