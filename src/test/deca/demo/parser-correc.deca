@@ -1,0 +1,7 @@
+// Manque opérande à *
+
+// Date: 20.01.2022
+
+{
+int a = 3*2;
+}
