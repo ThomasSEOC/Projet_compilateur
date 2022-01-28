@@ -229,7 +229,7 @@ public class ContextManager {
             // create physical register
             register = new VirtualRegister(this, GPRegister.getR(currentRegisterIndex));
             physicalRegisters[currentRegisterIndex] = register;
-            toSavePhysicalRegisters[currentRegisterIndex] = true;
+            //toSavePhysicalRegisters[currentRegisterIndex] = true;
             currentRegisterIndex++;
         }
         else { // no more free register

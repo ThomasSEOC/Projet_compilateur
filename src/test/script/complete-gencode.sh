@@ -39,11 +39,11 @@ then
     echo "TEST: $i"
     if [ "$#" = 1 ]
     then
-      decac -n "$1" "$i" || exit 1
+      decac "$1" "$i" || exit 1
     else
-      decac -n "$i" || exit 1
+      decac "$i" || exit 1
     fi
-    ima -s "$ASS" 2>"$IMA" 1>"$IMA"
+    ima "$ASS" 2>"$IMA" 1>"$IMA"
     RES=$(diff "$REF_IMA" "$IMA")
     if [ "$RES" != "" ]
     then
@@ -56,8 +56,8 @@ then
     rm -f "$ASS" 2>/dev/null
     rm -f "$IMA" 2>/dev/null
 #  else
-    #  echo "Fichier .ass non généré."
-    #  exit 1
+#      echo "Fichier .ass non généré."
+#      exit 1
   fi
   done
 else
