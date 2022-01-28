@@ -1,0 +1,11 @@
+class A {
+    int maMethode(int x) {
+        return x*x;
+    }
+}
+
+{
+    A a = new A();
+    int resultat = 1 + (2 + a.maMethode(3));
+    println("le résultat est : ", resultat);
+}
