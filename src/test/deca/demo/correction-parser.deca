@@ -1,6 +1,7 @@
-// Le caractère £ n'est pas accepté en tant qu'identificateur
+// Manque opérande à *
+
+// Date: 20.01.2022
+
 {
-    //Commentary
-    int a = 3;
-    print(a);
+int a = 3*2;
 }

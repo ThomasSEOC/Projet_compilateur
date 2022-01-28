@@ -1,0 +1,8 @@
+// un entier a un nom de classe
+class A {
+
+}
+
+{
+    int A = 1;
+}

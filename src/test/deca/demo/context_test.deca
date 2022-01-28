@@ -1,0 +1,11 @@
+class A {
+    int monChamp;
+    void maMethode(int x){
+
+    }
+}
+
+{
+    A a = new A();
+    int i = 1;
+}
