@@ -1,6 +1,44 @@
+
+
+# ![Capture d’écran du 2022-01-28 10-25-37](/home/sylvain/Documents/ensimag/Projet_GL/gl54/docs/optimisation/Capture d’écran du 2022-01-28 10-25-37.png)
+
+## PHELMA GRENOBLE INP
+
+## ENSIMAG GRENOBLE INP
+
 # Documentation de l'extension Optimisation
 
+## GL54 : DIJS Thomas, Falgayrac Loic, Ho-SUN Jules, NOIRY Sylvain, WANG Caroline
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 [TOC]
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
