@@ -157,9 +157,12 @@ public class ContextManager {
                 freeInStackRegister(virtualRegister);
             }
 
+            if (getBackend().NeedRegisterSave(currentRegisterIndex)) {
+                toSavePhysicalRegisters[currentRegisterIndex] = true;
+            }
+
             // mov virtual register from in stack to physical
             physicalRegisters[currentRegisterIndex] = virtualRegister;
-            toSavePhysicalRegisters[currentRegisterIndex] = true;
 
             // set virtual register as physical register
             virtualRegister.setPhysical(register);
@@ -208,6 +211,13 @@ public class ContextManager {
         }
     }
 
+    public boolean isRegisterUsed(int index) {
+        if (physicalRegisters[index] == null) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * method called to request a new virtual register without prerequisite
      * @return new virtual register
@@ -228,8 +238,11 @@ public class ContextManager {
         if (currentRegisterIndex < usableRegistersCount) {
             // create physical register
             register = new VirtualRegister(this, GPRegister.getR(currentRegisterIndex));
+            // check if register need to be saved
+            if (getBackend().NeedRegisterSave(currentRegisterIndex)) {
+                toSavePhysicalRegisters[currentRegisterIndex] = true;
+            }
             physicalRegisters[currentRegisterIndex] = register;
-            //toSavePhysicalRegisters[currentRegisterIndex] = true;
             currentRegisterIndex++;
         }
         else { // no more free register

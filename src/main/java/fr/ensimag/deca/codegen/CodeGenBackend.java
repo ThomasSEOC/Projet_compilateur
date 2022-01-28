@@ -75,6 +75,16 @@ public class CodeGenBackend {
         printHex = false;
     }
 
+    public boolean NeedRegisterSave(int index) {
+        for (int i = 0; i < contextManagers.size(); i++) {
+            ContextManager contextManager = contextManagers.get(i);
+            if (contextManager.isRegisterUsed(index)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * create a new graph bloc unique ID
      * @return new unique ID

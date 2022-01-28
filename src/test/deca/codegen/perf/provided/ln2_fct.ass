@@ -103,16 +103,19 @@ code.Object.equals:
 Code.Polyexp.Init:
 	ADDSP #13
 ; context save
+	PUSH R2	; save R2
 ; store VTable pointer
 	LOAD -2(LB), R2
 	LEA 3(GB), R0
 	STORE R0, 0(R2)
 ; context restore
+	POP R2	; restore R2
 	RTS
 Code.Polyexp.pexp:
 ; pexp
 	ADDSP #13
 ; context save
+	PUSH R2	; save R2
 Code.Bloc.12:
 	LOAD -3(LB), R2
 	LOAD -3(LB), R3
@@ -141,6 +144,7 @@ Code.Bloc.12:
 Code.Bloc.11:
 Code.end.Polyexp.pexp:
 ; context restore
+	POP R2	; restore R2
 	RTS
 ; ###############################################################
 ; ERRORS
