@@ -3,6 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.InlinePortion;
+import fr.ensimag.ima.pseudocode.Line;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -43,6 +45,6 @@ public class MethodAsmBody extends AbstractMethodBody{
 
     @Override
     public void codeGen(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.add(new InlinePortion(code.getValue()));
     }
 }

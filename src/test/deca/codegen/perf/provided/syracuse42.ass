@@ -2,56 +2,46 @@
 ; ###############################################################
 ; ###############################################################
 ; start main program
-	TSTO #3
-	BOV stack_overflow_error
 	ADDSP #3
 	LOAD #42, R2
 	STORE R2, 1(GB)
-	LOAD #0, R3
-	STORE R3, 2(GB)
+	LOAD #0, R2
+	STORE R2, 2(GB)
 ; Beginning of main instructions:
-Code.Bloc.2:
-Code.Bloc.3:
-	LOAD 1(GB), R4
-	CMP #1, R4
-	BEQ Code.Bloc.9
-Code.Bloc.4:
-Code.Bloc.5:
-	LOAD 1(GB), R4
-	LOAD R4, R0	; simplify modulo using shifts
+while_1_start:
+	LOAD 1(GB), R2
+	CMP #1, R2
+	BEQ while_1_end
+while_1_body:
+	LOAD 1(GB), R2
+	LOAD R2, R0	; simplify modulo using shifts
 	SHR R0
 	SHL R0
-	SUB R0, R4
-	CMP #0, R4
-	BNE Code.Bloc.8
-Code.Bloc.7:
-	LOAD 1(GB), R4
-	SHR R4
-	STORE R4, 1(GB)
-Code.Bloc.6:
-	LOAD 2(GB), R5
-	ADD #1, R5	; Plus
-	STORE R5, 2(GB)
-	BRA Code.Bloc.3
-Code.Bloc.8:
-	LOAD 1(GB), R6
-	SHL R6
-	LOAD 1(GB), R7
-	ADD R7, R6	; Plus
-	ADD #1, R6	; Plus
-	STORE R6, 1(GB)
-	BRA Code.Bloc.6
-Code.Bloc.9:
+	SUB R0, R2
+	CMP #0, R2
+	BNE if_1_else
+if_1_then:
+	LOAD 1(GB), R2
+	SHR R2
+	STORE R2, 1(GB)
+	BRA if_1_end	; jump to end of if statement
+if_1_else:
+	LOAD 1(GB), R2
+	SHL R2
+	LOAD 1(GB), R3
+	ADD R3, R2	; Plus
+	ADD #1, R2	; Plus
+	STORE R2, 1(GB)
+if_1_end:
+	LOAD 2(GB), R2
+	ADD #1, R2	; Plus
+	STORE R2, 2(GB)
+	BRA while_1_start
+while_1_end:
 	LOAD 2(GB), R1
 	WINT
 	WNL
-	BRA Code.Bloc.1
-Code.Bloc.1:
 	HALT
 ; ###############################################################
 ; ERRORS
-stack_overflow_error:
-	WSTR "Erreur : dépassement de pile"
-	WNL
-	ERROR
 ; end main program

@@ -1,0 +1,24 @@
+; Main program
+; ###############################################################
+; ###############################################################
+; start main program
+	ADDSP #3
+	LOAD #1, R2
+	STORE R2, 1(GB)
+	LOAD #2, R2
+	STORE R2, 2(GB)
+; Beginning of main instructions:
+Code.Bloc.2:
+Code.Bloc.3:
+Code.Bloc.5:
+	WSTR "la réponse est : "
+	LOAD #42, R1
+	WINT
+	WNL
+Code.Bloc.4:
+	BRA Code.Bloc.1
+Code.Bloc.1:
+	HALT
+; ###############################################################
+; ERRORS
+; end main program

@@ -2,68 +2,65 @@
 ; ###############################################################
 ; ###############################################################
 ; start main program
-	TSTO #7
-	BOV stack_overflow_error
 	ADDSP #7
 	LOAD #0x0.0p0, R2
 	STORE R2, 1(GB)
-	LOAD #0x1.0p0, R3
-	STORE R3, 2(GB)
-	LOAD #-0x1.0p0, R4
-	STORE R4, 3(GB)
-	LOAD #0x1.6fc2ecp-1, R5
-	STORE R5, 4(GB)
+	LOAD #0x1.0p0, R2
+	STORE R2, 2(GB)
+	LOAD #-0x1.0p0, R2
+	STORE R2, 3(GB)
+	LOAD #0x1.6fc2ecp-1, R2
+	STORE R2, 4(GB)
 ; Beginning of main instructions:
 Code.Bloc.2:
 Code.Bloc.3:
-	LOAD 2(GB), R6
-	LOAD 1(GB), R7
-	ADD #0x1.0p-23, R7	; Plus
-	CMP R7, R6
+	LOAD 2(GB), R2
+	LOAD 1(GB), R3
+	ADD #0x1.0p-23, R3	; Plus
+	CMP R3, R2
 	BLT Code.Bloc.9
 Code.Bloc.4:
-	LOAD 1(GB), R6
-	LOAD 2(GB), R7
-	ADD R7, R6	; Plus
-	DIV #0x1.0p1, R6	; float divide
-	BOV division_by_zero_error
-	STORE R6, 5(GB)
+	LOAD 1(GB), R2
+	LOAD 2(GB), R3
+	ADD R3, R2	; Plus
+	DIV #0x1.0p1, R2	; float divide
+	STORE R2, 5(GB)
+	LOAD 5(GB), R3
+	LOAD 5(GB), R4
+	LOAD 5(GB), R5
+	LOAD 5(GB), R6
 	LOAD 5(GB), R7
 	LOAD 5(GB), R8
-	LOAD 5(GB), R9
-	LOAD 5(GB), R10
-	LOAD 5(GB), R11
-	LOAD 5(GB), R12
-	MUL #0x1.a01a02p-13, R12	; Multiply
-	ADD #0x1.6c16c2p-10, R12	; Plus
-	MUL R12, R11	; Multiply
-	ADD #0x1.111112p-7, R11	; Plus
-	MUL R11, R10	; Multiply
-	ADD #0x1.555556p-5, R10	; Plus
-	MUL R10, R9	; Multiply
-	ADD #0x1.555556p-3, R9	; Plus
-	MUL R9, R8	; Multiply
-	ADD #0x1.0p-1, R8	; Plus
+	MUL #0x1.a01a02p-13, R8	; Multiply
+	ADD #0x1.6c16c2p-10, R8	; Plus
 	MUL R8, R7	; Multiply
-	ADD #0x1.0p0, R7	; Plus
+	ADD #0x1.111112p-7, R7	; Plus
 	MUL R7, R6	; Multiply
-	SUB #0x1.0p0, R6	; Minus
-	STORE R6, 6(GB)
+	ADD #0x1.555556p-5, R6	; Plus
+	MUL R6, R5	; Multiply
+	ADD #0x1.555556p-3, R5	; Plus
+	MUL R5, R4	; Multiply
+	ADD #0x1.0p-1, R4	; Plus
+	MUL R4, R3	; Multiply
+	ADD #0x1.0p0, R3	; Plus
+	MUL R3, R2	; Multiply
+	SUB #0x1.0p0, R2	; Minus
+	STORE R2, 6(GB)
 Code.Bloc.5:
-	CMP #0x0.0p0, R6
+	CMP #0x0.0p0, R2
 	BLE Code.Bloc.8
 Code.Bloc.7:
-	LOAD 5(GB), R6
-	STORE R6, 2(GB)
-	LOAD 6(GB), R7
-	STORE R7, 4(GB)
+	LOAD 5(GB), R2
+	STORE R2, 2(GB)
+	LOAD 6(GB), R2
+	STORE R2, 4(GB)
 Code.Bloc.6:
 	BRA Code.Bloc.3
 Code.Bloc.8:
-	LOAD 5(GB), R8
-	STORE R8, 1(GB)
-	LOAD 6(GB), R9
-	STORE R9, 3(GB)
+	LOAD 5(GB), R2
+	STORE R2, 1(GB)
+	LOAD 6(GB), R2
+	STORE R2, 3(GB)
 	BRA Code.Bloc.6
 Code.Bloc.9:
 	LOAD 1(GB), R1
@@ -77,12 +74,4 @@ Code.Bloc.1:
 	HALT
 ; ###############################################################
 ; ERRORS
-stack_overflow_error:
-	WSTR "Erreur : dépassement de pile"
-	WNL
-	ERROR
-division_by_zero_error:
-	WSTR "Erreur : division par 0"
-	WNL
-	ERROR
 ; end main program

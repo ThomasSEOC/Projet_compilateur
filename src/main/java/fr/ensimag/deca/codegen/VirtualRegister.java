@@ -102,7 +102,14 @@ public class VirtualRegister {
      * destroy virtual register and free used resources
      */
     public void destroy() {
-        if (contextManager.getLastStoreRegister() != this) {
+       destroy(false);
+    }
+
+    /**
+     * destroy virtual register and free used resources
+     */
+    public void destroy(boolean forceDestroy) {
+        if (forceDestroy || (contextManager.getLastStoreRegister() != this)) {
             switch (type) {
                 case PHYSICAL:
                     contextManager.freePhysicalRegister(this);

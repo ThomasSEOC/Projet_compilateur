@@ -1,0 +1,6 @@
+// Le caractère £ n'est pas accepté en tant qu'identificateur
+{
+    //Commentary
+    int a = 3;
+    print(a);
+}

@@ -4,6 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractDeclField;
 import fr.ensimag.deca.tree.DeclField;
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.util.*;
@@ -71,6 +73,16 @@ public class CodeGenBackend {
         branchCondition = false;
 
         printHex = false;
+    }
+
+    public boolean NeedRegisterSave(int index) {
+        for (int i = 0; i < contextManagers.size(); i++) {
+            ContextManager contextManager = contextManagers.get(i);
+            if (contextManager.isRegisterUsed(index)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -382,6 +394,13 @@ public class CodeGenBackend {
         instructionsComments.add(comment);
         comments.add(null);
         labels.add(null);
+
+        if ((instruction instanceof BranchInstruction) || (instruction instanceof BSR)) {
+            if (getContextManager().getLastStoreRegister() != null) {
+                getContextManager().getLastStoreRegister().destroy(true);
+                getContextManager().setLastStoreRegister(null, null);
+            }
+        }
     }
 
     /**

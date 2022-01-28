@@ -56,8 +56,8 @@ then
     rm -f "$ASS" 2>/dev/null
     rm -f "$IMA" 2>/dev/null
 #  else
-    #  echo "Fichier .ass non généré."
-    #  exit 1
+#      echo "Fichier .ass non généré."
+#      exit 1
   fi
   done
 else
