@@ -1,0 +1,20 @@
+// Description:
+//    Programme minimaliste traitant une somme.
+//
+// Resultats:
+//    Valeur: 1.0
+//
+// Historique:
+//    cree le 01/01/2022
+
+{
+        boolean cond = false;
+        float i;
+        i = 0.0;
+        if (cond) {
+            i = 1.0;
+        } else if(i!=0) {
+            i = 2.0;
+        }
+        println("Valeur: ", i);
+}
